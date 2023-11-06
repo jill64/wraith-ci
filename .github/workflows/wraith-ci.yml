@@ -1,0 +1,27 @@
+name: Wraith CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        required: true
+
+jobs:
+  wraith-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ fromJson(inputs.payload).token }}
+          repository: ${{ fromJson(inputs.payload).owner }}/${{ fromJson(inputs.payload).repo }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Wraith CI
+        uses: jill64/wraith-ci@main
+        with:
+          payload: ${{ inputs.payload }}

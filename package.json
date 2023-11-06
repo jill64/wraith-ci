@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "wrangler deploy --dry-run && npm run build:action",
+    "deploy": "wrangler deploy",
+    "lint": "npx eslint . && npx depcheck && tsc",
+    "format": "npx prettier --write .",
+    "build:action": "tsx action/scripts/build.ts"
+  },
+  "devDependencies": {
+    "octoflare": "0.15.2",
+    "esbuild": "0.19.5",
+    "@typescript-eslint/eslint-plugin": "6.9.0",
+    "@typescript-eslint/parser": "6.9.0",
+    "eslint-plugin-deprecation": "2.0.0",
+    "typescript": "5.2.2"
+  }
+}

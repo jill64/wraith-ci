@@ -1,0 +1,11 @@
+name: Wraith CI
+description: GitHub Action for Wraith CI
+
+inputs:
+  payload:
+    description: Octoflare Payload
+    required: true
+
+runs:
+  using: node20
+  main: action/dist/index.cjs
