@@ -27,8 +27,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0(eslint@8.52.0)(typescript@5.2.2)
       octoflare:
-        specifier: 0.15.2
-        version: 0.15.2
+        specifier: 0.18.0
+        version: 0.18.0
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -152,6 +152,10 @@ packages:
 
   /@cloudflare/workers-types@4.20231016.0:
     resolution: {integrity: sha512-eGB0cRVyoJpeyGJx2re5sbd9R316a61sY73xwnqm4cwGpb+OxCK2gc651RxGiN7H4w6LY1RpysUgeGLmj5B3+g==}
+    dev: true
+
+  /@cloudflare/workers-types@4.20231025.0:
+    resolution: {integrity: sha512-TkcZkntUTOcvJ4vgmwpNfLTclpMbmbClZCe62B25/VTukmyv91joRa4eKzSjzCZUXTbFHNmVdOpmGaaJU2U3+A==}
     dev: true
 
   /@esbuild/android-arm64@0.18.20:
@@ -2435,12 +2439,12 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /octoflare@0.15.2:
-    resolution: {integrity: sha512-IQvPPw/qtatC19SvSqJGTHX3wp30kvb7cNI7/4CpO9E0PH11MlxrH/y2uoa+7p3ej70q6N0t0crNQmen7Nb3RQ==}
+  /octoflare@0.18.0:
+    resolution: {integrity: sha512-pIVM1Mlzw6y+/J3AJ2SEy48i4SLjEwxSjZhqRb7i67bqf4AentsaJ9cYFIiMWrR9ZvmsMS86aVsMXyVsKAEG8Q==}
     dependencies:
       '@actions/core': 1.10.1
       '@actions/github': 6.0.0
-      '@cloudflare/workers-types': 4.20231016.0
+      '@cloudflare/workers-types': 4.20231025.0
       '@octokit/webhooks-types': 7.3.1
       octokit: 3.1.1
     dev: true
