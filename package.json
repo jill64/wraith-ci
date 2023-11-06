@@ -1,18 +1,25 @@
 {
   "type": "module",
   "scripts": {
-    "build": "wrangler deploy --dry-run && npm run build:action",
-    "deploy": "wrangler deploy",
-    "lint": "npx eslint . && npx depcheck && tsc",
-    "format": "npx prettier --write .",
-    "build:action": "tsx action/scripts/build.ts"
+    "dev": "cd packages/site && pnpm dev",
+    "build": "pnpm -r build",
+    "preview": "cd packages/site && pnpm preview",
+    "deploy": "cd packages/worker && pnpm deploy",
+    "sync": "cd packages/site && pnpm sync",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "test": "pnpm sync && vitest",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
-    "octoflare": "0.18.0",
-    "esbuild": "0.19.5",
+    "@playwright/test": "1.39.0",
+    "@sveltejs/adapter-cloudflare": "2.3.3",
     "@typescript-eslint/eslint-plugin": "6.9.1",
     "@typescript-eslint/parser": "6.9.1",
+    "esbuild": "0.19.5",
     "eslint-plugin-deprecation": "2.0.0",
-    "typescript": "5.2.2"
+    "octoflare": "0.15.2",
+    "typescript": "5.2.2",
+    "vitest": "0.34.6"
   }
 }

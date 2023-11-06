@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "lint": "npx eslint . && npx depcheck && tsc",
+    "format": "npx prettier --write ."
+  }
+}
