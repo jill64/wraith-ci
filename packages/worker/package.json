@@ -3,7 +3,7 @@
   "scripts": {
     "build": "npx wrangler deploy --dry-run",
     "deploy": "npx wrangler deploy",
-    "lint": "npx eslint . && tsc",
-    "format": "npx prettier --write ."
+    "lint": "eslint . && tsc",
+    "format": "prettier --write ."
   }
 }

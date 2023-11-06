@@ -32,6 +32,10 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to
 }
+var __reExport = (target, mod, secondTarget) => (
+  __copyProps(target, mod, 'default'),
+  secondTarget && __copyProps(secondTarget, mod, 'default')
+)
 var __toESM = (mod, isNodeMode, target) => (
   (target = mod != null ? __create(__getProtoOf(mod)) : {}),
   __copyProps(
@@ -11262,7 +11266,7 @@ var require_mock_utils = __commonJS({
     var { buildURL, nop } = require_util()
     var { STATUS_CODES } = require('http')
     var {
-      types: { isPromise }
+      types: { isPromise: isPromise2 }
     } = require('util')
     function matchValue(match, value) {
       if (typeof match === 'string') {
@@ -11503,7 +11507,7 @@ var require_mock_utils = __commonJS({
           typeof _data === 'function'
             ? _data({ ...opts, headers: optsHeaders })
             : _data
-        if (isPromise(body)) {
+        if (isPromise2(body)) {
           body.then((newData) => handleReply(mockDispatches, newData))
           return
         }
@@ -20227,7 +20231,7 @@ var require_core = __commonJS({
       ] = `${inputPath}${path.delimiter}${process.env['PATH']}`
     }
     exports.addPath = addPath
-    function getInput(name, options) {
+    function getInput2(name, options) {
       const val =
         process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || ''
       if (options && options.required && !val) {
@@ -20238,9 +20242,9 @@ var require_core = __commonJS({
       }
       return val.trim()
     }
-    exports.getInput = getInput
+    exports.getInput = getInput2
     function getMultilineInput(name, options) {
-      const inputs = getInput(name, options)
+      const inputs = getInput2(name, options)
         .split('\n')
         .filter((x) => x !== '')
       if (options && options.trimWhitespace === false) {
@@ -20252,7 +20256,7 @@ var require_core = __commonJS({
     function getBooleanInput(name, options) {
       const trueValue = ['true', 'True', 'TRUE']
       const falseValue = ['false', 'False', 'FALSE']
-      const val = getInput(name, options)
+      const val = getInput2(name, options)
       if (trueValue.includes(val)) return true
       if (falseValue.includes(val)) return false
       throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}
@@ -29306,7 +29310,7 @@ var require_mock_utils2 = __commonJS({
     var { buildURL, nop } = require_util8()
     var { STATUS_CODES } = require('http')
     var {
-      types: { isPromise }
+      types: { isPromise: isPromise2 }
     } = require('util')
     function matchValue(match, value) {
       if (typeof match === 'string') {
@@ -29547,7 +29551,7 @@ var require_mock_utils2 = __commonJS({
           typeof _data === 'function'
             ? _data({ ...opts, headers: optsHeaders })
             : _data
-        if (isPromise(body)) {
+        if (isPromise2(body)) {
           body.then((newData) => handleReply(mockDispatches, newData))
           return
         }
@@ -37165,7 +37169,7 @@ var require_dist_node2 = __commonJS({
       }
       return obj
     }
-    function merge(defaults, route, options) {
+    function merge2(defaults, route, options) {
       if (typeof route === 'string') {
         let [method, url] = route.split(' ')
         options = Object.assign(
@@ -37409,8 +37413,8 @@ var require_dist_node2 = __commonJS({
         if (options.mediaType.format) {
           headers.accept = headers.accept
             .split(/,/)
-            .map((format) =>
-              format.replace(
+            .map((format2) =>
+              format2.replace(
                 /application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/,
                 `application/vnd$1$2.${options.mediaType.format}`
               )
@@ -37424,10 +37428,10 @@ var require_dist_node2 = __commonJS({
             headers.accept = previewsFromAcceptHeader
               .concat(options.mediaType.previews)
               .map((preview) => {
-                const format = options.mediaType.format
+                const format2 = options.mediaType.format
                   ? `.${options.mediaType.format}`
                   : '+json'
-                return `application/vnd.github.${preview}-preview${format}`
+                return `application/vnd.github.${preview}-preview${format2}`
               })
               .join(',')
           }
@@ -37457,15 +37461,15 @@ var require_dist_node2 = __commonJS({
       )
     }
     function endpointWithDefaults(defaults, route, options) {
-      return parse2(merge(defaults, route, options))
+      return parse2(merge2(defaults, route, options))
     }
     function withDefaults(oldDefaults, newDefaults) {
-      const DEFAULTS2 = merge(oldDefaults, newDefaults)
+      const DEFAULTS2 = merge2(oldDefaults, newDefaults)
       const endpoint2 = endpointWithDefaults.bind(null, DEFAULTS2)
       return Object.assign(endpoint2, {
         DEFAULTS: DEFAULTS2,
         defaults: withDefaults.bind(null, DEFAULTS2),
-        merge: merge.bind(null, DEFAULTS2),
+        merge: merge2.bind(null, DEFAULTS2),
         parse: parse2
       })
     }
@@ -41124,15 +41128,117 @@ var require_github = __commonJS({
   }
 })
 
-// ../../node_modules/.pnpm/octoflare@0.15.2/node_modules/octoflare/dist/action/action.js
+// ../ghost/app/build.ts
+var build = {
+  worker: async () => {},
+  action: async () => {}
+}
+
+// ../ghost/app/closer.ts
+var closer = {
+  worker: async () => {},
+  action: async () => {}
+}
+
+// ../ghost/app/deploy.ts
+var deploy = {
+  worker: async () => {},
+  action: async () => {}
+}
+
+// ../ghost/app/docs.ts
+var docs = {
+  worker: async () => {},
+  action: async () => {}
+}
+
+// ../ghost/app/format.ts
+var format = {
+  worker: async () => {},
+  action: async () => {}
+}
+
+// ../ghost/app/lint.ts
+var lint = {
+  worker: async () => {},
+  action: async () => {}
+}
+
+// ../ghost/app/merge.ts
+var merge = {
+  worker: async () => {},
+  action: async () => {}
+}
+
+// ../ghost/app/release.ts
+var release = {
+  worker: async (context) => {},
+  action: async (data) => {}
+}
+
+// ../ghost/apps.ts
+var apps = {
+  build,
+  closer,
+  deploy,
+  docs,
+  format,
+  lint,
+  merge,
+  release
+}
+
+// ../ghost/actions.ts
+var actions = (payload) =>
+  Promise.allSettled(
+    Object.entries(apps).map(([name, app]) =>
+      app.action?.(
+        payload instanceof Error
+          ? {
+              status: 'error',
+              result: payload
+            }
+          : payload[name]
+      )
+    )
+  )
+
+// ../../node_modules/.pnpm/@jill64+attempt@1.1.0/node_modules/@jill64/attempt/dist/index.js
+var isPromise = (obj) =>
+  !!obj &&
+  (typeof obj === 'object' || typeof obj === 'function') &&
+  'then' in obj &&
+  typeof obj.then === 'function'
+function attempt(func, fallback) {
+  const argLen = arguments.length
+  const handle = (error) => {
+    if (argLen === 1) {
+      if (error instanceof Error) {
+        return error
+      }
+      throw error
+    }
+    return typeof fallback === 'function'
+      ? fallback(error instanceof Error ? error : null, error)
+      : fallback
+  }
+  try {
+    const result = func()
+    return isPromise(result) ? result.then((_) => _, handle) : result
+  } catch (error) {
+    return handle(error)
+  }
+}
+
+// ../../node_modules/.pnpm/octoflare@0.19.0/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1)
 var import_github = __toESM(require_github(), 1)
 
-// ../../node_modules/.pnpm/octoflare@0.15.2/node_modules/octoflare/dist/utils/limitStr.js
+// ../../node_modules/.pnpm/octoflare@0.19.0/node_modules/octoflare/dist/utils/limitStr.js
 var limitStr = (str, num) =>
   str.length > num ? `${str.substring(0, num)}...` : str
 
-// ../../node_modules/.pnpm/octoflare@0.15.2/node_modules/octoflare/dist/utils/closeCheckRun.js
+// ../../node_modules/.pnpm/octoflare@0.19.0/node_modules/octoflare/dist/utils/closeCheckRun.js
 var closeCheckRun = ({
   kit,
   check_run_id,
@@ -41159,7 +41265,7 @@ var closeCheckRun = ({
       : void 0
   })
 
-// ../../node_modules/.pnpm/octoflare@0.15.2/node_modules/octoflare/dist/utils/errorLogging.js
+// ../../node_modules/.pnpm/octoflare@0.19.0/node_modules/octoflare/dist/utils/errorLogging.js
 var errorLogging = async ({ octokit, repo, owner, error, info }) => {
   try {
     const errorTitle = `Octoflare Error: ${limitStr(error.message, 64)}`
@@ -41191,6 +41297,7 @@ ${error.message}
 \`\`\`
 
 ## Info  
+[Recent Deliveries](https://github.com/settings/apps/${repo}/advanced)  
 ${info ?? 'No info provided'}
 
 ## Stack Trace  
@@ -41205,7 +41312,7 @@ ${error.stack}
   }
 }
 
-// ../../node_modules/.pnpm/octoflare@0.15.2/node_modules/octoflare/dist/action/action.js
+// ../../node_modules/.pnpm/octoflare@0.19.0/node_modules/octoflare/dist/action/action.js
 var action = async (handler) => {
   const payloadStr = import_core.default.getInput('payload', { required: true })
   const payload = JSON.parse(payloadStr)
@@ -41264,9 +41371,20 @@ Cause on Action
   }
 }
 
+// ../../node_modules/.pnpm/octoflare@0.19.0/node_modules/octoflare/dist/re-exports/actions/core.js
+var core_exports = {}
+__reExport(core_exports, __toESM(require_core(), 1))
+
 // src/index.ts
 action(async () => {
-  return 'success'
+  const data = attempt(
+    () => {
+      const str = core_exports.getInput('data')
+      return JSON.parse(str)
+    },
+    (e, o) => e ?? new Error(String(o))
+  )
+  await actions(data)
 })
 /*! Bundled license information:
 

@@ -4,7 +4,7 @@
     "dev": "cd packages/site && pnpm dev",
     "build": "pnpm -r build",
     "preview": "cd packages/site && pnpm preview",
-    "deploy": "cd packages/worker && pnpm deploy",
+    "deploy": "cd packages/worker && pnpm run deploy",
     "sync": "cd packages/site && pnpm sync",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
@@ -18,8 +18,10 @@
     "@typescript-eslint/eslint-plugin": "6.9.1",
     "@typescript-eslint/parser": "6.9.1",
     "esbuild": "0.19.5",
+    "eslint": "8.53.0",
     "eslint-plugin-deprecation": "2.0.0",
     "octoflare": "0.19.0",
+    "prettier": "3.0.3",
     "typescript": "5.2.2",
     "vitest": "0.34.6"
   }
