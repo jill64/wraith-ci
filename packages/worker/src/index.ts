@@ -1,36 +1,47 @@
+import { workers } from '@/ghost/workers.js'
 import { octoflare } from 'octoflare'
 
 export default octoflare(async ({ payload, installation }) => {
   if (!installation) {
-    return new Response('Skip Event: No Installation', {
+    return new Response('No Installation', {
       status: 200
     })
   }
 
-  if (!('commits' in payload)) {
-    return new Response('Skip Event: No Push Event', {
+  if (!('repository' in payload && payload.repository)) {
+    return new Response('No Repository', {
       status: 200
     })
   }
 
-  const { repository, after } = payload
+  const { repository } = payload
 
-  if (Number(after) === 0) {
-    return new Response('Skip Event: Head SHA = 0', {
-      status: 200
-    })
-  }
+  const repo = repository.name
+  const owner = repository.owner.login
 
-  const { dispatchWorkflow } = await installation.createCheckRun({
-    repo: repository.name,
-    owner: repository.owner.login,
-    name: 'Wraith CI',
-    head_sha: after
+  const data = await workers({
+    repo,
+    owner,
+    payload,
+    repository,
+    installation
   })
 
-  await dispatchWorkflow()
+  if (!data) {
+    return new Response('No Wraith CI Payload', {
+      status: 200
+    })
+  }
 
-  return new Response('Wraith CI Workflow Dispatched', {
+  await installation.startWorkflow({
+    payload: {
+      repo,
+      owner
+    },
+    data: JSON.stringify(data)
+  })
+
+  return new Response('Wraith CI Workflow Submitted', {
     status: 202
   })
 })

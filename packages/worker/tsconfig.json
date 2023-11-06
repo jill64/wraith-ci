@@ -1,8 +1,4 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "noEmit": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
-  }
+  "extends": "../../tsconfig.json",
+  "include": ["."]
 }

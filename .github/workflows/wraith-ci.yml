@@ -5,6 +5,8 @@ on:
     inputs:
       payload:
         required: true
+      data:
+        required: true
 
 jobs:
   wraith-ci:
@@ -25,3 +27,4 @@ jobs:
         uses: jill64/wraith-ci@main
         with:
           payload: ${{ inputs.payload }}
+          data: ${{ inputs.data }}
