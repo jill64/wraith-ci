@@ -5,6 +5,9 @@ inputs:
   payload:
     description: Octoflare Payload
     required: true
+  data:
+    description: Wraith CI Payload
+    required: true
 
 runs:
   using: node20
