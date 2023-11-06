@@ -4,7 +4,7 @@
     "dev": "cd packages/site && pnpm dev",
     "build": "pnpm -r build",
     "preview": "cd packages/site && pnpm preview",
-    "deploy": "cd packages/worker && pnpm deploy",
+    "deploy": "cd packages/worker && pnpm run deploy",
     "sync": "cd packages/site && pnpm sync",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
