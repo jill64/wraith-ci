@@ -1,0 +1,10 @@
+name = "wraith-ci"
+main = "src/index.ts"
+compatibility_date = "2023-11-06"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+
+OCTOFLARE_APP_ID = "420132"
+OCTOFLARE_APP_OWNER = "jill64"
+OCTOFLARE_APP_REPO = "wraith-ci"
