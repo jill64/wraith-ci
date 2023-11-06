@@ -5,10 +5,13 @@ import { action } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
 
 action(async () => {
-  const data = attempt(() => {
-    const str = core.getInput('data')
-    return JSON.parse(str) as WraithPayload
-  })
+  const data = attempt(
+    () => {
+      const str = core.getInput('data')
+      return JSON.parse(str) as WraithPayload
+    },
+    (e, o) => e ?? new Error(String(o))
+  )
 
   await actions(data)
 })
