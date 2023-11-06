@@ -1,4 +1,4 @@
-import { worker } from '@/ghost/worker.js'
+import { workers } from '@/ghost/workers.js'
 import { octoflare } from 'octoflare'
 
 export default octoflare(async ({ payload, installation }) => {
@@ -19,7 +19,7 @@ export default octoflare(async ({ payload, installation }) => {
   const repo = repository.name
   const owner = repository.owner.login
 
-  const data = await worker({
+  const data = await workers({
     repo,
     owner,
     payload,

@@ -1,4 +1,4 @@
-import { action as ghosts } from '@/ghost/action.js'
+import { actions } from '@/ghost/actions.js'
 import { WraithPayload } from '@/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
 import { action } from 'octoflare/action'
@@ -9,6 +9,6 @@ action(async () => {
     const str = core.getInput('data')
     return JSON.parse(str) as WraithPayload
   })
-  
-  await ghosts(data)
+
+  await actions(data)
 })

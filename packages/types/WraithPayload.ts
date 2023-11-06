@@ -1,3 +1,3 @@
-import { worker } from '@/ghost/worker.js'
+import { workers } from '@/ghost/workers.js'
 
-export type WraithPayload = Awaited<ReturnType<typeof worker>>
+export type WraithPayload = Awaited<ReturnType<typeof workers>>
