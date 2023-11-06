@@ -1,8 +1,8 @@
 import { Ghost } from '@/types/Ghost.js'
 
 export const deploy: Ghost = {
-  worker: async (context) => {
+  worker: async () => {
   },
-  action: async (data) => {
+  action: async () => {
   }
 }
