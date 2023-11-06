@@ -6,8 +6,8 @@
     "preview": "pnpm build && vite preview",
     "sync": "svelte-kit sync",
     "check": "svelte-kit sync && npx svelte-check",
-    "lint": "pnpm check && npx eslint .",
-    "format": "npx prettier --write . --plugin prettier-plugin-svelte ."
+    "lint": "pnpm check && eslint .",
+    "format": "prettier --write . --plugin prettier-plugin-svelte ."
   },
   "devDependencies": {
     "@jill64/sentry-sveltekit-cloudflare": "1.0.0",
