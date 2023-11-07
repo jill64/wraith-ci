@@ -6,17 +6,20 @@ export const actions = (
   context: Omit<ActionContext, 'data'> & { data: WraithPayload | Error }
 ) =>
   Promise.allSettled(
-    Object.entries(apps).map(
-      ([name, app]) =>
+    Object.entries(apps).map(([name, app]) => {
+      const data =
+        context.data instanceof Error
+          ? {
+              status: 'error' as const,
+              result: context.data
+            }
+          : context.data[name]
+
+      if (data) {
         app.action?.({
           ...context,
-          data:
-            context.data instanceof Error
-              ? {
-                  status: 'error',
-                  result: context.data
-                }
-              : context.data[name]
+          data
         })
-    )
+      }
+    })
   )
