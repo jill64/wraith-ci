@@ -27,7 +27,7 @@ export default octoflare(async ({ payload, installation }) => {
     installation
   })
 
-  if (!data) {
+  if (!Object.keys(data).length) {
     return new Response('No Wraith CI Payload', {
       status: 200
     })
