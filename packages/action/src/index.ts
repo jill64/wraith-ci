@@ -1,5 +1,6 @@
 import { actions } from '@/ghost/actions.js'
 import { WraithPayload } from '@/types/WraithPayload.js'
+import exec from '@actions/exec'
 import { attempt } from '@jill64/attempt'
 import { action } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
@@ -17,6 +18,7 @@ action(async ({ octokit, payload: { repo, owner } }) => {
 
   await actions({
     ref,
+    exec,
     data,
     repo,
     owner,
