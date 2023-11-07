@@ -5,7 +5,7 @@ import { attempt } from '@jill64/attempt'
 import { action } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
 
-action(async ({ octokit, payload: { repo, owner } }) => {
+action(async ({ octokit, payload: { repo, owner }, appkit }) => {
   const data = attempt(
     () => {
       const str = core.getInput('data')
@@ -24,4 +24,9 @@ action(async ({ octokit, payload: { repo, owner } }) => {
     owner,
     octokit
   })
+
+  await Promise.all([
+    octokit.rest.apps.revokeInstallationAccessToken(),
+    appkit.rest.apps.revokeInstallationAccessToken()
+  ])
 })
