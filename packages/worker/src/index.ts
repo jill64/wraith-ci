@@ -19,7 +19,13 @@ export default octoflare(async ({ payload, installation }) => {
   const repo = repository.name
   const owner = repository.owner.login
 
+  const ref =
+    'ref' in payload
+      ? payload.ref.replace('refs/heads/', '')
+      : repository.default_branch
+
   const data = await workers({
+    ref,
     repo,
     owner,
     payload,
@@ -34,6 +40,7 @@ export default octoflare(async ({ payload, installation }) => {
   }
 
   await installation.startWorkflow({
+    ref,
     payload: {
       repo,
       owner
