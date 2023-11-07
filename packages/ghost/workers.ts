@@ -2,7 +2,9 @@ import { WorkerContext } from '@/types/WorkerContext.js'
 import { attempt } from '@jill64/attempt'
 import { apps } from './apps.js'
 
-export const workers = async (context: Omit<WorkerContext, 'createCheckRun'>) => {
+export const workers = async (
+  context: Omit<WorkerContext, 'createCheckRun' | 'head_sha'>
+) => {
   const results = Object.entries(apps).map(async ([name, app]) => {
     const { payload, installation, repo, owner } = context
 
@@ -13,25 +15,32 @@ export const workers = async (context: Omit<WorkerContext, 'createCheckRun'>) =>
         ? payload.after
         : null
 
-    const createCheckRun =
-      head_sha && Number(head_sha) !== 0
-        ? async (name: string) => {
-            const {
-              data: { id }
-            } = await installation.kit.rest.checks.create({
-              repo,
-              owner,
-              name,
-              head_sha,
-              status: 'in_progress'
-            })
-            return id
-          }
-        : null
+    const createCheckRun = async (name: string) => {
+      if (!(head_sha && Number(head_sha) !== 0)) {
+        return 0
+      }
+
+      const {
+        data: { id }
+      } = await installation.kit.rest.checks.create({
+        repo,
+        owner,
+        name,
+        head_sha,
+        status: 'in_progress'
+      })
+
+      return id
+    }
 
     const data = await attempt(
       async () => {
-        const result = await app.worker({ ...context, createCheckRun })
+        const result = await app.worker({
+          ...context,
+          createCheckRun,
+          head_sha
+        })
+
         return result
           ? {
               status: 'success' as const,
