@@ -19,7 +19,13 @@ export default octoflare(async ({ payload, installation }) => {
   const repo = repository.name
   const owner = repository.owner.login
 
+  const ref =
+    'ref' in payload
+      ? payload.ref.replace('refs/heads/', '')
+      : repository.default_branch
+
   const data = await workers({
+    ref,
     repo,
     owner,
     payload,
@@ -27,13 +33,14 @@ export default octoflare(async ({ payload, installation }) => {
     installation
   })
 
-  if (!data) {
+  if (!Object.keys(data).length) {
     return new Response('No Wraith CI Payload', {
       status: 200
     })
   }
 
   await installation.startWorkflow({
+    ref,
     payload: {
       repo,
       owner
