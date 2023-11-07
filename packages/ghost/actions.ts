@@ -69,10 +69,6 @@ export const actions = (
 
         core.setFailed(error)
 
-        if (data.status !== 'success') {
-          return
-        }
-
         await closeCheckRun({
           conclusion: 'failure',
           output: {
