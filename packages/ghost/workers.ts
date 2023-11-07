@@ -2,28 +2,51 @@ import { WorkerContext } from '@/types/WorkerContext.js'
 import { attempt } from '@jill64/attempt'
 import { apps } from './apps.js'
 
-export const workers = async (context: WorkerContext) => {
-  const results = Object.entries(apps).map(
-    async ([name, app]) =>
-      [
-        name,
-        await attempt(
-          async () => {
-            const result = await app.worker(context)
-            return result
-              ? {
-                  status: 'success' as const,
-                  result
-                }
-              : null
-          },
-          (e, o) => ({
-            status: 'error' as const,
-            result: e ?? new Error(String(o))
-          })
-        )
-      ] as const
-  )
+export const workers = async (context: Omit<WorkerContext, 'createCheckRun'>) => {
+  const results = Object.entries(apps).map(async ([name, app]) => {
+    const { payload, installation, repo, owner } = context
+
+    const head_sha =
+      'pull_request' in payload
+        ? payload.pull_request.head.sha
+        : 'after' in payload
+        ? payload.after
+        : null
+
+    const createCheckRun =
+      head_sha && Number(head_sha) !== 0
+        ? async (name: string) => {
+            const {
+              data: { id }
+            } = await installation.kit.rest.checks.create({
+              repo,
+              owner,
+              name,
+              head_sha,
+              status: 'in_progress'
+            })
+            return id
+          }
+        : null
+
+    const data = await attempt(
+      async () => {
+        const result = await app.worker({ ...context, createCheckRun })
+        return result
+          ? {
+              status: 'success' as const,
+              result
+            }
+          : null
+      },
+      (e, o) => ({
+        status: 'error' as const,
+        result: e ?? new Error(String(o))
+      })
+    )
+
+    return [name, data] as const
+  })
 
   const data = await Promise.all(results)
 
