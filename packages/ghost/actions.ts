@@ -49,7 +49,7 @@ export const actions = (
           owner,
           repo,
           status: 'completed',
-          details_url,
+          details_url
         })
       }
 
