@@ -59,6 +59,8 @@ export const actions = (
           data
         })
 
+        console.log(name, 'result', result)
+
         if (!result) {
           return
         }
