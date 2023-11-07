@@ -3,19 +3,12 @@ import { Ghost } from '@/types/Ghost.js'
 export const deploy: Ghost = {
   worker: async ({
     ref,
-    repo,
-    owner,
     payload,
     installation,
+    createCheckRun,
     repository: { default_branch }
   }) => {
     if (!('commits' in payload)) {
-      return
-    }
-
-    const { after: head_sha } = payload
-
-    if (Number(head_sha) === 0) {
       return
     }
 
@@ -29,25 +22,15 @@ export const deploy: Ghost = {
       return
     }
 
-    const {
-      data: { id: check_run_id }
-    } = await installation.kit.rest.checks.create({
-      repo,
-      owner,
-      name: 'Ghost Deploy',
-      head_sha,
-      status: 'in_progress'
-    })
+    const check_run_id = await createCheckRun('Ghost Deploy')
 
     return {
       check_run_id
     }
   },
-  action: async ({ octokit, data, exec }) => {
-    const { status, result } = data
-
+  action: async ({ data: { status }, exec }) => {
     if (status === 'error') {
-      return
+      return 'failure'
     }
 
     const { exitCode, stdout, stderr } = await exec.getExecOutput(
@@ -58,14 +41,15 @@ export const deploy: Ghost = {
       }
     )
 
-    await octokit.rest.checks.update({
-      check_run_id: result.check_run_id,
-      status: 'completed',
-      conclusion: exitCode ? 'failure' : 'success',
-      output: exitCode
-        ? {
-            title: 'Deploy Failed',
-            summary: `
+    if (exitCode === 0) {
+      return 'success'
+    }
+
+    return {
+      conclusion: 'failure',
+      output: {
+        title: 'Deploy Failed',
+        summary: `
 ## stdout
 \`\`\`
 ${stdout}
@@ -76,8 +60,7 @@ ${stdout}
 ${stderr}
 \`\`\`
 `
-          }
-        : undefined
-    })
+      }
+    }
   }
 }

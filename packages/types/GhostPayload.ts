@@ -1,3 +1,3 @@
 export type GhostPayload = {
-  check_run_id?: number
+  check_run_id: number
 }
