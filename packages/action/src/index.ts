@@ -13,7 +13,10 @@ action(async ({ octokit, payload: { repo, owner } }) => {
     (e, o) => e ?? new Error(String(o))
   )
 
+  const ref = core.getInput('ref')
+
   await actions({
+    ref,
     data,
     repo,
     owner,
