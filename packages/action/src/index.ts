@@ -16,6 +16,8 @@ action(async ({ octokit, payload: { repo, owner }, appkit }) => {
 
   const ref = core.getInput('ref')
 
+  console.log({ data, ref, repo, owner })
+
   await actions({
     ref,
     exec,
