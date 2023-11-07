@@ -44,12 +44,12 @@ export const actions = (
           typeof param === 'string' ? { conclusion: param } : param
 
         await octokit.rest.checks.update({
+          ...outputs,
           check_run_id,
           owner,
           repo,
           status: 'completed',
-          details_url,
-          ...outputs
+          details_url
         })
       }
 

@@ -17,7 +17,7 @@ export const workers = async (
 
     const createCheckRun = async (name: string) => {
       if (!(head_sha && Number(head_sha) !== 0)) {
-        return 0
+        return ''
       }
 
       const {
@@ -30,7 +30,7 @@ export const workers = async (
         status: 'in_progress'
       })
 
-      return id
+      return id.toString()
     }
 
     const data = await attempt(
