@@ -9,5 +9,5 @@ export type WorkerContext = {
   repository: Repository
   payload: Schema
   installation: OctoflareInstallation
-  createCheckRun: (name: string) => Promise<number>
+  createCheckRun: (name: string) => Promise<string>
 }
