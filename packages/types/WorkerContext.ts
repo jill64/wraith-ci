@@ -5,8 +5,9 @@ export type WorkerContext = {
   ref: string
   repo: string
   owner: string
+  head_sha: string | null
   repository: Repository
   payload: Schema
   installation: OctoflareInstallation
-  createCheckRun: null | ((name: string) => Promise<number>)
+  createCheckRun: (name: string) => Promise<number>
 }
