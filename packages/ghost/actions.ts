@@ -47,6 +47,7 @@ export const actions = (
           check_run_id,
           owner,
           repo,
+          status: 'completed',
           details_url,
           ...outputs
         })
