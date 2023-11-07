@@ -28,17 +28,17 @@ export const actions = (
       const details_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
 
       const closeCheckRun = async (param: CloseCheckParam) => {
-        const { status, result } = data
+        console.log(name, 'closeCheckRun', param)
+
+        const { status } = data
 
         if (status === 'error') {
           return
         }
 
-        const check_run_id = result.check_run_id
-
-        if (!check_run_id) {
-          return
-        }
+        const {
+          result: { check_run_id }
+        } = data
 
         const outputs =
           typeof param === 'string' ? { conclusion: param } : param
@@ -58,6 +58,8 @@ export const actions = (
           ...context,
           data
         })
+
+        console.log(name, 'result', result)
 
         if (!result) {
           return
