@@ -28,3 +28,6 @@ jobs:
         with:
           payload: ${{ inputs.payload }}
           data: ${{ inputs.data }}
+        env:
+          PUBLIC_SENTRY_DSN: ''
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
