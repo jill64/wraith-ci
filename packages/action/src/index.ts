@@ -1,34 +1,62 @@
-import { actions } from '@/ghost/actions.js'
-import { WraithPayload } from '@/types/WraithPayload.js'
-import exec from '@actions/exec'
-import { attempt } from '@jill64/attempt'
+import { WraithPayload } from '@/shared/types/WraithPayload.js'
+import { CloseCheckParam } from 'octoflare'
 import { action } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
+import * as github from 'octoflare/action/github'
+import { apps } from './apps.js'
 
-action(async ({ octokit, payload: { repo, owner }, appkit }) => {
-  const data = attempt(
-    () => {
-      const str = core.getInput('data')
-      return JSON.parse(str) as WraithPayload
-    },
-    (e, o) => e ?? new Error(String(o))
-  )
+action(async (context) => {
+  const { octokit } = context
 
-  const ref = core.getInput('ref')
+  const payload = context.payload as WraithPayload
+  const app_name = core.getInput('name') as keyof typeof apps
 
-  console.log({ data, ref, repo, owner })
+  if (!Object.keys(apps).includes(app_name)) {
+    core.setFailed(`Invalid app name: ${app_name}`)
+    return
+  }
 
-  await actions({
-    ref,
-    exec,
-    data,
-    repo,
-    owner,
-    octokit
-  })
+  const { ghosts, repo, owner } = payload
 
-  await Promise.all([
-    octokit.rest.apps.revokeInstallationAccessToken(),
-    appkit.rest.apps.revokeInstallationAccessToken()
-  ])
+  const ghost = apps[app_name]
+  const ghost_payload = ghosts[app_name]
+
+  const { check_run_id } = ghost_payload
+
+  const gh = github.context
+  const details_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
+
+  const closeCheckRun = (param: CloseCheckParam) =>
+    octokit.rest.checks.update({
+      ...(typeof param === 'string' ? { conclusion: param } : param),
+      check_run_id,
+      owner,
+      repo,
+      status: 'completed',
+      details_url
+    })
+
+  try {
+    const result = await ghost({
+      octokit,
+      payload,
+      ghost_payload
+    })
+
+    if (result) {
+      await closeCheckRun(result)
+    }
+  } catch (e) {
+    const error = e instanceof Error ? e : new Error(String(e))
+
+    core.setFailed(error)
+
+    await closeCheckRun({
+      conclusion: 'failure',
+      output: {
+        title: 'Unhandled Action Error',
+        summary: error.message
+      }
+    })
+  }
 })
