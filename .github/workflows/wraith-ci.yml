@@ -46,22 +46,20 @@ jobs:
 
   revoke-installation-token:
     needs: wraith-ci
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Revoke tokens
-        run: |
-          curl -L \
-            -X DELETE \
-            -H "Authorization: Bearer ${{ env.token }}" \
-            https://api.github.com/installation/token
+      - name: Revoke token
+        run: gh api --method DELETE /installation/token
+        env:
+          GH_TOKEN: ${{ env.token }}
 
   revoke-app-token:
     needs: wraith-ci
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Revoke tokens
-        run: |
-          curl -L \
-            -X DELETE \
-            -H "Authorization: Bearer ${{ fromJson(inputs.payload).app_token }}" \
-            https://api.github.com/installation/token
+      - name: Revoke token
+        run: gh api --method DELETE /installation/token
+        env:
+          GH_TOKEN: ${{ fromJson(inputs.payload).app_token }}
