@@ -59,6 +59,8 @@ importers:
 
   packages/ghost: {}
 
+  packages/shared: {}
+
   packages/site:
     devDependencies:
       '@jill64/sentry-sveltekit-cloudflare':
