@@ -1,3 +1,4 @@
+import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { OctoflareInstallation } from 'octoflare'
 import { Repository, Schema } from 'octoflare/webhook'
 
@@ -9,6 +10,6 @@ export type Context = {
   head_sha: string | null
   repository: Repository
   payload: Schema
-  installation: OctoflareInstallation
+  installation: OctoflareInstallation<WraithPayload>
   createCheckRun: (name: string) => Promise<string | null>
 }

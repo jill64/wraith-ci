@@ -1,9 +1,9 @@
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
-import { CloseCheckParam, OctoflareInstallation, octoflare } from 'octoflare'
+import { CloseCheckParam, octoflare } from 'octoflare'
 import { apps } from './apps.js'
 
-export default octoflare(async ({ payload, installation }) => {
+export default octoflare<WraithPayload>(async ({ payload, installation }) => {
   if (!installation) {
     return new Response('Skip Event: No Installation', {
       status: 200
@@ -134,15 +134,15 @@ export default octoflare(async ({ payload, installation }) => {
   }
 
   await installation.startWorkflow({
-    payload: {
-      repo,
-      owner,
+    repo,
+    owner,
+    data: {
       ref,
       default_branch,
       ghosts,
       event
-    } satisfies WraithPayload
-  } as Parameters<OctoflareInstallation['startWorkflow']>[0])
+    }
+  })
 
   return new Response('Wraith CI Workflow Submitted', {
     status: 202

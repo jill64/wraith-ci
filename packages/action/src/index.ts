@@ -5,10 +5,10 @@ import * as core from 'octoflare/action/core'
 import * as github from 'octoflare/action/github'
 import { apps } from './apps.js'
 
-action(async (context) => {
+action<WraithPayload>(async (context) => {
   const { octokit } = context
 
-  const payload = context.payload as WraithPayload
+  const payload = context.payload
   const app_name = core.getInput('name') as keyof typeof apps
 
   if (!Object.keys(apps).includes(app_name)) {
@@ -16,7 +16,11 @@ action(async (context) => {
     return
   }
 
-  const { ghosts, repo, owner } = payload
+  const {
+    data: { ghosts },
+    repo,
+    owner
+  } = payload
 
   if (!(app_name in ghosts)) {
     return
