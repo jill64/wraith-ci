@@ -42613,6 +42613,10 @@ var syncChanges = async ({ message, branch, payload, octokit }) => {
   const is_push_event = event === 'push'
   const head_branch = now_default_branch ? branch : ref
   const require_new_branch = now_default_branch || !is_push_event
+  await (0, import_exec3.exec)('git config --global user.name wraith-ci[bot]')
+  await (0, import_exec3.exec)(
+    'git config --global user.email wraith-ci[bot]@users.noreply.github.com'
+  )
   if (require_new_branch) {
     await (0, import_exec3.exec)('git checkout -b', [head_branch])
   }
@@ -42646,7 +42650,7 @@ var build = async (context2) => {
   }
   const syncResult = await syncChanges({
     message: 'chore: regenerate artifact',
-    branch: 'wraith-ci/artifact',
+    branch: 'wraith-ci/ghost-build',
     ...context2
   })
   const pr = syncResult === 'pr_created'
@@ -42682,7 +42686,7 @@ var format = async ({ payload, octokit }) => {
   }
   const pushResult = await syncChanges({
     message: 'chore: format',
-    branch: 'ghost-format',
+    branch: 'wraith-ci/ghost-format',
     payload,
     octokit
   })

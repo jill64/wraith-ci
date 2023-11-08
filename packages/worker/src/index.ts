@@ -127,6 +127,12 @@ export default octoflare(async ({ payload, installation }) => {
     data.filter(([, x]) => x)
   ) as WraithPayload['ghosts']
 
+  if (!Object.keys(ghosts).length) {
+    return new Response('Skip Event: No Ghosts', {
+      status: 200
+    })
+  }
+
   await installation.startWorkflow({
     payload: {
       repo,

@@ -19,7 +19,7 @@ export const build: Ghost = async (context) => {
 
   const syncResult = await syncChanges({
     message: 'chore: regenerate artifact',
-    branch: 'wraith-ci/artifact',
+    branch: 'wraith-ci/ghost-build',
     ...context
   })
 
