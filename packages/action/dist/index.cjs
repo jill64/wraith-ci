@@ -11272,7 +11272,7 @@ var require_mock_utils = __commonJS({
     var { buildURL, nop } = require_util()
     var { STATUS_CODES } = require('http')
     var {
-      types: { isPromise: isPromise2 }
+      types: { isPromise }
     } = require('util')
     function matchValue(match, value) {
       if (typeof match === 'string') {
@@ -11513,7 +11513,7 @@ var require_mock_utils = __commonJS({
           typeof _data === 'function'
             ? _data({ ...opts, headers: optsHeaders })
             : _data
-        if (isPromise2(body)) {
+        if (isPromise(body)) {
           body.then((newData) => handleReply(mockDispatches, newData))
           return
         }
@@ -29322,7 +29322,7 @@ var require_mock_utils2 = __commonJS({
     var { buildURL, nop } = require_util8()
     var { STATUS_CODES } = require('http')
     var {
-      types: { isPromise: isPromise2 }
+      types: { isPromise }
     } = require('util')
     function matchValue(match, value) {
       if (typeof match === 'string') {
@@ -29563,7 +29563,7 @@ var require_mock_utils2 = __commonJS({
           typeof _data === 'function'
             ? _data({ ...opts, headers: optsHeaders })
             : _data
-        if (isPromise2(body)) {
+        if (isPromise(body)) {
           body.then((newData) => handleReply(mockDispatches, newData))
           return
         }
@@ -37181,7 +37181,7 @@ var require_dist_node2 = __commonJS({
       }
       return obj
     }
-    function merge2(defaults, route, options) {
+    function merge(defaults, route, options) {
       if (typeof route === 'string') {
         let [method, url] = route.split(' ')
         options = Object.assign(
@@ -37473,15 +37473,15 @@ var require_dist_node2 = __commonJS({
       )
     }
     function endpointWithDefaults(defaults, route, options) {
-      return parse2(merge2(defaults, route, options))
+      return parse2(merge(defaults, route, options))
     }
     function withDefaults(oldDefaults, newDefaults) {
-      const DEFAULTS2 = merge2(oldDefaults, newDefaults)
+      const DEFAULTS2 = merge(oldDefaults, newDefaults)
       const endpoint2 = endpointWithDefaults.bind(null, DEFAULTS2)
       return Object.assign(endpoint2, {
         DEFAULTS: DEFAULTS2,
         defaults: withDefaults.bind(null, DEFAULTS2),
-        merge: merge2.bind(null, DEFAULTS2),
+        merge: merge.bind(null, DEFAULTS2),
         parse: parse2
       })
     }
@@ -42344,7 +42344,7 @@ var require_exec = __commonJS({
     exports.getExecOutput = exports.exec = void 0
     var string_decoder_1 = require('string_decoder')
     var tr = __importStar(require_toolrunner())
-    function exec2(commandLine, args, options) {
+    function exec4(commandLine, args, options) {
       return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine)
         if (commandArgs.length === 0) {
@@ -42356,7 +42356,7 @@ var require_exec = __commonJS({
         return runner.exec()
       })
     }
-    exports.exec = exec2
+    exports.exec = exec4
     function getExecOutput(commandLine, args, options) {
       var _a, _b
       return __awaiter(this, void 0, void 0, function* () {
@@ -42397,7 +42397,7 @@ var require_exec = __commonJS({
           ),
           { stdout: stdOutListener, stderr: stdErrListener }
         )
-        const exitCode = yield exec2(
+        const exitCode = yield exec4(
           commandLine,
           args,
           Object.assign(Object.assign({}, options), { listeners })
@@ -42414,204 +42414,6 @@ var require_exec = __commonJS({
     exports.getExecOutput = getExecOutput
   }
 })
-
-// ../../node_modules/.pnpm/octoflare@0.19.1/node_modules/octoflare/dist/re-exports/actions/core.js
-var core_exports = {}
-__reExport(core_exports, __toESM(require_core(), 1))
-
-// ../../node_modules/.pnpm/octoflare@0.19.1/node_modules/octoflare/dist/re-exports/actions/github.js
-var github_exports = {}
-__reExport(github_exports, __toESM(require_github(), 1))
-
-// ../ghost/app/build.ts
-var build = {
-  worker: async () => {}
-}
-
-// ../ghost/app/deploy.ts
-var deploy = {
-  worker: async ({
-    ref,
-    payload,
-    installation,
-    createCheckRun,
-    repository: { default_branch }
-  }) => {
-    if (!('commits' in payload)) {
-      return
-    }
-    if (ref !== default_branch) {
-      return
-    }
-    const result = await installation.getFile('wrangler.toml')
-    if (!result?.data) {
-      return
-    }
-    const check_run_id = await createCheckRun('Ghost Deploy')
-    return {
-      check_run_id
-    }
-  },
-  action: async ({ data: { status }, exec: exec2 }) => {
-    if (status === 'error') {
-      return 'failure'
-    }
-    const { exitCode, stdout, stderr } = await exec2.getExecOutput(
-      'npm run deploy',
-      void 0,
-      {
-        ignoreReturnCode: true
-      }
-    )
-    if (exitCode === 0) {
-      return 'success'
-    }
-    return {
-      conclusion: 'failure',
-      output: {
-        title: 'Deploy Failed',
-        summary: `
-## stdout
-\`\`\`
-${stdout}
-\`\`\`
-
-## stderr
-\`\`\`
-${stderr}
-\`\`\`
-`
-      }
-    }
-  }
-}
-
-// ../ghost/app/docs.ts
-var docs = {
-  worker: async () => {}
-}
-
-// ../ghost/app/format.ts
-var format = {
-  worker: async () => {}
-}
-
-// ../ghost/app/lint.ts
-var lint = {
-  worker: async () => {}
-}
-
-// ../ghost/app/merge.ts
-var merge = {
-  worker: async () => {}
-}
-
-// ../ghost/app/release.ts
-var release = {
-  worker: async () => {}
-}
-
-// ../ghost/apps.ts
-var apps = {
-  build,
-  deploy,
-  docs,
-  format,
-  lint,
-  merge,
-  release
-}
-
-// ../ghost/actions.ts
-var actions = (context2) =>
-  Promise.allSettled(
-    Object.entries(apps).map(async ([name, app]) => {
-      const data =
-        context2.data instanceof Error
-          ? {
-              status: 'error',
-              result: context2.data
-            }
-          : context2.data[name]
-      if (!data) {
-        return
-      }
-      const { repo, owner, octokit } = context2
-      const gh = github_exports.context
-      const details_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
-      const closeCheckRun2 = async (param) => {
-        console.log(name, 'closeCheckRun', param)
-        const { status } = data
-        if (status === 'error') {
-          return
-        }
-        const {
-          result: { check_run_id }
-        } = data
-        const outputs =
-          typeof param === 'string' ? { conclusion: param } : param
-        await octokit.rest.checks.update({
-          ...outputs,
-          check_run_id,
-          owner,
-          repo,
-          status: 'completed',
-          details_url
-        })
-      }
-      try {
-        const result = await app.action?.({
-          ...context2,
-          data
-        })
-        console.log(name, 'result', result)
-        if (!result) {
-          return
-        }
-        await closeCheckRun2(result)
-      } catch (e) {
-        const error = e instanceof Error ? e : new Error(String(e))
-        core_exports.setFailed(error)
-        await closeCheckRun2({
-          conclusion: 'failure',
-          output: {
-            title: 'Unhandled Action Error',
-            summary: error.message
-          }
-        })
-      }
-    })
-  )
-
-// src/index.ts
-var import_exec = __toESM(require_exec(), 1)
-
-// ../../node_modules/.pnpm/@jill64+attempt@1.1.0/node_modules/@jill64/attempt/dist/index.js
-var isPromise = (obj) =>
-  !!obj &&
-  (typeof obj === 'object' || typeof obj === 'function') &&
-  'then' in obj &&
-  typeof obj.then === 'function'
-function attempt(func, fallback) {
-  const argLen = arguments.length
-  const handle = (error) => {
-    if (argLen === 1) {
-      if (error instanceof Error) {
-        return error
-      }
-      throw error
-    }
-    return typeof fallback === 'function'
-      ? fallback(error instanceof Error ? error : null, error)
-      : fallback
-  }
-  try {
-    const result = func()
-    return isPromise(result) ? result.then((_) => _, handle) : result
-  } catch (error) {
-    return handle(error)
-  }
-}
 
 // ../../node_modules/.pnpm/octoflare@0.19.1/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1)
@@ -42754,29 +42556,191 @@ Cause on Action
   }
 }
 
-// src/index.ts
-action(async ({ octokit, payload: { repo, owner }, appkit }) => {
-  const data = attempt(
-    () => {
-      const str = core_exports.getInput('data')
-      return JSON.parse(str)
-    },
-    (e, o) => e ?? new Error(String(o))
-  )
-  const ref = core_exports.getInput('ref')
-  console.log({ data, ref, repo, owner })
-  await actions({
-    ref,
-    exec: import_exec.default,
-    data,
-    repo,
-    owner,
-    octokit
+// ../../node_modules/.pnpm/octoflare@0.19.1/node_modules/octoflare/dist/re-exports/actions/core.js
+var core_exports = {}
+__reExport(core_exports, __toESM(require_core(), 1))
+
+// ../../node_modules/.pnpm/octoflare@0.19.1/node_modules/octoflare/dist/re-exports/actions/github.js
+var github_exports = {}
+__reExport(github_exports, __toESM(require_github(), 1))
+
+// src/utils/failedSummary.ts
+var failedSummary = (title, { stderr, stdout }) => ({
+  conclusion: 'failure',
+  output: {
+    title,
+    summary: `
+## stdout
+
+\`\`\`
+${stdout}
+\`\`\`
+
+## stderr
+
+\`\`\`
+${stderr}
+\`\`\`
+`
+  }
+})
+
+// src/utils/gitDiff.ts
+var import_exec = __toESM(require_exec(), 1)
+var gitDiff = async () => {
+  await import_exec.default.exec('git add -N .')
+  const diff = await import_exec.default.exec('git diff --exit-code', void 0, {
+    ignoreReturnCode: true
   })
-  await Promise.all([
-    octokit.rest.apps.revokeInstallationAccessToken(),
-    appkit.rest.apps.revokeInstallationAccessToken()
-  ])
+  if (diff) {
+    await import_exec.default.exec('git config user.name wraith-ci[bot]')
+    await import_exec.default.exec(
+      'git config user.email 41898282+wraith-ci[bot]@users.noreply.github.com'
+    )
+  }
+  return diff
+}
+
+// src/utils/run.ts
+var import_exec2 = __toESM(require_exec(), 1)
+var run = (cmd) =>
+  import_exec2.default.getExecOutput(cmd, void 0, {
+    ignoreReturnCode: true
+  })
+
+// src/utils/syncChanges.ts
+var import_exec3 = __toESM(require_exec(), 1)
+var syncChanges = async ({ message, branch, payload, octokit }) => {
+  const { default_branch, ref, event, repo, owner } = payload
+  const now_default_branch = ref === default_branch
+  const is_push_event = event === 'push'
+  const head_branch = now_default_branch ? branch : ref
+  const require_new_branch = now_default_branch || !is_push_event
+  if (require_new_branch) {
+    await (0, import_exec3.exec)('git checkout -b', [head_branch])
+  }
+  await (0, import_exec3.exec)('git add .')
+  await (0, import_exec3.exec)('git commit', ['-m', message])
+  if (require_new_branch) {
+    await (0, import_exec3.exec)('git push origin', [head_branch])
+    await octokit.rest.pulls.create({
+      owner,
+      repo,
+      title: message,
+      head: head_branch,
+      base: default_branch
+    })
+    return 'pr_created'
+  }
+  await (0, import_exec3.exec)('git pull --rebase')
+  await (0, import_exec3.exec)('git push origin')
+  return 'pushed'
+}
+
+// src/ghosts/build.ts
+var build = async (context2) => {
+  const result = await run('npm run build')
+  if (result.exitCode !== 0) {
+    return failedSummary('Build Failed', result)
+  }
+  const diff = await gitDiff()
+  if (diff === 0) {
+    return 'success'
+  }
+  const syncResult = await syncChanges({
+    message: 'chore: regenerate artifact',
+    branch: 'wraith-ci/artifact',
+    ...context2
+  })
+  const pr = syncResult === 'pr_created'
+  return {
+    conclusion: pr ? 'success' : 'failure',
+    output: {
+      title: 'Regenerated Artifact',
+      summary: pr
+        ? 'A PR has been created to update the artifact.'
+        : 'The updated artifact will be pushed shortly.'
+    }
+  }
+}
+
+// src/ghosts/deploy.ts
+var deploy = async () => {
+  const result = await run('npm run deploy')
+  if (result.exitCode === 0) {
+    return 'success'
+  }
+  return failedSummary('Deploy Failed', result)
+}
+
+// src/ghosts/format.ts
+var format = async () => {
+  return 'success'
+}
+
+// src/ghosts/lint.ts
+var lint = async () => {
+  return 'success'
+}
+
+// src/ghosts/release.ts
+var release = async () => {
+  return 'success'
+}
+
+// src/apps.ts
+var apps = {
+  build,
+  deploy,
+  format,
+  lint,
+  release
+}
+
+// src/index.ts
+action(async (context2) => {
+  const { octokit } = context2
+  const payload = context2.payload
+  const app_name = core_exports.getInput('name')
+  if (!Object.keys(apps).includes(app_name)) {
+    core_exports.setFailed(`Invalid app name: ${app_name}`)
+    return
+  }
+  const { ghosts, repo, owner } = payload
+  const ghost = apps[app_name]
+  const ghost_payload = ghosts[app_name]
+  const { check_run_id } = ghost_payload
+  const gh = github_exports.context
+  const details_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
+  const closeCheckRun2 = (param) =>
+    octokit.rest.checks.update({
+      ...(typeof param === 'string' ? { conclusion: param } : param),
+      check_run_id,
+      owner,
+      repo,
+      status: 'completed',
+      details_url
+    })
+  try {
+    const result = await ghost({
+      octokit,
+      payload,
+      ghost_payload
+    })
+    if (result) {
+      await closeCheckRun2(result)
+    }
+  } catch (e) {
+    const error = e instanceof Error ? e : new Error(String(e))
+    core_exports.setFailed(error)
+    await closeCheckRun2({
+      conclusion: 'failure',
+      output: {
+        title: 'Unhandled Action Error',
+        summary: error.message
+      }
+    })
+  }
 })
 /*! Bundled license information:
 

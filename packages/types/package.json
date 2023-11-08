@@ -1,7 +1,0 @@
-{
-  "type": "module",
-  "scripts": {
-    "lint": "eslint . && tsc",
-    "format": "prettier --write ."
-  }
-}

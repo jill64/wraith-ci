@@ -38,6 +38,12 @@ importers:
       prettier:
         specifier: 3.0.3
         version: 3.0.3
+      ts-retry:
+        specifier: 4.2.3
+        version: 4.2.3
+      typescanner:
+        specifier: 0.5.3
+        version: 0.5.3
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -52,6 +58,8 @@ importers:
         version: 0.19.5
 
   packages/ghost: {}
+
+  packages/shared: {}
 
   packages/site:
     devDependencies:
@@ -3182,6 +3190,10 @@ packages:
 
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+    dev: true
+
+  /ts-retry@4.2.3:
+    resolution: {integrity: sha512-pQAIQl6ga2MgfQ+rcO++P+e5oD+6Kuomv99PpeHqZyjAze98Fc4+oduoitD8UXtOOcTgq4Or7nBQriGLFfosow==}
     dev: true
 
   /tslib@1.14.1:
