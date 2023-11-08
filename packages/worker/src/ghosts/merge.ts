@@ -88,7 +88,7 @@ export const merge: Ghost = async ({
     null
   )
 
-  if (!response?.data.required_status_checks?.checks.length) {
+  if (!response?.data.required_status_checks?.contexts.length) {
     return {
       conclusion: 'skipped',
       output: {
