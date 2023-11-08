@@ -5,5 +5,9 @@
     "deploy": "npx wrangler deploy",
     "lint": "eslint . && tsc",
     "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/semver": "7.5.5",
+    "semver": "7.5.4"
   }
 }

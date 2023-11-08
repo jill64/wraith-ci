@@ -6,3 +6,4 @@ export type GhostName =
   | 'format'
   | 'deploy'
   | 'release'
+  | 'bump'
