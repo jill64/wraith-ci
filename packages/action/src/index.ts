@@ -19,6 +19,11 @@ action(async (context) => {
   const { ghosts, repo, owner } = payload
 
   const ghost = apps[app_name]
+
+  if (!(app_name in ghosts)) {
+    return
+  }
+
   const ghost_payload = ghosts[app_name]
 
   const { check_run_id } = ghost_payload
