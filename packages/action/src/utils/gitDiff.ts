@@ -8,12 +8,5 @@ export const gitDiff = async () => {
     silent: true
   })
 
-  if (diff) {
-    await exec.exec('git config user.name wraith-ci[bot]')
-    await exec.exec(
-      'git config user.email 41898282+wraith-ci[bot]@users.noreply.github.com'
-    )
-  }
-
   return diff
 }
