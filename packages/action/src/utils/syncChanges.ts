@@ -34,7 +34,7 @@ export const syncChanges = async ({
   await exec('git commit', ['-m', message])
 
   if (require_new_branch) {
-    await exec('git push origin')
+    await exec('git push', ['--set-upstream', 'origin', head_branch])
 
     await octokit.rest.pulls.create({
       owner,
