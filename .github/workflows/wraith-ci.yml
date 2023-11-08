@@ -36,7 +36,10 @@ jobs:
           version: latest
           run_install: true
 
-      - name: Wraith CI
+      - name: Move CWD
+        run: cd ${{ matrix.name }}
+
+      - name: Ghost ${{ matrix.name }}
         uses: jill64/wraith-ci@main
         with:
           payload: ${{ inputs.payload }}
