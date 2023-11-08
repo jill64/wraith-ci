@@ -5,24 +5,27 @@ on:
     inputs:
       payload:
         required: true
-      data:
-        required: true
-      ref:
-        required: true
+
+env:
+  token: ${{ fromJson(inputs.payload).token }}
 
 jobs:
   wraith-ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        name: ['build', 'lint', 'format', 'deploy', 'release']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@v4
         with:
-          token: ${{ fromJson(inputs.payload).token }}
+          token: ${{ env.token }}
           repository: ${{ fromJson(inputs.payload).owner }}/${{ fromJson(inputs.payload).repo }}
-          ref: ${{ inputs.ref }}
+          ref: ${{ fromJson(inputs.payload).ref }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -31,13 +34,34 @@ jobs:
         with:
           version: latest
           run_install: true
-          
+
       - name: Wraith CI
         uses: jill64/wraith-ci@main
         with:
           payload: ${{ inputs.payload }}
-          data: ${{ inputs.data }}
-          ref: ${{ inputs.ref }}
+          name: ${{ matrix.name }}
         env:
           PUBLIC_SENTRY_DSN: ''
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+  revoke-installation-token:
+    needs: wraith-ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revoke tokens
+        run: |
+          curl -L \
+            -X DELETE \
+            -H "Authorization: Bearer ${{ env.token }}" \
+            https://api.github.com/installation/token
+
+  revoke-app-token:
+    needs: wraith-ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revoke tokens
+        run: |
+          curl -L \
+            -X DELETE \
+            -H "Authorization: Bearer ${{ fromJson(inputs.payload).app_token }}" \
+            https://api.github.com/installation/token
