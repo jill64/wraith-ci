@@ -1,6 +1,7 @@
 import { GhostName } from '@/shared/types/GhostName.js'
 import { Ghost } from '../types/Ghost.js'
 import { build } from './ghosts/build.js'
+import { bump } from './ghosts/bump/index.js'
 import { deploy } from './ghosts/deploy.js'
 import { docs } from './ghosts/docs/index.js'
 import { format } from './ghosts/format.js'
@@ -15,5 +16,6 @@ export const apps = {
   format,
   lint,
   merge,
-  release
+  release,
+  bump
 } satisfies Record<GhostName, Ghost>
