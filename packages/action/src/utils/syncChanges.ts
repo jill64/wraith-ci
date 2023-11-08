@@ -1,5 +1,6 @@
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { exec } from '@actions/exec'
+import { OctoflarePayload } from 'octoflare'
 import { ActionOctokit } from 'octoflare/action'
 
 export const syncChanges = async ({
@@ -10,10 +11,14 @@ export const syncChanges = async ({
 }: {
   message: string
   branch: string
-  payload: WraithPayload
+  payload: OctoflarePayload<WraithPayload>
   octokit: ActionOctokit
 }): Promise<'pr_created' | 'pushed'> => {
-  const { default_branch, ref, event, repo, owner } = payload
+  const {
+    data: { default_branch, ref, event },
+    repo,
+    owner
+  } = payload
 
   const now_default_branch = ref === default_branch
   const is_push_event = event === 'push'
