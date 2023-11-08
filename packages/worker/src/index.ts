@@ -69,16 +69,16 @@ export default octoflare(async ({ payload, installation }) => {
       return check_run_id
     }
 
-    const closeCheckRun = check_run_id
-      ? (param: CloseCheckParam) =>
-          installation.kit.rest.checks.update({
+    const closeCheckRun = (param: CloseCheckParam) =>
+      check_run_id
+        ? installation.kit.rest.checks.update({
             ...(typeof param === 'string' ? { conclusion: param } : param),
             check_run_id,
             owner,
             repo,
             status: 'completed'
           })
-      : null
+        : null
 
     const ghost_payload = await attempt(
       async () => {
@@ -99,14 +99,14 @@ export default octoflare(async ({ payload, installation }) => {
         }
 
         if (typeof result === 'string' || 'conclusion' in result) {
-          await closeCheckRun?.(result)
+          await closeCheckRun(result)
           return null
         }
 
         return result
       },
       async (e, o) => {
-        await closeCheckRun?.({
+        await closeCheckRun({
           conclusion: 'failure',
           output: {
             title: 'Unhandled Worker Error',
