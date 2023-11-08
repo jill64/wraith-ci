@@ -21,6 +21,11 @@ export const syncChanges = async ({
   const head_branch = now_default_branch ? branch : ref
   const require_new_branch = now_default_branch || !is_push_event
 
+  await exec('git config --global user.name wraith-ci[bot]')
+  await exec(
+    'git config --global user.email wraith-ci[bot]@users.noreply.github.com'
+  )
+
   if (require_new_branch) {
     await exec('git checkout -b', [head_branch])
   }

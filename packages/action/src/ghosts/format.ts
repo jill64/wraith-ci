@@ -19,7 +19,7 @@ export const format: Ghost = async ({ payload, octokit }) => {
 
   const pushResult = await syncChanges({
     message: 'chore: format',
-    branch: 'ghost-format',
+    branch: 'wraith-ci/ghost-format',
     payload,
     octokit
   })
