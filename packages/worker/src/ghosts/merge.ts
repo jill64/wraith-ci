@@ -80,27 +80,15 @@ export const merge: Ghost = async ({
 
   const branch_protection = await attempt(
     () =>
-      installation.kit.rest.repos
-        .getBranchProtection({
-          owner,
-          repo,
-          branch: pull_request.base.ref
-        })
-        .then(({ data }) => data),
+      installation.kit.rest.repos.getBranchProtection({
+        owner,
+        repo,
+        branch: pull_request.base.ref
+      }),
     null
   )
 
-  if (!branch_protection) {
-    return {
-      conclusion: 'skipped',
-      output: {
-        title: 'No Branch Protection',
-        summary: 'This repository does not have branch protection.'
-      }
-    }
-  }
-
-  if (!branch_protection.required_status_checks?.contexts.length) {
+  if (!branch_protection?.data.required_status_checks?.contexts.length) {
     return {
       conclusion: 'skipped',
       output: {
