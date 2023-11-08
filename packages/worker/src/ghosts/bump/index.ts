@@ -1,4 +1,5 @@
 import { Ghost } from '@/worker/types/Ghost.js'
+import { Buffer } from 'node:buffer'
 import semver from 'semver'
 import { scanner, string } from 'typescanner'
 import { determineSemType } from './lib/determineSemType.js'
