@@ -23,7 +23,6 @@ jobs:
           token: ${{ env.token }}
           repository: ${{ fromJson(inputs.payload).owner }}/${{ fromJson(inputs.payload).repo }}
           ref: ${{ fromJson(inputs.payload).ref }}
-          path: ${{ matrix.name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
@@ -35,9 +34,6 @@ jobs:
         with:
           version: latest
           run_install: true
-
-      - name: Move CWD
-        run: cd ${{ matrix.name }}
 
       - name: Ghost ${{ matrix.name }}
         uses: jill64/wraith-ci@main
