@@ -14,9 +14,6 @@ importers:
       '@playwright/test':
         specifier: 1.39.0
         version: 1.39.0
-      '@sveltejs/adapter-cloudflare':
-        specifier: 2.3.3
-        version: 2.3.3(@sveltejs/kit@1.27.3)
       '@typescript-eslint/eslint-plugin':
         specifier: 6.10.0
         version: 6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(typescript@5.2.2)
@@ -88,6 +85,9 @@ importers:
       '@jill64/typed-storage':
         specifier: 1.0.1
         version: 1.0.1
+      '@sveltejs/adapter-cloudflare':
+        specifier: 2.3.3
+        version: 2.3.3(@sveltejs/kit@1.27.3)
       '@sveltejs/kit':
         specifier: 1.27.3
         version: 1.27.3(svelte@4.2.2)(vite@4.5.0)
@@ -178,10 +178,6 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
-    dev: true
-
-  /@cloudflare/workers-types@4.20231016.0:
-    resolution: {integrity: sha512-eGB0cRVyoJpeyGJx2re5sbd9R316a61sY73xwnqm4cwGpb+OxCK2gc651RxGiN7H4w6LY1RpysUgeGLmj5B3+g==}
     dev: true
 
   /@cloudflare/workers-types@4.20231025.0:
@@ -1078,7 +1074,7 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
-      '@cloudflare/workers-types': 4.20231016.0
+      '@cloudflare/workers-types': 4.20231025.0
       '@sveltejs/kit': 1.27.3(svelte@4.2.2)(vite@4.5.0)
       esbuild: 0.18.20
       worktop: 0.8.0-next.15
