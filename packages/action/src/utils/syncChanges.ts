@@ -21,10 +21,8 @@ export const syncChanges = async ({
   const head_branch = now_default_branch ? branch : ref
   const require_new_branch = now_default_branch || !is_push_event
 
-  await exec('git config user.name ghost-build[bot]')
-  await exec(
-    'git config user.email 41898282+ghost-build[bot]@users.noreply.github.com'
-  )
+  await exec('git config user.name wraith-ci[bot]')
+  await exec('git config user.email wraith-ci[bot]@users.noreply.github.com')
 
   if (require_new_branch) {
     await exec('git checkout -b', [head_branch])
@@ -34,7 +32,7 @@ export const syncChanges = async ({
   await exec('git commit', ['-m', message])
 
   if (require_new_branch) {
-    await exec('git push origin')
+    await exec('git push', ['--set-upstream', 'origin', head_branch])
 
     await octokit.rest.pulls.create({
       owner,
