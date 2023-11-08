@@ -42586,27 +42586,24 @@ ${stderr}
 })
 
 // src/utils/gitDiff.ts
-var import_exec = __toESM(require_exec(), 1)
-var gitDiff = async () => {
-  await import_exec.default.exec('git add -N .')
-  const diff = await import_exec.default.exec('git diff --exit-code', void 0, {
-    ignoreReturnCode: true
-  })
-  if (diff) {
-    await import_exec.default.exec('git config user.name wraith-ci[bot]')
-    await import_exec.default.exec(
-      'git config user.email 41898282+wraith-ci[bot]@users.noreply.github.com'
-    )
-  }
-  return diff
-}
+var import_exec2 = __toESM(require_exec(), 1)
 
 // src/utils/run.ts
-var import_exec2 = __toESM(require_exec(), 1)
+var import_exec = __toESM(require_exec(), 1)
 var run = (cmd) =>
-  import_exec2.default.getExecOutput(cmd, void 0, {
+  import_exec.default.getExecOutput(cmd, void 0, {
     ignoreReturnCode: true
   })
+
+// src/utils/gitDiff.ts
+var gitDiff = async () => {
+  await run('git add -N .')
+  const diff = await import_exec2.default.exec('git diff --exit-code', void 0, {
+    ignoreReturnCode: true,
+    silent: true
+  })
+  return diff
+}
 
 // src/utils/syncChanges.ts
 var import_exec3 = __toESM(require_exec(), 1)
@@ -42622,7 +42619,7 @@ var syncChanges = async ({ message, branch, payload, octokit }) => {
   await (0, import_exec3.exec)('git add .')
   await (0, import_exec3.exec)('git commit', ['-m', message])
   if (require_new_branch) {
-    await (0, import_exec3.exec)('git push origin', [head_branch])
+    await (0, import_exec3.exec)('git push origin')
     await octokit.rest.pulls.create({
       owner,
       repo,
@@ -42674,8 +42671,31 @@ var deploy = async () => {
 }
 
 // src/ghosts/format.ts
-var format = async () => {
-  return 'success'
+var format = async ({ payload, octokit }) => {
+  const formatResult = await run('npm run format')
+  if (formatResult.exitCode !== 0) {
+    return failedSummary('Format Failed', formatResult)
+  }
+  const diff = await gitDiff()
+  if (diff === 0) {
+    return 'success'
+  }
+  const pushResult = await syncChanges({
+    message: 'chore: format',
+    branch: 'ghost-format',
+    payload,
+    octokit
+  })
+  const pr = pushResult === 'pr_created'
+  return {
+    conclusion: pr ? 'success' : 'failure',
+    output: {
+      title: 'Auto Format Success',
+      summary: pr
+        ? 'Formatted code has been pushed and pull request has been created.'
+        : 'Formatted code has been pushed.'
+    }
+  }
 }
 
 // src/ghosts/lint.ts
@@ -42707,8 +42727,14 @@ action(async (context2) => {
     return
   }
   const { ghosts, repo, owner } = payload
-  const ghost = apps[app_name]
+  if (!(app_name in ghosts)) {
+    return
+  }
   const ghost_payload = ghosts[app_name]
+  if (!ghost_payload) {
+    return
+  }
+  const ghost = apps[app_name]
   const { check_run_id } = ghost_payload
   const gh = github_exports.context
   const details_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
