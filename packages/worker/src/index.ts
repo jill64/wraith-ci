@@ -45,10 +45,12 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     : payload.ref.replace('refs/heads/', '')
 
   if (
-    is_pull_request &&
-    (payload.action === 'opened' ||
-      payload.action === 'reopened' ||
-      payload.action === 'synchronize')
+    !(
+      is_pull_request &&
+      (payload.action === 'opened' ||
+        payload.action === 'reopened' ||
+        payload.action === 'synchronize')
+    )
   ) {
     return new Response('Skip Event: PR Opened, Reopened, or Synchronized', {
       status: 200
@@ -149,7 +151,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
 
     const results = wraith_status.getResults()
 
-    if (results.some((status) => status === 'bridged')) {
+    if (results.includes('bridged')) {
       const status = wraith_status.get()
 
       await installation.startWorkflow({
