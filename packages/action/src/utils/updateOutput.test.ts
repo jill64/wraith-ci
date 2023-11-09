@@ -6,7 +6,7 @@ test('updateOutput', () => {
     ghost_name: 'build',
     result: 'success',
     output: {
-      title: '⌛️ Build | ✅ Lint | ✅ Test',
+      title: '✅ Lint | ⌛️ Build | ✅ Test',
       summary: `
 | Ghost | Status    | Detail          |
 | ----- | --------- | --------------- |
@@ -18,7 +18,7 @@ test('updateOutput', () => {
   })
 
   expect(result).toStrictEqual({
-    title: '✅ Build | ✅ Lint | ✅ Test',
+    title: '✅ Lint | ✅ Build | ✅ Test',
     summary: `
 | Ghost | Status    | Detail          |
 | ----- | --------- | --------------- |
