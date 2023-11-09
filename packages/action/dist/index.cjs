@@ -44743,7 +44743,6 @@ var updateOutput = ({
     `| ${alias} | ${status_emoji} ${ghost_status.status} | ${ghost_status.detail ?? ""} |`
   );
   return {
-    ...output,
     title,
     summary
   };

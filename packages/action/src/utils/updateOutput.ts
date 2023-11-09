@@ -33,7 +33,6 @@ export const updateOutput = ({
   )
 
   return {
-    ...output,
     title,
     summary
   }
