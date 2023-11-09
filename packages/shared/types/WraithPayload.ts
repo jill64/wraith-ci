@@ -1,7 +1,7 @@
-import { WraithStatus } from './WraithStatus.js'
+import { TriggerEvent } from './TriggerEvent.js'
 
 export type WraithPayload = {
-  check_run_id: string
   ref: string
-  status: WraithStatus
+  event: TriggerEvent
+  check_run_id: number
 }

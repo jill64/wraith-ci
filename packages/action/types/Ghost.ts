@@ -1,4 +1,9 @@
 import { GhostStatusShortHand } from '@/shared/types/GhostStatusShortHand.js'
-import { Context } from './Context.js'
+import { WraithPayload } from '@/shared/types/WraithPayload.js'
+import { OctoflarePayload } from 'octoflare'
+import { ActionOctokit } from 'octoflare/action'
 
-export type Ghost = (context: Context) => Promise<GhostStatusShortHand>
+export type Ghost = (context: {
+  octokit: ActionOctokit
+  payload: OctoflarePayload<WraithPayload>
+}) => Promise<GhostStatusShortHand>
