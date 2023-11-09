@@ -1,4 +1,5 @@
-import { initWraithStatus } from '@/shared/src/initWraithStatus.js'
+import { getGhostAlias } from '@/shared/src/getGhostAlias.js'
+import { getStatusEmoji } from '@/shared/src/getStatusEmoji.js'
 import { isGhostName } from '@/shared/src/isGhostName.js'
 import { nonNull } from '@/shared/src/nonNull.js'
 import { schema } from '@/shared/src/schema.js'
@@ -74,30 +75,60 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     .map(([name]) => (isGhostName(name) ? ([name, apps[name]] as const) : null))
     .filter(nonNull)
 
-  const wraith_status = initWraithStatus(
-    Object.fromEntries(
-      triggered_ghosts.map(([name]) => [
-        name,
-        { status: 'processing' } satisfies GhostStatus
-      ])
-    )
+  const wraith_status = Object.fromEntries(
+    triggered_ghosts.map(([name]) => [
+      name,
+      { status: 'processing' } as GhostStatus
+    ])
   )
+
+  const generateOutput = (): ChecksOutput => {
+    const entries = Object.entries(wraith_status)
+
+    const title = entries
+      .map(
+        ([name, status]) => `${getStatusEmoji(status)} ${getGhostAlias(name)}`
+      )
+      .join(' | ')
+
+    const header = `
+| Ghost | Status | Detail |
+| ----- | ------ | ------ |
+`
+
+    const body = entries
+      .map(
+        ([name, status]) =>
+          `| ${getGhostAlias(name)} | ${getStatusEmoji(status)} ${
+            status.status
+          } | ${status.detail ?? ''} |`
+      )
+      .join('\n')
+
+    const summary = `${header}${body}\n`
+
+    return {
+      title,
+      summary
+    }
+  }
 
   const checks = await installation.kit.rest.checks.create({
     owner,
     repo,
-    name: 'Wraith CI',
+    name: `Wraith CI${is_pull_request ? ' - PR' : ''}`,
     head_sha,
-    output: wraith_status.generateOutput()
+    status: 'in_progress',
+    output: generateOutput()
   })
 
-  const check_run_id = checks.data.id.toString()
+  const check_run_id = checks.data.id
 
   const close = (conclusion: Conclusion, output?: ChecksOutput) =>
     installation.kit.rest.checks.update({
       owner,
       repo,
-      check_run_id,
+      check_run_id: check_run_id.toString(),
       status: 'completed',
       conclusion,
       output
@@ -117,7 +148,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
   try {
     await Promise.allSettled(
       triggered_ghosts.map(async ([name, app]) => {
-        const result = await attempt(
+        const status = await attempt(
           () =>
             app({
               ref,
@@ -136,30 +167,27 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
             }) as const
         )
 
-        wraith_status.update(name, result)
-
-        const output = wraith_status.generateOutput()
+        wraith_status[name] = typeof status === 'string' ? { status } : status
 
         await installation.kit.rest.checks.update({
           owner,
           repo,
-          check_run_id,
-          output
+          check_run_id: check_run_id.toString(),
+          output: generateOutput(),
+          status: 'in_progress'
         })
       })
     )
 
-    const results = wraith_status.getResults()
+    const results = Object.values(wraith_status).map(({ status }) => status)
 
     if (results.includes('bridged')) {
-      const status = wraith_status.get()
-
       await installation.startWorkflow({
         repo,
         owner,
         data: {
           check_run_id,
-          status,
+          event,
           ref
         }
       })
@@ -175,11 +203,9 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
       ? 'skipped'
       : 'failure'
 
-    const output = wraith_status.generateOutput()
+    await close(conclusion, generateOutput())
 
-    await close(conclusion, output)
-
-    return new Response('Wraith CI Workflow Complete', {
+    return new Response(`Wraith CI Workflow Complete as ${conclusion}`, {
       status: 200
     })
   } catch (e) {
