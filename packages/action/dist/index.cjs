@@ -3805,18 +3805,18 @@ var require_webidl = __commonJS({
     webidl.errors.exception = function(message) {
       return new TypeError(`${message.header}: ${message.message}`);
     };
-    webidl.errors.conversionFailed = function(context2) {
-      const plural = context2.types.length === 1 ? "" : " one of";
-      const message = `${context2.argument} could not be converted to${plural}: ${context2.types.join(", ")}.`;
+    webidl.errors.conversionFailed = function(context) {
+      const plural = context.types.length === 1 ? "" : " one of";
+      const message = `${context.argument} could not be converted to${plural}: ${context.types.join(", ")}.`;
       return webidl.errors.exception({
-        header: context2.prefix,
+        header: context.prefix,
         message
       });
     };
-    webidl.errors.invalidArgument = function(context2) {
+    webidl.errors.invalidArgument = function(context) {
       return webidl.errors.exception({
-        header: context2.prefix,
-        message: `"${context2.value}" is an invalid ${context2.type}.`
+        header: context.prefix,
+        message: `"${context.value}" is an invalid ${context.type}.`
       });
     };
     webidl.brandCheck = function(V, I, opts = void 0) {
@@ -9128,15 +9128,15 @@ var require_api_request = __commonJS({
         }
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        const { callback, opaque, abort, context: context2, responseHeaders, highWaterMark } = this;
+        const { callback, opaque, abort, context, responseHeaders, highWaterMark } = this;
         const headers = responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
         if (statusCode < 200) {
           if (this.onInfo) {
@@ -9163,7 +9163,7 @@ var require_api_request = __commonJS({
               trailers: this.trailers,
               opaque,
               body,
-              context: context2
+              context
             });
           }
         }
@@ -9282,15 +9282,15 @@ var require_api_stream = __commonJS({
         }
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        const { factory, opaque, context: context2, callback, responseHeaders } = this;
+        const { factory, opaque, context, callback, responseHeaders } = this;
         const headers = responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
         if (statusCode < 200) {
           if (this.onInfo) {
@@ -9318,7 +9318,7 @@ var require_api_stream = __commonJS({
             statusCode,
             headers,
             opaque,
-            context: context2
+            context
           });
           if (!res || typeof res.write !== "function" || typeof res.end !== "function" || typeof res.on !== "function") {
             throw new InvalidReturnValueError("expected Writable");
@@ -9510,17 +9510,17 @@ var require_api_pipeline = __commonJS({
         this.res = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         const { ret, res } = this;
         assert(!res, "pipeline cannot be retried");
         if (ret.destroyed) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume) {
-        const { opaque, handler, context: context2 } = this;
+        const { opaque, handler, context } = this;
         if (statusCode < 200) {
           if (this.onInfo) {
             const headers = this.responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
@@ -9538,7 +9538,7 @@ var require_api_pipeline = __commonJS({
             headers,
             opaque,
             body: this.res,
-            context: context2
+            context
           });
         } catch (err) {
           this.res.on("error", util.nop);
@@ -9622,7 +9622,7 @@ var require_api_upgrade = __commonJS({
         this.context = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
@@ -9633,7 +9633,7 @@ var require_api_upgrade = __commonJS({
         throw new SocketError("bad upgrade", null);
       }
       onUpgrade(statusCode, rawHeaders, socket) {
-        const { callback, opaque, context: context2 } = this;
+        const { callback, opaque, context } = this;
         assert.strictEqual(statusCode, 101);
         removeSignal(this);
         this.callback = null;
@@ -9642,7 +9642,7 @@ var require_api_upgrade = __commonJS({
           headers,
           socket,
           opaque,
-          context: context2
+          context
         });
       }
       onError(err) {
@@ -9710,18 +9710,18 @@ var require_api_connect = __commonJS({
         this.abort = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders() {
         throw new SocketError("bad connect", null);
       }
       onUpgrade(statusCode, rawHeaders, socket) {
-        const { callback, opaque, context: context2 } = this;
+        const { callback, opaque, context } = this;
         removeSignal(this);
         this.callback = null;
         let headers = rawHeaders;
@@ -9733,7 +9733,7 @@ var require_api_connect = __commonJS({
           headers,
           socket,
           opaque,
-          context: context2
+          context
         });
       }
       onError(err) {
@@ -17831,11 +17831,11 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       command_1.issue("echo", enabled ? "on" : "off");
     }
     exports.setCommandEcho = setCommandEcho;
-    function setFailed2(message) {
+    function setFailed(message) {
       process.exitCode = ExitCode.Failure;
       error(message);
     }
-    exports.setFailed = setFailed2;
+    exports.setFailed = setFailed;
     function isDebug() {
       return process.env["RUNNER_DEBUG"] === "1";
     }
@@ -19487,18 +19487,18 @@ var require_webidl2 = __commonJS({
     webidl.errors.exception = function(message) {
       return new TypeError(`${message.header}: ${message.message}`);
     };
-    webidl.errors.conversionFailed = function(context2) {
-      const plural = context2.types.length === 1 ? "" : " one of";
-      const message = `${context2.argument} could not be converted to${plural}: ${context2.types.join(", ")}.`;
+    webidl.errors.conversionFailed = function(context) {
+      const plural = context.types.length === 1 ? "" : " one of";
+      const message = `${context.argument} could not be converted to${plural}: ${context.types.join(", ")}.`;
       return webidl.errors.exception({
-        header: context2.prefix,
+        header: context.prefix,
         message
       });
     };
-    webidl.errors.invalidArgument = function(context2) {
+    webidl.errors.invalidArgument = function(context) {
       return webidl.errors.exception({
-        header: context2.prefix,
-        message: `"${context2.value}" is an invalid ${context2.type}.`
+        header: context.prefix,
+        message: `"${context.value}" is an invalid ${context.type}.`
       });
     };
     webidl.brandCheck = function(V, I, opts = void 0) {
@@ -24778,15 +24778,15 @@ var require_api_request2 = __commonJS({
         }
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        const { callback, opaque, abort, context: context2, responseHeaders, highWaterMark } = this;
+        const { callback, opaque, abort, context, responseHeaders, highWaterMark } = this;
         const headers = responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
         if (statusCode < 200) {
           if (this.onInfo) {
@@ -24813,7 +24813,7 @@ var require_api_request2 = __commonJS({
               trailers: this.trailers,
               opaque,
               body,
-              context: context2
+              context
             });
           }
         }
@@ -24932,15 +24932,15 @@ var require_api_stream2 = __commonJS({
         }
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        const { factory, opaque, context: context2, callback, responseHeaders } = this;
+        const { factory, opaque, context, callback, responseHeaders } = this;
         const headers = responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
         if (statusCode < 200) {
           if (this.onInfo) {
@@ -24968,7 +24968,7 @@ var require_api_stream2 = __commonJS({
             statusCode,
             headers,
             opaque,
-            context: context2
+            context
           });
           if (!res || typeof res.write !== "function" || typeof res.end !== "function" || typeof res.on !== "function") {
             throw new InvalidReturnValueError("expected Writable");
@@ -25160,17 +25160,17 @@ var require_api_pipeline2 = __commonJS({
         this.res = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         const { ret, res } = this;
         assert(!res, "pipeline cannot be retried");
         if (ret.destroyed) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume) {
-        const { opaque, handler, context: context2 } = this;
+        const { opaque, handler, context } = this;
         if (statusCode < 200) {
           if (this.onInfo) {
             const headers = this.responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
@@ -25188,7 +25188,7 @@ var require_api_pipeline2 = __commonJS({
             headers,
             opaque,
             body: this.res,
-            context: context2
+            context
           });
         } catch (err) {
           this.res.on("error", util.nop);
@@ -25272,7 +25272,7 @@ var require_api_upgrade2 = __commonJS({
         this.context = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
@@ -25283,7 +25283,7 @@ var require_api_upgrade2 = __commonJS({
         throw new SocketError("bad upgrade", null);
       }
       onUpgrade(statusCode, rawHeaders, socket) {
-        const { callback, opaque, context: context2 } = this;
+        const { callback, opaque, context } = this;
         assert.strictEqual(statusCode, 101);
         removeSignal(this);
         this.callback = null;
@@ -25292,7 +25292,7 @@ var require_api_upgrade2 = __commonJS({
           headers,
           socket,
           opaque,
-          context: context2
+          context
         });
       }
       onError(err) {
@@ -25360,18 +25360,18 @@ var require_api_connect2 = __commonJS({
         this.abort = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context2) {
+      onConnect(abort, context) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context2;
+        this.context = context;
       }
       onHeaders() {
         throw new SocketError("bad connect", null);
       }
       onUpgrade(statusCode, rawHeaders, socket) {
-        const { callback, opaque, context: context2 } = this;
+        const { callback, opaque, context } = this;
         removeSignal(this);
         this.callback = null;
         let headers = rawHeaders;
@@ -25383,7 +25383,7 @@ var require_api_connect2 = __commonJS({
           headers,
           socket,
           opaque,
-          context: context2
+          context
         });
       }
       onError(err) {
@@ -32605,8 +32605,8 @@ var require_dist_node2 = __commonJS({
     function isKeyOperator(operator) {
       return operator === ";" || operator === "&" || operator === "?";
     }
-    function getValues(context2, operator, key, modifier) {
-      var value = context2[key], result = [];
+    function getValues(context, operator, key, modifier) {
+      var value = context[key], result = [];
       if (isDefined(value) && value !== "") {
         if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
           value = value.toString();
@@ -32670,7 +32670,7 @@ var require_dist_node2 = __commonJS({
         expand: expand.bind(null, template)
       };
     }
-    function expand(template, context2) {
+    function expand(template, context) {
       var operators = ["+", "#", ".", "/", ";", "?", "&"];
       template = template.replace(
         /\{([^\{\}]+)\}|([^\{\}]+)/g,
@@ -32684,7 +32684,7 @@ var require_dist_node2 = __commonJS({
             }
             expression.split(/,/g).forEach(function(variable) {
               var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
-              values.push(getValues(context2, operator, tmp[1], tmp[2] || tmp[3]));
+              values.push(getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
             });
             if (operator && operator !== "+") {
               var separator = ",";
@@ -37106,7 +37106,7 @@ var require_exec = __commonJS({
     exports.getExecOutput = exports.exec = void 0;
     var string_decoder_1 = require("string_decoder");
     var tr = __importStar(require_toolrunner());
-    function exec5(commandLine, args, options) {
+    function exec4(commandLine, args, options) {
       return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine);
         if (commandArgs.length === 0) {
@@ -37118,8 +37118,8 @@ var require_exec = __commonJS({
         return runner.exec();
       });
     }
-    exports.exec = exec5;
-    function getExecOutput(commandLine, args, options) {
+    exports.exec = exec4;
+    function getExecOutput2(commandLine, args, options) {
       var _a, _b;
       return __awaiter(this, void 0, void 0, function* () {
         let stdout = "";
@@ -37141,7 +37141,7 @@ var require_exec = __commonJS({
           }
         };
         const listeners = Object.assign(Object.assign({}, options === null || options === void 0 ? void 0 : options.listeners), { stdout: stdOutListener, stderr: stdErrListener });
-        const exitCode = yield exec5(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
+        const exitCode = yield exec4(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
         stdout += stdoutDecoder.end();
         stderr += stderrDecoder.end();
         return {
@@ -37151,7 +37151,7 @@ var require_exec = __commonJS({
         };
       });
     }
-    exports.getExecOutput = getExecOutput;
+    exports.getExecOutput = getExecOutput2;
   }
 });
 
@@ -44287,30 +44287,94 @@ var require_cjs = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/octoflare@0.20.2/node_modules/octoflare/dist/action/action.js
+// ../shared/src/schema.ts
+var schema = {
+  build: {
+    alias: "Build",
+    trigger: "push",
+    action: true
+  },
+  deploy: {
+    alias: "Deploy",
+    trigger: "push_main",
+    action: true
+  },
+  docs: {
+    alias: "Docs",
+    trigger: "push"
+  },
+  format: {
+    alias: "Format",
+    trigger: "push",
+    action: true
+  },
+  lint: {
+    alias: "Lint",
+    trigger: "push",
+    action: true
+  },
+  merge: {
+    alias: "Auto Merge",
+    trigger: "pull_request"
+  },
+  release: {
+    alias: "Release",
+    trigger: "push_main",
+    action: true
+  },
+  bump: {
+    alias: "Version Bump",
+    trigger: "pull_request"
+  }
+};
+
+// ../shared/src/isGhostName.ts
+var isGhostName = (x) => x in schema;
+
+// ../shared/src/initWraithStatus.ts
+var statusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u3030";
+var ghostAlias = (name) => isGhostName(name) ? schema[name].alias : name;
+var initWraithStatus = (init) => {
+  const wraith_status = init;
+  const get = () => wraith_status;
+  const update = (name, status) => {
+    const value = typeof status === "string" ? { status } : status;
+    Object.defineProperty(wraith_status, name, value);
+  };
+  const generateOutput = () => {
+    const entries = Object.entries(wraith_status);
+    const title = entries.map(([name, status]) => `${ghostAlias(name)} ${statusEmoji(status)} `).join(" | ");
+    const header = `
+| Ghost | Status | Detail |
+| ----- | ------ | ------ |
+`;
+    const body = entries.map(
+      ([name, status]) => `| ${ghostAlias(name)} | ${statusEmoji(status)} ${status.status} | ${status.detail ?? ""} |`
+    ).join("\n");
+    const summary = `${header}${body}
+`;
+    return {
+      title,
+      summary
+    };
+  };
+  const getResults = () => Object.values(wraith_status).map(({ status }) => status);
+  return {
+    get,
+    update,
+    getResults,
+    generateOutput
+  };
+};
+
+// ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 
-// ../../node_modules/.pnpm/octoflare@0.20.2/node_modules/octoflare/dist/utils/limitStr.js
+// ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/utils/limitStr.js
 var limitStr = (str, num) => str.length > num ? `${str.substring(0, num)}...` : str;
 
-// ../../node_modules/.pnpm/octoflare@0.20.2/node_modules/octoflare/dist/utils/closeCheckRun.js
-var closeCheckRun = ({ kit, check_run_id, owner, repo, conclusion, output, details_url }) => kit.rest.checks.update({
-  check_run_id: check_run_id.toString(),
-  owner,
-  repo,
-  status: "completed",
-  conclusion,
-  details_url,
-  output: output ? {
-    ...output,
-    title: limitStr(output.title, 1e3),
-    summary: limitStr(output.summary, 6e4),
-    ...output.text ? { text: limitStr(output.text, 6e4) } : {}
-  } : void 0
-});
-
-// ../../node_modules/.pnpm/octoflare@0.20.2/node_modules/octoflare/dist/utils/errorLogging.js
+// ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/utils/errorLogging.js
 var errorLogging = async ({ octokit, repo, owner, error, info }) => {
   try {
     const errorTitle = `Octoflare Error: ${limitStr(error.message, 64)}`;
@@ -44357,25 +44421,42 @@ ${error.stack}
   }
 };
 
-// ../../node_modules/.pnpm/octoflare@0.20.2/node_modules/octoflare/dist/action/action.js
+// ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/utils/updateChecks.js
+var updateChecks = ({ kit, check_run_id, owner, repo, conclusion, output, details_url, status }) => kit.rest.checks.update({
+  check_run_id: check_run_id.toString(),
+  owner,
+  repo,
+  status,
+  conclusion,
+  details_url,
+  output: output ? {
+    ...output,
+    title: limitStr(output.title, 1e3),
+    summary: limitStr(output.summary, 6e4),
+    ...output.text ? { text: limitStr(output.text, 6e4) } : {}
+  } : void 0
+});
+
+// ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/action/action.js
 var action = async (handler) => {
   const payloadStr = import_core.default.getInput("payload", { required: true });
   const payload = JSON.parse(payloadStr);
   const { token, app_token, check_run_id, owner, repo } = payload;
   const octokit = import_github.default.getOctokit(token);
   const appkit = import_github.default.getOctokit(app_token);
-  const { context: context2 } = import_github.default;
-  const details_url = `${context2.serverUrl}/${context2.repo.owner}/${context2.repo.repo}/actions/runs/${context2.runId}`;
+  const { context } = import_github.default;
+  const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
   const close = async (conclusion, output) => {
     if (check_run_id) {
-      await closeCheckRun({
+      await updateChecks({
         kit: octokit,
         owner,
         repo,
         check_run_id,
         details_url,
         conclusion,
-        output
+        output,
+        status: "completed"
       });
       await Promise.all([
         octokit.rest.apps.revokeInstallationAccessToken(),
@@ -44383,11 +44464,26 @@ var action = async (handler) => {
       ]);
     }
   };
+  const updateCheckRun = async (output) => {
+    if (check_run_id) {
+      await updateChecks({
+        kit: octokit,
+        owner,
+        repo,
+        check_run_id,
+        details_url,
+        output,
+        conclusion: "neutral",
+        status: "in_progress"
+      });
+    }
+  };
   try {
     const result = await handler({
       octokit,
       appkit,
-      payload
+      payload,
+      updateCheckRun
     });
     if (result) {
       return await (typeof result === "string" ? close(result) : close(result.conclusion, result.output));
@@ -44397,7 +44493,7 @@ var action = async (handler) => {
     if (e instanceof Error) {
       await errorLogging({
         octokit: appkit,
-        ...context2.repo,
+        ...context.repo,
         error: e,
         info: `
 Target Repo: [${owner}/${repo}](https://github.com/${owner}/${repo})  
@@ -44414,41 +44510,16 @@ Cause on Action
   }
 };
 
-// ../../node_modules/.pnpm/octoflare@0.20.2/node_modules/octoflare/dist/re-exports/actions/core.js
+// ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/re-exports/actions/core.js
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
-
-// ../../node_modules/.pnpm/octoflare@0.20.2/node_modules/octoflare/dist/re-exports/actions/github.js
-var github_exports = {};
-__reExport(github_exports, __toESM(require_github(), 1));
-
-// src/utils/failedSummary.ts
-var failedSummary = (title, { stderr, stdout }) => ({
-  conclusion: "failure",
-  output: {
-    title,
-    summary: `
-## stdout
-
-\`\`\`
-${stdout}
-\`\`\`
-
-## stderr
-
-\`\`\`
-${stderr}
-\`\`\`
-`
-  }
-});
 
 // src/utils/gitDiff.ts
 var import_exec2 = __toESM(require_exec(), 1);
 
 // src/utils/run.ts
 var import_exec = __toESM(require_exec(), 1);
-var run = (cmd) => import_exec.default.getExecOutput(cmd, void 0, {
+var run = (cmd) => (0, import_exec.getExecOutput)(cmd, void 0, {
   ignoreReturnCode: true
 });
 
@@ -44462,68 +44533,34 @@ var gitDiff = async () => {
   return diff;
 };
 
-// src/utils/syncChanges.ts
+// src/utils/pushCommit.ts
 var import_exec3 = __toESM(require_exec(), 1);
-var syncChanges = async ({
-  message,
-  branch,
-  payload,
-  octokit
-}) => {
-  const {
-    data: { default_branch, ref, event },
-    repo,
-    owner
-  } = payload;
-  const now_default_branch = ref === default_branch;
-  const is_push_event = event === "push";
-  const head_branch = now_default_branch ? branch : ref;
-  const require_new_branch = now_default_branch || !is_push_event;
+var pushCommit = async (message) => {
   await (0, import_exec3.exec)("git config user.name wraith-ci[bot]");
   await (0, import_exec3.exec)("git config user.email wraith-ci[bot]@users.noreply.github.com");
-  if (require_new_branch) {
-    await (0, import_exec3.exec)("git checkout -b", [head_branch]);
-  }
   await (0, import_exec3.exec)("git add .");
   await (0, import_exec3.exec)("git commit", ["-m", message]);
-  if (require_new_branch) {
-    await (0, import_exec3.exec)("git push", ["--set-upstream", "origin", head_branch]);
-    await octokit.rest.pulls.create({
-      owner,
-      repo,
-      title: message,
-      head: head_branch,
-      base: default_branch
-    });
-    return "pr_created";
-  }
   await (0, import_exec3.exec)("git pull --rebase");
   await (0, import_exec3.exec)("git push origin");
-  return "pushed";
 };
 
 // src/ghosts/build.ts
-var build = async (context2) => {
+var build = async () => {
   const result = await run("npm run build");
   if (result.exitCode !== 0) {
-    return failedSummary("Build Failed", result);
+    return {
+      status: "failure",
+      detail: result.stderr
+    };
   }
   const diff = await gitDiff();
   if (diff === 0) {
     return "success";
   }
-  const syncResult = await syncChanges({
-    message: "chore: regenerate artifact",
-    branch: "wraith-ci/ghost-build",
-    ...context2
-  });
-  const pr = syncResult === "pr_created";
+  await pushCommit("chore: regenerate artifact");
   return {
-    conclusion: pr ? "success" : "failure",
-    output: {
-      title: "Regenerated Artifact",
-      summary: pr ? "A PR has been created to update the artifact." : "The updated artifact will be pushed shortly."
-    }
+    status: "failure",
+    detail: "The updated artifact will be pushed shortly"
   };
 };
 
@@ -44533,32 +44570,29 @@ var deploy = async () => {
   if (result.exitCode === 0) {
     return "success";
   }
-  return failedSummary("Deploy Failed", result);
+  return {
+    status: "failure",
+    detail: result.stderr
+  };
 };
 
 // src/ghosts/format.ts
-var format = async ({ payload, octokit }) => {
+var format = async () => {
   const formatResult = await run("npm run format");
   if (formatResult.exitCode !== 0) {
-    return failedSummary("Format Failed", formatResult);
+    return {
+      status: "failure",
+      detail: formatResult.stderr
+    };
   }
   const diff = await gitDiff();
   if (diff === 0) {
     return "success";
   }
-  const pushResult = await syncChanges({
-    message: "chore: format",
-    branch: "wraith-ci/ghost-format",
-    payload,
-    octokit
-  });
-  const pr = pushResult === "pr_created";
+  await pushCommit("chore: format");
   return {
-    conclusion: pr ? "success" : "failure",
-    output: {
-      title: "Auto Format Success",
-      summary: pr ? "Formatted code has been pushed and pull request has been created." : "Formatted code has been pushed."
-    }
+    status: "failure",
+    detail: "Formatted code has been pushed."
   };
 };
 
@@ -44586,7 +44620,7 @@ function attempt(func, fallback) {
 // src/ghosts/lint.ts
 var import_promises = require("fs/promises");
 var import_typescanner = __toESM(require_dist(), 1);
-var lint = async ({ payload, octokit }) => {
+var lint = async () => {
   const lintResult = await run("npm run lint");
   if (lintResult.exitCode === 0) {
     return "success";
@@ -44604,11 +44638,8 @@ var lint = async ({ payload, octokit }) => {
     });
     if (!isValidPackageJson(packageJson)) {
       return {
-        conclusion: "failure",
-        output: {
-          title: "Invalid Package.json",
-          summary: JSON.stringify(packageJson, null, 2)
-        }
+        status: "failure",
+        detail: "Invalid Package.json"
       };
     }
     const depcheckResult = await run("npx depcheck --json");
@@ -44619,11 +44650,8 @@ var lint = async ({ payload, octokit }) => {
     });
     if (!isValidResult(result)) {
       return {
-        conclusion: "failure",
-        output: {
-          title: "Invalid Depcheck Result",
-          summary: depcheckResult.stdout
-        }
+        status: "failure",
+        detail: "Invalid Depcheck Result"
       };
     }
     const omittedDeps = Object.fromEntries(
@@ -44642,21 +44670,16 @@ var lint = async ({ payload, octokit }) => {
       ...Object.keys(omittedDevDeps).length ? { devDependencies: omittedDevDeps } : {}
     };
     await (0, import_promises.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
-    await syncChanges({
-      message: "fix: omit unused dependencies",
-      branch: "wraith-ci/ghost-lint",
-      octokit,
-      payload
-    });
+    await pushCommit("fix: omit unused dependencies");
     return {
-      conclusion: "failure",
-      output: {
-        title: "Omitted Unused Dependencies",
-        summary: "New package.json has been pushed."
-      }
+      status: "failure",
+      detail: "New package.json has been pushed"
     };
   }
-  return failedSummary("Lint Failed", lintResult);
+  return {
+    status: "failure",
+    detail: lintResult.stderr
+  };
 };
 
 // src/ghosts/release.ts
@@ -44677,11 +44700,8 @@ var release = async ({ payload, octokit }) => {
   ]);
   if (version2 === publishedVersion) {
     return {
-      conclusion: "skipped",
-      output: {
-        title: "No Version Changes",
-        summary: "No version changes"
-      }
+      status: "skipped",
+      detail: "No version changes"
     };
   }
   await import_exec4.default.exec("npm publish");
@@ -44735,58 +44755,20 @@ var apps = {
 };
 
 // src/index.ts
-action(async (context2) => {
-  const { octokit } = context2;
-  const payload = context2.payload;
-  const app_name = core_exports.getInput("name");
-  if (!Object.keys(apps).includes(app_name)) {
-    core_exports.setFailed(`Invalid app name: ${app_name}`);
-    return;
+action(async ({ octokit, payload, updateCheckRun }) => {
+  const wraith_status = initWraithStatus(payload.data.status);
+  const name = core_exports.getInput("name");
+  if (!(name in apps)) {
+    throw new Error(`Invalid ghost name: ${name}`);
   }
-  const {
-    data: { ghosts },
-    repo,
-    owner
-  } = payload;
-  if (!(app_name in ghosts)) {
-    return;
-  }
-  const ghost_payload = ghosts[app_name];
-  if (!ghost_payload) {
-    return;
-  }
-  const ghost = apps[app_name];
-  const { check_run_id } = ghost_payload;
-  const gh = github_exports.context;
-  const details_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`;
-  const closeCheckRun2 = (param) => octokit.rest.checks.update({
-    ...typeof param === "string" ? { conclusion: param } : param,
-    check_run_id,
-    owner,
-    repo,
-    status: "completed",
-    details_url
+  const ghost_name = name;
+  const app = apps[ghost_name];
+  const result = await app({
+    octokit,
+    payload
   });
-  try {
-    const result = await ghost({
-      octokit,
-      payload,
-      ghost_payload
-    });
-    if (result) {
-      await closeCheckRun2(result);
-    }
-  } catch (e) {
-    const error = e instanceof Error ? e : new Error(String(e));
-    core_exports.setFailed(error);
-    await closeCheckRun2({
-      conclusion: "failure",
-      output: {
-        title: "Unhandled Action Error",
-        summary: error.message
-      }
-    });
-  }
+  wraith_status.update(ghost_name, result);
+  await updateCheckRun(wraith_status.generateOutput());
 });
 /*! Bundled license information:
 
