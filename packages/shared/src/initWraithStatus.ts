@@ -27,7 +27,7 @@ export const initWraithStatus = (init: WraithStatus) => {
 
   const update = (name: GhostName, status: GhostStatusShortHand) => {
     const value = typeof status === 'string' ? { status } : status
-    Object.defineProperty(wraith_status, name, value)
+    wraith_status[name] = value
   }
 
   const generateOutput = (): ChecksOutput => {
