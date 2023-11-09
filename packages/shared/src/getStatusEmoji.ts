@@ -9,4 +9,4 @@ export const getStatusEmoji = ({ status }: GhostStatus) =>
     ? '✅'
     : status === 'failure'
     ? '❌'
-    : '➖'
+    : '-'
