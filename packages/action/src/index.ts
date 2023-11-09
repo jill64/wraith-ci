@@ -1,4 +1,5 @@
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
+import exec from '@actions/exec'
 import { attempt } from '@jill64/attempt'
 import { action } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
@@ -68,6 +69,27 @@ action<WraithPayload>(async ({ octokit, payload }) => {
 
   const { context } = github
   const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}/job/${context.job}`
+
+  const { stdout } = await exec.getExecOutput(
+    'gh run',
+    [
+      '--repo',
+      `${context.repo.owner}/${context.repo.repo}`,
+      'view',
+      context.runId.toString(),
+      '--json',
+      'jobs',
+      '--jq',
+      `'.jobs[] | select(.name == "${context.job}") | .url'`
+    ],
+    {
+      ignoreReturnCode: true
+    }
+  )
+
+  console.log('stdout', stdout)
+  const job_url = attempt(() => JSON.parse(stdout).url)
+  console.log('Job URL:', job_url)
 
   await octokit.rest.checks.update({
     owner,
