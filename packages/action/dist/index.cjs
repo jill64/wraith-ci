@@ -17831,11 +17831,11 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       command_1.issue("echo", enabled ? "on" : "off");
     }
     exports.setCommandEcho = setCommandEcho;
-    function setFailed(message) {
+    function setFailed2(message) {
       process.exitCode = ExitCode.Failure;
       error(message);
     }
-    exports.setFailed = setFailed;
+    exports.setFailed = setFailed2;
     function isDebug() {
       return process.env["RUNNER_DEBUG"] === "1";
     }
@@ -36123,6 +36123,261 @@ var require_github = __commonJS({
   }
 });
 
+// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scan/index.js
+var require_scan = __commonJS({
+  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scan/index.js"(exports) {
+    "use strict";
+    exports.__esModule = true;
+    exports.scan = void 0;
+    var scan = function(value, condition) {
+      if (condition(value))
+        return value;
+      throw new Error("type assertion is failed. (value: ".concat(value, ")"));
+    };
+    exports.scan = scan;
+  }
+});
+
+// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/typeGuard/index.js
+var require_typeGuard = __commonJS({
+  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/typeGuard/index.js"(exports) {
+    "use strict";
+    exports.__esModule = true;
+    exports.isInstanceOf = exports.isList = exports.isOptional = exports.isObject = exports.isArray = exports.isUnion = exports.isDate = exports.isNull = exports.isUndefined = exports.isBigint = exports.isSymbol = exports.isBoolean = exports.isNumber = exports.isString = void 0;
+    var isString = function(value) {
+      return typeof value === "string";
+    };
+    exports.isString = isString;
+    var isNumber = function(value) {
+      return typeof value === "number";
+    };
+    exports.isNumber = isNumber;
+    var isBoolean = function(value) {
+      return typeof value === "boolean";
+    };
+    exports.isBoolean = isBoolean;
+    var isSymbol = function(value) {
+      return typeof value === "symbol";
+    };
+    exports.isSymbol = isSymbol;
+    var isBigint = function(value) {
+      return typeof value === "bigint";
+    };
+    exports.isBigint = isBigint;
+    var isUndefined = function(value) {
+      return typeof value === "undefined";
+    };
+    exports.isUndefined = isUndefined;
+    var isNull = function(value) {
+      return value === null;
+    };
+    exports.isNull = isNull;
+    var isDate = function(value) {
+      return value instanceof Date;
+    };
+    exports.isDate = isDate;
+    var isUnion = function(value) {
+      var conditions = [];
+      for (var _i = 1; _i < arguments.length; _i++) {
+        conditions[_i - 1] = arguments[_i];
+      }
+      return conditions.some(function(condition) {
+        return condition(value);
+      });
+    };
+    exports.isUnion = isUnion;
+    var isArray = function(array2) {
+      var conditions = [];
+      for (var _i = 1; _i < arguments.length; _i++) {
+        conditions[_i - 1] = arguments[_i];
+      }
+      return Array.isArray(array2) && array2.every(function(value) {
+        return conditions.some(function(cond) {
+          return cond(value);
+        });
+      });
+    };
+    exports.isArray = isArray;
+    var isObject = function(value) {
+      return typeof value === "object" && value !== null;
+    };
+    exports.isObject = isObject;
+    var isOptional = function(value) {
+      var conditions = [];
+      for (var _i = 1; _i < arguments.length; _i++) {
+        conditions[_i - 1] = arguments[_i];
+      }
+      return value === void 0 || conditions.some(function(cond) {
+        return cond(value);
+      });
+    };
+    exports.isOptional = isOptional;
+    var isList = function(value, array2) {
+      return array2.length !== 0 && array2.includes(value);
+    };
+    exports.isList = isList;
+    var isInstanceOf = function(value, constructor) {
+      return value instanceof constructor;
+    };
+    exports.isInstanceOf = isInstanceOf;
+  }
+});
+
+// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scanner/index.js
+var require_scanner = __commonJS({
+  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scanner/index.js"(exports) {
+    "use strict";
+    exports.__esModule = true;
+    exports.scanner = void 0;
+    var typeGuard_1 = require_typeGuard();
+    var scanner3 = function(fields, option) {
+      return function(value) {
+        if (!(0, typeGuard_1.isObject)(value)) {
+          if (option === null || option === void 0 ? void 0 : option.outputLog)
+            console.error("value is not object");
+          return false;
+        }
+        return Object.entries(fields).every(function(_a) {
+          var key = _a[0], condition = _a[1];
+          var isMeet = condition(value[key]);
+          if (!isMeet && (option === null || option === void 0 ? void 0 : option.outputLog))
+            console.error("value.".concat(key, " does not meet the condition."));
+          return isMeet;
+        });
+      };
+    };
+    exports.scanner = scanner3;
+  }
+});
+
+// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/fields/index.js
+var require_fields = __commonJS({
+  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/fields/index.js"(exports) {
+    "use strict";
+    var __spreadArray = exports && exports.__spreadArray || function(to, from, pack) {
+      if (pack || arguments.length === 2)
+        for (var i = 0, l = from.length, ar; i < l; i++) {
+          if (ar || !(i in from)) {
+            if (!ar)
+              ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+          }
+        }
+      return to.concat(ar || Array.prototype.slice.call(from));
+    };
+    exports.__esModule = true;
+    exports.instanceOf = exports.list = exports.optional = exports.array = exports.union = exports.date = exports.Null = exports.Undefined = exports.bigint = exports.symbol = exports.boolean = exports.number = exports.string = void 0;
+    var typeGuard_1 = require_typeGuard();
+    exports.string = typeGuard_1.isString;
+    exports.number = typeGuard_1.isNumber;
+    exports.boolean = typeGuard_1.isBoolean;
+    exports.symbol = typeGuard_1.isSymbol;
+    exports.bigint = typeGuard_1.isBigint;
+    exports.Undefined = typeGuard_1.isUndefined;
+    exports.Null = typeGuard_1.isNull;
+    exports.date = typeGuard_1.isDate;
+    var union = function() {
+      var conditions = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        conditions[_i] = arguments[_i];
+      }
+      return function(value) {
+        return typeGuard_1.isUnion.apply(void 0, __spreadArray([value], conditions, false));
+      };
+    };
+    exports.union = union;
+    var array2 = function() {
+      var conditions = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        conditions[_i] = arguments[_i];
+      }
+      return function(value) {
+        return typeGuard_1.isArray.apply(void 0, __spreadArray([value], conditions, false));
+      };
+    };
+    exports.array = array2;
+    var optional2 = function() {
+      var conditions = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        conditions[_i] = arguments[_i];
+      }
+      return function(value) {
+        return typeGuard_1.isOptional.apply(void 0, __spreadArray([value], conditions, false));
+      };
+    };
+    exports.optional = optional2;
+    var list = function(array3) {
+      return function(value) {
+        return (0, typeGuard_1.isList)(value, array3);
+      };
+    };
+    exports.list = list;
+    var instanceOf = function(constructor) {
+      return function(value) {
+        return (0, typeGuard_1.isInstanceOf)(value, constructor);
+      };
+    };
+    exports.instanceOf = instanceOf;
+  }
+});
+
+// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/index.js
+var require_dist = __commonJS({
+  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/index.js"(exports) {
+    "use strict";
+    var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    exports.__esModule = true;
+    exports.isUnion = exports.isUndefined = exports.isSymbol = exports.isString = exports.isOptional = exports.isObject = exports.isNumber = exports.isNull = exports.isList = exports.isInstanceOf = exports.isDate = exports.isBoolean = exports.isBigint = exports.isArray = exports.union = exports.Undefined = exports.symbol = exports.string = exports.optional = exports.number = exports.Null = exports.list = exports.instanceOf = exports.date = exports.boolean = exports.bigint = exports.array = exports.scanner = exports.scan = void 0;
+    var scan_1 = require_scan();
+    __createBinding(exports, scan_1, "scan");
+    var scanner_1 = require_scanner();
+    __createBinding(exports, scanner_1, "scanner");
+    var fields_1 = require_fields();
+    __createBinding(exports, fields_1, "array");
+    __createBinding(exports, fields_1, "bigint");
+    __createBinding(exports, fields_1, "boolean");
+    __createBinding(exports, fields_1, "date");
+    __createBinding(exports, fields_1, "instanceOf");
+    __createBinding(exports, fields_1, "list");
+    __createBinding(exports, fields_1, "Null");
+    __createBinding(exports, fields_1, "number");
+    __createBinding(exports, fields_1, "optional");
+    __createBinding(exports, fields_1, "string");
+    __createBinding(exports, fields_1, "symbol");
+    __createBinding(exports, fields_1, "Undefined");
+    __createBinding(exports, fields_1, "union");
+    var typeGuard_1 = require_typeGuard();
+    __createBinding(exports, typeGuard_1, "isArray");
+    __createBinding(exports, typeGuard_1, "isBigint");
+    __createBinding(exports, typeGuard_1, "isBoolean");
+    __createBinding(exports, typeGuard_1, "isDate");
+    __createBinding(exports, typeGuard_1, "isInstanceOf");
+    __createBinding(exports, typeGuard_1, "isList");
+    __createBinding(exports, typeGuard_1, "isNull");
+    __createBinding(exports, typeGuard_1, "isNumber");
+    __createBinding(exports, typeGuard_1, "isObject");
+    __createBinding(exports, typeGuard_1, "isOptional");
+    __createBinding(exports, typeGuard_1, "isString");
+    __createBinding(exports, typeGuard_1, "isSymbol");
+    __createBinding(exports, typeGuard_1, "isUndefined");
+    __createBinding(exports, typeGuard_1, "isUnion");
+  }
+});
+
 // ../../node_modules/.pnpm/@actions+io@1.1.3/node_modules/@actions/io/lib/io-util.js
 var require_io_util = __commonJS({
   "../../node_modules/.pnpm/@actions+io@1.1.3/node_modules/@actions/io/lib/io-util.js"(exports) {
@@ -37152,261 +37407,6 @@ var require_exec = __commonJS({
       });
     }
     exports.getExecOutput = getExecOutput2;
-  }
-});
-
-// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scan/index.js
-var require_scan = __commonJS({
-  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scan/index.js"(exports) {
-    "use strict";
-    exports.__esModule = true;
-    exports.scan = void 0;
-    var scan = function(value, condition) {
-      if (condition(value))
-        return value;
-      throw new Error("type assertion is failed. (value: ".concat(value, ")"));
-    };
-    exports.scan = scan;
-  }
-});
-
-// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/typeGuard/index.js
-var require_typeGuard = __commonJS({
-  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/typeGuard/index.js"(exports) {
-    "use strict";
-    exports.__esModule = true;
-    exports.isInstanceOf = exports.isList = exports.isOptional = exports.isObject = exports.isArray = exports.isUnion = exports.isDate = exports.isNull = exports.isUndefined = exports.isBigint = exports.isSymbol = exports.isBoolean = exports.isNumber = exports.isString = void 0;
-    var isString = function(value) {
-      return typeof value === "string";
-    };
-    exports.isString = isString;
-    var isNumber = function(value) {
-      return typeof value === "number";
-    };
-    exports.isNumber = isNumber;
-    var isBoolean = function(value) {
-      return typeof value === "boolean";
-    };
-    exports.isBoolean = isBoolean;
-    var isSymbol = function(value) {
-      return typeof value === "symbol";
-    };
-    exports.isSymbol = isSymbol;
-    var isBigint = function(value) {
-      return typeof value === "bigint";
-    };
-    exports.isBigint = isBigint;
-    var isUndefined = function(value) {
-      return typeof value === "undefined";
-    };
-    exports.isUndefined = isUndefined;
-    var isNull = function(value) {
-      return value === null;
-    };
-    exports.isNull = isNull;
-    var isDate = function(value) {
-      return value instanceof Date;
-    };
-    exports.isDate = isDate;
-    var isUnion = function(value) {
-      var conditions = [];
-      for (var _i = 1; _i < arguments.length; _i++) {
-        conditions[_i - 1] = arguments[_i];
-      }
-      return conditions.some(function(condition) {
-        return condition(value);
-      });
-    };
-    exports.isUnion = isUnion;
-    var isArray = function(array2) {
-      var conditions = [];
-      for (var _i = 1; _i < arguments.length; _i++) {
-        conditions[_i - 1] = arguments[_i];
-      }
-      return Array.isArray(array2) && array2.every(function(value) {
-        return conditions.some(function(cond) {
-          return cond(value);
-        });
-      });
-    };
-    exports.isArray = isArray;
-    var isObject = function(value) {
-      return typeof value === "object" && value !== null;
-    };
-    exports.isObject = isObject;
-    var isOptional = function(value) {
-      var conditions = [];
-      for (var _i = 1; _i < arguments.length; _i++) {
-        conditions[_i - 1] = arguments[_i];
-      }
-      return value === void 0 || conditions.some(function(cond) {
-        return cond(value);
-      });
-    };
-    exports.isOptional = isOptional;
-    var isList = function(value, array2) {
-      return array2.length !== 0 && array2.includes(value);
-    };
-    exports.isList = isList;
-    var isInstanceOf = function(value, constructor) {
-      return value instanceof constructor;
-    };
-    exports.isInstanceOf = isInstanceOf;
-  }
-});
-
-// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scanner/index.js
-var require_scanner = __commonJS({
-  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/scanner/index.js"(exports) {
-    "use strict";
-    exports.__esModule = true;
-    exports.scanner = void 0;
-    var typeGuard_1 = require_typeGuard();
-    var scanner2 = function(fields, option) {
-      return function(value) {
-        if (!(0, typeGuard_1.isObject)(value)) {
-          if (option === null || option === void 0 ? void 0 : option.outputLog)
-            console.error("value is not object");
-          return false;
-        }
-        return Object.entries(fields).every(function(_a) {
-          var key = _a[0], condition = _a[1];
-          var isMeet = condition(value[key]);
-          if (!isMeet && (option === null || option === void 0 ? void 0 : option.outputLog))
-            console.error("value.".concat(key, " does not meet the condition."));
-          return isMeet;
-        });
-      };
-    };
-    exports.scanner = scanner2;
-  }
-});
-
-// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/fields/index.js
-var require_fields = __commonJS({
-  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/fields/index.js"(exports) {
-    "use strict";
-    var __spreadArray = exports && exports.__spreadArray || function(to, from, pack) {
-      if (pack || arguments.length === 2)
-        for (var i = 0, l = from.length, ar; i < l; i++) {
-          if (ar || !(i in from)) {
-            if (!ar)
-              ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-          }
-        }
-      return to.concat(ar || Array.prototype.slice.call(from));
-    };
-    exports.__esModule = true;
-    exports.instanceOf = exports.list = exports.optional = exports.array = exports.union = exports.date = exports.Null = exports.Undefined = exports.bigint = exports.symbol = exports.boolean = exports.number = exports.string = void 0;
-    var typeGuard_1 = require_typeGuard();
-    exports.string = typeGuard_1.isString;
-    exports.number = typeGuard_1.isNumber;
-    exports.boolean = typeGuard_1.isBoolean;
-    exports.symbol = typeGuard_1.isSymbol;
-    exports.bigint = typeGuard_1.isBigint;
-    exports.Undefined = typeGuard_1.isUndefined;
-    exports.Null = typeGuard_1.isNull;
-    exports.date = typeGuard_1.isDate;
-    var union = function() {
-      var conditions = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        conditions[_i] = arguments[_i];
-      }
-      return function(value) {
-        return typeGuard_1.isUnion.apply(void 0, __spreadArray([value], conditions, false));
-      };
-    };
-    exports.union = union;
-    var array2 = function() {
-      var conditions = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        conditions[_i] = arguments[_i];
-      }
-      return function(value) {
-        return typeGuard_1.isArray.apply(void 0, __spreadArray([value], conditions, false));
-      };
-    };
-    exports.array = array2;
-    var optional2 = function() {
-      var conditions = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        conditions[_i] = arguments[_i];
-      }
-      return function(value) {
-        return typeGuard_1.isOptional.apply(void 0, __spreadArray([value], conditions, false));
-      };
-    };
-    exports.optional = optional2;
-    var list = function(array3) {
-      return function(value) {
-        return (0, typeGuard_1.isList)(value, array3);
-      };
-    };
-    exports.list = list;
-    var instanceOf = function(constructor) {
-      return function(value) {
-        return (0, typeGuard_1.isInstanceOf)(value, constructor);
-      };
-    };
-    exports.instanceOf = instanceOf;
-  }
-});
-
-// ../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/index.js
-var require_dist = __commonJS({
-  "../../node_modules/.pnpm/typescanner@0.5.3/node_modules/typescanner/dist/index.js"(exports) {
-    "use strict";
-    var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      var desc = Object.getOwnPropertyDescriptor(m, k);
-      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-        desc = { enumerable: true, get: function() {
-          return m[k];
-        } };
-      }
-      Object.defineProperty(o, k2, desc);
-    } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      o[k2] = m[k];
-    });
-    exports.__esModule = true;
-    exports.isUnion = exports.isUndefined = exports.isSymbol = exports.isString = exports.isOptional = exports.isObject = exports.isNumber = exports.isNull = exports.isList = exports.isInstanceOf = exports.isDate = exports.isBoolean = exports.isBigint = exports.isArray = exports.union = exports.Undefined = exports.symbol = exports.string = exports.optional = exports.number = exports.Null = exports.list = exports.instanceOf = exports.date = exports.boolean = exports.bigint = exports.array = exports.scanner = exports.scan = void 0;
-    var scan_1 = require_scan();
-    __createBinding(exports, scan_1, "scan");
-    var scanner_1 = require_scanner();
-    __createBinding(exports, scanner_1, "scanner");
-    var fields_1 = require_fields();
-    __createBinding(exports, fields_1, "array");
-    __createBinding(exports, fields_1, "bigint");
-    __createBinding(exports, fields_1, "boolean");
-    __createBinding(exports, fields_1, "date");
-    __createBinding(exports, fields_1, "instanceOf");
-    __createBinding(exports, fields_1, "list");
-    __createBinding(exports, fields_1, "Null");
-    __createBinding(exports, fields_1, "number");
-    __createBinding(exports, fields_1, "optional");
-    __createBinding(exports, fields_1, "string");
-    __createBinding(exports, fields_1, "symbol");
-    __createBinding(exports, fields_1, "Undefined");
-    __createBinding(exports, fields_1, "union");
-    var typeGuard_1 = require_typeGuard();
-    __createBinding(exports, typeGuard_1, "isArray");
-    __createBinding(exports, typeGuard_1, "isBigint");
-    __createBinding(exports, typeGuard_1, "isBoolean");
-    __createBinding(exports, typeGuard_1, "isDate");
-    __createBinding(exports, typeGuard_1, "isInstanceOf");
-    __createBinding(exports, typeGuard_1, "isList");
-    __createBinding(exports, typeGuard_1, "isNull");
-    __createBinding(exports, typeGuard_1, "isNumber");
-    __createBinding(exports, typeGuard_1, "isObject");
-    __createBinding(exports, typeGuard_1, "isOptional");
-    __createBinding(exports, typeGuard_1, "isString");
-    __createBinding(exports, typeGuard_1, "isSymbol");
-    __createBinding(exports, typeGuard_1, "isUndefined");
-    __createBinding(exports, typeGuard_1, "isUnion");
   }
 });
 
@@ -39285,8 +39285,8 @@ var require_oauth1_helper = __commonJS({
     function sortObject(data) {
       return Object.keys(data).sort().map((key) => ({ key, value: data[key] }));
     }
-    function deParam(string2) {
-      const split = string2.split("&");
+    function deParam(string3) {
+      const split = string3.split("&");
       const data = {};
       for (const coupleKeyValue of split) {
         const [key, value = ""] = coupleKeyValue.split("=");
@@ -39608,8 +39608,8 @@ var require_oauth2_helper = __commonJS({
         }
         return text;
       }
-      static escapeBase64Url(string2) {
-        return string2.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+      static escapeBase64Url(string3) {
+        return string3.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
       }
     };
     exports.OAuth2Helper = OAuth2Helper;
@@ -44328,44 +44328,26 @@ var schema = {
   }
 };
 
-// ../shared/src/isGhostName.ts
-var isGhostName = (x) => x in schema;
-
-// ../shared/src/initWraithStatus.ts
-var statusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u3030";
-var ghostAlias = (name) => isGhostName(name) ? schema[name].alias : name;
-var initWraithStatus = (init) => {
-  const wraith_status = init;
-  const get = () => wraith_status;
-  const update = (name, status) => {
-    const value = typeof status === "string" ? { status } : status;
-    Object.defineProperty(wraith_status, name, value);
+// ../../node_modules/.pnpm/@jill64+attempt@1.1.0/node_modules/@jill64/attempt/dist/index.js
+var isPromise = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
+function attempt(func, fallback) {
+  const argLen = arguments.length;
+  const handle = (error) => {
+    if (argLen === 1) {
+      if (error instanceof Error) {
+        return error;
+      }
+      throw error;
+    }
+    return typeof fallback === "function" ? fallback(error instanceof Error ? error : null, error) : fallback;
   };
-  const generateOutput = () => {
-    const entries = Object.entries(wraith_status);
-    const title = entries.map(([name, status]) => `${ghostAlias(name)} ${statusEmoji(status)} `).join(" | ");
-    const header = `
-| Ghost | Status | Detail |
-| ----- | ------ | ------ |
-`;
-    const body = entries.map(
-      ([name, status]) => `| ${ghostAlias(name)} | ${statusEmoji(status)} ${status.status} | ${status.detail ?? ""} |`
-    ).join("\n");
-    const summary = `${header}${body}
-`;
-    return {
-      title,
-      summary
-    };
-  };
-  const getResults = () => Object.values(wraith_status).map(({ status }) => status);
-  return {
-    get,
-    update,
-    getResults,
-    generateOutput
-  };
-};
+  try {
+    const result = func();
+    return isPromise(result) ? result.then((_) => _, handle) : result;
+  } catch (error) {
+    return handle(error);
+  }
+}
 
 // ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
@@ -44514,6 +44496,13 @@ Cause on Action
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
+// ../../node_modules/.pnpm/octoflare@0.21.1/node_modules/octoflare/dist/re-exports/actions/github.js
+var github_exports = {};
+__reExport(github_exports, __toESM(require_github(), 1));
+
+// src/index.ts
+var import_typescanner2 = __toESM(require_dist(), 1);
+
 // src/utils/gitDiff.ts
 var import_exec2 = __toESM(require_exec(), 1);
 
@@ -44595,27 +44584,6 @@ var format = async () => {
     detail: "Formatted code has been pushed."
   };
 };
-
-// ../../node_modules/.pnpm/@jill64+attempt@1.1.0/node_modules/@jill64/attempt/dist/index.js
-var isPromise = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
-function attempt(func, fallback) {
-  const argLen = arguments.length;
-  const handle = (error) => {
-    if (argLen === 1) {
-      if (error instanceof Error) {
-        return error;
-      }
-      throw error;
-    }
-    return typeof fallback === "function" ? fallback(error instanceof Error ? error : null, error) : fallback;
-  };
-  try {
-    const result = func();
-    return isPromise(result) ? result.then((_) => _, handle) : result;
-  } catch (error) {
-    return handle(error);
-  }
-}
 
 // src/ghosts/lint.ts
 var import_promises = require("fs/promises");
@@ -44754,21 +44722,94 @@ var apps = {
   release
 };
 
+// ../shared/src/getStatusEmoji.ts
+var getStatusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u2796";
+
+// src/utils/updateOutput.ts
+var updateOutput = ({
+  ghost_name,
+  result,
+  output
+}) => {
+  const alias = schema[ghost_name].alias;
+  const ghost_status = typeof result === "string" ? { status: result } : result;
+  const status_emoji = getStatusEmoji(ghost_status);
+  const title = output.title.replace(
+    new RegExp(`.* ${alias}`),
+    `${status_emoji} ${alias}`
+  );
+  const summary = output.summary.replace(
+    new RegExp(`\\| ${alias} \\| .* \\| .* \\|`),
+    `| ${alias} | ${status_emoji} ${ghost_status.status} | ${ghost_status.detail ?? ""} |`
+  );
+  return {
+    ...output,
+    title,
+    summary
+  };
+};
+
 // src/index.ts
-action(async ({ octokit, payload, updateCheckRun }) => {
-  const wraith_status = initWraithStatus(payload.data.status);
+var isValidOutput = (0, import_typescanner2.scanner)({
+  title: import_typescanner2.string,
+  summary: import_typescanner2.string
+});
+action(async ({ octokit, payload }) => {
   const name = core_exports.getInput("name");
   if (!(name in apps)) {
     throw new Error(`Invalid ghost name: ${name}`);
   }
   const ghost_name = name;
+  const trigger = schema[ghost_name].trigger;
+  const {
+    repo,
+    owner,
+    data: { event, check_run_id }
+  } = payload;
+  if (event === "push" && trigger !== event) {
+    return;
+  }
   const app = apps[ghost_name];
-  const result = await app({
-    octokit,
-    payload
+  const result = await attempt(
+    () => app({
+      octokit,
+      payload
+    }),
+    (e, o) => {
+      core_exports.setFailed(e ?? String(o));
+      return {
+        status: "failure",
+        detail: e?.message ?? String(o)
+      };
+    }
+  );
+  const check = await attempt(
+    () => octokit.rest.checks.get({
+      repo,
+      owner,
+      check_run_id
+    }),
+    null
+  );
+  const output = check?.data.output;
+  if (!isValidOutput(output)) {
+    console.log("Invalid checks output:", output);
+    return;
+  }
+  const { context } = github_exports;
+  const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+  await octokit.rest.checks.update({
+    owner,
+    repo,
+    details_url,
+    check_run_id: check_run_id.toString(),
+    output: updateOutput({
+      output,
+      ghost_name,
+      result
+    }),
+    status: "in_progress"
   });
-  wraith_status.update(ghost_name, result);
-  await updateCheckRun(wraith_status.generateOutput());
 });
 /*! Bundled license information:
 
