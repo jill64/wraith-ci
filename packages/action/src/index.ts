@@ -67,7 +67,7 @@ action<WraithPayload>(async ({ octokit, payload }) => {
   }
 
   const { context } = github
-  const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+  const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}/job/${context.job}`
 
   await octokit.rest.checks.update({
     owner,
