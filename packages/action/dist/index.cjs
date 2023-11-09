@@ -44682,7 +44682,7 @@ var apps = {
 };
 
 // ../shared/src/getStatusEmoji.ts
-var getStatusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "-";
+var getStatusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u30FC";
 
 // ../shared/src/schema.ts
 var schema = {
