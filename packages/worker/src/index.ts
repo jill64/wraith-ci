@@ -146,8 +146,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
           repo,
           check_run_id,
           output,
-          status: 'in_progress',
-          conclusion: 'neutral'
+          status: 'in_progress'
         })
       })
     )
@@ -182,7 +181,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
 
     await close(conclusion, output)
 
-    return new Response('Wraith CI Workflow Complete', {
+    return new Response(`Wraith CI Workflow Complete as ${conclusion}`, {
       status: 200
     })
   } catch (e) {
