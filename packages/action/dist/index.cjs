@@ -44682,7 +44682,7 @@ var apps = {
 };
 
 // ../shared/src/getStatusEmoji.ts
-var getStatusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u2796";
+var getStatusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u30FC";
 
 // ../shared/src/schema.ts
 var schema = {
@@ -44773,14 +44773,14 @@ action(async ({ octokit, payload }) => {
       octokit,
       payload
     }),
-    (e, o) => {
-      core_exports.setFailed(e ?? String(o));
-      return {
-        status: "failure",
-        detail: e?.message ?? String(o)
-      };
-    }
+    (e, o) => ({
+      status: "failure",
+      detail: e?.message ?? String(o)
+    })
   );
+  if (typeof result === "object" && result.status === "failure") {
+    core_exports.setFailed(result.detail);
+  }
   const check = await attempt(
     () => octokit.rest.checks.get({
       repo,
