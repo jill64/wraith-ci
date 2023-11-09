@@ -1,4 +1,3 @@
-import { schema } from '@/shared/src/schema.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
 import { action } from 'octoflare/action'
@@ -22,15 +21,13 @@ action<WraithPayload>(async ({ octokit, payload }) => {
 
   const ghost_name = name as keyof typeof apps
 
-  const trigger = schema[ghost_name].trigger
-
   const {
     repo,
     owner,
-    data: { event, check_run_id }
+    data: { check_run_id, triggered }
   } = payload
 
-  if (event === 'push' && trigger !== event) {
+  if (!triggered.includes(ghost_name)) {
     return
   }
 

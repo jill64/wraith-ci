@@ -3,6 +3,7 @@ import { getStatusEmoji } from '@/shared/src/getStatusEmoji.js'
 import { isGhostName } from '@/shared/src/isGhostName.js'
 import { nonNull } from '@/shared/src/nonNull.js'
 import { schema } from '@/shared/src/schema.js'
+import { GhostName } from '@/shared/types/GhostName.js'
 import { GhostStatus } from '@/shared/types/GhostStatus.js'
 import { TriggerEvent } from '@/shared/types/TriggerEvent.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
@@ -179,15 +180,17 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
       })
     )
 
-    const results = Object.values(wraith_status).map(({ status }) => status)
+    const bridged_ghosts = Object.entries(wraith_status)
+      .filter(([, { status }]) => status === 'bridged')
+      .map(([name]) => name as GhostName)
 
-    if (results.includes('bridged')) {
+    if (bridged_ghosts.length) {
       await installation.startWorkflow({
         repo,
         owner,
         data: {
           check_run_id,
-          event,
+          triggered: bridged_ghosts,
           ref
         }
       })
@@ -196,6 +199,8 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
         status: 202
       })
     }
+
+    const results = Object.values(wraith_status).map(({ status }) => status)
 
     const conclusion = results.every((status) => status === 'skipped')
       ? 'skipped'

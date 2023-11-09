@@ -1,7 +1,7 @@
-import { TriggerEvent } from './TriggerEvent.js'
+import { GhostName } from './GhostName.js'
 
 export type WraithPayload = {
   ref: string
-  event: TriggerEvent
+  triggered: GhostName[]
   check_run_id: number
 }

@@ -21,7 +21,7 @@ export const updateOutput = ({
   const status_emoji = getStatusEmoji(ghost_status)
 
   const title = output.title.replace(
-    new RegExp(`.* ${alias}`),
+    new RegExp(`\\S* ${alias}`),
     `${status_emoji} ${alias}`
   )
 
