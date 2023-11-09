@@ -86,10 +86,9 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
   const checks = await installation.kit.rest.checks.create({
     owner,
     repo,
-    name: 'Wraith CI',
+    name: is_pull_request ? 'Wraith CI - PR' : 'Wraith CI',
     head_sha,
     status: 'in_progress',
-    conclusion: 'neutral',
     output: wraith_status.generateOutput()
   })
 
@@ -183,20 +182,9 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
 
     await close(conclusion, output)
 
-    return new Response(
-      `Wraith CI Workflow Complete as ${conclusion}\n\noutput:${JSON.stringify(
-        output,
-        null,
-        2
-      )}\n\nresults:${JSON.stringify(
-        results,
-        null,
-        2
-      )}\n\nstatus:${JSON.stringify(wraith_status.get(), null, 2)}`,
-      {
-        status: 200
-      }
-    )
+    return new Response('Wraith CI Workflow Complete', {
+      status: 200
+    })
   } catch (e) {
     await close('failure', {
       title: 'Unhandled Worker Error',
