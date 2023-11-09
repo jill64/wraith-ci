@@ -44287,47 +44287,6 @@ var require_cjs = __commonJS({
   }
 });
 
-// ../shared/src/schema.ts
-var schema = {
-  build: {
-    alias: "Build",
-    trigger: "push",
-    action: true
-  },
-  deploy: {
-    alias: "Deploy",
-    trigger: "push_main",
-    action: true
-  },
-  docs: {
-    alias: "Docs",
-    trigger: "push"
-  },
-  format: {
-    alias: "Format",
-    trigger: "push",
-    action: true
-  },
-  lint: {
-    alias: "Lint",
-    trigger: "push",
-    action: true
-  },
-  merge: {
-    alias: "Auto Merge",
-    trigger: "pull_request"
-  },
-  release: {
-    alias: "Release",
-    trigger: "push_main",
-    action: true
-  },
-  bump: {
-    alias: "Version Bump",
-    trigger: "pull_request"
-  }
-};
-
 // ../../node_modules/.pnpm/@jill64+attempt@1.1.0/node_modules/@jill64/attempt/dist/index.js
 var isPromise = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
 function attempt(func, fallback) {
@@ -44725,6 +44684,47 @@ var apps = {
 // ../shared/src/getStatusEmoji.ts
 var getStatusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "bridged" ? "\u231B\uFE0F" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u2796";
 
+// ../shared/src/schema.ts
+var schema = {
+  build: {
+    alias: "Build",
+    trigger: "push",
+    action: true
+  },
+  deploy: {
+    alias: "Deploy",
+    trigger: "push_main",
+    action: true
+  },
+  docs: {
+    alias: "Docs",
+    trigger: "push"
+  },
+  format: {
+    alias: "Format",
+    trigger: "push",
+    action: true
+  },
+  lint: {
+    alias: "Lint",
+    trigger: "push",
+    action: true
+  },
+  merge: {
+    alias: "Auto Merge",
+    trigger: "pull_request"
+  },
+  release: {
+    alias: "Release",
+    trigger: "push_main",
+    action: true
+  },
+  bump: {
+    alias: "Version Bump",
+    trigger: "pull_request"
+  }
+};
+
 // src/utils/updateOutput.ts
 var updateOutput = ({
   ghost_name,
@@ -44735,7 +44735,7 @@ var updateOutput = ({
   const ghost_status = typeof result === "string" ? { status: result } : result;
   const status_emoji = getStatusEmoji(ghost_status);
   const title = output.title.replace(
-    new RegExp(`.* ${alias}`),
+    new RegExp(`\\S* ${alias}`),
     `${status_emoji} ${alias}`
   );
   const summary = output.summary.replace(
@@ -44759,13 +44759,12 @@ action(async ({ octokit, payload }) => {
     throw new Error(`Invalid ghost name: ${name}`);
   }
   const ghost_name = name;
-  const trigger = schema[ghost_name].trigger;
   const {
     repo,
     owner,
-    data: { event, check_run_id }
+    data: { check_run_id, triggered }
   } = payload;
-  if (event === "push" && trigger !== event) {
+  if (!triggered.includes(ghost_name)) {
     return;
   }
   const app = apps[ghost_name];
