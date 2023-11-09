@@ -3,7 +3,7 @@ description: GitHub Action for Wraith CI
 
 inputs:
   payload:
-    description: Wraith Payload
+    description: Octoflare Payload
     required: true
   name:
     description: Ghost App Name
