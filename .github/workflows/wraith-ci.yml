@@ -23,7 +23,7 @@ jobs:
         with:
           token: ${{ env.GH_TOKEN }}
           repository: ${{ env.repository }}
-          ref: ${{ fromJson(inputs.payload).ref }}
+          ref: ${{ fromJson(inputs.payload).data.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
