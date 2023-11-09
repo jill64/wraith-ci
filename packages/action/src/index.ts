@@ -39,15 +39,15 @@ action<WraithPayload>(async ({ octokit, payload }) => {
         octokit,
         payload
       }),
-    (e, o) => {
-      core.setFailed(e ?? String(o))
-
-      return {
-        status: 'failure' as const,
-        detail: e?.message ?? String(o)
-      }
-    }
+    (e, o) => ({
+      status: 'failure' as const,
+      detail: e?.message ?? String(o)
+    })
   )
+
+  if (typeof result === 'object' && result.status === 'failure') {
+    core.setFailed(result.detail)
+  }
 
   const check = await attempt(
     () =>
