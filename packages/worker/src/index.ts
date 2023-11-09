@@ -183,7 +183,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
 
     await close(conclusion, output)
 
-    return new Response(`Wraith CI Workflow Complete as ${conclusion}\n\n${output}`, {
+    return new Response(`Wraith CI Workflow Complete as ${conclusion}\n\noutput:${JSON.stringify(output)}`, {
       status: 200
     })
   } catch (e) {
