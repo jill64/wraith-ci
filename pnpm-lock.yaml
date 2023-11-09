@@ -27,8 +27,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0(eslint@8.53.0)(typescript@5.2.2)
       octoflare:
-        specifier: 0.20.2
-        version: 0.20.2
+        specifier: 0.21.1
+        version: 0.21.1
       prettier:
         specifier: 3.0.3
         version: 3.0.3
@@ -2548,8 +2548,8 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /octoflare@0.20.2:
-    resolution: {integrity: sha512-xQwrwqhqLDIQrHDom6OjtLZkDbTFP4gbxDigCvTdDLq+mTM+3frOpfh1lLbIIzzc5VHBLDTKum6B+GfWVKeHZQ==}
+  /octoflare@0.21.1:
+    resolution: {integrity: sha512-vQ50wf18xLZDEX5hqbRCZ3oStEPBp0B2z6+r8abSZ7aGDHBU8/k3zVw9PjHfKGgOAHp3PRfp7nXJCzvFvtLJmA==}
     dependencies:
       '@actions/core': 1.10.1
       '@actions/github': 6.0.0
