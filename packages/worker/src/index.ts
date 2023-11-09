@@ -197,11 +197,11 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
       })
     }
 
-    const conclusion = results.every((status) => status === 'success')
-      ? 'success'
-      : results.every((status) => status === 'skipped')
+    const conclusion = results.every((status) => status === 'skipped')
       ? 'skipped'
-      : 'failure'
+      : results.some((status) => status === 'failure')
+      ? 'failure'
+      : 'success'
 
     await close(conclusion, generateOutput())
 
