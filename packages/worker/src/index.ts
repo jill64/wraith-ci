@@ -183,9 +183,20 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
 
     await close(conclusion, output)
 
-    return new Response(`Wraith CI Workflow Complete as ${conclusion}\n\noutput:${JSON.stringify(output)}`, {
-      status: 200
-    })
+    return new Response(
+      `Wraith CI Workflow Complete as ${conclusion}\n\noutput:${JSON.stringify(
+        output,
+        null,
+        2
+      )}\n\nresults:${JSON.stringify(
+        results,
+        null,
+        2
+      )}\n\nstatus:${JSON.stringify(wraith_status.get(), null, 2)}`,
+      {
+        status: 200
+      }
+    )
   } catch (e) {
     await close('failure', {
       title: 'Unhandled Worker Error',
