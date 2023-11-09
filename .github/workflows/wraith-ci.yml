@@ -8,6 +8,7 @@ on:
 
 env:
   GH_TOKEN: ${{ fromJson(inputs.payload).token }}
+  repository: ${{ fromJson(inputs.payload).owner }}/${{ fromJson(inputs.payload).repo }}
 
 jobs:
   wraith-ci:
@@ -21,7 +22,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           token: ${{ env.GH_TOKEN }}
-          repository: ${{ fromJson(inputs.payload).owner }}/${{ fromJson(inputs.payload).repo }}
+          repository: ${{ env.repository }}
           ref: ${{ fromJson(inputs.payload).ref }}
 
       - name: Setup Node.js
@@ -56,8 +57,21 @@ jobs:
           X_JP_ACCESS_TOKEN: ${{ secrets.X_JP_ACCESS_TOKEN }}
           X_JP_ACCESS_SECRET: ${{ secrets.X_JP_ACCESS_SECRET }}
 
-  revoke-installation-token:
+  close-check-run:
     needs: wraith-ci
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close check run
+        run: |
+          gh api \
+            --method PATCH \
+            /repos/${{ env.repository }}/check-runs/${{ fromJson(inputs.payload).data.check_run_id }} \
+            --field status=completed \
+            --field conclusion=${{ needs.wraith-ci.result }}
+
+  revoke-installation-token:
+    needs: close-check-run
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +79,7 @@ jobs:
         run: gh api --method DELETE /installation/token
 
   revoke-app-token:
-    needs: wraith-ci
+    needs: close-check-run
     if: always()
     runs-on: ubuntu-latest
     steps:

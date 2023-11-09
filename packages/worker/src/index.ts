@@ -1,6 +1,12 @@
+import { initWraithStatus } from '@/shared/src/initWraithStatus.js'
+import { isGhostName } from '@/shared/src/isGhostName.js'
+import { nonNull } from '@/shared/src/nonNull.js'
+import { schema } from '@/shared/src/schema.js'
+import { GhostStatus } from '@/shared/types/GhostStatus.js'
+import { TriggerEvent } from '@/shared/types/TriggerEvent.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
-import { CloseCheckParam, octoflare } from 'octoflare'
+import { ChecksOutput, Conclusion, octoflare } from 'octoflare'
 import { apps } from './apps.js'
 
 export default octoflare<WraithPayload>(async ({ payload, installation }) => {
@@ -10,141 +16,176 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     })
   }
 
-  if (!('repository' in payload && payload.repository)) {
-    return new Response('Skip Event: No Repository', {
+  const is_pull_request = 'pull_request' in payload
+  const is_push = 'commits' in payload
+
+  if (!(is_pull_request || is_push)) {
+    return new Response('Skip Event: No Trigger Event', {
       status: 200
     })
   }
 
-  if (
-    'sender' in payload &&
-    payload.sender &&
-    payload.sender.name === 'wraith-ci[bot]'
-  ) {
-    return new Response('Skip Event: Self Trigger', {
+  const head_sha = is_pull_request
+    ? payload.pull_request.head.sha
+    : payload.after
+
+  if (!(head_sha && Number(head_sha) !== 0)) {
+    return new Response('Skip Event: No Head SHA', {
       status: 200
     })
   }
 
   const { repository } = payload
-  const { default_branch } = repository
 
   const repo = repository.name
   const owner = repository.owner.login
 
-  const ref =
-    'ref' in payload
-      ? payload.ref.replace('refs/heads/', '')
-      : repository.default_branch
+  const ref = is_pull_request
+    ? payload.pull_request.head.ref
+    : payload.ref.replace('refs/heads/', '')
 
-  const event = 'commits' in payload ? 'push' : 'unknown'
-
-  const head_sha =
-    'pull_request' in payload
-      ? payload.pull_request.head.sha
-      : 'after' in payload
-      ? payload.after
-      : null
-
-  const results = Object.entries(apps).map(async ([name, app]) => {
-    let check_run_id: string | null = null
-
-    const createCheckRun = async (name: string) => {
-      if (!(head_sha && Number(head_sha) !== 0)) {
-        return null
-      }
-
-      const {
-        data: { id }
-      } = await installation.kit.rest.checks.create({
-        repo,
-        owner,
-        name,
-        head_sha,
-        status: 'in_progress'
-      })
-
-      check_run_id = id.toString()
-
-      return check_run_id
-    }
-
-    const closeCheckRun = (param: CloseCheckParam) =>
-      check_run_id
-        ? installation.kit.rest.checks.update({
-            ...(typeof param === 'string' ? { conclusion: param } : param),
-            check_run_id,
-            owner,
-            repo,
-            status: 'completed'
-          })
-        : null
-
-    const ghost_payload = await attempt(
-      async () => {
-        const result = await app({
-          ref,
-          repo,
-          owner,
-          event,
-          head_sha,
-          payload,
-          repository,
-          installation,
-          createCheckRun
-        })
-
-        if (!result) {
-          return null
-        }
-
-        if (typeof result === 'string' || 'conclusion' in result) {
-          await closeCheckRun(result)
-          return null
-        }
-
-        return result
-      },
-      async (e, o) => {
-        await closeCheckRun({
-          conclusion: 'failure',
-          output: {
-            title: 'Unhandled Worker Error',
-            summary: e instanceof Error ? e.message : String(e ?? o)
-          }
-        })
-
-        return null
-      }
-    )
-
-    return [name, ghost_payload] as const
-  })
-
-  const data = await Promise.all(results)
-
-  const ghosts = Object.fromEntries(
-    data.filter(([, x]) => x)
-  ) as WraithPayload['ghosts']
-
-  if (!Object.keys(ghosts).length) {
-    return new Response('Skip Event: No Ghosts', {
+  if (
+    is_pull_request &&
+    (payload.action === 'opened' ||
+      payload.action === 'reopened' ||
+      payload.action === 'synchronize')
+  ) {
+    return new Response('Skip Event: PR Opened, Reopened, or Synchronized', {
       status: 200
     })
   }
 
-  await installation.startWorkflow({
-    repo,
+  const event = (
+    is_pull_request
+      ? 'pull_request'
+      : ref === repository.default_branch
+      ? 'push_main'
+      : 'push'
+  ) satisfies TriggerEvent
+
+  const triggered_ghosts = Object.entries(schema)
+    .filter(([, { trigger }]) =>
+      event === 'push_main'
+        ? trigger === 'push_main' || trigger === 'push'
+        : trigger === event
+    )
+    .map(([name]) => (isGhostName(name) ? ([name, apps[name]] as const) : null))
+    .filter(nonNull)
+
+  const wraith_status = initWraithStatus(
+    Object.fromEntries(
+      triggered_ghosts.map(([name]) => [
+        name,
+        { status: 'processing' } satisfies GhostStatus
+      ])
+    )
+  )
+
+  const checks = await installation.kit.rest.checks.create({
     owner,
-    data: {
-      ref,
-      default_branch,
-      ghosts,
-      event
-    }
+    repo,
+    name: 'Wraith CI',
+    head_sha,
+    output: wraith_status.generateOutput()
   })
 
-  return new Response('Wraith CI Workflow Submitted', {
-    status: 202
-  })
+  const check_run_id = checks.data.id.toString()
+
+  const close = (conclusion: Conclusion, output?: ChecksOutput) =>
+    installation.kit.rest.checks.update({
+      owner,
+      repo,
+      check_run_id,
+      status: 'completed',
+      conclusion,
+      output
+    })
+
+  if (triggered_ghosts.length === 0) {
+    await close('skipped', {
+      title: 'No Wraith CI Workflows Triggered',
+      summary: 'No Wraith CI Workflows Triggered'
+    })
+
+    return new Response('Wraith CI Workflow Skipped', {
+      status: 200
+    })
+  }
+
+  try {
+    await Promise.allSettled(
+      triggered_ghosts.map(async ([name, app]) => {
+        const result = await attempt(
+          () =>
+            app({
+              ref,
+              repo,
+              owner,
+              event,
+              payload,
+              head_sha,
+              repository,
+              installation
+            }),
+          (e, o) =>
+            ({
+              status: 'failure',
+              detail: e?.message ?? String(o)
+            }) as const
+        )
+
+        wraith_status.update(name, result)
+
+        const output = wraith_status.generateOutput()
+
+        await installation.kit.rest.checks.update({
+          owner,
+          repo,
+          check_run_id,
+          output
+        })
+      })
+    )
+
+    const results = wraith_status.getResults()
+
+    if (results.some((status) => status === 'bridged')) {
+      const status = wraith_status.get()
+
+      await installation.startWorkflow({
+        repo,
+        owner,
+        data: {
+          check_run_id,
+          status,
+          ref
+        }
+      })
+
+      return new Response('Wraith CI Workflow Bridged', {
+        status: 202
+      })
+    }
+
+    const conclusion = results.every((status) => status === 'success')
+      ? 'success'
+      : results.every((status) => status === 'skipped')
+      ? 'skipped'
+      : 'failure'
+
+    const output = wraith_status.generateOutput()
+
+    await close(conclusion, output)
+
+    return new Response('Wraith CI Workflow Complete', {
+      status: 200
+    })
+  } catch (e) {
+    await close('failure', {
+      title: 'Unhandled Worker Error',
+      summary: e instanceof Error ? e.message : String(e)
+    })
+
+    throw e
+  }
 })

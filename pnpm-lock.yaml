@@ -11,6 +11,9 @@ importers:
       '@jill64/attempt':
         specifier: 1.1.0
         version: 1.1.0
+      '@jill64/unfurl':
+        specifier: 2.0.0
+        version: 2.0.0
       '@playwright/test':
         specifier: 1.39.0
         version: 1.39.0
@@ -755,6 +758,10 @@ packages:
     resolution: {integrity: sha512-/ZXAnohwvA5N3Pz8s029mb9ZfLYxXT8YzATkU2LqxktkuRpqgf4j1f+3wWOnXzAookbSfe+m3VSCy7DuEaHKbw==}
     dependencies:
       '@jill64/attempt': 1.1.0
+    dev: true
+
+  /@jill64/unfurl@2.0.0:
+    resolution: {integrity: sha512-P1QVA17csxIjt1H8OGoHFVHv/chj2R8kZxTuh1NNLcqXvezmsyfjX2fTRwsbYflkBihd0I5n44bdxyJF/y9b6Q==}
     dev: true
 
   /@jridgewell/gen-mapping@0.3.3:

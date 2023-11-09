@@ -2,11 +2,10 @@ import { Ghost } from '@/action/types/Ghost.js'
 import { attempt } from '@jill64/attempt'
 import { writeFile } from 'fs/promises'
 import { array, optional, scanner, string } from 'typescanner'
-import { failedSummary } from '../utils/failedSummary.js'
+import { pushCommit } from '../utils/pushCommit.js'
 import { run } from '../utils/run.js'
-import { syncChanges } from '../utils/syncChanges.js'
 
-export const lint: Ghost = async ({ payload, octokit }) => {
+export const lint: Ghost = async () => {
   const lintResult = await run('npm run lint')
 
   if (lintResult.exitCode === 0) {
@@ -32,11 +31,8 @@ export const lint: Ghost = async ({ payload, octokit }) => {
 
     if (!isValidPackageJson(packageJson)) {
       return {
-        conclusion: 'failure',
-        output: {
-          title: 'Invalid Package.json',
-          summary: JSON.stringify(packageJson, null, 2)
-        }
+        status: 'failure',
+        detail: 'Invalid Package.json'
       }
     }
 
@@ -50,11 +46,8 @@ export const lint: Ghost = async ({ payload, octokit }) => {
 
     if (!isValidResult(result)) {
       return {
-        conclusion: 'failure',
-        output: {
-          title: 'Invalid Depcheck Result',
-          summary: depcheckResult.stdout
-        }
+        status: 'failure',
+        detail: 'Invalid Depcheck Result'
       }
     }
 
@@ -80,21 +73,16 @@ export const lint: Ghost = async ({ payload, octokit }) => {
 
     await writeFile('package.json', JSON.stringify(omittedPackageJson, null, 2))
 
-    await syncChanges({
-      message: 'fix: omit unused dependencies',
-      branch: 'wraith-ci/ghost-lint',
-      octokit,
-      payload
-    })
+    await pushCommit('fix: omit unused dependencies')
 
     return {
-      conclusion: 'failure',
-      output: {
-        title: 'Omitted Unused Dependencies',
-        summary: 'New package.json has been pushed.'
-      }
+      status: 'failure',
+      detail: 'New package.json has been pushed'
     }
   }
 
-  return failedSummary('Lint Failed', lintResult)
+  return {
+    status: 'failure',
+    detail: lintResult.stderr
+  }
 }

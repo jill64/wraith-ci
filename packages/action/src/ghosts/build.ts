@@ -1,14 +1,16 @@
 import { Ghost } from '@/action/types/Ghost.js'
-import { failedSummary } from '../utils/failedSummary.js'
 import { gitDiff } from '../utils/gitDiff.js'
+import { pushCommit } from '../utils/pushCommit.js'
 import { run } from '../utils/run.js'
-import { syncChanges } from '../utils/syncChanges.js'
 
-export const build: Ghost = async (context) => {
+export const build: Ghost = async () => {
   const result = await run('npm run build')
 
   if (result.exitCode !== 0) {
-    return failedSummary('Build Failed', result)
+    return {
+      status: 'failure',
+      detail: result.stderr
+    }
   }
 
   const diff = await gitDiff()
@@ -17,21 +19,10 @@ export const build: Ghost = async (context) => {
     return 'success'
   }
 
-  const syncResult = await syncChanges({
-    message: 'chore: regenerate artifact',
-    branch: 'wraith-ci/ghost-build',
-    ...context
-  })
-
-  const pr = syncResult === 'pr_created'
+  await pushCommit('chore: regenerate artifact')
 
   return {
-    conclusion: pr ? 'success' : 'failure',
-    output: {
-      title: 'Regenerated Artifact',
-      summary: pr
-        ? 'A PR has been created to update the artifact.'
-        : 'The updated artifact will be pushed shortly.'
-    }
+    status: 'failure',
+    detail: 'The updated artifact will be pushed shortly'
   }
 }

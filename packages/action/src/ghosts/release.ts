@@ -21,11 +21,8 @@ export const release: Ghost = async ({ payload, octokit }) => {
 
   if (version === publishedVersion) {
     return {
-      conclusion: 'skipped',
-      output: {
-        title: 'No Version Changes',
-        summary: 'No version changes'
-      }
+      status: 'skipped',
+      detail: 'No version changes'
     }
   }
 
