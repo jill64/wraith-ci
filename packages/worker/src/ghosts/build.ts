@@ -7,22 +7,7 @@ const isValidJson = scanner({
   })
 })
 
-export const build: Ghost = async ({
-  ref,
-  payload,
-  installation,
-  createCheckRun
-}) => {
-  if (!('commits' in payload)) {
-    return
-  }
-
-  const check_run_id = await createCheckRun('Ghost Build')
-
-  if (!check_run_id) {
-    return
-  }
-
+export const build: Ghost = async ({ ref, installation }) => {
   const packageJson = await installation.getFile('package.json', {
     ref,
     parser: (x) => {
@@ -33,27 +18,17 @@ export const build: Ghost = async ({
 
   if (!packageJson) {
     return {
-      conclusion: 'skipped',
-      output: {
-        title: 'No package.json',
-        summary: 'Not found package.json in repo.'
-      }
+      status: 'skipped',
+      detail: 'Not found package.json in repo'
     }
   }
 
-  const buildCmd = packageJson?.data?.scripts?.build
-
-  if (!buildCmd) {
+  if (!packageJson?.data?.scripts?.build) {
     return {
-      conclusion: 'skipped',
-      output: {
-        title: 'No Build Command',
-        summary: 'Build command not found in package.json.'
-      }
+      status: 'skipped',
+      detail: 'Build command not found in package.json'
     }
   }
 
-  return {
-    check_run_id
-  }
+  return 'bridged'
 }

@@ -1,5 +1,4 @@
 import { Ghost } from '@/action/types/Ghost.js'
-import { failedSummary } from '../utils/failedSummary.js'
 import { run } from '../utils/run.js'
 
 export const deploy: Ghost = async () => {
@@ -9,5 +8,8 @@ export const deploy: Ghost = async () => {
     return 'success'
   }
 
-  return failedSummary('Deploy Failed', result)
+  return {
+    status: 'failure',
+    detail: result.stderr
+  }
 }

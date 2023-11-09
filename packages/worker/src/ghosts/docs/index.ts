@@ -9,7 +9,6 @@ import { makeBranch } from './utils/makeBranch.js'
 
 export const docs: Ghost = async ({
   payload,
-  createCheckRun,
   repository,
   installation,
   repo,
@@ -20,10 +19,8 @@ export const docs: Ghost = async ({
   const result = validation(payload)
 
   if (!result) {
-    return
+    return 'skipped'
   }
-
-  await createCheckRun('Ghost Docs')
 
   const octokit = installation.kit
 

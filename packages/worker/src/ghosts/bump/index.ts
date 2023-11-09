@@ -12,47 +12,29 @@ const isPackageJson = scanner({
 export const bump: Ghost = async ({
   repo,
   owner,
+  repository,
   payload,
-  installation,
-  createCheckRun
+  installation
 }) => {
   if (!('pull_request' in payload)) {
-    return
+    return 'skipped'
   }
 
-  const { repository, pull_request, action } = payload
-
-  if (
-    action !== 'opened' &&
-    action !== 'reopened' &&
-    action !== 'synchronize'
-  ) {
-    return
-  }
-
-  const octokit = installation.kit
-
-  await createCheckRun('Ghost Bump')
+  const { pull_request } = payload
 
   if (pull_request.base.ref !== repository.default_branch) {
     return {
-      conclusion: 'skipped',
-      output: {
-        title: 'This PR is not targeting the default branch',
-        summary:
-          "This PR is not targeting the default branch, so we won't perform any version checks or bumps."
-      }
+      status: 'skipped',
+      detail:
+        "This PR is not targeting the default branch, so we won't perform any version checks or bumps."
     }
   }
 
   if (pull_request.title.startsWith('chore')) {
     return {
-      conclusion: 'skipped',
-      output: {
-        title: 'This PR was deemed a trivial change',
-        summary:
-          "This PR was considered a trivial change, so we won't perform any version checks or bumps."
-      }
+      status: 'skipped',
+      detail:
+        "This PR was considered a trivial change, so we won't perform any version checks or bumps."
     }
   }
 
@@ -74,12 +56,9 @@ export const bump: Ghost = async ({
 
   if (!headJson?.data?.version) {
     return {
-      conclusion: 'skipped',
-      output: {
-        title: 'No Version Control',
-        summary:
-          "This repository is not version controlled, so we won't perform any version checks or bumps."
-      }
+      status: 'skipped',
+      detail:
+        "This repository is not version controlled, so we won't perform any version checks or bumps."
     }
   }
 
@@ -102,7 +81,7 @@ export const bump: Ghost = async ({
     2
   )
 
-  await octokit.rest.repos.createOrUpdateFileContents({
+  await installation.kit.rest.repos.createOrUpdateFileContents({
     repo,
     owner,
     path: 'package.json',
@@ -113,10 +92,8 @@ export const bump: Ghost = async ({
   })
 
   return {
-    conclusion: 'failure',
-    output: {
-      title: 'Version Bump Triggered',
-      summary: `
+    status: 'failure',
+    detail: `
 Version Integrity Check Failed.
 Auto Bump Triggered.
 
@@ -125,6 +102,5 @@ Auto Bump Triggered.
 | Base  | ${base_version}                  |
 | Head  | ${head_version} => ${newVersion} |
 `
-    }
   }
 }

@@ -1,9 +1,7 @@
-import { GhostName } from './GhostName.js'
-import { GhostPayload } from './GhostPayload.js'
+import { WraithStatus } from './WraithStatus.js'
 
 export type WraithPayload = {
-  ghosts: Record<GhostName, GhostPayload>
+  check_run_id: string
   ref: string
-  default_branch: string
-  event: 'push' | 'unknown'
+  status: WraithStatus
 }

@@ -12,4 +12,4 @@ export const apps = {
   format,
   lint,
   release
-} satisfies Record<Exclude<GhostName, 'docs' | 'merge' | 'bump'>, Ghost>
+} satisfies Partial<Record<GhostName, Ghost>>

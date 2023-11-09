@@ -5,21 +5,7 @@ const isValidJson = scanner({
   version: string
 })
 
-export const release: Ghost = async ({
-  payload,
-  ref,
-  repository,
-  installation,
-  createCheckRun
-}) => {
-  if (!('commits' in payload)) {
-    return
-  }
-
-  if (ref !== repository.default_branch) {
-    return
-  }
-
+export const release: Ghost = async ({ installation }) => {
   const response = await installation.getFile('package.json', {
     parser: (str) => {
       const json = JSON.parse(str)
@@ -28,16 +14,11 @@ export const release: Ghost = async ({
   })
 
   if (!response?.data?.version) {
-    return
+    return {
+      status: 'skipped',
+      detail: 'No version found in package.json'
+    }
   }
 
-  const check_run_id = await createCheckRun('Ghost Release')
-
-  if (!check_run_id) {
-    return
-  }
-
-  return {
-    check_run_id
-  }
+  return 'bridged'
 }
