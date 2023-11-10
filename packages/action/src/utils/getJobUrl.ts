@@ -12,7 +12,7 @@ export const getJobUrl = async ({
   ghost_name: GhostName
   octokit: ActionOctokit
 }): Promise<string | undefined | null> => {
-  const attempt_number = parseInt(core.getInput('attempt_number'))
+  const attempt_number = parseInt(core.getInput('run_attempt'))
 
   const { data: jobs } =
     await octokit.rest.actions.listJobsForWorkflowRunAttempt({
