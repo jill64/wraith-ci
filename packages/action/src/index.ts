@@ -1,10 +1,12 @@
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
+import { unfurl } from '@jill64/unfurl'
 import { action } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
 import * as github from 'octoflare/action/github'
 import { scanner, string } from 'typescanner'
 import { apps } from './apps.js'
+import { getJobUrl } from './utils/getJobUrl.js'
 import { updateOutput } from './utils/updateOutput.js'
 
 const isValidOutput = scanner({
@@ -49,15 +51,18 @@ action<WraithPayload>(async ({ octokit, payload }) => {
     core.setFailed(result.detail)
   }
 
-  const check = await attempt(
-    () =>
-      octokit.rest.checks.get({
-        repo,
-        owner,
-        check_run_id
-      }),
-    null
-  )
+  const { check, job_url } = await unfurl({
+    check: attempt(
+      () =>
+        octokit.rest.checks.get({
+          repo,
+          owner,
+          check_run_id
+        }),
+      null
+    ),
+    job_url: attempt(() => getJobUrl({ ghost_name, octokit }), '')
+  })
 
   const output = check?.data.output
 
@@ -68,21 +73,7 @@ action<WraithPayload>(async ({ octokit, payload }) => {
   }
 
   const gh = github.context
-  const fallback_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
-
-  const { data: jobs } =
-    await octokit.rest.actions.listJobsForWorkflowRunAttempt({
-      owner: gh.repo.owner,
-      repo: gh.repo.repo,
-      run_id: gh.runId,
-      attempt_number: gh.runNumber
-    })
-
-  const job = jobs.jobs.find(
-    ({ name }) => name.startsWith('wraith-ci') && name.includes(ghost_name)
-  )
-
-  const details_url = job?.html_url ?? fallback_url
+  const details_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
 
   await octokit.rest.checks.update({
     owner,
@@ -92,7 +83,8 @@ action<WraithPayload>(async ({ octokit, payload }) => {
     output: updateOutput({
       output,
       ghost_name,
-      result
+      result,
+      job_url
     }),
     status: 'in_progress'
   })

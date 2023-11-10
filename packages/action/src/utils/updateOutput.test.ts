@@ -4,6 +4,7 @@ import { updateOutput } from './updateOutput.js'
 test('updateOutput', () => {
   const result = updateOutput({
     ghost_name: 'build',
+    job_url: null,
     result: 'success',
     output: {
       title: '✅ Lint | ⌛️ Build | ✅ Test',
@@ -36,6 +37,7 @@ test('updateOutput - failure', () => {
       status: 'failure',
       detail: 'Test Detail'
     },
+    job_url: 'https://example.com/lint',
     output: {
       title: '✅ Lint',
       summary: `
@@ -54,7 +56,7 @@ test('updateOutput - failure', () => {
 | Ghost | Status    | Detail          |
 | ----- | --------- | --------------- |
 | Build | ⌛️ bridged |                 |
-| Lint | ❌ failure | Test Detail |
+| [Lint](https://example.com/lint) | ❌ failure | Test Detail |
 | Test | ✅ success |                 |
 `
   })

@@ -7,7 +7,8 @@ import { ChecksOutput } from 'octoflare'
 export const updateOutput = ({
   ghost_name,
   result,
-  output
+  output,
+  job_url
 }: {
   ghost_name: GhostName
   result: GhostStatusShortHand
@@ -15,6 +16,7 @@ export const updateOutput = ({
     title: string
     summary: string
   }
+  job_url: string | undefined | null
 }): ChecksOutput => {
   const alias = schema[ghost_name].alias
   const ghost_status = typeof result === 'string' ? { status: result } : result
@@ -25,9 +27,11 @@ export const updateOutput = ({
     `${status_emoji} ${alias}`
   )
 
+  const name = job_url ? `[${alias}](${job_url})` : alias
+
   const summary = output.summary.replace(
     new RegExp(`\\| ${alias} \\| .* \\| .* \\|`),
-    `| ${alias} | ${status_emoji} ${ghost_status.status} | ${
+    `| ${name} | ${status_emoji} ${ghost_status.status} | ${
       ghost_status.detail ?? ''
     } |`
   )
