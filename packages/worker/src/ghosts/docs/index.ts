@@ -1,5 +1,6 @@
 import { Ghost } from '@/worker/types/Ghost.js'
 import { attempt } from '@jill64/attempt'
+import { unfurl } from '@jill64/unfurl'
 import { syncPackageJson } from './steps/syncPackageJson.js'
 import { syncReadme } from './steps/syncReadme.js'
 import { validation } from './steps/validation.js'
@@ -12,6 +13,7 @@ export const docs: Ghost = async ({
   repository,
   installation,
   repo,
+  package_json,
   event,
   owner,
   ref
@@ -30,8 +32,8 @@ export const docs: Ghost = async ({
     octokit
   } satisfies Context
 
-  const [workflowFiles, packageJson, readme] = await Promise.all([
-    attempt(async (): Promise<
+  const { workflowFiles, readme } = await unfurl({
+    workflowFiles: attempt(async (): Promise<
       {
         name: string
         data: string
@@ -58,18 +60,20 @@ export const docs: Ghost = async ({
 
       return list.filter((x): x is NonNullable<(typeof list)[number]> => !!x)
     }, []),
-    installation.getFile('package.json', {
-      ref,
-      parser: (x) => {
-        const json = JSON.parse(x)
-        return isValidPackageJson(json) ? json : null
-      }
-    }),
-    installation.getFile('README.md', {
+    readme: installation.getFile('README.md', {
       ref,
       raw: true
     })
-  ])
+  })
+
+  const packageJsonData = package_json?.data
+  const packageJson =
+    package_json && isValidPackageJson(packageJsonData)
+      ? {
+          data: packageJsonData,
+          sha: package_json.sha
+        }
+      : null
 
   const uploadReadme = syncReadme({
     readme,
