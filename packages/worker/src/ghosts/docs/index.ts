@@ -18,26 +18,6 @@ export const docs: Ghost = async ({
     return 'skipped'
   }
 
-  const isTriggered =
-    'commits' in payload
-      ? payload.commits.some((commit) => {
-          const changes = [
-            ...commit.modified,
-            ...commit.added,
-            ...commit.removed
-          ]
-          return (
-            changes.includes('package.json') ||
-            changes.includes('README.md') ||
-            changes.some((file) => file.startsWith('.github/workflows'))
-          )
-        })
-      : true
-
-  if (!isTriggered) {
-    return 'skipped'
-  }
-
   const { workflowFiles, readme } = await unfurl({
     workflowFiles: attempt(async (): Promise<
       {
