@@ -1,5 +1,4 @@
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
-import exec from '@actions/exec'
 import { attempt } from '@jill64/attempt'
 import { action } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
@@ -63,33 +62,27 @@ action<WraithPayload>(async ({ octokit, payload }) => {
   const output = check?.data.output
 
   if (!isValidOutput(output)) {
-    console.log('Invalid checks output:', output)
+    console.error('Invalid checks output:', output)
+    core.setFailed('Invalid checks output')
     return
   }
 
-  const { context } = github
-  const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}/job/${context.job}`
+  const gh = github.context
+  const fallback_url = `${gh.serverUrl}/${gh.repo.owner}/${gh.repo.repo}/actions/runs/${gh.runId}`
 
-  const { stdout } = await exec.getExecOutput(
-    'gh run',
-    [
-      '--repo',
-      `${context.repo.owner}/${context.repo.repo}`,
-      'view',
-      context.runId.toString(),
-      '--json',
-      'jobs',
-      '--jq',
-      `'.jobs[] | select(.name == "${context.job}") | .url'`
-    ],
-    {
-      ignoreReturnCode: true
-    }
+  const { data: jobs } =
+    await octokit.rest.actions.listJobsForWorkflowRunAttempt({
+      owner: gh.repo.owner,
+      repo: gh.repo.repo,
+      run_id: gh.runId,
+      attempt_number: gh.runNumber
+    })
+
+  const job = jobs.jobs.find(
+    ({ name }) => name.startsWith('wraith-ci') && name.includes(ghost_name)
   )
 
-  console.log('stdout', stdout)
-  const job_url = attempt(() => JSON.parse(stdout).url)
-  console.log('Job URL:', job_url)
+  const details_url = job?.html_url ?? fallback_url
 
   await octokit.rest.checks.update({
     owner,
