@@ -44696,7 +44696,7 @@ var getJobUrl = async ({
   ghost_name,
   octokit
 }) => {
-  const attempt_number = parseInt(core_exports.getInput("attempt_number"));
+  const attempt_number = parseInt(core_exports.getInput("run_attempt"));
   const { data: jobs } = await octokit.rest.actions.listJobsForWorkflowRunAttempt({
     owner: gh.repo.owner,
     repo: gh.repo.repo,
