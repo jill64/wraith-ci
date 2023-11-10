@@ -29,11 +29,11 @@ export const updateOutput = ({
 
   const name = job_url ? `[${alias}](${job_url})` : alias
 
+  const detail = ghost_status.detail?.replace(/[|\n]/g, '') ?? ''
+
   const summary = output.summary.replace(
     new RegExp(`\\| ${alias} \\| .* \\| .* \\|`),
-    `| ${name} | ${status_emoji} ${ghost_status.status} | ${
-      ghost_status.detail ?? ''
-    } |`
+    `| ${name} | ${status_emoji} ${ghost_status.status} | ${detail} |`
   )
 
   return {
