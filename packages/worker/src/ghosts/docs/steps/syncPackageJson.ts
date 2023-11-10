@@ -7,7 +7,9 @@ const exclude_topics = ['npm', 'beta']
 
 export const syncPackageJson = ({
   packageJson,
-  repository
+  repository,
+  ref,
+  octokit
 }: {
   repository: Repository
   packageJson:
@@ -17,6 +19,8 @@ export const syncPackageJson = ({
       }
     | undefined
     | null
+  ref: string
+  octokit: Octokit
 }) => {
   if (!packageJson?.data?.version) {
     return null
@@ -71,20 +75,14 @@ export const syncPackageJson = ({
     return null
   }
 
-  return ({
-    octokit,
-    head_branch
-  }: {
-    head_branch: string
-    octokit: Octokit
-  }) =>
+  return () =>
     octokit.rest.repos.createOrUpdateFileContents({
       owner: repository.owner.login,
       repo: repository.name,
       path: 'package.json',
       message: 'chore: synchronize package.json',
       content: Buffer.from(newJson).toString('base64'),
-      branch: head_branch,
+      branch: ref,
       sha: packageJson.sha
     })
 }

@@ -21,17 +21,15 @@ export const syncHeader = ({
     : ''
 
   const isGhApp = repository.topics?.includes('github-app')
-  const isWebApp = repository.topics?.includes('web-app')
 
-  const appName =
-    isGhApp || isWebApp
-      ? repository.name
-          .split('-')
-          .map(
-            (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-          )
-          .join(' ')
-      : repository.name
+  const appName = isGhApp
+    ? repository.name
+        .split('-')
+        .map(
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join(' ')
+    : repository.name
 
   const escapedRepoName = appName.replaceAll('-', '--').replaceAll(' ', '_')
   const ghAppBadge = isGhApp
@@ -75,7 +73,7 @@ export const syncHeader = ({
   const downloadBadge = `[![npm-download-month](https://img.shields.io/npm/dm/${packageName})](${npmLink})`
   const bundleSizeBadge = `[![npm-min-size](https://img.shields.io/bundlephobia/min/${packageName})](${npmLink})`
   const npmBadges =
-    packageName && packageJson?.version && repository.topics?.includes('npm')
+    packageName && packageJson?.version
       ? [versionBadge, licenseBadge, downloadBadge, bundleSizeBadge]
       : []
 
