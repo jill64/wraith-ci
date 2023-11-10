@@ -119,7 +119,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     checks: installation.kit.rest.checks.create({
       owner,
       repo,
-      name: `Wraith CI${is_pull_request ? ' - PR' : ''}`,
+      name: `Wraith CI${is_pull_request ? ' / PR' : ''}`,
       head_sha,
       status: 'in_progress',
       output: generateOutput()
