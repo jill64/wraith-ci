@@ -2,6 +2,7 @@ import { Ghost } from '@/worker/types/Ghost.js'
 import { Buffer } from 'node:buffer'
 import semver from 'semver'
 import { scanner, string } from 'typescanner'
+import { isValidPackageJson } from '../docs/utils/isValidPackageJson.js'
 import { determineSemType } from './lib/determineSemType.js'
 import { formatVersionStr } from './lib/formatVersionStr.js'
 
@@ -12,6 +13,7 @@ const isPackageJson = scanner({
 export const bump: Ghost = async ({
   repo,
   owner,
+  package_json,
   repository,
   payload,
   installation
@@ -38,21 +40,22 @@ export const bump: Ghost = async ({
     }
   }
 
-  const parser = (str: string) => {
-    const json = JSON.parse(str)
-    return isPackageJson(json) ? json : null
-  }
+  const baseJson = await installation.getFile('package.json', {
+    ref: pull_request.base.ref,
+    parser: (str: string) => {
+      const json = JSON.parse(str)
+      return isPackageJson(json) ? json : null
+    }
+  })
 
-  const [baseJson, headJson] = await Promise.all([
-    installation.getFile('package.json', {
-      ref: pull_request.base.ref,
-      parser
-    }),
-    installation.getFile('package.json', {
-      ref: pull_request.head.ref,
-      parser
-    })
-  ])
+  const headJsonData = package_json?.data
+  const headJson =
+    package_json && isValidPackageJson(headJsonData)
+      ? {
+          data: headJsonData,
+          sha: package_json?.sha
+        }
+      : null
 
   if (!headJson?.data?.version) {
     return {

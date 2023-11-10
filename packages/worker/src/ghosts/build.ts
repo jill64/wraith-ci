@@ -1,29 +1,21 @@
 import { Ghost } from '@/worker/types/Ghost.js'
-import { optional, scanner, string } from 'typescanner'
+import { scanner, string } from 'typescanner'
 
 const isValidJson = scanner({
   scripts: scanner({
-    build: optional(string)
+    build: string
   })
 })
 
-export const build: Ghost = async ({ ref, installation }) => {
-  const packageJson = await installation.getFile('package.json', {
-    ref,
-    parser: (x) => {
-      const json = JSON.parse(x)
-      return isValidJson(json) ? json : null
-    }
-  })
-
-  if (!packageJson) {
+export const build: Ghost = async ({ package_json }) => {
+  if (!package_json) {
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
     }
   }
 
-  if (!packageJson?.data?.scripts?.build) {
+  if (!isValidJson(package_json.data)) {
     return {
       status: 'skipped',
       detail: 'Build command not found in package.json'

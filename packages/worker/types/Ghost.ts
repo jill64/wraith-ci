@@ -10,6 +10,10 @@ export type Ghost = (context: {
   owner: string
   event: TriggerEvent
   payload: Schema
+  package_json: {
+    data: unknown
+    sha: string
+  } | null
   head_sha: string
   repository: Repository
   installation: OctoflareInstallation<WraithPayload>

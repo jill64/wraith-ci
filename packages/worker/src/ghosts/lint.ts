@@ -7,23 +7,15 @@ const isValidJson = scanner({
   })
 })
 
-export const lint: Ghost = async ({ installation, ref }) => {
-  const file = await installation.getFile('package.json', {
-    ref,
-    parser: (x) => {
-      const json = JSON.parse(x)
-      return isValidJson(json) ? json : null
-    }
-  })
-
-  if (!file?.data) {
+export const lint: Ghost = async ({ package_json }) => {
+  if (!package_json) {
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
     }
   }
 
-  if (!file.data?.scripts.lint) {
+  if (!isValidJson(package_json.data)) {
     return {
       status: 'skipped',
       detail: 'Lint command not found in package.json'

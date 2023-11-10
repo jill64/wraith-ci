@@ -5,15 +5,15 @@ const isValidJson = scanner({
   version: string
 })
 
-export const release: Ghost = async ({ installation }) => {
-  const response = await installation.getFile('package.json', {
-    parser: (str) => {
-      const json = JSON.parse(str)
-      return isValidJson(json) ? json : null
+export const release: Ghost = async ({ package_json }) => {
+  if (!package_json) {
+    return {
+      status: 'skipped',
+      detail: 'Not found package.json in repo'
     }
-  })
+  }
 
-  if (!response?.data?.version) {
+  if (!isValidJson(package_json.data)) {
     return {
       status: 'skipped',
       detail: 'No version found in package.json'

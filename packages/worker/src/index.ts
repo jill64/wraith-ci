@@ -8,6 +8,7 @@ import { GhostStatus } from '@/shared/types/GhostStatus.js'
 import { TriggerEvent } from '@/shared/types/TriggerEvent.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
+import { unfurl } from '@jill64/unfurl'
 import { ChecksOutput, Conclusion, octoflare } from 'octoflare'
 import { apps } from './apps.js'
 
@@ -114,13 +115,19 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     }
   }
 
-  const checks = await installation.kit.rest.checks.create({
-    owner,
-    repo,
-    name: `Wraith CI${is_pull_request ? ' - PR' : ''}`,
-    head_sha,
-    status: 'in_progress',
-    output: generateOutput()
+  const { checks, package_json } = await unfurl({
+    checks: installation.kit.rest.checks.create({
+      owner,
+      repo,
+      name: `Wraith CI${is_pull_request ? ' - PR' : ''}`,
+      head_sha,
+      status: 'in_progress',
+      output: generateOutput()
+    }),
+    package_json: installation.getFile('package.json', {
+      parser: JSON.parse,
+      ref
+    })
   })
 
   const check_run_id = checks.data.id
@@ -159,7 +166,8 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
               payload,
               head_sha,
               repository,
-              installation
+              installation,
+              package_json
             }),
           (e, o) =>
             ({

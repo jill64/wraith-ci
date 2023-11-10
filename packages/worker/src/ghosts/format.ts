@@ -7,23 +7,15 @@ const isValidJson = scanner({
   })
 })
 
-export const format: Ghost = async ({ installation, ref }) => {
-  const response = await installation.getFile('package.json', {
-    ref,
-    parser: (x) => {
-      const json = JSON.parse(x)
-      return isValidJson(json) ? json : null
-    }
-  })
-
-  if (!response?.data) {
+export const format: Ghost = async ({ package_json }) => {
+  if (!package_json) {
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
     }
   }
 
-  if (!response.data?.scripts.format) {
+  if (!isValidJson(package_json.data)) {
     return {
       status: 'skipped',
       detail: 'Format command not found in package.json'
