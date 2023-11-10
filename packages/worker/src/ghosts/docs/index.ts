@@ -96,7 +96,7 @@ export const docs: Ghost = async ({
     packageJson,
     repository,
     ref,
-    octokit: installation.kit,
+    octokit: installation.kit
   })
 
   if (!uploadReadme && !uploadPackageJson) {
