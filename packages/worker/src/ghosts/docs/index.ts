@@ -6,7 +6,6 @@ import { syncReadme } from './steps/syncReadme.js'
 import { isValidPackageJson } from './utils/isValidPackageJson.js'
 
 export const docs: Ghost = async ({
-  payload,
   repository,
   installation,
   repo,
