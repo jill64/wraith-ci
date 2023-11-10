@@ -35,7 +35,7 @@ test('updateOutput - failure', () => {
     ghost_name: 'lint',
     result: {
       status: 'failure',
-      detail: 'Test Detail'
+      detail: 'Test |Detail\n\n'
     },
     job_url: 'https://example.com/lint',
     output: {

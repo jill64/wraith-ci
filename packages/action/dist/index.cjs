@@ -44768,9 +44768,10 @@ var updateOutput = ({
     `${status_emoji} ${alias}`
   );
   const name = job_url ? `[${alias}](${job_url})` : alias;
+  const detail = (ghost_status.detail?.replace(/[|]/g, "") ?? "").split("\n")[0];
   const summary = output.summary.replace(
     new RegExp(`\\| ${alias} \\| .* \\| .* \\|`),
-    `| ${name} | ${status_emoji} ${ghost_status.status} | ${ghost_status.detail ?? ""} |`
+    `| ${name} | ${status_emoji} ${ghost_status.status} | ${detail} |`
   );
   return {
     title,
