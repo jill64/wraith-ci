@@ -6,7 +6,6 @@ import { syncReadme } from './steps/syncReadme.js'
 import { isValidPackageJson } from './utils/isValidPackageJson.js'
 
 export const docs: Ghost = async ({
-  payload,
   repository,
   installation,
   repo,
@@ -15,26 +14,6 @@ export const docs: Ghost = async ({
   ref
 }) => {
   if (ref === repository.default_branch) {
-    return 'skipped'
-  }
-
-  const isTriggered =
-    'commits' in payload
-      ? payload.commits.some((commit) => {
-          const changes = [
-            ...commit.modified,
-            ...commit.added,
-            ...commit.removed
-          ]
-          return (
-            changes.includes('package.json') ||
-            changes.includes('README.md') ||
-            changes.some((file) => file.startsWith('.github/workflows'))
-          )
-        })
-      : true
-
-  if (!isTriggered) {
     return 'skipped'
   }
 
