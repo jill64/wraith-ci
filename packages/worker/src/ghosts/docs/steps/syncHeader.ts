@@ -118,7 +118,9 @@ npm i ${packageName}
 \`\`\``
     : ''
 
-  const description = [
+  const content = [
+    `# ${appName}`,
+    badges,
     (repository.description ?? packageJson?.description ?? '').trim(),
     demoSection,
     installSection
@@ -127,14 +129,9 @@ npm i ${packageName}
     .join('\n\n')
     .trim()
 
-  const content = [`# ${appName}`, badges, description]
-    .filter((x) => x)
-    .join('\n\n')
-    .trim()
-
   return replaceSection({
     source: readme,
     section: 'HEADER',
-    content
+    content: `\n${content}\n`
   })
 }
