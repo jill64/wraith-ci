@@ -118,16 +118,10 @@ npm i ${packageName}
 \`\`\``
     : ''
 
-  const description = [
+  const content = [`# ${appName}`, badges, 
     (repository.description ?? packageJson?.description ?? '').trim(),
     demoSection,
-    installSection
-  ]
-    .filter((x) => x)
-    .join('\n\n')
-    .trim()
-
-  const content = [`# ${appName}`, badges, description]
+    installSection]
     .filter((x) => x)
     .join('\n\n')
     .trim()
