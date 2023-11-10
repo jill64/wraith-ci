@@ -127,15 +127,14 @@ npm i ${packageName}
     .join('\n\n')
     .trim()
 
+  const content = [`# ${appName}`, badges, description]
+    .filter((x) => x)
+    .join('\n\n')
+    .trim()
+
   return replaceSection({
     source: readme,
     section: 'HEADER',
-    content: `
-# ${appName}
-
-${badges}
-
-${description}
-`
+    content
   })
 }
