@@ -74,8 +74,8 @@ importers:
         specifier: 0.2.5
         version: 0.2.5(@sveltejs/kit@1.27.4)(svelte@4.2.2)
       '@jill64/svelte-ogp':
-        specifier: 0.0.3
-        version: 0.0.3(@sveltejs/kit@1.27.4)(svelte@4.2.2)
+        specifier: 0.0.4
+        version: 0.0.4(@sveltejs/kit@1.27.4)(svelte@4.2.2)
       '@jill64/svelte-toast':
         specifier: 1.0.1
         version: 1.0.1(svelte@4.2.2)
@@ -696,16 +696,6 @@ packages:
       svelte: 4.2.2
     dev: true
 
-  /@jill64/svelte-html@0.2.1(@sveltejs/kit@1.27.4)(svelte@4.2.2):
-    resolution: {integrity: sha512-sf/hCmWqZdJfUjE05oMMDhDWvm5ygDj+e+Cqwn1sTbJmGRYwhuaV+tvCcuI9qi/DOLxXR9cfrLJsBjEveH4NWw==}
-    peerDependencies:
-      '@sveltejs/kit': ^1.0.0
-      svelte: ^4.0.0
-    dependencies:
-      '@sveltejs/kit': 1.27.4(svelte@4.2.2)(vite@4.5.0)
-      svelte: 4.2.2
-    dev: true
-
   /@jill64/svelte-html@0.3.0(@sveltejs/kit@1.27.4)(svelte@4.2.2):
     resolution: {integrity: sha512-rGgn/sHTTf3o/nDo8vXCULjhzNe37FxZYb7/qPnWA2GqMCxXIK7W+EymsWjmMnFfKq4joUFyoMI3Pz9CZiMlXQ==}
     peerDependencies:
@@ -727,13 +717,13 @@ packages:
       svelte: 4.2.2
     dev: true
 
-  /@jill64/svelte-ogp@0.0.3(@sveltejs/kit@1.27.4)(svelte@4.2.2):
-    resolution: {integrity: sha512-yQmwMmZwYcobtJ7Y083bQMioX+sTVGbdCi0kRUHKCkcjel45GXTUSojJ006r0lWBonwWiEd+YwZtUAqM4bplfw==}
+  /@jill64/svelte-ogp@0.0.4(@sveltejs/kit@1.27.4)(svelte@4.2.2):
+    resolution: {integrity: sha512-YYqVrYQdMVM+uK94maUUnhRiyshXNpYoyMBPMdYxEWMCXN2rhdgckrOuNZEpaGJmrgOdexTtmofusYUwlGwwTA==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^4.0.0
     dependencies:
-      '@jill64/svelte-html': 0.2.1(@sveltejs/kit@1.27.4)(svelte@4.2.2)
+      '@jill64/svelte-html': 0.3.0(@sveltejs/kit@1.27.4)(svelte@4.2.2)
       '@sveltejs/kit': 1.27.4(svelte@4.2.2)(vite@4.5.0)
       svelte: 4.2.2
     dev: true
