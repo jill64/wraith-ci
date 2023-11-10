@@ -135,6 +135,6 @@ npm i ${packageName}
   return replaceSection({
     source: readme,
     section: 'HEADER',
-    content
+    content: `\n${content}\n`
   })
 }
