@@ -3,10 +3,7 @@ import { attempt } from '@jill64/attempt'
 import { unfurl } from '@jill64/unfurl'
 import { syncPackageJson } from './steps/syncPackageJson.js'
 import { syncReadme } from './steps/syncReadme.js'
-import { validation } from './steps/validation.js'
-import { Context } from './types/Context.js'
 import { isValidPackageJson } from './utils/isValidPackageJson.js'
-import { makeBranch } from './utils/makeBranch.js'
 
 export const docs: Ghost = async ({
   payload,
@@ -14,23 +11,32 @@ export const docs: Ghost = async ({
   installation,
   repo,
   package_json,
-  event,
   owner,
   ref
 }) => {
-  const result = validation(payload)
-
-  if (!result) {
+  if (ref === repository.default_branch) {
     return 'skipped'
   }
 
-  const octokit = installation.kit
+  const isTriggered =
+    'commits' in payload
+      ? payload.commits.some((commit) => {
+          const changes = [
+            ...commit.modified,
+            ...commit.added,
+            ...commit.removed
+          ]
+          return (
+            changes.includes('package.json') ||
+            changes.includes('README.md') ||
+            changes.some((file) => file.startsWith('.github/workflows'))
+          )
+        })
+      : true
 
-  const context = {
-    owner,
-    repo,
-    octokit
-  } satisfies Context
+  if (!isTriggered) {
+    return 'skipped'
+  }
 
   const { workflowFiles, readme } = await unfurl({
     workflowFiles: attempt(async (): Promise<
@@ -39,7 +45,7 @@ export const docs: Ghost = async ({
         data: string
       }[]
     > => {
-      const { data } = await octokit.rest.repos.getContent({
+      const { data } = await installation.kit.rest.repos.getContent({
         owner,
         repo,
         path: '.github/workflows',
@@ -77,64 +83,27 @@ export const docs: Ghost = async ({
 
   const uploadReadme = syncReadme({
     readme,
+    ref,
     workflowFiles,
     packageJson: packageJson?.data,
-    repository
+    repository,
+    owner,
+    repo,
+    octokit: installation.kit
   })
 
   const uploadPackageJson = syncPackageJson({
     packageJson,
-    repository
+    repository,
+    ref,
+    octokit: installation.kit,
   })
 
   if (!uploadReadme && !uploadPackageJson) {
     return 'skipped'
   }
 
-  const isPushEvent = event === 'push'
-  const nowDefaultBranch = ref === repository.default_branch
-  const head_branch = nowDefaultBranch ? 'ghost-docs/synchronize' : ref
-  const makeNewBranch =
-    (nowDefaultBranch || !isPushEvent) &&
-    (await octokit.rest.repos
-      .getBranch({
-        owner,
-        repo,
-        branch: head_branch
-      })
-      .then(() => false)
-      .catch(() => true))
-
-  if (makeNewBranch) {
-    await makeBranch({
-      default_branch: repository.default_branch,
-      head_branch,
-      context
-    })
-  }
-
-  await Promise.all([
-    uploadReadme?.({
-      context,
-      head_branch
-    }),
-    uploadPackageJson?.({
-      octokit,
-      head_branch
-    })
-  ])
-
-  if (!makeNewBranch) {
-    return 'success'
-  }
-
-  await octokit.rest.pulls.create({
-    owner,
-    repo,
-    title: 'chore: Ghost Docs Synchronization',
-    head: head_branch,
-    base: repository.default_branch
-  })
+  await Promise.all([uploadReadme?.(), uploadPackageJson?.()])
 
   return 'success'
 }

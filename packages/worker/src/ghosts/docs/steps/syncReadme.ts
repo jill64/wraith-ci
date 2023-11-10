@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer'
-import { Context } from '../types/Context.js'
+import { Octokit } from 'octoflare/octokit'
 import { syncHeader } from './syncHeader.js'
 import { syncLogo } from './syncLogo.js'
 
@@ -7,12 +7,20 @@ export const syncReadme = ({
   readme: originalReadme,
   workflowFiles,
   packageJson,
-  repository
+  repository,
+  ref,
+  owner,
+  repo,
+  octokit
 }: Omit<Parameters<typeof syncHeader>[0], 'readme'> & {
   readme: {
     data: string
     sha: string
   } | null
+  ref: string
+  owner: string
+  repo: string
+  octokit: Octokit
 }) => {
   if (!originalReadme) {
     return null
@@ -31,20 +39,14 @@ export const syncReadme = ({
     return null
   }
 
-  return ({
-    context: { owner, repo, octokit },
-    head_branch
-  }: {
-    head_branch: string
-    context: Context
-  }) =>
+  return () =>
     octokit.rest.repos.createOrUpdateFileContents({
       owner,
       repo,
       path: 'README.md',
       message: 'chore: synchronize README.md',
       content: Buffer.from(readme).toString('base64'),
-      branch: head_branch,
+      branch: ref,
       sha: originalReadme.sha
     })
 }
