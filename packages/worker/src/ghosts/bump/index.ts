@@ -96,14 +96,6 @@ export const bump: Ghost = async ({
 
   return {
     status: 'failure',
-    detail: `
-Version Integrity Check Failed.
-Auto Bump Triggered.
-
-| Ref   | Version                          |
-| ----- | -------------------------------- |
-| Base  | ${base_version}                  |
-| Head  | ${head_version} => ${newVersion} |
-`
+    detail: `Auto Bump \`${head_version}\` => \`${newVersion}\``
   }
 }
