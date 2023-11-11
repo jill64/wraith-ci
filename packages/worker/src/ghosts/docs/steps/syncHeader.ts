@@ -10,7 +10,7 @@ export const syncHeader = ({
 }: {
   workflowFiles: {
     name: string
-    contents?: string | null
+    data?: string | null
   }[]
   packageJson: PackageJson | undefined | null
   readme: string
@@ -61,7 +61,7 @@ export const syncHeader = ({
   )
 
   const codecovBadge = workflowFiles.some(
-    (file) => file.contents?.includes('/.github/workflows/run-vitest.yml')
+    (file) => file.data?.includes('/.github/workflows/run-vitest.yml')
   )
     ? `[![codecov-coverage](https://codecov.io/gh/${repository.full_name}/graph/badge.svg)](https://codecov.io/gh/${repository.full_name})`
     : ''
