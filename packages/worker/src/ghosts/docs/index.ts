@@ -23,12 +23,7 @@ export const docs: Ghost = async ({
   }
 
   const { workflowFiles, readme } = await unfurl({
-    workflowFiles: attempt(async (): Promise<
-      {
-        name: string
-        data: string
-      }[]
-    > => {
+    workflowFiles: attempt(async () => {
       const { data } = await installation.kit.rest.repos.getContent({
         owner,
         repo,
