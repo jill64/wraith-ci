@@ -42,16 +42,17 @@ export const syncHeader = ({
 
   const repoURL = repository.homepage ? new URL(repository.homepage) : null
 
-  const stackblitz = repoURL?.origin === 'https://stackblitz.com'
+  const stackblitz = repoURL?.hostname === 'stackblitz.com'
 
   const npmPage =
-    repoURL?.origin === 'https://www.npmjs.com' ||
-    repoURL?.origin === 'https://npmjs.com'
+    repoURL?.hostname === 'www.npmjs.com' || repoURL?.hostname === 'npmjs.com'
 
-  const ghPage = repoURL?.origin === 'https://github.com'
+  const ghPage = repoURL?.origin.endsWith('github.io')
+
+  const jillOssPage = repoURL?.hostname === 'jill64.dev'
 
   const siteBadge =
-    !stackblitz && npmPage && ghPage && repository.homepage
+    !stackblitz && !npmPage && repository.homepage
       ? `[![website](https://img.shields.io/website?up_message=working&down_message=down&url=${escapedWebsiteUrl})](${repository.homepage})`
       : ''
 
@@ -89,11 +90,6 @@ export const syncHeader = ({
     ? `[![stackblitz](https://img.shields.io/badge/StackBlitz-${libName}-dodgerblue)](${repository.homepage})`
     : ''
 
-  const ghPages = repoURL?.origin.endsWith('github.io')
-  const ghPagesBadge = ghPages
-    ? `[![github-pages](https://img.shields.io/website?up_message=working&down_message=down&url=${escapedWebsiteUrl})](${repository.homepage})`
-    : ''
-
   const badges = [
     ...npmBadges,
     ...workflowBadges,
@@ -101,17 +97,18 @@ export const syncHeader = ({
     siteBadge,
     ghAppBadge,
     octoflareBadge,
-    stackBlitzBadge,
-    ghPagesBadge
+    stackBlitzBadge
   ]
     .filter((x) => x)
     .join(' ')
 
   const demoSection =
-    stackblitz || ghPages ? `## [Demo](${repository.homepage})` : ''
+    stackblitz || ghPage || jillOssPage
+      ? `## [Demo](${repository.homepage})`
+      : ''
 
   const installSection = packageName
-    ? `## Install
+    ? `## Installation
 
 \`\`\`sh
 npm i ${packageName}
