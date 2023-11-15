@@ -64,8 +64,8 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     is_pull_request
       ? 'pull_request'
       : ref === repository.default_branch
-      ? 'push_main'
-      : 'push'
+        ? 'push_main'
+        : 'push'
   ) satisfies TriggerEvent
 
   const triggered_ghosts = Object.entries(schema)
@@ -213,8 +213,8 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     const conclusion = results.every((status) => status === 'skipped')
       ? 'skipped'
       : results.some((status) => status === 'failure')
-      ? 'failure'
-      : 'success'
+        ? 'failure'
+        : 'success'
 
     await close(conclusion, generateOutput())
 
