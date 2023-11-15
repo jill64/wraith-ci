@@ -68,8 +68,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0(@sveltejs/kit@1.27.6)
       '@jill64/svelte-dark-theme':
-        specifier: 2.0.0
-        version: 2.0.0(@sveltejs/kit@1.27.6)(svelte@4.2.3)
+        specifier: 2.1.0
+        version: 2.1.0(@sveltejs/kit@1.27.6)(svelte@4.2.3)
       '@jill64/svelte-i18n':
         specifier: 0.2.6
         version: 0.2.6(@sveltejs/kit@1.27.6)(svelte@4.2.3)
@@ -672,8 +672,8 @@ packages:
       esm-env: 1.0.0
     dev: true
 
-  /@jill64/svelte-dark-theme@2.0.0(@sveltejs/kit@1.27.6)(svelte@4.2.3):
-    resolution: {integrity: sha512-XGo7SAI1bydGS7grLeDXOsYzxBF8Pd37j2gxhWXusPKGaoCQ2rPlMpwtgRdJcdbTQ6FPd0JKeY+byByxJ/v05g==}
+  /@jill64/svelte-dark-theme@2.1.0(@sveltejs/kit@1.27.6)(svelte@4.2.3):
+    resolution: {integrity: sha512-/A+nKDurM2SQNrXS3e4fdDB+Zse9UQkb4CQVehLUY8XKX2iFBbVUQDhi8I4pjD9+FK6cPGVNB9d2/DEJK3ZTew==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^4.0.0
