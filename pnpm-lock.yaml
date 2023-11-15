@@ -74,8 +74,8 @@ importers:
         specifier: 0.2.6
         version: 0.2.6(@sveltejs/kit@1.27.6)(svelte@4.2.3)
       '@jill64/svelte-ogp':
-        specifier: 0.0.5
-        version: 0.0.5(@sveltejs/kit@1.27.6)(svelte@4.2.3)
+        specifier: 0.1.0
+        version: 0.1.0(@sveltejs/kit@1.27.6)(svelte@4.2.3)
       '@jill64/svelte-toast':
         specifier: 1.0.2
         version: 1.0.2(svelte@4.2.3)
@@ -717,8 +717,8 @@ packages:
       svelte: 4.2.3
     dev: true
 
-  /@jill64/svelte-ogp@0.0.5(@sveltejs/kit@1.27.6)(svelte@4.2.3):
-    resolution: {integrity: sha512-VZeZnXBAF+7XUVpomwibEl5rxPmxwqnaqzjn0+ooQXIK7AungJ0JIXtmAhW1sqUwalIvZYOq9APPiMfQPbnPXg==}
+  /@jill64/svelte-ogp@0.1.0(@sveltejs/kit@1.27.6)(svelte@4.2.3):
+    resolution: {integrity: sha512-6cI/U+r9zNG8CD04/06FwisO4nDCnqSF40kTS1fQWCCe5v+2qliKi6jgiwe/ZRM6U+0cSsKQjMBcZbIgX9j7UQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^4.0.0
