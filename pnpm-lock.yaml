@@ -30,8 +30,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0(eslint@8.53.0)(typescript@5.2.2)
       octoflare:
-        specifier: 0.21.2
-        version: 0.21.2
+        specifier: 0.21.3
+        version: 0.21.3
       prettier:
         specifier: 3.1.0
         version: 3.1.0
@@ -815,8 +815,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@octokit/app@14.0.1:
-    resolution: {integrity: sha512-4opdXcWBVhzd6FOxlaxDKXXqi9Vz2hsDSWQGNo49HbYFAX11UqMpksMjEdfvHy0x19Pse8Nvn+R6inNb/V398w==}
+  /@octokit/app@14.0.2:
+    resolution: {integrity: sha512-NCSCktSx+XmjuSUVn2dLfqQ9WIYePGP95SDJs4I9cn/0ZkeXcPkaoCLl64Us3dRKL2ozC7hArwze5Eu+/qt1tg==}
     engines: {node: '>= 18'}
     dependencies:
       '@octokit/auth-app': 6.0.1
@@ -825,7 +825,7 @@ packages:
       '@octokit/oauth-app': 6.0.0
       '@octokit/plugin-paginate-rest': 9.1.2(@octokit/core@5.0.1)
       '@octokit/types': 12.1.1
-      '@octokit/webhooks': 12.0.3
+      '@octokit/webhooks': 12.0.4
     dev: true
 
   /@octokit/auth-app@6.0.1:
@@ -1057,8 +1057,8 @@ packages:
     resolution: {integrity: sha512-u6355ZsZnHwmxen30SrqnYb1pXieBFkYgkNzt+Ed4Ao5tupN1OErHfzwiV6hq6duGkDAYASbq7/uVJQ69PjLEg==}
     dev: true
 
-  /@octokit/webhooks@12.0.3:
-    resolution: {integrity: sha512-8iG+/yza7hwz1RrQ7i7uGpK2/tuItZxZq1aTmeg2TNp2xTUB8F8lZF/FcZvyyAxT8tpDMF74TjFGCDACkf1kAQ==}
+  /@octokit/webhooks@12.0.4:
+    resolution: {integrity: sha512-dopyfA1suemLwlJsiEBKEW7hnVrxvk2xzXHkUkx68vl74ie9JzdizW6FUU0gVi3Bq3AVrIXS1Yt4vCF4KV5pqA==}
     engines: {node: '>= 18'}
     dependencies:
       '@octokit/request-error': 5.0.1
@@ -2555,21 +2555,21 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /octoflare@0.21.2:
-    resolution: {integrity: sha512-peh0d1KGmRK/DvyRvXTGCQcc/Q84vovZfqaLRI8jsGscvfn6tXUc2oeTAEUdSHb/9diFHk0uZjqneARoAfbnfg==}
+  /octoflare@0.21.3:
+    resolution: {integrity: sha512-BMbG5hEEM4la44GHe8XFyoXmQqUlfG8kHzX7HxgJ6sGlvA4t9oAyStnzaBs/DrHq6Z8UjFOljMk/5gUSMCHaLA==}
     dependencies:
       '@actions/core': 1.10.1
       '@actions/github': 6.0.0
       '@cloudflare/workers-types': 4.20231025.0
       '@octokit/webhooks-types': 7.3.1
-      octokit: 3.1.1
+      octokit: 3.1.2
     dev: true
 
-  /octokit@3.1.1:
-    resolution: {integrity: sha512-AKJs5XYs7iAh7bskkYpxhUIpsYZdLqjnlnqrN5s9FFZuJ/a6ATUHivGpUKDpGB/xa+LGDtG9Lu8bOCfPM84vHQ==}
+  /octokit@3.1.2:
+    resolution: {integrity: sha512-MG5qmrTL5y8KYwFgE1A4JWmgfQBaIETE/lOlfwNYx1QOtCQHGVxkRJmdUJltFc1HVn73d61TlMhMyNTOtMl+ng==}
     engines: {node: '>= 18'}
     dependencies:
-      '@octokit/app': 14.0.1
+      '@octokit/app': 14.0.2
       '@octokit/core': 5.0.1
       '@octokit/oauth-app': 6.0.0
       '@octokit/plugin-paginate-graphql': 4.0.0(@octokit/core@5.0.1)
