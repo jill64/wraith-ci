@@ -67,7 +67,7 @@ export const bump: Ghost = async ({
 
   const base_version = formatVersionStr(baseJson?.data?.version)
   const head_version = formatVersionStr(headJson.data.version)
-  
+
   const semType = determineSemType(pull_request.title)
   const newVersion = semver.inc(base_version, semType)
 
