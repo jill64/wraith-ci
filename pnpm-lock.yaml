@@ -65,8 +65,8 @@ importers:
   packages/site:
     devDependencies:
       '@jill64/sentry-sveltekit-cloudflare':
-        specifier: 1.2.0
-        version: 1.2.0(@sveltejs/kit@1.27.6)
+        specifier: 1.3.2
+        version: 1.3.2(@sveltejs/kit@1.27.6)
       '@jill64/svelte-dark-theme':
         specifier: 2.1.0
         version: 2.1.0(@sveltejs/kit@1.27.6)(svelte@4.2.4)
@@ -663,8 +663,8 @@ packages:
     resolution: {integrity: sha512-eHAN3A6DJXXiaIf7TFcjnj35thBNFRFwo6kXkKyoO3WqZaUDKXXyTZdL7TfWWvkKRrP1HwZY2rbLw9C9XNc0nw==}
     dev: true
 
-  /@jill64/sentry-sveltekit-cloudflare@1.2.0(@sveltejs/kit@1.27.6):
-    resolution: {integrity: sha512-7BNJyDjPFvERNSCWOodTDo99RlttVs4fEEUQgv7gb8DgIYKfB8pVobaaPSZSnIu4blDAsmkEa2lw7PlJalYo5A==}
+  /@jill64/sentry-sveltekit-cloudflare@1.3.2(@sveltejs/kit@1.27.6):
+    resolution: {integrity: sha512-dUH7dzeISOiCXlOiDbVTBB9L6uop5xGvZj1ozQjeg4bovenQmQDd/itAi/QL/hccL7KekCYNk+N9z1Qp/VeTbw==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
