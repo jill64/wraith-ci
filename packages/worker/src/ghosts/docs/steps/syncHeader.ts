@@ -49,7 +49,7 @@ export const syncHeader = ({
 
   const ghPage = repoURL?.origin.endsWith('github.io')
 
-  const jillOssPage = repoURL?.hostname === 'jill64.dev'
+  const jillOssPage = repoURL?.origin.endsWith('jill64.dev')
 
   const siteBadge =
     !stackblitz && !npmPage && repository.homepage
