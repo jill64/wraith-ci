@@ -54,8 +54,8 @@ importers:
         specifier: 0.19.6
         version: 0.19.6
       ts-retry:
-        specifier: 4.2.3
-        version: 4.2.3
+        specifier: 4.2.4
+        version: 4.2.4
       twitter-api-v2:
         specifier: 1.15.2
         version: 1.15.2
@@ -3366,8 +3366,8 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-retry@4.2.3:
-    resolution: {integrity: sha512-pQAIQl6ga2MgfQ+rcO++P+e5oD+6Kuomv99PpeHqZyjAze98Fc4+oduoitD8UXtOOcTgq4Or7nBQriGLFfosow==}
+  /ts-retry@4.2.4:
+    resolution: {integrity: sha512-r9hIgfdCyU5yBe090s3E1VdPWGifBHx6uzu5hjRn6fbK0jpV8t4TGzNBghnxZXbm2ZNsm909E5WbwPGWAHdQOQ==}
     dev: true
 
   /tslib@1.14.1:
