@@ -86,8 +86,8 @@ importers:
         specifier: 1.1.0
         version: 1.1.0(tailwindcss@3.3.5)
       '@jill64/typed-storage':
-        specifier: 1.0.1
-        version: 1.0.1
+        specifier: 2.0.1
+        version: 2.0.1
       '@sveltejs/adapter-cloudflare':
         specifier: 2.3.3
         version: 2.3.3(@sveltejs/kit@1.27.6)
@@ -765,6 +765,12 @@ packages:
     resolution: {integrity: sha512-/ZXAnohwvA5N3Pz8s029mb9ZfLYxXT8YzATkU2LqxktkuRpqgf4j1f+3wWOnXzAookbSfe+m3VSCy7DuEaHKbw==}
     dependencies:
       '@jill64/attempt': 1.1.0
+    dev: true
+
+  /@jill64/typed-storage@2.0.1:
+    resolution: {integrity: sha512-wJyVVhAi41/GQjt6gAUWn7QzxxlKNyJOMu89zHf6PAgC+Cfi35qnDNrUE9nJVFHhc4oW9MGClF63d932hIvUXQ==}
+    dependencies:
+      ts-serde: 0.3.0
     dev: true
 
   /@jill64/unfurl@2.0.0:
@@ -3387,6 +3393,12 @@ packages:
 
   /ts-retry@4.2.4:
     resolution: {integrity: sha512-r9hIgfdCyU5yBe090s3E1VdPWGifBHx6uzu5hjRn6fbK0jpV8t4TGzNBghnxZXbm2ZNsm909E5WbwPGWAHdQOQ==}
+    dev: true
+
+  /ts-serde@0.3.0:
+    resolution: {integrity: sha512-avgmKCJLf/O2KVAT/g0edDKMb0yngiQpLOzaxexE1A2oM+P+iOP8jeMfguhyizZDCN2v0cAgaPhhVT3ZiIX02A==}
+    dependencies:
+      devalue: 4.3.2
     dev: true
 
   /tslib@1.14.1:
