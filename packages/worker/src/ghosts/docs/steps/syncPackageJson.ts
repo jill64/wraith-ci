@@ -62,15 +62,14 @@ export const syncPackageJson = ({
   }
 
   const oldJson = JSON.stringify(packageJson.data, null, 2)
-  const newJson =
-    JSON.stringify(
-      {
-        ...packageJson.data,
-        ...repoInfo
-      },
-      null,
-      2
-    ) + '\n'
+  const newJson = JSON.stringify(
+    {
+      ...packageJson.data,
+      ...repoInfo
+    },
+    null,
+    2
+  )
 
   if (oldJson === newJson) {
     return null
@@ -82,7 +81,7 @@ export const syncPackageJson = ({
       repo: repository.name,
       path: 'package.json',
       message: 'chore: synchronize package.json',
-      content: Buffer.from(newJson).toString('base64'),
+      content: Buffer.from(newJson + '\n').toString('base64'),
       branch: ref,
       sha: packageJson.sha
     })
