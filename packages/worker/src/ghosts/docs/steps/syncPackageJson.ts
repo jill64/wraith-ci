@@ -62,15 +62,14 @@ export const syncPackageJson = ({
   }
 
   const oldJson = JSON.stringify(packageJson.data, null, 2)
-  const newJson =
-    JSON.stringify(
-      {
-        ...packageJson.data,
-        ...repoInfo
-      },
-      null,
-      2
-    )
+  const newJson = JSON.stringify(
+    {
+      ...packageJson.data,
+      ...repoInfo
+    },
+    null,
+    2
+  )
 
   if (oldJson === newJson) {
     return null
