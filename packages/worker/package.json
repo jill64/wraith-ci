@@ -4,7 +4,7 @@
     "build": "npx wrangler deploy --dry-run",
     "deploy": "npx wrangler deploy",
     "lint": "eslint . && tsc",
-    "format": "prettier --write ."
+    "format": "prettier -w ."
   },
   "devDependencies": {
     "@types/semver": "7.5.6",

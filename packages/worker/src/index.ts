@@ -136,7 +136,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     installation.kit.rest.checks.update({
       owner,
       repo,
-      check_run_id: check_run_id.toString(),
+      check_run_id,
       status: 'completed',
       conclusion,
       output
@@ -181,7 +181,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
         await installation.kit.rest.checks.update({
           owner,
           repo,
-          check_run_id: check_run_id.toString(),
+          check_run_id,
           output: generateOutput(),
           status: 'in_progress'
         })
