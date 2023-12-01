@@ -3,7 +3,7 @@
   "scripts": {
     "build": "npx tsx scripts/build.ts",
     "lint": "eslint . && tsc",
-    "format": "prettier --write ."
+    "format": "prettier -w ."
   },
   "devDependencies": {
     "@actions/exec": "1.1.1",

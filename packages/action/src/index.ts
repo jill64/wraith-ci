@@ -79,7 +79,7 @@ action<WraithPayload>(async ({ octokit, payload }) => {
     owner,
     repo,
     details_url,
-    check_run_id: check_run_id.toString(),
+    check_run_id,
     output: updateOutput({
       output,
       ghost_name,
