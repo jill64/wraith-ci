@@ -7,7 +7,7 @@
     "sync": "svelte-kit sync",
     "check": "svelte-kit sync && npx svelte-check",
     "lint": "pnpm check && eslint .",
-    "format": "prettier -w . --plugin prettier-plugin-svelte ."
+    "format": "npx @jill64/psx"
   },
   "devDependencies": {
     "@jill64/sentry-sveltekit-cloudflare": "1.4.1",
@@ -23,7 +23,6 @@
     "autoprefixer": "10.4.16",
     "postcss": "8.4.31",
     "postcss-load-config": "5.0.0",
-    "prettier-plugin-svelte": "3.1.2",
     "svelte": "4.2.8",
     "svelte-feather-icons": "4.0.1",
     "svelte-inline-modal": "1.1.0",
