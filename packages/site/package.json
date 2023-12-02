@@ -21,7 +21,7 @@
     "@sveltejs/adapter-cloudflare": "2.3.3",
     "@sveltejs/kit": "1.27.6",
     "autoprefixer": "10.4.16",
-    "postcss": "8.4.31",
+    "postcss": "8.4.32",
     "postcss-load-config": "5.0.0",
     "svelte": "4.2.8",
     "svelte-feather-icons": "4.0.1",
