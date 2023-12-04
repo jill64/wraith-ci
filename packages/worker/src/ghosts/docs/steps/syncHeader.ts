@@ -107,20 +107,11 @@ export const syncHeader = ({
       ? `## [Demo](${repository.homepage})`
       : ''
 
-  const installSection = packageName
-    ? `## Installation
-
-\`\`\`sh
-npm i ${packageName}
-\`\`\``
-    : ''
-
   const content = [
     `# ${appName}`,
     badges,
     (repository.description ?? packageJson?.description ?? '').trim(),
-    demoSection,
-    installSection
+    demoSection
   ]
     .filter((x) => x)
     .join('\n\n')
