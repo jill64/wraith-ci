@@ -98,8 +98,8 @@ importers:
         specifier: 1.2.0
         version: 1.2.0(tailwindcss@3.3.5)
       '@jill64/typed-storage':
-        specifier: 2.0.2
-        version: 2.0.2
+        specifier: 2.0.4
+        version: 2.0.4
       '@sveltejs/adapter-cloudflare':
         specifier: 2.3.3
         version: 2.3.3(@sveltejs/kit@1.27.6)
@@ -849,12 +849,6 @@ packages:
       tailwindcss: ^3.0.0
     dependencies:
       tailwindcss: 3.3.5
-    dev: true
-
-  /@jill64/typed-storage@2.0.2:
-    resolution: {integrity: sha512-z+Q/XrPrqF2vZ1QyW+U3B5ZnsxjI6oEgAswWkK+khIQXT7wDyoCzRzpFyuiRQ5hGiGF6y1EtU3sduIayz9DzqQ==}
-    dependencies:
-      ts-serde: 0.3.1
     dev: true
 
   /@jill64/typed-storage@2.0.4:
@@ -3983,12 +3977,6 @@ packages:
 
   /ts-retry@4.2.4:
     resolution: {integrity: sha512-r9hIgfdCyU5yBe090s3E1VdPWGifBHx6uzu5hjRn6fbK0jpV8t4TGzNBghnxZXbm2ZNsm909E5WbwPGWAHdQOQ==}
-    dev: true
-
-  /ts-serde@0.3.1:
-    resolution: {integrity: sha512-NSooF4gOGl9z36JL5bZKJfq3V59nULoVj8yw1rcH+3UdXKXqELxmrIxQze6EwULxcqc/Z6VRU+JygLql0nzeMQ==}
-    dependencies:
-      devalue: 4.3.2
     dev: true
 
   /ts-serde@0.4.0:
