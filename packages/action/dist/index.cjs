@@ -45239,7 +45239,7 @@ function attempt(func, fallback) {
   }
 }
 
-// ../../node_modules/.pnpm/@jill64+unfurl@2.0.0/node_modules/@jill64/unfurl/dist/unfurl.js
+// ../../node_modules/.pnpm/@jill64+unfurl@2.0.1/node_modules/@jill64/unfurl/dist/unfurl.js
 var unfurl = async (data, ...optional2) => {
   const [result] = await Promise.all([
     Promise.all(Object.entries(data).map(async ([key, value]) => [key, await value])),
