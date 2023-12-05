@@ -24,8 +24,8 @@ importers:
         specifier: 0.0.2
         version: 0.0.2
       '@jill64/unfurl':
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 2.0.1
+        version: 2.0.1
       '@playwright/test':
         specifier: 1.40.1
         version: 1.40.1
@@ -861,8 +861,8 @@ packages:
       ts-serde: 0.4.0
     dev: true
 
-  /@jill64/unfurl@2.0.0:
-    resolution: {integrity: sha512-P1QVA17csxIjt1H8OGoHFVHv/chj2R8kZxTuh1NNLcqXvezmsyfjX2fTRwsbYflkBihd0I5n44bdxyJF/y9b6Q==}
+  /@jill64/unfurl@2.0.1:
+    resolution: {integrity: sha512-Y+S3snTOkV0uDTnim8OecwYlEvvaITC81/6ihVFddL1l8eyg+f7QBGRZepb+8byhpGmD62CAHAilEFMosXOUEw==}
     dev: true
 
   /@jridgewell/gen-mapping@0.3.3:
