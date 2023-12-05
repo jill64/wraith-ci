@@ -19,7 +19,7 @@
     "@jill64/tailwind-reactions": "1.2.0",
     "@jill64/typed-storage": "2.0.4",
     "@sveltejs/adapter-cloudflare": "2.3.4",
-    "@sveltejs/kit": "1.27.6",
+    "@sveltejs/kit": "1.27.7",
     "autoprefixer": "10.4.16",
     "postcss": "8.4.32",
     "postcss-load-config": "5.0.2",
