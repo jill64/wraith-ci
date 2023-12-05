@@ -43,7 +43,11 @@ export const syncPackageJson = ({
   const keywords = topics.filter((x) => !exclude_topics.includes(x))
 
   const files = [
-    ...new Set([...(packageJson.data.files ?? []), '!*.test.*', '!*.spec.*'])
+    ...new Set([
+      ...(packageJson.data.files ?? []),
+      '!**/*.test.*',
+      '!**/*.spec.*'
+    ])
   ]
 
   const repoInfo = {
