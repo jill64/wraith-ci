@@ -42,14 +42,6 @@ export const syncPackageJson = ({
 
   const keywords = topics.filter((x) => !exclude_topics.includes(x))
 
-  const files = [
-    ...new Set([
-      ...(packageJson.data.files ?? []),
-      '!**/*.test.*',
-      '!**/*.spec.*'
-    ])
-  ]
-
   const repoInfo = {
     ...description,
     ...license,
@@ -61,8 +53,7 @@ export const syncPackageJson = ({
       url: `https://github.com/${full_name}.git`
     },
     ...publishConfig,
-    keywords,
-    files
+    keywords
   }
 
   const oldJson = JSON.stringify(packageJson.data, null, 2)
