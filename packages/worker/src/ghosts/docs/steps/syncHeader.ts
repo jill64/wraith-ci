@@ -61,11 +61,11 @@ export const syncHeader = ({
       `[![${file.name}](https://github.com/${repository.full_name}/actions/workflows/${file.name}/badge.svg)](https://github.com/${repository.full_name}/actions/workflows/${file.name})`
   )
 
-  const codecovBadge = workflowFiles.some(
-    (file) => file.data?.includes('/.github/workflows/run-vitest.yml')
-  )
-    ? `[![codecov-coverage](https://codecov.io/gh/${repository.full_name}/graph/badge.svg)](https://codecov.io/gh/${repository.full_name})`
-    : ''
+  // const codecovBadge = workflowFiles.some(
+  //   (file) => file.data?.includes('/.github/workflows/run-vitest.yml')
+  // )
+  //   ? `[![codecov-coverage](https://codecov.io/gh/${repository.full_name}/graph/badge.svg)](https://codecov.io/gh/${repository.full_name})`
+  //   : ''
 
   const packageName = packageJson?.name?.trim()
   const npmLink = packageName ? `https://npmjs.com/package/${packageName}` : ''
@@ -93,7 +93,7 @@ export const syncHeader = ({
   const badges = [
     ...npmBadges,
     ...workflowBadges,
-    codecovBadge,
+    // codecovBadge,
     siteBadge,
     ghAppBadge,
     octoflareBadge,
