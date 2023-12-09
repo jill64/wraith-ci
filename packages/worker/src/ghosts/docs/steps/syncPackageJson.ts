@@ -32,10 +32,6 @@ export const syncPackageJson = ({
     ? { publishConfig: { access: 'public' } }
     : {}
 
-  const description = repository.description
-    ? { description: repository.description }
-    : {}
-
   const license = repository.license?.spdx_id
     ? { license: repository.license.spdx_id }
     : {}
@@ -43,7 +39,7 @@ export const syncPackageJson = ({
   const keywords = topics.filter((x) => !exclude_topics.includes(x))
 
   const repoInfo = {
-    ...description,
+    description: repository.description ?? '',
     ...license,
     bugs: `https://github.com/${full_name}/issues`,
     homepage: `https://github.com/${full_name}#readme`,
@@ -53,7 +49,8 @@ export const syncPackageJson = ({
       url: `https://github.com/${full_name}.git`
     },
     ...publishConfig,
-    keywords
+    keywords,
+    prettier: '@jill64/prettier-config'
   }
 
   const oldJson = JSON.stringify(packageJson.data, null, 2)
