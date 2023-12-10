@@ -35,7 +35,9 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: latest
-          run_install: true
+          run_install: |
+            recursive: true
+            args: [--frozen-lockfile=false, --fix-lockfile]
 
       - name: Ghost ${{ matrix.name }}
         uses: jill64/wraith-ci@main
