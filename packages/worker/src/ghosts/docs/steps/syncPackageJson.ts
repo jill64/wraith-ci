@@ -1,11 +1,9 @@
 import { Buffer } from 'node:buffer'
 import { Octokit } from 'octoflare/octokit'
 import { Repository } from 'octoflare/webhook'
-import * as cf from 'octoflare/workers'
 import { PackageJson } from '../types/PackageJson.js'
 
 const exclude_topics = ['npm', 'beta']
-const rewriter = new cf.HTMLRewriter()
 
 export const syncPackageJson = async ({
   packageJson,
@@ -40,17 +38,20 @@ export const syncPackageJson = async ({
 
   const keywords = topics.filter((x) => !exclude_topics.includes(x))
 
-  const response = await cf.fetch(repository.html_url)
-
   let repo_image = ''
 
-  rewriter
-    .on('meta[property="og:image"]', {
-      element(element) {
-        repo_image = element.getAttribute('content') ?? ''
-      }
-    })
-    .transform(response)
+  try {
+    const response = await fetch(repository.html_url)
+    new HTMLRewriter()
+      .on('meta[property="og:image"]', {
+        element(element) {
+          repo_image = element.getAttribute('content') ?? ''
+        }
+      })
+      .transform(response)
+  } catch (e) {
+    console.error(e)
+  }
 
   const repoInfo = {
     description: repository.description ?? '',
