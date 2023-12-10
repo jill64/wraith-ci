@@ -38,19 +38,13 @@ export const syncPackageJson = async ({
 
   const keywords = topics.filter((x) => !exclude_topics.includes(x))
 
-  let repo_image = ''
+  const html = await fetch(repository.html_url).then((res) => res.text())
+  const repo_image = html.match(
+    /<meta property="og:image" content="(\S*)"\s*\/>/
+  )?.[1]
 
-  try {
-    const response = await fetch(repository.html_url)
-    new HTMLRewriter()
-      .on('meta[property="og:image"]', {
-        element(element) {
-          repo_image = element.getAttribute('content') ?? ''
-        }
-      })
-      .transform(response)
-  } catch (e) {
-    console.error(e)
+  if (!repo_image) {
+    throw new Error('No og:image found')
   }
 
   const repoInfo = {
