@@ -11,14 +11,9 @@ export const docs: Ghost = async ({
   repo,
   package_json,
   owner,
-  payload,
   ref
 }) => {
   if (ref === repository.default_branch) {
-    return 'skipped'
-  }
-
-  if ('sender' in payload && payload.sender?.type === 'Bot') {
     return 'skipped'
   }
 
