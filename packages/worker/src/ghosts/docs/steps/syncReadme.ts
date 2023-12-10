@@ -1,7 +1,6 @@
 import { Buffer } from 'node:buffer'
 import { Octokit } from 'octoflare/octokit'
 import { syncHeader } from './syncHeader.js'
-import { syncLogo } from './syncLogo.js'
 
 export const syncReadme = ({
   readme: originalReadme,
@@ -26,12 +25,10 @@ export const syncReadme = ({
     return null
   }
 
-  const logoSyncedReadme = syncLogo(originalReadme.data)
-
   const readme = syncHeader({
     workflowFiles,
     packageJson,
-    readme: logoSyncedReadme,
+    readme: originalReadme.data,
     repository
   })
 
