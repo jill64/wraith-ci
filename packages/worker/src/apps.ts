@@ -8,6 +8,7 @@ import { format } from './ghosts/format.js'
 import { lint } from './ghosts/lint.js'
 import { merge } from './ghosts/merge/index.js'
 import { release } from './ghosts/release.js'
+import { sync } from './ghosts/sync.js'
 
 export const apps = {
   build,
@@ -17,5 +18,6 @@ export const apps = {
   lint,
   merge,
   release,
-  bump
+  bump,
+  sync
 } satisfies Record<GhostName, Ghost>
