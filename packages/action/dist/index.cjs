@@ -45681,10 +45681,6 @@ var schema = {
   bump: {
     alias: "Version Bump",
     trigger: "pull_request"
-  },
-  sync: {
-    alias: "Sync",
-    trigger: "push"
   }
 };
 
