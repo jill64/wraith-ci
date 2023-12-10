@@ -1,11 +1,13 @@
 import { Buffer } from 'node:buffer'
 import { Octokit } from 'octoflare/octokit'
 import { Repository } from 'octoflare/webhook'
+import * as cf from 'octoflare/workers'
 import { PackageJson } from '../types/PackageJson.js'
 
 const exclude_topics = ['npm', 'beta']
+const rewriter = new cf.HTMLRewriter()
 
-export const syncPackageJson = ({
+export const syncPackageJson = async ({
   packageJson,
   repository,
   ref,
@@ -26,7 +28,7 @@ export const syncPackageJson = ({
     return null
   }
 
-  const { full_name, topics } = repository
+  const { topics, owner } = repository
 
   const publishConfig = packageJson.data.name?.startsWith('@')
     ? { publishConfig: { access: 'public' } }
@@ -38,15 +40,33 @@ export const syncPackageJson = ({
 
   const keywords = topics.filter((x) => !exclude_topics.includes(x))
 
+  const response = await cf.fetch(repository.html_url)
+
+  let repo_image = ''
+
+  rewriter
+    .on('meta[property="og:image"]', {
+      element(element) {
+        repo_image = element.getAttribute('content') ?? ''
+      }
+    })
+    .transform(response)
+
   const repoInfo = {
     description: repository.description ?? '',
     ...license,
-    bugs: `https://github.com/${full_name}/issues`,
-    homepage: `https://github.com/${full_name}#readme`,
-    author: 'jill64 <intents.turrets0h@icloud.com> (https://github.com/jill64)',
+    bugs: `${repository.html_url}/issues`,
+    homepage: `${repository.html_url}#readme`,
+    author: {
+      name: owner.name,
+      email: owner.email,
+      url: owner.html_url,
+      image: owner.avatar_url
+    },
     repository: {
       type: 'git',
-      url: `https://github.com/${full_name}.git`
+      url: repository.clone_url,
+      image: repo_image
     },
     ...publishConfig,
     keywords,

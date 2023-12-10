@@ -71,7 +71,7 @@ export const docs: Ghost = async ({
     octokit: installation.kit
   })
 
-  const uploadPackageJson = syncPackageJson({
+  const uploadPackageJson = await syncPackageJson({
     packageJson,
     repository,
     ref,
