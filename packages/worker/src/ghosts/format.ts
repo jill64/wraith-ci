@@ -7,11 +7,18 @@ const isValidJson = scanner({
   })
 })
 
-export const format: Ghost = async ({ package_json }) => {
+export const format: Ghost = async ({ payload, package_json }) => {
   if (!package_json) {
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
+    }
+  }
+
+  if ('sender' in payload && payload.sender?.type === 'Bot') {
+    return {
+      status: 'skipped',
+      detail: 'Commit from Bot'
     }
   }
 
