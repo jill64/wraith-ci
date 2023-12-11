@@ -1,5 +1,6 @@
 import { Repository } from 'octoflare/webhook'
 import { PackageJson } from '../types/PackageJson.js'
+import { badge } from '../utils/badge.js'
 import { replaceSection } from '../utils/replaceSection.js'
 
 export const syncHeader = ({
@@ -16,26 +17,6 @@ export const syncHeader = ({
   readme: string
   repository: Repository
 }) => {
-  const octoflareBadge = packageJson?.devDependencies?.octoflare
-    ? '[![octoflare](https://img.shields.io/badge/framework-🌤️Octoflare-dodgerblue)](https://github.com/jill64/octoflare)'
-    : ''
-
-  const isGhApp = repository.topics?.includes('github-app')
-
-  const appName = isGhApp
-    ? repository.name
-        .split('-')
-        .map(
-          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        )
-        .join(' ')
-    : repository.name
-
-  const escapedRepoName = appName.replaceAll('-', '--').replaceAll(' ', '_')
-  const ghAppBadge = isGhApp
-    ? `[![github-app](https://img.shields.io/badge/GitHub_App-${escapedRepoName}-midnightblue)](https://github.com/apps/${repository.name})`
-    : ''
-
   const escapedWebsiteUrl = repository.homepage
     ? encodeURIComponent(repository.homepage)
     : ''
@@ -53,12 +34,19 @@ export const syncHeader = ({
 
   const siteBadge =
     !stackblitz && !npmPage && repository.homepage
-      ? `[![website](https://img.shields.io/website?up_message=working&down_message=down&url=${escapedWebsiteUrl})](${repository.homepage})`
+      ? badge(repository.homepage)({
+          alt: 'website',
+          src: `https://img.shields.io/website?up_message=working&down_message=down&url=${escapedWebsiteUrl}`
+        })
       : ''
 
-  const workflowBadges = workflowFiles.map(
-    (file) =>
-      `[![${file.name}](https://github.com/${repository.full_name}/actions/workflows/${file.name}/badge.svg)](https://github.com/${repository.full_name}/actions/workflows/${file.name})`
+  const workflowBadges = workflowFiles.map((file) =>
+    badge(
+      `https://github.com/${repository.full_name}/actions/workflows/${file.name}`
+    )({
+      alt: file.name,
+      src: `https://github.com/${repository.full_name}/actions/workflows/${file.name}/badge.svg`
+    })
   )
 
   // const codecovBadge = workflowFiles.some(
@@ -69,10 +57,29 @@ export const syncHeader = ({
 
   const packageName = packageJson?.name?.trim()
   const npmLink = packageName ? `https://npmjs.com/package/${packageName}` : ''
-  const versionBadge = `[![npm-version](https://img.shields.io/npm/v/${packageName})](${npmLink})`
-  const licenseBadge = `[![npm-license](https://img.shields.io/npm/l/${packageName})](${npmLink})`
-  const downloadBadge = `[![npm-download-month](https://img.shields.io/npm/dm/${packageName})](${npmLink})`
-  const bundleSizeBadge = `[![npm-min-size](https://img.shields.io/bundlephobia/min/${packageName})](${npmLink})`
+
+  const npmBadge = badge(npmLink)
+
+  const versionBadge = npmBadge({
+    alt: 'npm-version',
+    src: `https://img.shields.io/npm/v/${packageName}`
+  })
+
+  const licenseBadge = npmBadge({
+    alt: 'npm-license',
+    src: `https://img.shields.io/npm/l/${packageName}`
+  })
+
+  const downloadBadge = npmBadge({
+    alt: 'npm-download-month',
+    src: `https://img.shields.io/npm/dm/${packageName}`
+  })
+
+  const bundleSizeBadge = npmBadge({
+    alt: 'npm-min-size',
+    src: `https://img.shields.io/bundlephobia/min/${packageName}`
+  })
+
   const npmBadges =
     packageName && packageJson?.version
       ? [versionBadge, licenseBadge, downloadBadge, bundleSizeBadge]
@@ -90,17 +97,18 @@ export const syncHeader = ({
     ? `[![stackblitz](https://img.shields.io/badge/StackBlitz-${libName}-dodgerblue)](${repository.homepage})`
     : ''
 
-  const badges = [
-    ...npmBadges,
-    ...workflowBadges,
-    // codecovBadge,
-    siteBadge,
-    ghAppBadge,
-    octoflareBadge,
-    stackBlitzBadge
-  ]
-    .filter((x) => x)
-    .join(' ')
+  const badges =
+    '<!----- BEGIN GHOST DOCS BADGES ----->' +
+    [
+      ...npmBadges,
+      ...workflowBadges,
+      // codecovBadge,
+      siteBadge,
+      stackBlitzBadge
+    ]
+      .filter((x) => x)
+      .join(' ') +
+    '<!----- END GHOST DOCS BADGES ----->'
 
   const demoSection =
     stackblitz || ghPage || jillOssPage
@@ -108,7 +116,7 @@ export const syncHeader = ({
       : ''
 
   const content = [
-    `# ${appName}`,
+    `# ${repository.name}`,
     badges,
     (repository.description ?? packageJson?.description ?? '').trim(),
     demoSection
