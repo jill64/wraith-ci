@@ -8,9 +8,9 @@
 
 <!----- BEGIN GHOST DOCS HEADER ----->
 
-# Wraith Ci
+# wraith-ci
 
-[![ci.yml](https://github.com/jill64/wraith-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/jill64/wraith-ci/actions/workflows/ci.yml) [![wraith-ci.yml](https://github.com/jill64/wraith-ci/actions/workflows/wraith-ci.yml/badge.svg)](https://github.com/jill64/wraith-ci/actions/workflows/wraith-ci.yml) [![website](https://img.shields.io/website?up_message=working&down_message=down&url=https%3A%2F%2Fapp.wraithci.com)](https://app.wraithci.com) [![github-app](https://img.shields.io/badge/GitHub_App-Wraith_Ci-midnightblue)](https://github.com/apps/wraith-ci) [![octoflare](https://img.shields.io/badge/framework-🌤️Octoflare-dodgerblue)](https://github.com/jill64/octoflare)
+<!----- BEGIN GHOST DOCS BADGES -----><a href="https://github.com/jill64/wraith-ci/actions/workflows/ci.yml"><img src="https://github.com/jill64/wraith-ci/actions/workflows/ci.yml/badge.svg" alt="ci.yml" /></a> <a href="https://github.com/jill64/wraith-ci/actions/workflows/wraith-ci.yml"><img src="https://github.com/jill64/wraith-ci/actions/workflows/wraith-ci.yml/badge.svg" alt="wraith-ci.yml" /></a> <a href="https://app.wraithci.com"><img src="https://img.shields.io/website?up_message=working&down_message=down&url=https%3A%2F%2Fapp.wraithci.com" alt="website" /></a><!----- END GHOST DOCS BADGES ----->
 
 👻 CI suite in the dark
 
