@@ -85,26 +85,13 @@ export const syncHeader = ({
       ? [versionBadge, licenseBadge, downloadBadge, bundleSizeBadge]
       : []
 
-  const libName = (
-    repoURL?.pathname?.split('/')?.pop() ??
-    packageName ??
-    repository.name
-  )
-    .replaceAll('-', '--')
-    .replaceAll(' ', '_')
-
-  const stackBlitzBadge = stackblitz
-    ? `[![stackblitz](https://img.shields.io/badge/StackBlitz-${libName}-dodgerblue)](${repository.homepage})`
-    : ''
-
   const badges =
     '<!----- BEGIN GHOST DOCS BADGES ----->' +
     [
       ...npmBadges,
       ...workflowBadges,
       // codecovBadge,
-      siteBadge,
-      stackBlitzBadge
+      siteBadge
     ]
       .filter((x) => x)
       .join(' ') +
