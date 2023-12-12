@@ -100,8 +100,6 @@ jobs:
             git push origin
           fi
 
-          exit 0
-
   post-process:
     needs: [try-fix-lock, wraith-ci]
     if: always()
