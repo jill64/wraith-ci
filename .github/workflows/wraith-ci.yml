@@ -92,9 +92,7 @@ jobs:
 
       - name: Push
         run: |
-          git diff --cached --exit-code --quiet
-
-          if [ $? = 1 ]; then
+          if [ $(git diff --cached --name-only) ]; then
             git commit -m "fix: invalid pnpm-lock.yaml"
             git pull --rebase
             git push origin
