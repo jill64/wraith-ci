@@ -9,6 +9,7 @@ on:
 env:
   GH_TOKEN: ${{ fromJson(inputs.payload).token }}
   repository: ${{ fromJson(inputs.payload).owner }}/${{ fromJson(inputs.payload).repo }}
+  ref: ${{ fromJson(inputs.payload).data.ref }}
 
 jobs:
   wraith-ci:
@@ -23,7 +24,7 @@ jobs:
         with:
           token: ${{ env.GH_TOKEN }}
           repository: ${{ env.repository }}
-          ref: ${{ fromJson(inputs.payload).data.ref }}
+          ref: ${{ env.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
@@ -37,7 +38,6 @@ jobs:
           version: latest
           run_install: |
             recursive: true
-            args: [--frozen-lockfile=false, --fix-lockfile]
 
       - name: Ghost ${{ matrix.name }}
         uses: jill64/wraith-ci@main
@@ -59,8 +59,51 @@ jobs:
           X_JP_ACCESS_TOKEN: ${{ matrix.name == 'release' && secrets.X_JP_ACCESS_TOKEN }}
           X_JP_ACCESS_SECRET: ${{ matrix.name == 'release' && secrets.X_JP_ACCESS_SECRET }}
 
-  post-process:
+  try-fix-lock:
     needs: wraith-ci
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          token: ${{ env.GH_TOKEN }}
+          repository: ${{ env.repository }}
+          ref: ${{ env.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
+        with:
+          node-version: 20
+
+      - name: Delete pnpm-lock.yaml
+        run: rm -f pnpm-lock.yaml
+
+      - name: Setup pnpm
+        id: setup-pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: |
+            recursive: true
+
+      - name: Staging
+        run: git add pnpm-lock.yaml
+
+      - name: Push
+        run: |
+          git diff --cached --exit-code --quiet
+
+          if [ $? = 1 ]; then
+            git commit -m "fix: invalid pnpm-lock.yaml"
+            git pull --rebase
+            git push origin
+          fi
+
+          exit 0
+
+  post-process:
+    needs: [try-fix-lock, wraith-ci]
     if: always()
     runs-on: ubuntu-latest
     steps:
