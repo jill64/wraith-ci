@@ -93,6 +93,8 @@ jobs:
       - name: Push
         run: |
           if [ $(git diff --cached --name-only) ]; then
+            git config user.name wraith-ci[bot]
+            git config user.email wraith-ci[bot]@users.noreply.github.com
             git commit -m "fix: invalid pnpm-lock.yaml"
             git pull --rebase
             git push origin
