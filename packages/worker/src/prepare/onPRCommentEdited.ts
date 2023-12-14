@@ -61,12 +61,20 @@ export const onPRCommentEdited = async (
   }
 
   try {
-    await installation.kit.rest.issues.updateComment({
-      owner,
-      repo,
-      comment_id: comment.id,
-      body: before
-    })
+    await Promise.allSettled([
+      installation.kit.rest.issues.updateComment({
+        owner,
+        repo,
+        comment_id: comment.id,
+        body: before
+      }),
+      installation.kit.rest.reactions.createForIssueComment({
+        owner,
+        repo,
+        comment_id: comment.id,
+        content: '+1'
+      })
+    ])
   } catch (e) {
     console.error(e)
   }

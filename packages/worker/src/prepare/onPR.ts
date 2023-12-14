@@ -50,6 +50,9 @@ export const onPR = async (
         repo,
         issue_number: pull_request.number,
         body: `## Wraith CI 👻 Retry Request
+
+Check the box to re-trigger CI.  
+
 - [ ] Wraith CI
 - [ ] Wraith CI / PR
 `
