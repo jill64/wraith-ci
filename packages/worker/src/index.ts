@@ -1,81 +1,31 @@
 import { getGhostAlias } from '@/shared/src/getGhostAlias.js'
 import { getStatusEmoji } from '@/shared/src/getStatusEmoji.js'
-import { isGhostName } from '@/shared/src/isGhostName.js'
-import { nonNull } from '@/shared/src/nonNull.js'
-import { schema } from '@/shared/src/schema.js'
 import { GhostName } from '@/shared/types/GhostName.js'
 import { GhostStatus } from '@/shared/types/GhostStatus.js'
-import { TriggerEvent } from '@/shared/types/TriggerEvent.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
 import { unfurl } from '@jill64/unfurl'
 import { ChecksOutput, Conclusion, octoflare } from 'octoflare'
-import { apps } from './apps.js'
+import { prepare } from './prepare/index.js'
 
-export default octoflare<WraithPayload>(async ({ payload, installation }) => {
-  if (!installation) {
-    return new Response('Skip Event: No Installation', {
-      status: 200
-    })
+export default octoflare<WraithPayload>(async (context) => {
+  const prepared = await prepare(context)
+
+  if (prepared instanceof Response) {
+    return prepared
   }
 
-  const is_pull_request = 'pull_request' in payload
-  const is_push = 'commits' in payload
-
-  if (!(is_pull_request || is_push)) {
-    return new Response('Skip Event: No Trigger Event', {
-      status: 200
-    })
-  }
-
-  const head_sha = is_pull_request
-    ? payload.pull_request.head.sha
-    : payload.after
-
-  if (!(head_sha && Number(head_sha) !== 0)) {
-    return new Response('Skip Event: No Head SHA', {
-      status: 200
-    })
-  }
-
-  const { repository } = payload
-
-  const repo = repository.name
-  const owner = repository.owner.login
-
-  const ref = is_pull_request
-    ? payload.pull_request.head.ref
-    : payload.ref.replace('refs/heads/', '')
-
-  if (
-    is_pull_request &&
-    !(
-      payload.action === 'opened' ||
-      payload.action === 'reopened' ||
-      payload.action === 'synchronize'
-    )
-  ) {
-    return new Response('Skip Event: PR Opened, Reopened, or Synchronized', {
-      status: 200
-    })
-  }
-
-  const event = (
-    is_pull_request
-      ? 'pull_request'
-      : ref === repository.default_branch
-        ? 'push_main'
-        : 'push'
-  ) satisfies TriggerEvent
-
-  const triggered_ghosts = Object.entries(schema)
-    .filter(([, { trigger }]) =>
-      event === 'push_main'
-        ? trigger === 'push_main' || trigger === 'push'
-        : trigger === event
-    )
-    .map(([name]) => (isGhostName(name) ? ([name, apps[name]] as const) : null))
-    .filter(nonNull)
+  const {
+    ref,
+    repo,
+    owner,
+    event,
+    payload,
+    head_sha,
+    repository,
+    installation,
+    triggered_ghosts
+  } = prepared
 
   const wraith_status = Object.fromEntries(
     triggered_ghosts.map(([name]) => [
@@ -119,7 +69,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     checks: installation.kit.rest.checks.create({
       owner,
       repo,
-      name: `Wraith CI${is_pull_request ? ' / PR' : ''}`,
+      name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
       head_sha,
       status: 'in_progress',
       output: generateOutput()
