@@ -1,9 +1,13 @@
 <script lang="ts">
   import { page } from '$app/stores'
-  import { ThemeManager, theme } from '@jill64/svelte-dark-theme'
-  import { LanguageManager, LocaleAlternates } from '@jill64/svelte-i18n'
-  import { OGP } from '@jill64/svelte-ogp'
-  import { Toaster } from '@jill64/svelte-toast'
+  import {
+    LanguageManager,
+    LocaleAlternates,
+    OGP,
+    ThemeManager,
+    Toaster,
+    theme
+  } from '@jill64/svelte-suite'
   import '../app.postcss'
 
   $: title = 'Wraith CI'
