@@ -65,8 +65,8 @@ importers:
   packages/site:
     devDependencies:
       '@jill64/eslint-config-svelte':
-        specifier: 1.0.3
-        version: 1.0.3(svelte@4.2.8)(typescript@5.3.3)
+        specifier: 1.0.4
+        version: 1.0.4(svelte@4.2.8)(typescript@5.3.3)
       '@jill64/sentry-sveltekit-cloudflare':
         specifier: 1.6.1
         version: 1.6.1(@sveltejs/kit@2.0.0)(svelte@4.2.8)
@@ -423,6 +423,11 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+  /@eslint/js@8.56.0:
+    resolution: {integrity: sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
   /@fastify/busboy@2.1.0:
     resolution: {integrity: sha512-+KpH+QxZU7O4675t3mnkQKcZZg56u+K/Ct2K+N2AZYNVK8kyeo/bI18tI8aPm3tvNNRyTWfj6s5tnGNlcbQRsA==}
     engines: {node: '>=14'}
@@ -463,12 +468,12 @@ packages:
     resolution: {integrity: sha512-eHAN3A6DJXXiaIf7TFcjnj35thBNFRFwo6kXkKyoO3WqZaUDKXXyTZdL7TfWWvkKRrP1HwZY2rbLw9C9XNc0nw==}
     dev: true
 
-  /@jill64/eslint-config-svelte@1.0.3(svelte@4.2.8)(typescript@5.3.3):
-    resolution: {integrity: sha512-O7eA4daV9J3Oi7aqC7HFTAWSnPdNKsq/TOa8yGylIrV4AACnxlrqAkLxjBrEsj8GWwDZJWKnAMH1oeNN35yKxg==}
+  /@jill64/eslint-config-svelte@1.0.4(svelte@4.2.8)(typescript@5.3.3):
+    resolution: {integrity: sha512-BFs4Mrjx6LjR6Rkjv9OVZ5Tb/HTi7v1YNad3FgTH/YKsJOS5fJdZxBKy8LZkas5vvZ0TzkHPkMyyvA3qAMd4NQ==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
-      '@eslint/js': 8.55.0
+      '@eslint/js': 8.56.0
       '@types/eslint': 8.44.9
       '@types/eslint-config-prettier': 6.11.3
       '@types/eslint__js': 8.42.3
