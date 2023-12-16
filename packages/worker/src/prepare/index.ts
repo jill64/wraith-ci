@@ -41,6 +41,13 @@ export const prepare = async ({
 
   const repo = repository.name
   const owner = repository.owner.login
+
+  if (repository.fork) {
+    return new Response('Skip Event: Forked Repo', {
+      status: 200
+    })
+  }
+
   const context = {
     repo,
     owner,
