@@ -37,6 +37,10 @@ export const schema = {
   bump: {
     alias: 'Version Bump',
     trigger: 'pull_request'
+  },
+  assign: {
+    alias: 'Assign',
+    trigger: 'pull_request'
   }
 } satisfies Record<
   string,
