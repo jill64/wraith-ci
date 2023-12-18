@@ -28,7 +28,7 @@ export const derive: Ghost = async ({
     })
   )
 
-  await Promise.all(result)
+  await Promise.allSettled(result)
 
   return {
     status: 'success',
