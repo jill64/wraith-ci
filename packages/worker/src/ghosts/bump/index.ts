@@ -3,6 +3,7 @@ import { Buffer } from 'node:buffer'
 import semver from 'semver'
 import { scanner, string } from 'typescanner'
 import { isValidPackageJson } from '../docs/utils/isValidPackageJson.js'
+import { checkCumulativeUpdate } from './lib/checkCumulativeUpdate.js'
 import { determineSemType } from './lib/determineSemType.js'
 import { formatVersionStr } from './lib/formatVersionStr.js'
 
@@ -32,7 +33,13 @@ export const bump: Ghost = async ({
     }
   }
 
-  if (pull_request.title.startsWith('chore')) {
+  const isChore = pull_request.title.startsWith('chore')
+
+  const cumulativeUpdate = isChore
+    ? await checkCumulativeUpdate({ owner, repo, repository, installation })
+    : false
+
+  if (isChore && !cumulativeUpdate) {
     return {
       status: 'skipped',
       detail:
@@ -68,7 +75,10 @@ export const bump: Ghost = async ({
   const base_version = formatVersionStr(baseJson?.data?.version)
   const head_version = formatVersionStr(headJson.data.version)
 
-  const semType = determineSemType(pull_request.title)
+  const semType = cumulativeUpdate
+    ? 'patch'
+    : determineSemType(pull_request.title)
+
   const newVersion = semver.inc(base_version, semType) ?? head_version
 
   if (semver.eq(head_version, newVersion)) {
@@ -93,6 +103,15 @@ export const bump: Ghost = async ({
     branch: pull_request.head.ref,
     sha: headJson.sha
   })
+
+  if (cumulativeUpdate) {
+    await installation.kit.rest.issues.createComment({
+      owner,
+      repo,
+      issue_number: pull_request.number,
+      body: `This PR has automatically bumped its version to \`${newVersion}\`, because it has reached the cumulative update threshold.`
+    })
+  }
 
   return {
     status: 'failure',
