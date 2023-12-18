@@ -3,17 +3,22 @@ import { replaceSection } from '../utils/replaceSection.js'
 
 export const syncFooter = ({
   readme,
-  repository
+  repository: { license }
 }: {
   readme: string
   repository: Repository
-}) =>
-  replaceSection({
+}) => {
+  if (!license) {
+    return readme
+  }
+
+  return replaceSection({
     source: readme,
     section: 'FOOTER',
     content: `
 ## License
 
-${repository.license}
+${license}
 `
   })
+}
