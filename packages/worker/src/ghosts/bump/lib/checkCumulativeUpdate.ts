@@ -2,6 +2,8 @@ import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { OctoflareInstallation } from 'octoflare'
 import { Repository } from 'octoflare/webhook'
 
+const thres = 10
+
 export const checkCumulativeUpdate = async ({
   repo,
   owner,
@@ -18,11 +20,11 @@ export const checkCumulativeUpdate = async ({
     repo,
     state: 'closed',
     base: repository.default_branch,
-    per_page: 5
+    per_page: thres
   })
 
   return (
-    data.length === 5 &&
+    data.length === thres &&
     data.every((pull) => pull.merged_at) &&
     data.every((pull) => pull.title.startsWith('chore'))
   )
