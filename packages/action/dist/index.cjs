@@ -31385,6 +31385,9 @@ var release = async ({ payload, octokit }) => {
   }
   await import_exec4.default.exec("npm publish");
   await import_exec4.default.exec(`gh release create v${version2} --generate-notes`);
+  if (!version2.endsWith(".0")) {
+    return "success";
+  }
   const [packageName, repo_topics, keywords] = await Promise.all([
     run("npm view . name").then(({ stdout }) => stdout.trim()),
     octokit.rest.repos.getAllTopics({

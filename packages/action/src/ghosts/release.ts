@@ -29,6 +29,10 @@ export const release: Ghost = async ({ payload, octokit }) => {
   await exec.exec('npm publish')
   await exec.exec(`gh release create v${version} --generate-notes`)
 
+  if (!version.endsWith('.0')) {
+    return 'success'
+  }
+
   const [packageName, repo_topics, keywords] = await Promise.all([
     run('npm view . name').then(({ stdout }) => stdout.trim()),
     octokit.rest.repos
