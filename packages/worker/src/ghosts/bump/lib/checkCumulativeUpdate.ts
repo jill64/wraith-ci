@@ -2,7 +2,7 @@ import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { OctoflareInstallation } from 'octoflare'
 import { Repository } from 'octoflare/webhook'
 
-const thres = 10
+const thresh = 10
 
 export const checkCumulativeUpdate = async ({
   repo,
@@ -15,17 +15,36 @@ export const checkCumulativeUpdate = async ({
   repository: Repository
   installation: OctoflareInstallation<WraithPayload>
 }): Promise<boolean> => {
-  const { data } = await installation.kit.rest.pulls.list({
-    owner,
-    repo,
-    state: 'closed',
-    base: repository.default_branch,
-    per_page: thres
-  })
+  const [
+    {
+      data: { published_at }
+    },
+    { data: list }
+  ] = await Promise.all([
+    installation.kit.rest.repos.getLatestRelease({
+      owner,
+      repo
+    }),
+    installation.kit.rest.pulls.list({
+      owner,
+      repo,
+      state: 'closed',
+      base: repository.default_branch,
+      per_page: thresh
+    })
+  ])
 
-  return (
-    data.length === thres &&
-    data.every((pull) => pull.merged_at) &&
-    data.every((pull) => pull.title.startsWith('chore'))
+  const publishedUNIX = published_at ? new Date(published_at).getTime() : 0
+
+  if (!publishedUNIX) {
+    return false
+  }
+
+  if (list.length < thresh) {
+    return false
+  }
+
+  return list.every((pull) =>
+    pull.merged_at ? new Date(pull.merged_at).getTime() > publishedUNIX : false
   )
 }
