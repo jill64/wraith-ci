@@ -23,6 +23,23 @@ export const bump: Ghost = async ({
     return 'skipped'
   }
 
+  const headJsonData = package_json?.data
+  const headJson =
+    package_json && isValidPackageJson(headJsonData)
+      ? {
+          data: headJsonData,
+          sha: package_json?.sha
+        }
+      : null
+
+  if (!headJson?.data?.version) {
+    return {
+      status: 'skipped',
+      detail:
+        "This repository is not version controlled, so we won't perform any version checks or bumps."
+    }
+  }
+
   const { pull_request } = payload
 
   if (pull_request.base.ref !== repository.default_branch) {
@@ -54,23 +71,6 @@ export const bump: Ghost = async ({
       return isPackageJson(json) ? json : null
     }
   })
-
-  const headJsonData = package_json?.data
-  const headJson =
-    package_json && isValidPackageJson(headJsonData)
-      ? {
-          data: headJsonData,
-          sha: package_json?.sha
-        }
-      : null
-
-  if (!headJson?.data?.version) {
-    return {
-      status: 'skipped',
-      detail:
-        "This repository is not version controlled, so we won't perform any version checks or bumps."
-    }
-  }
 
   const base_version = formatVersionStr(baseJson?.data?.version)
   const head_version = formatVersionStr(headJson.data.version)
