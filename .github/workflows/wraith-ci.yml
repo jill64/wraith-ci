@@ -76,11 +76,19 @@ jobs:
         with:
           node-version: 20
 
+      - name: Try pnpm install
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: |
+            recursive: true
+
       - name: Delete pnpm-lock.yaml
+        if: failure()
         run: rm -f pnpm-lock.yaml
 
       - name: Setup pnpm
-        id: setup-pnpm
+        if: failure()
         uses: pnpm/action-setup@v2
         with:
           version: latest
@@ -88,9 +96,11 @@ jobs:
             recursive: true
 
       - name: Staging
+        if: failure()
         run: git add pnpm-lock.yaml
 
       - name: Push
+        if: failure()
         run: |
           if [ $(git diff --cached --name-only) ]; then
             git config user.name wraith-ci[bot]
