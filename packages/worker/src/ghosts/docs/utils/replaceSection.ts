@@ -7,7 +7,7 @@ export const replaceSection = ({
   key
 }: {
   source: string
-  section: 'HEADER'
+  section: 'HEADER' | 'FOOTER'
   content: string
   key?: string
 }) => {
