@@ -1,5 +1,6 @@
 import { Buffer } from 'node:buffer'
 import { Octokit } from 'octoflare/octokit'
+import { insertSection } from './insertSection.js'
 import { syncFooter } from './syncFooter.js'
 import { syncHeader } from './syncHeader.js'
 
@@ -26,10 +27,12 @@ export const syncReadme = ({
     return null
   }
 
+  const inserted = insertSection(originalReadme.data)
+
   const headerSynced = syncHeader({
     workflowFiles,
     packageJson,
-    readme: originalReadme.data,
+    readme: inserted,
     repository
   })
 
