@@ -39,8 +39,12 @@ export const schema = {
     trigger: 'pull_request'
   },
   assign: {
-    alias: 'Assign',
+    alias: 'Reviewer Assign',
     trigger: 'pull_request'
+  },
+  derive: {
+    alias: 'Derive Branch',
+    trigger: 'push_main'
   }
 } satisfies Record<
   string,
