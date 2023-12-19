@@ -183,3 +183,4 @@ This app automatically performs a merge when a particular user creates a pull re
 | Name      | Type   | Purpose                  |
 | --------- | ------ | ------------------------ |
 | `Members` | `read` | Check author role in org |
+<!----- BEGIN GHOST DOCS FOOTER -----><!----- END GHOST DOCS FOOTER ----->
