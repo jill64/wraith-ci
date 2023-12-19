@@ -105,11 +105,11 @@ export default octoflare<WraithPayload>(async (context) => {
   }
 
   try {
-    await Timeout.wrap(
-      Promise.allSettled(
-        triggered_ghosts.map(async ([name, app]) => {
-          const status = await attempt(
-            () =>
+    Promise.allSettled(
+      triggered_ghosts.map(async ([name, app]) => {
+        const status = await attempt(
+          () =>
+            Timeout.wrap(
               app({
                 ref,
                 repo,
@@ -121,26 +121,26 @@ export default octoflare<WraithPayload>(async (context) => {
                 installation,
                 package_json
               }),
-            (e, o) =>
-              ({
-                status: 'failure',
-                detail: e?.message ?? String(o)
-              }) as const
-          )
+              5000,
+              `Timeout \`${name}\``
+            ),
+          (e, o) =>
+            ({
+              status: 'failure',
+              detail: e?.message ?? String(o)
+            }) as const
+        )
 
-          wraith_status[name] = typeof status === 'string' ? { status } : status
+        wraith_status[name] = typeof status === 'string' ? { status } : status
 
-          await installation.kit.rest.checks.update({
-            owner,
-            repo,
-            check_run_id,
-            output: generateOutput(),
-            status: 'in_progress'
-          })
+        await installation.kit.rest.checks.update({
+          owner,
+          repo,
+          check_run_id,
+          output: generateOutput(),
+          status: 'in_progress'
         })
-      ),
-      5000,
-      'Timeout waiting for workflows to complete'
+      })
     )
 
     const bridged_ghosts = Object.entries(wraith_status)
@@ -148,19 +148,15 @@ export default octoflare<WraithPayload>(async (context) => {
       .map(([name]) => name as GhostName)
 
     if (bridged_ghosts.length) {
-      await Timeout.wrap(
-        installation.startWorkflow({
-          repo,
-          owner,
-          data: {
-            check_run_id,
-            triggered: bridged_ghosts,
-            ref
-          }
-        }),
-        5000,
-        'Timeout waiting for workflow to start'
-      )
+      installation.startWorkflow({
+        repo,
+        owner,
+        data: {
+          check_run_id,
+          triggered: bridged_ghosts,
+          ref
+        }
+      })
 
       return new Response('Wraith CI Workflow Bridged', {
         status: 202
