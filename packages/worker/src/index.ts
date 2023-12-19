@@ -121,7 +121,7 @@ export default octoflare<WraithPayload>(async (context) => {
                 installation,
                 package_json
               }),
-              5000,
+              3000,
               `Timeout main worker in \`${name}\``
             )
 
@@ -144,13 +144,13 @@ export default octoflare<WraithPayload>(async (context) => {
             output: generateOutput(),
             status: 'in_progress'
           }),
-          5000,
+          3000,
           `Update checks timeout in \`${name}\``
         )
       })
     )
 
-    await Timeout.wrap(main, 8000, "Timeout main worker's Promise.allSettled")
+    await Timeout.wrap(main, 5000, "Timeout main worker's Promise.allSettled")
 
     const bridged_ghosts = Object.entries(wraith_status)
       .filter(([, { status }]) => status === 'bridged')
@@ -167,7 +167,7 @@ export default octoflare<WraithPayload>(async (context) => {
             ref
           }
         }),
-        5000,
+        3000,
         'Timeout bridging workflow'
       )
 
