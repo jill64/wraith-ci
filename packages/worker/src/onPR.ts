@@ -65,10 +65,13 @@ Check the box to re-trigger CI.
     }
   }
 
+  const pull_number = pull_request.number
+
   return {
     ref,
     task,
     event,
-    head_sha
+    head_sha,
+    pull_number
   }
 }

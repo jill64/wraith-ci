@@ -12,11 +12,10 @@ export const onPush = (payload: PushEvent) => {
       : ('push' as const)
   ) satisfies TriggerEvent
 
-  const task = () => {}
-
   return {
     ref,
-    task,
+    task: () => {},
+    pull_number: null,
     event,
     head_sha
   }

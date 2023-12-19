@@ -87,10 +87,13 @@ export const onPRCommentEdited = async (
     }
   }
 
+  const pull_number = commented_pr.number
+
   return {
     ref,
     task,
     event,
-    head_sha
+    head_sha,
+    pull_number
   }
 }

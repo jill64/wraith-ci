@@ -56,7 +56,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     return processed
   }
 
-  const { ref, event, head_sha, task } = processed
+  const { ref, event, head_sha, pull_number, task } = processed
 
   if (!(head_sha && Number(head_sha) !== 0)) {
     return new Response('Skip Event: No Head SHA', {
@@ -100,6 +100,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
 
     await dispatchWorkflow({
       triggered_ghosts,
+      pull_number,
       head_sha,
       ref
     })
