@@ -31500,11 +31500,11 @@ var schema = {
   assign: {
     alias: "Reviewer Assign",
     trigger: "pull_request"
-  },
-  derive: {
-    alias: "Derive",
-    trigger: "push_main"
   }
+  // derive: {
+  //   alias: 'Derive',
+  //   trigger: 'push_main'
+  // }
 };
 
 // src/utils/updateOutput.ts

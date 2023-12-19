@@ -121,7 +121,7 @@ export default octoflare<WraithPayload>(async (context) => {
                 installation,
                 package_json
               }),
-              3000,
+              8000,
               `Timeout main worker in \`${name}\``
             )
 
@@ -167,7 +167,7 @@ export default octoflare<WraithPayload>(async (context) => {
             ref
           }
         }),
-        3000,
+        5000,
         'Timeout bridging workflow'
       )
 

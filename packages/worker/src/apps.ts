@@ -4,7 +4,7 @@ import { assign } from './ghosts/assign.js'
 import { build } from './ghosts/build.js'
 import { bump } from './ghosts/bump/index.js'
 import { deploy } from './ghosts/deploy.js'
-import { derive } from './ghosts/derive.js'
+// import { derive } from './ghosts/derive.js'
 import { docs } from './ghosts/docs/index.js'
 import { format } from './ghosts/format.js'
 import { lint } from './ghosts/lint.js'
@@ -20,6 +20,6 @@ export const apps = {
   merge,
   release,
   bump,
-  assign,
-  derive
+  assign
+  // derive
 } satisfies Record<GhostName, Ghost>
