@@ -144,7 +144,7 @@ export default octoflare<WraithPayload>(async (context) => {
             output: generateOutput(),
             status: 'in_progress'
           }),
-          5000,
+          8000,
           `Update checks timeout in \`${name}\``
         )
       })
