@@ -1,7 +1,6 @@
 import { Ghost } from '@/action/types/Ghost.js'
 
 export const derive: Ghost = async () => {
-
   return 'skipped'
 
   // const { owner, repo } = payload
