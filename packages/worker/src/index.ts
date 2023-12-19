@@ -167,7 +167,7 @@ export default octoflare<WraithPayload>(async (context) => {
             ref
           }
         }),
-        3000,
+        5000,
         'Timeout bridging workflow'
       )
 
