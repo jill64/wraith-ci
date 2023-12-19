@@ -17,6 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         name: [build, deploy, docs, format, lint, merge, release, bump, assign, derive]
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -62,6 +63,7 @@ jobs:
   try-repair-lock:
     needs: wraith-ci
     if: failure()
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -113,13 +115,14 @@ jobs:
   post-process:
     needs: [try-repair-lock, wraith-ci]
     if: always()
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Close Check Run
         run: |
           gh api \
             --method PATCH \
-            /repos/${{ env.repository }}/check-runs/${{ fromJson(inputs.payload).data.check_run_id }} \
+            /repos/${{ env.repository }}/check-runs/${{ fromJson(inputs.payload).check_run_id }} \
             --field status=completed \
             --field conclusion=${{ needs.wraith-ci.result }}
 
