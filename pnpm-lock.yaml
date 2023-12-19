@@ -30,8 +30,8 @@ importers:
         specifier: 8.56.0
         version: 8.56.0
       octoflare:
-        specifier: 0.23.1
-        version: 0.23.1
+        specifier: 0.23.3
+        version: 0.23.3
       prettier:
         specifier: 3.1.1
         version: 3.1.1
@@ -3235,8 +3235,8 @@ packages:
       object-keys: 1.1.1
     dev: true
 
-  /octoflare@0.23.1:
-    resolution: {integrity: sha512-tdKBNN/SLEKsKdunNPZEeknwHxaRfazJtIDCDUxW6GjV2jcGLAXtYLB6OOlayLYn97sFSkCkjkOudTKX4Yq42Q==}
+  /octoflare@0.23.3:
+    resolution: {integrity: sha512-cf3+sHnYGbXNSqW3IyOdxE5sM4t1r9eSwnTuAK+5FJCiz3Z4WFpkF5v4YDc6hcrU4P7vVJzW0a0hmQZzwCTHgQ==}
     dependencies:
       '@actions/core': 1.10.1
       '@actions/github': 6.0.0
