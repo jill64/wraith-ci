@@ -105,11 +105,11 @@ export default octoflare<WraithPayload>(async (context) => {
   }
 
   try {
-    await Timeout.wrap(
-      Promise.allSettled(
-        triggered_ghosts.map(async ([name, app]) => {
-          const status = await attempt(
-            () =>
+    const main = Promise.allSettled(
+      triggered_ghosts.map(async ([name, app]) => {
+        const status = await attempt(
+          async () => {
+            const result = await Timeout.wrap(
               app({
                 ref,
                 repo,
@@ -121,27 +121,36 @@ export default octoflare<WraithPayload>(async (context) => {
                 installation,
                 package_json
               }),
-            (e, o) =>
-              ({
-                status: 'failure',
-                detail: e?.message ?? String(o)
-              }) as const
-          )
+              5000,
+              `Timeout main worker in \`${name}\``
+            )
 
-          wraith_status[name] = typeof status === 'string' ? { status } : status
+            return result as Awaited<ReturnType<typeof app>>
+          },
+          (e, o) =>
+            ({
+              status: 'failure',
+              detail: e?.message ?? String(o)
+            }) as const
+        )
 
-          await installation.kit.rest.checks.update({
+        wraith_status[name] = typeof status === 'string' ? { status } : status
+
+        await Timeout.wrap(
+          installation.kit.rest.checks.update({
             owner,
             repo,
             check_run_id,
             output: generateOutput(),
             status: 'in_progress'
-          })
-        })
-      ),
-      5000,
-      'Timeout waiting for workflows to complete'
+          }),
+          5000,
+          `Update checks timeout in \`${name}\``
+        )
+      })
     )
+
+    await Timeout.wrap(main, 5000, "Timeout main worker's Promise.allSettled")
 
     const bridged_ghosts = Object.entries(wraith_status)
       .filter(([, { status }]) => status === 'bridged')
@@ -159,7 +168,7 @@ export default octoflare<WraithPayload>(async (context) => {
           }
         }),
         5000,
-        'Timeout waiting for workflow to start'
+        'Timeout bridging workflow'
       )
 
       return new Response('Wraith CI Workflow Bridged', {
