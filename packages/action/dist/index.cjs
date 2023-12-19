@@ -34177,12 +34177,7 @@ var syncPackageJson = async ({
   const license = repository.license?.spdx_id ? { license: repository.license.spdx_id } : {};
   const keywords = topics ?? [];
   const html = await fetch(repository.html_url).then((res) => res.text());
-  const repo_image = html.match(
-    /<meta property="og:image" content="(\S*)"\s*\/>/
-  )?.[1];
-  if (!repo_image) {
-    throw new Error("No og:image found");
-  }
+  const repo_image = html.match(/<meta property="og:image" content="(\S*)"\s*\/>/)?.[1] ?? "";
   const repoInfo = {
     description: repository.description ?? "",
     ...license,
