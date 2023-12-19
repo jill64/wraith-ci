@@ -1,7 +1,7 @@
-import { TriggerEvent } from './TriggerEvent.js'
+import { GhostName } from './GhostName.js'
 
 export type WraithPayload = {
+  triggered_ghosts: GhostName[]
   head_sha: string
-  event: TriggerEvent
   ref: string
 }

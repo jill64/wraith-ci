@@ -15,7 +15,8 @@ export const schema = {
   },
   format: {
     alias: 'Format',
-    trigger: 'push'
+    trigger: 'push',
+    skip_bot: true
   },
   lint: {
     alias: 'Lint',
@@ -46,5 +47,6 @@ export const schema = {
   {
     alias: string
     trigger: TriggerEvent
+    skip_bot?: boolean
   }
 >

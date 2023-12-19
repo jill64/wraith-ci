@@ -1,6 +1,5 @@
-import { isGhostName } from '@/shared/src/isGhostName.js'
-import { nonNull } from '@/shared/src/nonNull.js'
 import { schema } from '@/shared/src/schema.js'
+import { GhostName } from '@/shared/types/GhostName.js'
 import { GhostStatus } from '@/shared/types/GhostStatus.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { octoflare } from 'octoflare'
@@ -65,14 +64,23 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     })
   }
 
+  const send_by_bot = payload.sender.type === 'Bot'
+
   const triggered_ghosts = Object.entries(schema)
-    .filter(([, { trigger }]) =>
-      event === 'push_main'
+    .filter(([, config]) => {
+      const skip_bot = 'skip_bot' in config && config.skip_bot === true
+
+      if (send_by_bot && skip_bot) {
+        return false
+      }
+
+      const { trigger } = config
+
+      return event === 'push_main'
         ? trigger === 'push_main' || trigger === 'push'
         : trigger === event
-    )
-    .map(([name]) => (isGhostName(name) ? name : null))
-    .filter(nonNull)
+    })
+    .map(([name]) => name as GhostName)
 
   const wraith_status = Object.fromEntries(
     triggered_ghosts.map(([name]) => [
@@ -91,8 +99,8 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     })
 
     await dispatchWorkflow({
+      triggered_ghosts,
       head_sha,
-      event,
       ref
     })
   }
