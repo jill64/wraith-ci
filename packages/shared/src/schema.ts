@@ -3,13 +3,11 @@ import { TriggerEvent } from '../types/TriggerEvent.js'
 export const schema = {
   build: {
     alias: 'Build',
-    trigger: 'push',
-    action: true
+    trigger: 'push'
   },
   deploy: {
     alias: 'Deploy',
-    trigger: 'push_main',
-    action: true
+    trigger: 'push_main'
   },
   docs: {
     alias: 'Docs',
@@ -17,13 +15,11 @@ export const schema = {
   },
   format: {
     alias: 'Format',
-    trigger: 'push',
-    action: true
+    trigger: 'push'
   },
   lint: {
     alias: 'Lint',
-    trigger: 'push',
-    action: true
+    trigger: 'push'
   },
   merge: {
     alias: 'Auto Merge',
@@ -31,8 +27,7 @@ export const schema = {
   },
   release: {
     alias: 'Release',
-    trigger: 'push_main',
-    action: true
+    trigger: 'push_main'
   },
   bump: {
     alias: 'Version Bump',
@@ -41,16 +36,15 @@ export const schema = {
   assign: {
     alias: 'Reviewer Assign',
     trigger: 'pull_request'
+  },
+  derive: {
+    alias: 'Derive',
+    trigger: 'push_main'
   }
-  // derive: {
-  //   alias: 'Derive',
-  //   trigger: 'push_main'
-  // }
 } satisfies Record<
   string,
   {
     alias: string
     trigger: TriggerEvent
-    action?: boolean
   }
 >
