@@ -1,34 +1,20 @@
-import { Buffer } from 'node:buffer'
-import { Octokit } from 'octoflare/octokit'
-import { Repository } from 'octoflare/webhook'
-import { PackageJson } from '../types/PackageJson.js'
-
-const exclude_topics = ['npm', 'beta']
+import { ActionRepository } from '../../tyeps/ActionRepository.js'
+import { PackageJson } from './types/PackageJson.js'
 
 export const syncPackageJson = async ({
   packageJson,
-  repository,
-  ref,
-  octokit
+  repository
 }: {
-  repository: Repository
-  packageJson:
-    | {
-        data: PackageJson | null
-        sha: string | undefined
-      }
-    | undefined
-    | null
-  ref: string
-  octokit: Octokit
+  repository: ActionRepository
+  packageJson: PackageJson | null | undefined | null
 }) => {
-  if (!packageJson?.data?.version) {
+  if (!packageJson?.version) {
     return null
   }
 
   const { topics, owner } = repository
 
-  const publishConfig = packageJson.data.name?.startsWith('@')
+  const publishConfig = packageJson.name?.startsWith('@')
     ? { publishConfig: { access: 'public' } }
     : {}
 
@@ -36,7 +22,7 @@ export const syncPackageJson = async ({
     ? { license: repository.license.spdx_id }
     : {}
 
-  const keywords = topics.filter((x) => !exclude_topics.includes(x))
+  const keywords = topics ?? []
 
   const html = await fetch(repository.html_url).then((res) => res.text())
   const repo_image = html.match(
@@ -68,10 +54,10 @@ export const syncPackageJson = async ({
     prettier: '@jill64/prettier-config'
   }
 
-  const oldJson = JSON.stringify(packageJson.data, null, 2)
+  const oldJson = JSON.stringify(packageJson, null, 2)
   const newJson = JSON.stringify(
     {
-      ...packageJson.data,
+      ...packageJson,
       ...repoInfo
     },
     null,
@@ -82,14 +68,5 @@ export const syncPackageJson = async ({
     return null
   }
 
-  return () =>
-    octokit.rest.repos.createOrUpdateFileContents({
-      owner: repository.owner.login,
-      repo: repository.name,
-      path: 'package.json',
-      message: 'chore: synchronize package.json',
-      content: Buffer.from(newJson + '\n').toString('base64'),
-      branch: ref,
-      sha: packageJson.sha
-    })
+  return newJson + '\n'
 }

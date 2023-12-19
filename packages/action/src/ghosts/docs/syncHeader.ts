@@ -1,7 +1,7 @@
-import { Repository } from 'octoflare/webhook'
-import { PackageJson } from '../types/PackageJson.js'
-import { badge } from '../utils/badge.js'
-import { replaceSection } from '../utils/replaceSection.js'
+import { ActionRepository } from '../../tyeps/ActionRepository.js'
+import { PackageJson } from './types/PackageJson.js'
+import { badge } from './utils/badge.js'
+import { replaceSection } from './utils/replaceSection.js'
 
 export const syncHeader = ({
   readme,
@@ -11,11 +11,11 @@ export const syncHeader = ({
 }: {
   workflowFiles: {
     name: string
-    data?: string | null
+    data: string
   }[]
   packageJson: PackageJson | undefined | null
   readme: string
-  repository: Repository
+  repository: ActionRepository
 }) => {
   const escapedWebsiteUrl = repository.homepage
     ? encodeURIComponent(repository.homepage)
