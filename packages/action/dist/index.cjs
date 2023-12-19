@@ -31502,7 +31502,7 @@ var schema = {
     trigger: "pull_request"
   },
   derive: {
-    alias: "Derive Branch",
+    alias: "Derive",
     trigger: "push_main"
   }
 };
