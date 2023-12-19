@@ -9,6 +9,8 @@
   "devDependencies": {
     "@cloudflare/workers-types": "4.20231121.0",
     "@types/semver": "7.5.6",
-    "semver": "7.5.4"
+    "semver": "7.5.4",
+    "await-timeout": "1.1.1",
+    "@types/await-timeout": "0.3.3"
   }
 }

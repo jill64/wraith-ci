@@ -5,6 +5,7 @@ import { GhostStatus } from '@/shared/types/GhostStatus.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
 import { unfurl } from '@jill64/unfurl'
+import Timeout from 'await-timeout'
 import { ChecksOutput, Conclusion, octoflare } from 'octoflare'
 import { prepare } from './prepare/index.js'
 
@@ -143,15 +144,19 @@ export default octoflare<WraithPayload>(async (context) => {
       .map(([name]) => name as GhostName)
 
     if (bridged_ghosts.length) {
-      await installation.startWorkflow({
-        repo,
-        owner,
-        data: {
-          check_run_id,
-          triggered: bridged_ghosts,
-          ref
-        }
-      })
+      await Timeout.wrap(
+        installation.startWorkflow({
+          repo,
+          owner,
+          data: {
+            check_run_id,
+            triggered: bridged_ghosts,
+            ref
+          }
+        }),
+        5000,
+        'Timeout waiting for workflow to start'
+      )
 
       return new Response('Wraith CI Workflow Bridged', {
         status: 202
