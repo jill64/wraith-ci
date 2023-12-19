@@ -20,6 +20,6 @@ export const apps = {
   merge,
   release,
   bump,
-  assign,
+  assign
   // derive
 } satisfies Record<GhostName, Ghost>

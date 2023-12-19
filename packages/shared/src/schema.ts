@@ -41,7 +41,7 @@ export const schema = {
   assign: {
     alias: 'Reviewer Assign',
     trigger: 'pull_request'
-  },
+  }
   // derive: {
   //   alias: 'Derive',
   //   trigger: 'push_main'
