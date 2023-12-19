@@ -60,33 +60,36 @@ export const onPRCommentEdited = async (
     })
   }
 
-  try {
-    await Promise.allSettled([
-      installation.kit.rest.issues.updateComment({
-        owner,
-        repo,
-        comment_id: comment.id,
-        body: before
-      }),
-      installation.kit.rest.reactions.createForIssueComment({
-        owner,
-        repo,
-        comment_id: comment.id,
-        content: '+1'
-      })
-    ])
-  } catch (e) {
-    console.error(e)
-  }
-
   const head_sha = commented_pr.head.sha
   const ref = commented_pr.head.ref
   const event = (
     retrigger_pr ? ('pull_request' as const) : ('push' as const)
   ) satisfies TriggerEvent
 
+  const task = async () => {
+    try {
+      await Promise.allSettled([
+        installation.kit.rest.issues.updateComment({
+          owner,
+          repo,
+          comment_id: comment.id,
+          body: before
+        }),
+        installation.kit.rest.reactions.createForIssueComment({
+          owner,
+          repo,
+          comment_id: comment.id,
+          content: '+1'
+        })
+      ])
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return {
     ref,
+    task,
     event,
     head_sha
   }
