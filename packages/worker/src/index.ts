@@ -105,11 +105,11 @@ export default octoflare<WraithPayload>(async (context) => {
   }
 
   try {
-    Promise.allSettled(
+    const main = Promise.allSettled(
       triggered_ghosts.map(async ([name, app]) => {
         const status = await attempt(
-          () =>
-            Timeout.wrap(
+          async () => {
+            const result = await Timeout.wrap(
               app({
                 ref,
                 repo,
@@ -122,8 +122,11 @@ export default octoflare<WraithPayload>(async (context) => {
                 package_json
               }),
               5000,
-              `Timeout \`${name}\``
-            ),
+              `Timeout main worker in \`${name}\``
+            )
+
+            return result as Awaited<ReturnType<typeof app>>
+          },
           (e, o) =>
             ({
               status: 'failure',
@@ -133,15 +136,21 @@ export default octoflare<WraithPayload>(async (context) => {
 
         wraith_status[name] = typeof status === 'string' ? { status } : status
 
-        await installation.kit.rest.checks.update({
-          owner,
-          repo,
-          check_run_id,
-          output: generateOutput(),
-          status: 'in_progress'
-        })
+        await Timeout.wrap(
+          installation.kit.rest.checks.update({
+            owner,
+            repo,
+            check_run_id,
+            output: generateOutput(),
+            status: 'in_progress'
+          }),
+          5000,
+          `Update checks timeout in \`${name}\``
+        )
       })
     )
+
+    await Timeout.wrap(main, 5000, "Timeout main worker's Promise.allSettled")
 
     const bridged_ghosts = Object.entries(wraith_status)
       .filter(([, { status }]) => status === 'bridged')
