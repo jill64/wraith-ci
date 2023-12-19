@@ -34,8 +34,8 @@ export const syncPackageJson = async ({
     bugs: `${repository.html_url}/issues`,
     homepage: `${repository.html_url}#readme`,
     author: {
-      name: owner.name,
-      email: owner.email,
+      name: owner.login,
+      email: 'intents.turrets0h@icloud.com',
       url: owner.html_url,
       image: owner.avatar_url
     },
