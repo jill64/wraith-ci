@@ -1,24 +1,34 @@
-import { Ghost } from '@/worker/types/Ghost.js'
+import { Ghost } from '@/action/types/Ghost.js'
 import { attempt } from '@jill64/attempt'
-import { enableAutoMerge } from './lib/enableAutoMerge.js'
-import { isAllowUsers } from './lib/isAllowedUsers.js'
+import { enableAutoMerge } from './enableAutoMerge.js'
+import { isAllowUsers } from './isAllowedUsers.js'
 
-export const merge: Ghost = async ({
-  repo,
-  owner,
-  repository,
-  payload,
-  installation
-}) => {
-  if (!('pull_request' in payload)) {
+export const merge: Ghost = async ({ payload, octokit }) => {
+  const {
+    owner,
+    repo,
+    data: { pull_number }
+  } = payload
+
+  if (!pull_number) {
     return 'skipped'
   }
 
-  const { pull_request } = payload
+  const [{ data: pull_request }, { data: repository }] = await Promise.all([
+    octokit.rest.pulls.get({
+      owner,
+      repo,
+      pull_number
+    }),
+    octokit.rest.repos.get({
+      owner,
+      repo
+    })
+  ])
 
   const allow = await isAllowUsers({
     owner,
-    octokit: installation.kit,
+    octokit,
     name: pull_request.user.login,
     ownerType: repository.owner.type
   })
@@ -32,7 +42,7 @@ export const merge: Ghost = async ({
 
   const branch_protection = await attempt(
     () =>
-      installation.kit.rest.repos.getBranchProtection({
+      octokit.rest.repos.getBranchProtection({
         owner,
         repo,
         branch: pull_request.base.ref
@@ -50,7 +60,7 @@ export const merge: Ghost = async ({
   await enableAutoMerge({
     repo,
     owner,
-    octokit: installation.kit,
+    octokit,
     pull_number: pull_request.number
   })
 
