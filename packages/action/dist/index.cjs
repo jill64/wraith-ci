@@ -31060,14 +31060,14 @@ var unfurl = async (data, ...optional2) => {
   return Object.fromEntries(result);
 };
 
-// ../../node_modules/.pnpm/octoflare@0.21.4/node_modules/octoflare/dist/action/action.js
+// ../../node_modules/.pnpm/octoflare@0.23.1/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 
-// ../../node_modules/.pnpm/octoflare@0.21.4/node_modules/octoflare/dist/utils/limitStr.js
+// ../../node_modules/.pnpm/octoflare@0.23.1/node_modules/octoflare/dist/utils/limitStr.js
 var limitStr = (str, num) => str.length > num ? `${str.substring(0, num)}...` : str;
 
-// ../../node_modules/.pnpm/octoflare@0.21.4/node_modules/octoflare/dist/utils/errorLogging.js
+// ../../node_modules/.pnpm/octoflare@0.23.1/node_modules/octoflare/dist/utils/errorLogging.js
 var errorLogging = async ({ octokit, repo, owner, error, info }) => {
   try {
     const errorTitle = `Octoflare Error: ${limitStr(error.message, 64)}`;
@@ -31114,7 +31114,7 @@ ${error.stack}
   }
 };
 
-// ../../node_modules/.pnpm/octoflare@0.21.4/node_modules/octoflare/dist/utils/updateChecks.js
+// ../../node_modules/.pnpm/octoflare@0.23.1/node_modules/octoflare/dist/utils/updateChecks.js
 var updateChecks = ({ kit, check_run_id, owner, repo, conclusion, output, details_url, status }) => kit.rest.checks.update({
   check_run_id,
   owner,
@@ -31130,8 +31130,9 @@ var updateChecks = ({ kit, check_run_id, owner, repo, conclusion, output, detail
   } : void 0
 });
 
-// ../../node_modules/.pnpm/octoflare@0.21.4/node_modules/octoflare/dist/action/action.js
-var action = async (handler) => {
+// ../../node_modules/.pnpm/octoflare@0.23.1/node_modules/octoflare/dist/action/action.js
+var action = async (handler, options) => {
+  const { skipTokenRevocation } = options ?? {};
   const payloadStr = import_core.default.getInput("payload", { required: true });
   const payload = JSON.parse(payloadStr);
   const { token, app_token, check_run_id, owner, repo } = payload;
@@ -31140,22 +31141,26 @@ var action = async (handler) => {
   const { context: context3 } = import_github.default;
   const details_url = `${context3.serverUrl}/${context3.repo.owner}/${context3.repo.repo}/actions/runs/${context3.runId}`;
   const close = async (conclusion, output) => {
-    if (check_run_id) {
-      await updateChecks({
-        kit: octokit,
-        owner,
-        repo,
-        check_run_id,
-        details_url,
-        conclusion,
-        output,
-        status: "completed"
-      });
-      await Promise.all([
-        octokit.rest.apps.revokeInstallationAccessToken(),
-        appkit.rest.apps.revokeInstallationAccessToken()
-      ]);
+    if (!check_run_id) {
+      return;
     }
+    await updateChecks({
+      kit: octokit,
+      owner,
+      repo,
+      check_run_id,
+      details_url,
+      conclusion,
+      output,
+      status: "completed"
+    });
+    if (skipTokenRevocation) {
+      return;
+    }
+    await Promise.all([
+      octokit.rest.apps.revokeInstallationAccessToken(),
+      appkit.rest.apps.revokeInstallationAccessToken()
+    ]);
   };
   const updateCheckRun = async (output) => {
     if (check_run_id) {
@@ -31178,10 +31183,10 @@ var action = async (handler) => {
       payload,
       updateCheckRun
     });
-    if (result) {
-      return await (typeof result === "string" ? close(result) : close(result.conclusion, result.output));
+    if (!result) {
+      return;
     }
-    await close("success");
+    return await (typeof result === "string" ? close(result) : close(result.conclusion, result.output));
   } catch (e) {
     if (e instanceof Error) {
       await errorLogging({
@@ -31203,11 +31208,11 @@ Cause on Action
   }
 };
 
-// ../../node_modules/.pnpm/octoflare@0.21.4/node_modules/octoflare/dist/re-exports/actions/core.js
+// ../../node_modules/.pnpm/octoflare@0.23.1/node_modules/octoflare/dist/re-exports/actions/core.js
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
-// ../../node_modules/.pnpm/octoflare@0.21.4/node_modules/octoflare/dist/re-exports/actions/github.js
+// ../../node_modules/.pnpm/octoflare@0.23.1/node_modules/octoflare/dist/re-exports/actions/github.js
 var github_exports = {};
 __reExport(github_exports, __toESM(require_github(), 1));
 
