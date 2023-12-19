@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "dev": "cd packages/site && pnpm dev",
-    "build": "pnpm -r build",
+    "build": "pnpm build:sync && pnpm -r build",
+    "build:sync": "npx tsx scripts/sync.ts",
     "preview": "cd packages/site && pnpm preview",
     "deploy": "cd packages/worker && pnpm run deploy",
     "sync": "cd packages/site && pnpm sync",
