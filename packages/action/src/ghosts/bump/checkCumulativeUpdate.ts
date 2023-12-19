@@ -1,19 +1,17 @@
-import { WraithPayload } from '@/shared/types/WraithPayload.js'
-import { OctoflareInstallation } from 'octoflare'
-import { Repository } from 'octoflare/webhook'
+import { ActionOctokit } from 'octoflare/action'
 
 const thresh = 10
 
 export const checkCumulativeUpdate = async ({
   repo,
   owner,
-  repository,
-  installation
+  default_branch,
+  octokit
 }: {
   repo: string
   owner: string
-  repository: Repository
-  installation: OctoflareInstallation<WraithPayload>
+  default_branch: string
+  octokit: ActionOctokit
 }): Promise<boolean> => {
   const [
     {
@@ -21,15 +19,15 @@ export const checkCumulativeUpdate = async ({
     },
     { data: list }
   ] = await Promise.all([
-    installation.kit.rest.repos.getLatestRelease({
+    octokit.rest.repos.getLatestRelease({
       owner,
       repo
     }),
-    installation.kit.rest.pulls.list({
+    octokit.rest.pulls.list({
       owner,
       repo,
       state: 'closed',
-      base: repository.default_branch,
+      base: default_branch,
       per_page: thresh
     })
   ])
