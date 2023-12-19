@@ -83,7 +83,7 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     .map(([name]) => name as GhostName)
 
   const wraith_status = Object.fromEntries(
-    triggered_ghosts.map(([name]) => [
+    triggered_ghosts.map((name) => [
       name,
       { status: 'processing' } as GhostStatus
     ])
