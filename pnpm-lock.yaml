@@ -50,9 +50,15 @@ importers:
       '@actions/exec':
         specifier: 1.1.1
         version: 1.1.1
+      '@types/semver':
+        specifier: 7.5.6
+        version: 7.5.6
       esbuild:
         specifier: 0.19.10
         version: 0.19.10
+      semver:
+        specifier: 7.5.4
+        version: 7.5.4
       ts-retry:
         specifier: 4.2.4
         version: 4.2.4
@@ -97,18 +103,6 @@ importers:
       '@cloudflare/workers-types':
         specifier: 4.20231121.0
         version: 4.20231121.0
-      '@types/await-timeout':
-        specifier: 0.3.3
-        version: 0.3.3
-      '@types/semver':
-        specifier: 7.5.6
-        version: 7.5.6
-      await-timeout:
-        specifier: 1.1.1
-        version: 1.1.1
-      semver:
-        specifier: 7.5.4
-        version: 7.5.4
 
 packages:
 
@@ -1474,10 +1468,6 @@ packages:
       - supports-color
     dev: true
 
-  /@types/await-timeout@0.3.3:
-    resolution: {integrity: sha512-xed3pz+r3kzmQu03BEqRIR1YVW8jXluvlL/FgO0wTdySl14qDJKASEyDg7Ut+ufFROsoETxCiHYDjMhWPV3INg==}
-    dev: true
-
   /@types/aws-lambda@8.10.130:
     resolution: {integrity: sha512-HxTfLeGvD1wTJqIGwcBCpNmHKenja+We1e0cuzeIDFfbEj3ixnlTInyPR/81zAe0Ss/Ip12rFK6XNeMLVucOSg==}
     dev: true
@@ -1968,11 +1958,6 @@ packages:
   /available-typed-arrays@1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
-    dev: true
-
-  /await-timeout@1.1.1:
-    resolution: {integrity: sha512-gsDXAS6XVc4Jt+7S92MPX6Noq69bdeXUPEaXd8dk3+yVr629LTDLxNt4j1ycBbrU+AStK2PhKIyNIM+xzWMVOQ==}
-    engines: {node: '>=6'}
     dev: true
 
   /axobject-query@3.2.1:

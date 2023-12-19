@@ -14,6 +14,8 @@ export const onPush = (payload: PushEvent) => {
 
   return {
     ref,
+    task: () => {},
+    pull_number: null,
     event,
     head_sha
   }

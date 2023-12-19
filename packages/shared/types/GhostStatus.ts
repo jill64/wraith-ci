@@ -1,6 +1,6 @@
 export type GhostStatus =
   | {
-      status: 'processing' | 'success' | 'bridged' | 'skipped'
+      status: 'processing' | 'success' | 'skipped'
       detail?: string
     }
   | {

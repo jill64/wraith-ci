@@ -1,12 +1,14 @@
-import { Ghost } from '@/worker/types/Ghost.js'
+import { Ghost } from '@/action/types/Ghost.js'
 
-export const derive: Ghost = async ({
-  repo,
-  repository,
-  owner,
-  installation
-}) => {
-  const { data: list } = await installation.kit.rest.pulls.list({
+export const derive: Ghost = async ({ octokit, payload }) => {
+  const { owner, repo } = payload
+
+  const { data: repository } = await octokit.rest.repos.get({
+    owner,
+    repo
+  })
+
+  const { data: list } = await octokit.rest.pulls.list({
     owner,
     repo,
     state: 'open',
@@ -21,7 +23,7 @@ export const derive: Ghost = async ({
   }
 
   const result = list.map((pull) =>
-    installation.kit.rest.pulls.updateBranch({
+    octokit.rest.pulls.updateBranch({
       owner,
       repo,
       pull_number: pull.number

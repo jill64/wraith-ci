@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: ['build', 'lint', 'format', 'deploy', 'release']
+        name: [build, deploy, docs, format, lint, merge, release, bump, assign, derive]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,7 +59,7 @@ jobs:
           X_JP_ACCESS_TOKEN: ${{ matrix.name == 'release' && secrets.X_JP_ACCESS_TOKEN }}
           X_JP_ACCESS_SECRET: ${{ matrix.name == 'release' && secrets.X_JP_ACCESS_SECRET }}
 
-  try-fix-lock:
+  try-repair-lock:
     needs: wraith-ci
     if: failure()
     runs-on: ubuntu-latest
@@ -105,13 +105,13 @@ jobs:
           if [ $(git diff --cached --name-only) ]; then
             git config user.name wraith-ci[bot]
             git config user.email wraith-ci[bot]@users.noreply.github.com
-            git commit -m "fix: invalid pnpm-lock.yaml"
+            git commit -m "chore: repair pnpm-lock.yaml"
             git pull --rebase
             git push origin
           fi
 
   post-process:
-    needs: [try-fix-lock, wraith-ci]
+    needs: [try-repair-lock, wraith-ci]
     if: always()
     runs-on: ubuntu-latest
     steps:

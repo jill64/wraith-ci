@@ -32,39 +32,46 @@ export const onPR = async (
   const event = 'pull_request' as const satisfies TriggerEvent
   const head_sha = pull_request.head.sha
 
-  try {
-    const { data } = await installation.kit.rest.issues.listComments({
-      owner,
-      repo,
-      issue_number: pull_request.number
-    })
-
-    if (
-      !data.some(
-        ({ user, body }) =>
-          user?.login === 'wraith-ci[bot]' && body?.includes('] Wraith CI / PR')
-      )
-    ) {
-      await installation.kit.rest.issues.createComment({
+  const task = async () => {
+    try {
+      const { data } = await installation.kit.rest.issues.listComments({
         owner,
         repo,
-        issue_number: pull_request.number,
-        body: `## Wraith CI 👻 Retry Request
+        issue_number: pull_request.number
+      })
+
+      if (
+        !data.some(
+          ({ user, body }) =>
+            user?.login === 'wraith-ci[bot]' &&
+            body?.includes('] Wraith CI / PR')
+        )
+      ) {
+        await installation.kit.rest.issues.createComment({
+          owner,
+          repo,
+          issue_number: pull_request.number,
+          body: `## Wraith CI 👻 Retry Request
 
 Check the box to re-trigger CI.  
 
 - [ ] Wraith CI
 - [ ] Wraith CI / PR
 `
-      })
+        })
+      }
+    } catch (e) {
+      console.error(e)
     }
-  } catch (e) {
-    console.error(e)
   }
+
+  const pull_number = pull_request.number
 
   return {
     ref,
+    task,
     event,
-    head_sha
+    head_sha,
+    pull_number
   }
 }

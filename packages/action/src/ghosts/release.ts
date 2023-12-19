@@ -1,7 +1,15 @@
 import { Ghost } from '@/action/types/Ghost.js'
 import exec from '@actions/exec'
 import { TwitterApi } from 'twitter-api-v2'
+import { array, optional, scanner, string } from 'typescanner'
+import { getPackageJson } from '../utils/getPackageJson.js'
 import { run } from '../utils/run.js'
+
+const isValidJson = scanner({
+  name: string,
+  version: string,
+  keywords: optional(array(string))
+})
 
 const env = (key: string) => {
   const value = process.env[key]
@@ -14,10 +22,27 @@ const env = (key: string) => {
 const escape = (str: string) => str.replaceAll('@', '').replaceAll('#', '')
 
 export const release: Ghost = async ({ payload, octokit }) => {
-  const [version, publishedVersion] = await Promise.all([
-    run('jq -r .version package.json').then(({ stdout }) => stdout.trim()),
-    run('npm view . version').then(({ stdout }) => stdout.trim())
-  ])
+  const package_json = await getPackageJson()
+
+  if (!package_json) {
+    return {
+      status: 'skipped',
+      detail: 'Not found package.json in repo'
+    }
+  }
+
+  if (!isValidJson(package_json)) {
+    return {
+      status: 'skipped',
+      detail: 'No version found in package.json'
+    }
+  }
+
+  const version = package_json.version.trim()
+
+  const publishedVersion = await run('npm view . version').then(({ stdout }) =>
+    stdout.trim()
+  )
 
   if (version === publishedVersion) {
     return {
@@ -33,18 +58,12 @@ export const release: Ghost = async ({ payload, octokit }) => {
     return 'success'
   }
 
-  const [packageName, repo_topics, keywords] = await Promise.all([
-    run('npm view . name').then(({ stdout }) => stdout.trim()),
-    octokit.rest.repos
-      .getAllTopics({
-        owner: payload.owner,
-        repo: payload.repo
-      })
-      .then(({ data: { names } }) => names),
-    run('jq -r .keywords[] package.json').then(({ stdout, exitCode }) =>
-      exitCode === 0 ? stdout.split('\n') : []
-    )
-  ])
+  const repo_topics = await octokit.rest.repos
+    .getAllTopics({
+      owner: payload.owner,
+      repo: payload.repo
+    })
+    .then(({ data: { names } }) => names)
 
   const enClient = new TwitterApi({
     appKey: env('X_EN_APP_KEY'),
@@ -60,7 +79,9 @@ export const release: Ghost = async ({ payload, octokit }) => {
     accessSecret: env('X_JP_ACCESS_SECRET')
   })
 
-  const topics = [...new Set([...repo_topics, ...keywords])]
+  const topics = [
+    ...new Set([...repo_topics, ...(package_json.keywords ?? [])])
+  ]
     .filter((x) => x)
     .map((topic) => `#${escape(topic.trim().replaceAll('-', ''))}`)
     .join(' ')
@@ -69,12 +90,12 @@ export const release: Ghost = async ({ payload, octokit }) => {
 
   await Promise.all([
     enClient.v2.tweet({
-      text: `${escape(packageName)} v${version} has been released.
+      text: `${escape(package_json.name)} v${version} has been released.
 ${topics}
 ${releaseLink}`
     }),
     jpClient.v2.tweet({
-      text: `${escape(packageName)} v${version} をリリースしました。
+      text: `${escape(package_json.name)} v${version} をリリースしました。
 ${topics}
 ${releaseLink}`
     })

@@ -1,11 +1,33 @@
 import { Ghost } from '@/action/types/Ghost.js'
-import { attempt } from '@jill64/attempt'
 import { writeFile } from 'fs/promises'
 import { array, optional, scanner, string } from 'typescanner'
+import { getPackageJson } from '../utils/getPackageJson.js'
 import { pushCommit } from '../utils/pushCommit.js'
 import { run } from '../utils/run.js'
 
+const isValidJson = scanner({
+  scripts: scanner({
+    lint: string
+  })
+})
+
 export const lint: Ghost = async () => {
+  const package_json = await getPackageJson()
+
+  if (!package_json) {
+    return {
+      status: 'skipped',
+      detail: 'Not found package.json in repo'
+    }
+  }
+
+  if (!isValidJson(package_json)) {
+    return {
+      status: 'skipped',
+      detail: 'Lint command not found in package.json'
+    }
+  }
+
   const lintResult = await run('npm run lint')
 
   if (lintResult.exitCode === 0) {
@@ -17,19 +39,12 @@ export const lint: Ghost = async () => {
     lintResult.stdout.includes('Unused devDependencies')
 
   if (isDepcheckError) {
-    const { stdout: packageJsonStr } = await run('cat package.json')
-
-    const packageJson = attempt(
-      () => JSON.parse(packageJsonStr) as unknown,
-      null
-    )
-
     const isValidPackageJson = scanner({
       dependencies: optional(scanner({})),
       devDependencies: optional(scanner({}))
     })
 
-    if (!isValidPackageJson(packageJson)) {
+    if (!isValidPackageJson(package_json)) {
       return {
         status: 'failure',
         detail: 'Invalid Package.json'
@@ -52,19 +67,19 @@ export const lint: Ghost = async () => {
     }
 
     const omittedDeps = Object.fromEntries(
-      Object.entries(packageJson.dependencies ?? {}).filter(
+      Object.entries(package_json.dependencies ?? {}).filter(
         ([key]) => !result.dependencies.includes(key)
       )
     )
 
     const omittedDevDeps = Object.fromEntries(
-      Object.entries(packageJson.devDependencies ?? {}).filter(
+      Object.entries(package_json.devDependencies ?? {}).filter(
         ([key]) => !result.devDependencies.includes(key)
       )
     )
 
     const omittedPackageJson = {
-      ...packageJson,
+      ...package_json,
       ...(Object.keys(omittedDeps).length ? { dependencies: omittedDeps } : {}),
       ...(Object.keys(omittedDevDeps).length
         ? { devDependencies: omittedDevDeps }
