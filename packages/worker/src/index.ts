@@ -105,38 +105,42 @@ export default octoflare<WraithPayload>(async (context) => {
   }
 
   try {
-    await Promise.allSettled(
-      triggered_ghosts.map(async ([name, app]) => {
-        const status = await attempt(
-          () =>
-            app({
-              ref,
-              repo,
-              owner,
-              event,
-              payload,
-              head_sha,
-              repository,
-              installation,
-              package_json
-            }),
-          (e, o) =>
-            ({
-              status: 'failure',
-              detail: e?.message ?? String(o)
-            }) as const
-        )
+    await Timeout.wrap(
+      Promise.allSettled(
+        triggered_ghosts.map(async ([name, app]) => {
+          const status = await attempt(
+            () =>
+              app({
+                ref,
+                repo,
+                owner,
+                event,
+                payload,
+                head_sha,
+                repository,
+                installation,
+                package_json
+              }),
+            (e, o) =>
+              ({
+                status: 'failure',
+                detail: e?.message ?? String(o)
+              }) as const
+          )
 
-        wraith_status[name] = typeof status === 'string' ? { status } : status
+          wraith_status[name] = typeof status === 'string' ? { status } : status
 
-        await installation.kit.rest.checks.update({
-          owner,
-          repo,
-          check_run_id,
-          output: generateOutput(),
-          status: 'in_progress'
+          await installation.kit.rest.checks.update({
+            owner,
+            repo,
+            check_run_id,
+            output: generateOutput(),
+            status: 'in_progress'
+          })
         })
-      })
+      ),
+      5000,
+      'Timeout waiting for workflows to complete'
     )
 
     const bridged_ghosts = Object.entries(wraith_status)
