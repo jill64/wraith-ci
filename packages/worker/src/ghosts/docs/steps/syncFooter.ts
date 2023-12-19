@@ -18,7 +18,7 @@ export const syncFooter = ({
     content: `
 ## License
 
-${license}
+${license.spdx_id}
 `
   })
 }
