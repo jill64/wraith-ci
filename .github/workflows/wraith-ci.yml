@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: ['build', 'lint', 'format', 'deploy', 'release']
+        name: [build, deploy, docs, format, lint, merge, release, bump, assign, derive]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
