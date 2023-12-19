@@ -1,10 +1,6 @@
-<!----- BEGIN GHOST DOCS LOGO src="./assets/logo.png" ----->
-
 <div align="center">
 <img src="./assets/logo.png" width="100px" />
 </div>
-
-<!----- END GHOST DOCS LOGO ----->
 
 <!----- BEGIN GHOST DOCS HEADER ----->
 
@@ -183,4 +179,7 @@ This app automatically performs a merge when a particular user creates a pull re
 | Name      | Type   | Purpose                  |
 | --------- | ------ | ------------------------ |
 | `Members` | `read` | Check author role in org |
-<!----- BEGIN GHOST DOCS FOOTER -----><!----- END GHOST DOCS FOOTER ----->
+
+<!----- BEGIN GHOST DOCS FOOTER ----->
+
+<!----- END GHOST DOCS FOOTER ----->
