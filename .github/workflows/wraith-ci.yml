@@ -122,7 +122,7 @@ jobs:
         run: |
           gh api \
             --method PATCH \
-            /repos/${{ env.repository }}/check-runs/${{ fromJson(inputs.payload).data.check_run_id }} \
+            /repos/${{ env.repository }}/check-runs/${{ fromJson(inputs.payload).check_run_id }} \
             --field status=completed \
             --field conclusion=${{ needs.wraith-ci.result }}
 
