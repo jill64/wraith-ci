@@ -34671,7 +34671,7 @@ var release = async ({ payload: { owner, repo }, octokit }) => {
       detail: "Not found version in root package.json"
     };
   }
-  await import_exec5.default.exec("gh release create", [`v${version2}`]);
+  await import_exec5.default.exec("gh release create", [`v${version2}`, "--generate-notes"]);
   if (!version2.endsWith(".0")) {
     return "success";
   }
