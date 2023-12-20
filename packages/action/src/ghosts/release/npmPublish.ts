@@ -18,7 +18,7 @@ export const npmPublish = async (file: string) => {
 
   if (!isValidJson(package_json)) {
     core.info(`[${file}]: No version found.`)
-    return
+    return false
   }
 
   const version = package_json.version.trim()
@@ -34,10 +34,12 @@ export const npmPublish = async (file: string) => {
 
   if (version === publishedVersion.stdout.trim()) {
     core.info(`[${file}]: No update found.`)
-    return
+    return false
   }
 
   await exec.exec('npm publish', undefined, {
     cwd
   })
+  
+  return true
 }
