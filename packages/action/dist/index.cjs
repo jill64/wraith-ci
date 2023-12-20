@@ -33912,14 +33912,13 @@ var import_promises3 = require("node:fs/promises");
 var import_promises2 = require("node:fs/promises");
 var import_node_path = __toESM(require("node:path"), 1);
 var findFile = async (filename) => {
-  const cwd = process.cwd();
-  const all = await (0, import_promises2.readdir)(cwd, {
+  const all = await (0, import_promises2.readdir)(process.cwd(), {
     withFileTypes: true,
     recursive: true
   });
   const files = all.filter(
     (file) => file.isFile() && !file.path.includes("node_modules/") && file.name === filename
-  ).map((file) => import_node_path.default.join(cwd, file.path, file.name));
+  ).map((file) => import_node_path.default.join(file.path, file.name));
   core_exports.info(`[search "${filename}"]: ${JSON.stringify(files, null, 2)}}`);
   return files;
 };
