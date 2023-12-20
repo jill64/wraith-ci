@@ -34102,6 +34102,10 @@ var updatePackageJson = ({
     core_exports.info(`[${packageJsonPath}]: No version found.`);
     return false;
   }
+  if (!packageJson?.name) {
+    core_exports.info(`[${packageJsonPath}]: No name found.`);
+    return false;
+  }
   const isRepoRoot = import_node_path2.default.relative(process.cwd(), packageJsonPath) === "package.json";
   const publishConfig = packageJson.name?.startsWith("@") ? { publishConfig: { access: "public" } } : {};
   const description = isRepoRoot ? { description: repository.description } : {};
