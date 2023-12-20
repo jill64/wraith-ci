@@ -25,10 +25,12 @@ export const publish =
   ({
     repo,
     owner,
+    monorepo,
     octokit
   }: {
     repo: string
     owner: string
+    monorepo: boolean
     octokit: ActionOctokit
   }) =>
   async (file: string) => {
@@ -66,9 +68,13 @@ export const publish =
       cwd
     })
 
-    await exec.exec('gh release create', [`v${version}`, '--generate-notes'], {
-      cwd
-    })
+    const v = `v${version}`
+
+    await exec.exec(
+      'gh release create',
+      [monorepo ? `${package_json.name}@${v}` : v, '--generate-notes'],
+      { cwd }
+    )
 
     if (!version.endsWith('.0')) {
       return 'success'
