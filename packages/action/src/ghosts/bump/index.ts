@@ -21,7 +21,10 @@ export const bump: Ghost = async ({ payload, octokit }) => {
   } = payload
 
   if (!pull_number) {
-    return 'skipped'
+    return {
+      status: 'skipped',
+      detail: 'No pull request number found.'
+    }
   }
 
   const headJson = await getPackageJson()
@@ -29,16 +32,14 @@ export const bump: Ghost = async ({ payload, octokit }) => {
   if (!isPackageJson(headJson)) {
     return {
       status: 'skipped',
-      detail:
-        "This repository's `package.json` is not valid, so we won't perform any version checks or bumps."
+      detail: 'No package.json found.'
     }
   }
 
   if (!headJson?.version) {
     return {
       status: 'skipped',
-      detail:
-        "This repository is not version controlled, so we won't perform any version checks or bumps."
+      detail: 'No version found.'
     }
   }
 
@@ -62,8 +63,7 @@ export const bump: Ghost = async ({ payload, octokit }) => {
   if (pull_request.base.ref !== default_branch) {
     return {
       status: 'skipped',
-      detail:
-        "This PR is not targeting the default branch, so we won't perform any version checks or bumps."
+      detail: 'PR is not targeting default branch.'
     }
   }
 
@@ -76,8 +76,7 @@ export const bump: Ghost = async ({ payload, octokit }) => {
   if (isChore && !cumulativeUpdate) {
     return {
       status: 'skipped',
-      detail:
-        "This PR was considered a trivial change, so we won't perform any version checks or bumps."
+      detail: 'PR is not a cumulative update.'
     }
   }
 
