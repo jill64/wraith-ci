@@ -13,7 +13,7 @@ export const findFile = async (filename: string): Promise<string[]> => {
         !file.path.includes('node_modules/') &&
         file.name === filename
     )
-    .map((file) => file.path)
+    .map((file) => file.path + file.name)
 
   return files
 }
