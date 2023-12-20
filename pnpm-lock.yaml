@@ -83,8 +83,8 @@ importers:
         specifier: 1.0.8
         version: 1.0.8
       '@sveltejs/adapter-cloudflare':
-        specifier: 3.0.0
-        version: 3.0.0(@sveltejs/kit@2.0.4)
+        specifier: 3.0.1
+        version: 3.0.1(@sveltejs/kit@2.0.4)
       '@sveltejs/kit':
         specifier: 2.0.4
         version: 2.0.4(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
@@ -182,10 +182,6 @@ packages:
       '@babel/helper-string-parser': 7.23.4
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
-    dev: true
-
-  /@cloudflare/workers-types@4.20231121.0:
-    resolution: {integrity: sha512-+kWfpCkqiepwAKXyHoE0gnkPgkLhz0/9HOBIGhHRsUvUKvhUtm3mbqqoGRWgF1qcjzrDUBbrrOq4MYHfFtc2RA==}
     dev: true
 
   /@cloudflare/workers-types@4.20231218.0:
@@ -1388,12 +1384,12 @@ packages:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
 
-  /@sveltejs/adapter-cloudflare@3.0.0(@sveltejs/kit@2.0.4):
-    resolution: {integrity: sha512-McUuRy7cOZ/DNykW9DbcZjj+IKx2JmFPRqbZMpk5kwfpq5ay70JprRkpEcnSdYMEoNmp8C2xUHf43ha394dZuQ==}
+  /@sveltejs/adapter-cloudflare@3.0.1(@sveltejs/kit@2.0.4):
+    resolution: {integrity: sha512-yhncGexWlDE3DAd6N/wsuel7BFwgBGWkvTG8iMAEaE/dHSEEUEUXOFK4IMKtPZWFuIkXmyfLxOSD8A8Kzv7ppg==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@cloudflare/workers-types': 4.20231121.0
+      '@cloudflare/workers-types': 4.20231218.0
       '@sveltejs/kit': 2.0.4(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
       esbuild: 0.19.10
       worktop: 0.8.0-next.15
