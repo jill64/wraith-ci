@@ -26,7 +26,14 @@ export const release: Ghost = async ({ payload: { owner, repo }, octokit }) => {
     }
   }
 
-  await Promise.allSettled(files.map(npmPublish))
+  const result = await Promise.allSettled(files.map(npmPublish))
+
+  if (!result.some((r) => r.status === 'fulfilled' && r.value)) {
+    return {
+      status: 'skipped',
+      detail: 'No package published'
+    }
+  }
 
   const json = await getPackageJson()
   const rootPackageJson = isValidPackageJson(json) ? json : null
