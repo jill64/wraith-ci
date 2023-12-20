@@ -33836,7 +33836,7 @@ var getFile = async ({
     const buff = import_node_buffer.Buffer.from(data.content, data.encoding);
     return buff.toString();
   } catch (e) {
-    core_exports.error(e instanceof Error ? e : new Error(JSON.stringify(e)));
+    core_exports.error(e instanceof Error ? e : new Error(JSON.stringify(e, null, 2)));
     return null;
   }
 };
@@ -33920,14 +33920,14 @@ var findFile = async (filename) => {
   const files = all.filter(
     (file) => file.isFile() && !file.path.includes("node_modules/") && file.name === filename
   ).map((file) => import_node_path.default.join(cwd, file.path, file.name));
-  core_exports.info(`[search "${filename}"]: ${JSON.stringify(files)}}`);
+  core_exports.info(`[search "${filename}"]: ${JSON.stringify(files, null, 2)}}`);
   return files;
 };
 
 // src/ghosts/bump/overwriteAllVersion.ts
 var overwriteAllVersion = async (newVersion) => {
   const files = await findFile("package.json");
-  core_exports.info(`Detected package.json files: ${JSON.stringify(files)}`);
+  core_exports.info(`Detected package.json files: ${JSON.stringify(files, null, 2)}`);
   await Promise.allSettled(
     files.map(async (file) => {
       const str = await (0, import_promises3.readFile)(file, "utf-8");

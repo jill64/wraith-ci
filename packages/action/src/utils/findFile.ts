@@ -19,7 +19,7 @@ export const findFile = async (filename: string): Promise<string[]> => {
     )
     .map((file) => path.join(cwd, file.path, file.name))
 
-  core.info(`[search "${filename}"]: ${JSON.stringify(files)}}`)
+  core.info(`[search "${filename}"]: ${JSON.stringify(files, null, 2)}}`)
 
   return files
 }
