@@ -34608,6 +34608,7 @@ var escape = (str) => str.replaceAll("@", "").replaceAll("#", "");
 var publish = ({
   repo,
   owner,
+  monorepo,
   octokit
 }) => async (file) => {
   const cwd = import_node_path3.default.dirname(file);
@@ -34637,9 +34638,12 @@ var publish = ({
   await import_exec4.default.exec("npm publish", void 0, {
     cwd
   });
-  await import_exec4.default.exec("gh release create", [`v${version2}`, "--generate-notes"], {
-    cwd
-  });
+  const v = `v${version2}`;
+  await import_exec4.default.exec(
+    "gh release create",
+    [monorepo ? `${package_json.name}@${v}` : v, "--generate-notes"],
+    { cwd }
+  );
   if (!version2.endsWith(".0")) {
     return "success";
   }
@@ -34686,15 +34690,16 @@ var release = async ({ payload: { owner, repo }, octokit }) => {
       detail: "Not found package.json in repo"
     };
   }
-  await Promise.allSettled(
-    files.map(
-      publish({
-        octokit,
-        owner,
-        repo
-      })
-    )
+  const monorepo = files.length > 1;
+  const result = files.map(
+    publish({
+      octokit,
+      monorepo,
+      owner,
+      repo
+    })
   );
+  await Promise.allSettled(result);
   return "success";
 };
 
