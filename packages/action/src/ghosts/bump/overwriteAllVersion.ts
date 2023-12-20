@@ -13,6 +13,7 @@ export const overwriteAllVersion = async (newVersion: string) => {
       const json = JSON.parse(str)
 
       if (!json.version) {
+        console.log('No version found in', file)
         return
       }
 
