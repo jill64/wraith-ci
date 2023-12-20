@@ -10,10 +10,15 @@ export const listWorkflowFiles = async () => {
 
   const result = dir
     .filter((dirent) => dirent.isFile())
-    .map(async (file) => ({
-      name: file.name,
-      data: await readFile(path.join(dirPath, file.name), 'utf-8')
-    }))
+    .map(async (file) => {
+      const filepath = path.join(dirPath, file.name)
+      const data = await readFile(filepath, 'utf-8')
+
+      return {
+        name: file.name,
+        data
+      }
+    })
 
   const list = await Promise.all(result)
 
