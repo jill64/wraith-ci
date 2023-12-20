@@ -36,8 +36,7 @@ export const updateReadme =
       workflowFiles,
       packageJson,
       readme: insertSection(readme),
-      repository,
-      isRepoRoot
+      repository
     })
 
     const license = isRepoRoot

@@ -1,10 +1,21 @@
 import { readFile, writeFile } from 'node:fs/promises'
+import path from 'node:path'
+import * as core from 'octoflare/action/core'
 import { ActionRepository } from '../../types/ActionRepository.js'
 import { isValidPackageJson } from './utils/isValidPackageJson.js'
-import * as core from 'octoflare/action/core'
+
+type Dict = {
+  [key: string]: string | Dict | undefined
+}
 
 export const updatePackageJson =
-  (repository: ActionRepository) =>
+  ({
+    repository,
+    repoLevelConfig
+  }: {
+    repository: ActionRepository
+    repoLevelConfig: Dict
+  }) =>
   async (packageJsonPath: string): Promise<boolean> => {
     const packageJsonStr = await readFile(packageJsonPath, 'utf-8')
     const json = JSON.parse(packageJsonStr)
@@ -15,41 +26,24 @@ export const updatePackageJson =
       return false
     }
 
-    const { topics, owner } = repository
+    const isRepoRoot =
+      path.relative(process.cwd(), packageJsonPath) === 'package.json'
 
     const publishConfig = packageJson.name?.startsWith('@')
       ? { publishConfig: { access: 'public' } }
       : {}
 
-    const license = repository.license?.spdx_id
-      ? { license: repository.license.spdx_id }
+    const description = isRepoRoot
+      ? { description: repository.description }
       : {}
 
-    const keywords = topics ?? []
-
-    const html = await fetch(repository.html_url).then((res) => res.text())
-    const repo_image =
-      html.match(/<meta property="og:image" content="(\S*)"\s*\/>/)?.[1] ?? ''
+    const keywords = isRepoRoot ? { keywords: repository.topics ?? [] } : {}
 
     const repoInfo = {
-      description: repository.description ?? '',
-      ...license,
-      bugs: `${repository.html_url}/issues`,
-      homepage: `${repository.html_url}#readme`,
-      author: {
-        name: owner.login,
-        email: 'intents.turrets0h@icloud.com',
-        url: owner.html_url,
-        image: owner.avatar_url
-      },
-      repository: {
-        type: 'git',
-        url: repository.clone_url,
-        image: repo_image
-      },
+      ...repoLevelConfig,
+      ...description,
       ...publishConfig,
-      keywords,
-      prettier: '@jill64/prettier-config'
+      ...keywords
     }
 
     const oldJson = JSON.stringify(packageJson, null, 2)

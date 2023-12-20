@@ -9,14 +9,12 @@ export const syncHeader = ({
   readme,
   packageJson,
   repository,
-  workflowFiles,
-  isRepoRoot
+  workflowFiles
 }: {
   workflowFiles: WorkflowFile[]
   packageJson: PackageJson | undefined | null
   readme: string
   repository: ActionRepository
-  isRepoRoot: boolean
 }) => {
   const escapedWebsiteUrl = repository.homepage
     ? encodeURIComponent(repository.homepage)

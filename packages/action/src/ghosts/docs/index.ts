@@ -1,8 +1,7 @@
 import { Ghost } from '@/action/types/Ghost.js'
 import { updatePackageJsonList } from './updatePackageJsonList.js'
-import { updateReadme } from './updateReadme.js'
-import { listWorkflowFiles } from './utils/listWorkflowFiles.js'
 import { updateReadmeList } from './updateReadmeList.js'
+import { listWorkflowFiles } from './utils/listWorkflowFiles.js'
 
 export const docs: Ghost = async ({
   payload: {
