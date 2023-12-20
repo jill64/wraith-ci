@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { ActionRepository } from '../../types/ActionRepository.js'
 import { isValidPackageJson } from './utils/isValidPackageJson.js'
+import * as core from 'octoflare/action/core'
 
 export const updatePackageJson =
   (repository: ActionRepository) =>
@@ -10,7 +11,7 @@ export const updatePackageJson =
     const packageJson = isValidPackageJson(json) ? json : null
 
     if (!packageJson?.version) {
-      console.log(`[${packageJsonPath}]: No version found.`)
+      core.info(`[${packageJsonPath}]: No version found.`)
       return false
     }
 
@@ -62,7 +63,7 @@ export const updatePackageJson =
     )
 
     if (oldJson === newJson) {
-      console.log(`[${packageJsonPath}]: No changes.`)
+      core.info(`[${packageJsonPath}]: No changes.`)
       return false
     }
 

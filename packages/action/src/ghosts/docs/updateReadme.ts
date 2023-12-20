@@ -1,3 +1,4 @@
+import * as core from 'octoflare/action/core'
 import { attempt } from '@jill64/attempt'
 import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -20,7 +21,7 @@ export const updateReadme =
     const readme = await readFile(readmePath, 'utf-8')
 
     if (!readme) {
-      console.log(`[${readmePath}]: No readme found.`)
+      core.info(`[${readmePath}]: No readme found.`)
       return false
     }
 
@@ -50,7 +51,7 @@ ${repository.license.spdx_id}
       : readme
 
     if (readme === newReadme) {
-      console.log(`[${readmePath}]: No update found.`)
+      core.info(`[${readmePath}]: No update found.`)
       return false
     }
 

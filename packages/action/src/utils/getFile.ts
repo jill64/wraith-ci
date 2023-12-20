@@ -1,5 +1,6 @@
 import { Buffer } from 'node:buffer'
 import { ActionOctokit } from 'octoflare/action'
+import * as core from 'octoflare/action/core'
 
 export const getFile = async ({
   octokit,
@@ -30,7 +31,7 @@ export const getFile = async ({
 
     return buff.toString()
   } catch (e) {
-    console.error(e)
+    core.error(e instanceof Error ? e : new Error(JSON.stringify(e)))
     return null
   }
 }
