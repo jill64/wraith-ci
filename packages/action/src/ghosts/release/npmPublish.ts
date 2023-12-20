@@ -40,6 +40,6 @@ export const npmPublish = async (file: string) => {
   await exec.exec('npm publish', undefined, {
     cwd
   })
-  
+
   return true
 }
