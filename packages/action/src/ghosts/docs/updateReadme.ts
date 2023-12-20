@@ -18,15 +18,11 @@ export const updateReadme =
   }) =>
   async (readmePath: string): Promise<boolean> => {
     const readme = await readFile(readmePath, 'utf-8')
-
-    if (!readme) {
-      core.info(`[${readmePath}]: No readme found.`)
-      return false
-    }
-
     const dir = path.dirname(readmePath)
+
     const packageJsonPath = path.join(dir, 'package.json')
     const packageJsonStr = await readFile(packageJsonPath, 'utf-8')
+
     const json = JSON.parse(packageJsonStr)
     const packageJson = isValidPackageJson(json) ? json : null
 

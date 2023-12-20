@@ -34302,10 +34302,6 @@ var updateReadme = ({
   workflowFiles
 }) => async (readmePath) => {
   const readme = await (0, import_promises5.readFile)(readmePath, "utf-8");
-  if (!readme) {
-    core_exports.info(`[${readmePath}]: No readme found.`);
-    return false;
-  }
   const dir = import_node_path3.default.dirname(readmePath);
   const packageJsonPath = import_node_path3.default.join(dir, "package.json");
   const packageJsonStr = await (0, import_promises5.readFile)(packageJsonPath, "utf-8");
