@@ -34294,20 +34294,6 @@ ${repository.license.spdx_id}
   return true;
 };
 
-// src/ghosts/docs/updateReadmeList.ts
-var updateReadmeList = async ({
-  repository,
-  workflowFiles
-}) => {
-  const files = await findFile("README.md");
-  const result = await Promise.all(
-    files.map(updateReadme({ repository, workflowFiles }))
-  );
-  if (result.includes(true)) {
-    await pushCommit("chore: synchronize README.md");
-  }
-};
-
 // src/ghosts/docs/utils/listWorkflowFiles.ts
 var import_promises6 = require("node:fs/promises");
 var import_node_path2 = __toESM(require("node:path"), 1);
@@ -34350,7 +34336,7 @@ var docs = async ({
     return "skipped";
   }
   await Promise.allSettled([
-    updateReadmeList({ repository, workflowFiles }),
+    updateReadme({ repository, workflowFiles })("README.md"),
     updatePackageJsonList({ repository })
   ]);
   return "success";
