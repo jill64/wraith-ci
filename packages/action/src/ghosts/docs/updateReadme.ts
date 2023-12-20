@@ -20,6 +20,7 @@ export const updateReadme =
     const readme = await readFile(readmePath, 'utf-8')
 
     if (!readme) {
+      console.log(`[${readmePath}]: No readme found.`)
       return false
     }
 
@@ -49,6 +50,7 @@ ${repository.license.spdx_id}
       : readme
 
     if (readme === newReadme) {
+      console.log(`[${readmePath}]: No update found.`)
       return false
     }
 

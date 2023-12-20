@@ -33842,7 +33842,7 @@ var getFile = async ({
 };
 
 // src/ghosts/bump/checkCumulativeUpdate.ts
-var thresh = 20;
+var thresh = 10;
 var checkCumulativeUpdate = async ({
   repo,
   owner,
@@ -33922,6 +33922,7 @@ var findFile = async (filename) => {
 // src/ghosts/bump/overwriteAllVersion.ts
 var overwriteAllVersion = async (newVersion) => {
   const files = await findFile("package.json");
+  console.log("Detected package.json files:", files);
   await Promise.allSettled(
     files.map(async (file) => {
       const str = await (0, import_promises3.readFile)(file, "utf-8");
@@ -33953,19 +33954,22 @@ var bump = async ({ payload, octokit }) => {
     data: { pull_number }
   } = payload;
   if (!pull_number) {
-    return "skipped";
+    return {
+      status: "skipped",
+      detail: "No pull request number found."
+    };
   }
   const headJson = await getPackageJson();
   if (!isPackageJson(headJson)) {
     return {
       status: "skipped",
-      detail: "This repository's `package.json` is not valid, so we won't perform any version checks or bumps."
+      detail: "No package.json found."
     };
   }
   if (!headJson?.version) {
     return {
       status: "skipped",
-      detail: "This repository is not version controlled, so we won't perform any version checks or bumps."
+      detail: "No version found."
     };
   }
   const [
@@ -33987,7 +33991,7 @@ var bump = async ({ payload, octokit }) => {
   if (pull_request.base.ref !== default_branch) {
     return {
       status: "skipped",
-      detail: "This PR is not targeting the default branch, so we won't perform any version checks or bumps."
+      detail: "PR is not targeting default branch."
     };
   }
   const isChore = pull_request.title.startsWith("chore");
@@ -33995,7 +33999,7 @@ var bump = async ({ payload, octokit }) => {
   if (isChore && !cumulativeUpdate) {
     return {
       status: "skipped",
-      detail: "This PR was considered a trivial change, so we won't perform any version checks or bumps."
+      detail: "PR is not a cumulative update."
     };
   }
   const baseStr = await getFile({
@@ -34079,6 +34083,7 @@ var updatePackageJson = (repository) => async (packageJsonPath) => {
   const json = JSON.parse(packageJsonStr);
   const packageJson = isValidPackageJson(json) ? json : null;
   if (!packageJson?.version) {
+    console.log(`[${packageJsonPath}]: No version found.`);
     return false;
   }
   const { topics, owner } = repository;
@@ -34117,6 +34122,7 @@ var updatePackageJson = (repository) => async (packageJsonPath) => {
     2
   );
   if (oldJson === newJson) {
+    console.log(`[${packageJsonPath}]: No changes.`);
     return false;
   }
   await (0, import_promises4.writeFile)(packageJsonPath, newJson + "\n");
@@ -34265,6 +34271,7 @@ var updateReadme = ({
 }) => async (readmePath) => {
   const readme = await (0, import_promises5.readFile)(readmePath, "utf-8");
   if (!readme) {
+    console.log(`[${readmePath}]: No readme found.`);
     return false;
   }
   const dir = import_node_path.default.dirname(readmePath);
@@ -34288,6 +34295,7 @@ ${repository.license.spdx_id}
 `
   }) : readme;
   if (readme === newReadme) {
+    console.log(`[${readmePath}]: No update found.`);
     return false;
   }
   await (0, import_promises5.writeFile)(readmePath, newReadme);
@@ -34606,10 +34614,8 @@ var npmPublish = async (file) => {
   const str = await (0, import_promises8.readFile)(file, "utf-8");
   const package_json = JSON.parse(str);
   if (!isValidJson5(package_json)) {
-    return {
-      status: "skipped",
-      detail: "No version found in package.json"
-    };
+    console.log(`[${file}]: No version found.`);
+    return;
   }
   const version2 = package_json.version.trim();
   const publishedVersion = await import_exec4.default.getExecOutput(
@@ -34621,10 +34627,8 @@ var npmPublish = async (file) => {
     }
   );
   if (version2 === publishedVersion.stdout.trim()) {
-    return {
-      status: "skipped",
-      detail: "No version changes"
-    };
+    console.log(`[${file}]: No update found.`);
+    return;
   }
   await import_exec4.default.exec("npm publish", void 0, {
     cwd

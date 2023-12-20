@@ -4,6 +4,8 @@ import { findFile } from '../../utils/findFile.js'
 export const overwriteAllVersion = async (newVersion: string) => {
   const files = await findFile('package.json')
 
+  console.log('Detected package.json files:', files)
+
   await Promise.allSettled(
     files.map(async (file) => {
       const str = await readFile(file, 'utf-8')

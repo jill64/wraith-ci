@@ -16,10 +16,8 @@ export const npmPublish = async (file: string) => {
   const package_json = JSON.parse(str)
 
   if (!isValidJson(package_json)) {
-    return {
-      status: 'skipped',
-      detail: 'No version found in package.json'
-    }
+    console.log(`[${file}]: No version found.`)
+    return
   }
 
   const version = package_json.version.trim()
@@ -34,10 +32,8 @@ export const npmPublish = async (file: string) => {
   )
 
   if (version === publishedVersion.stdout.trim()) {
-    return {
-      status: 'skipped',
-      detail: 'No version changes'
-    }
+    console.log(`[${file}]: No update found.`)
+    return
   }
 
   await exec.exec('npm publish', undefined, {
