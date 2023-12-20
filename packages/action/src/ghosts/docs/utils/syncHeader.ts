@@ -3,6 +3,7 @@ import { PackageJson } from '../types/PackageJson.js'
 import { WorkflowFile } from '../types/WorkflowFile.js'
 import { badge } from './badge.js'
 import { replaceSection } from './replaceSection.js'
+import { tagBegin, tagEnd } from './snippets.js'
 
 export const syncHeader = ({
   readme,
@@ -20,18 +21,10 @@ export const syncHeader = ({
     : ''
 
   const repoURL = repository.homepage ? new URL(repository.homepage) : null
-
-  const stackblitz = repoURL?.hostname === 'stackblitz.com'
-
-  const npmPage =
-    repoURL?.hostname === 'www.npmjs.com' || repoURL?.hostname === 'npmjs.com'
-
-  const ghPage = repoURL?.origin.endsWith('github.io')
-
   const jillOssPage = repoURL?.origin.endsWith('jill64.dev')
 
   const siteBadge =
-    !stackblitz && !npmPage && repository.homepage
+    jillOssPage && repository.homepage
       ? badge(repository.homepage)({
           alt: 'website',
           src: `https://img.shields.io/website?up_message=working&down_message=down&url=${escapedWebsiteUrl}`
@@ -83,27 +76,25 @@ export const syncHeader = ({
       ? [versionBadge, licenseBadge, downloadBadge, bundleSizeBadge]
       : []
 
-  const badges =
-    '<!----- BEGIN GHOST DOCS BADGES ----->' +
-    [
-      ...npmBadges,
-      ...workflowBadges,
-      // codecovBadge,
-      siteBadge
-    ]
-      .filter((x) => x)
-      .join(' ') +
-    '<!----- END GHOST DOCS BADGES ----->'
+  const badges = `
+${tagBegin('BADGES')}
+${[
+  ...npmBadges,
+  ...workflowBadges,
+  // codecovBadge,
+  siteBadge
+]
+  .filter((x) => x)
+  .join(' ')}
+${tagEnd('BADGES')}
+`
 
-  const demoSection =
-    stackblitz || ghPage || jillOssPage
-      ? `## [Demo](${repository.homepage})`
-      : ''
+  const demoSection = jillOssPage ? `## [Demo](${repository.homepage})` : ''
 
   const content = [
-    `# ${repository.name}`,
+    `# ${packageName ?? repository.name}`,
     badges,
-    (repository.description ?? packageJson?.description ?? '').trim(),
+    (packageJson?.description ?? repository.description ?? '').trim(),
     demoSection
   ]
     .filter((x) => x)

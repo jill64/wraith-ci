@@ -1,21 +1,16 @@
-import { BEGIN_FIRST, END_FIRST, LAST_TAIL } from './snippets.js'
+import { tagBegin, tagEnd } from './snippets.js'
 
 export const replaceSection = ({
   source,
   section,
-  content,
-  key
+  content
 }: {
   source: string
   section: 'HEADER' | 'FOOTER'
   content: string
-  key?: string
 }) => {
-  const begin = new RegExp(
-    `${BEGIN_FIRST} ${section}${key ? ` ${key}=".*"` : ''} ${LAST_TAIL}`
-  )
-
-  const end = new RegExp(`${END_FIRST} ${section} ${LAST_TAIL}`)
+  const begin = new RegExp(tagBegin(section))
+  const end = new RegExp(tagEnd(section))
 
   const beginMatch = source.match(begin)
   const endMatch = source.match(end)

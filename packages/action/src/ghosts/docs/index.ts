@@ -1,6 +1,6 @@
 import { Ghost } from '@/action/types/Ghost.js'
 import { updatePackageJsonList } from './updatePackageJsonList.js'
-import { updateReadme } from './updateReadme.js'
+import { updateReadmeList } from './updateReadmeList.js'
 import { listWorkflowFiles } from './utils/listWorkflowFiles.js'
 
 export const docs: Ghost = async ({
@@ -24,7 +24,7 @@ export const docs: Ghost = async ({
   }
 
   await Promise.allSettled([
-    updateReadme({ repository, workflowFiles })('README.md'),
+    updateReadmeList({ repository, workflowFiles }),
     updatePackageJsonList({ repository })
   ])
 

@@ -1,11 +1,11 @@
-import { BEGIN_FIRST, END_FIRST, LAST_TAIL } from './snippets.js'
+import { tagBegin, tagEnd } from './snippets.js'
 
 export const insertSection = (readme: string): string => {
-  const beginHeader = `${BEGIN_FIRST} HEADER ${LAST_TAIL}`
-  const endHeader = `${END_FIRST} HEADER ${LAST_TAIL}`
+  const beginHeader = tagBegin('HEADER')
+  const endHeader = tagEnd('HEADER')
 
-  const beginFooter = `${BEGIN_FIRST} FOOTER ${LAST_TAIL}`
-  const endFooter = `${END_FIRST} FOOTER ${LAST_TAIL}`
+  const beginFooter = tagBegin('FOOTER')
+  const endFooter = tagEnd('FOOTER')
 
   const headed =
     !readme.includes(beginHeader) || !readme.includes(endHeader)
