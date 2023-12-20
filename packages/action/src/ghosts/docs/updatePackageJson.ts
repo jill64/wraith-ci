@@ -31,8 +31,13 @@ export const updatePackageJson =
       return false
     }
 
-    const isRepoRoot =
-      path.relative(process.cwd(), packageJsonPath) === 'package.json'
+    const relative = path.relative(process.cwd(), packageJsonPath)
+    const relativeDir = path.dirname(relative)
+    const isRepoRoot = relative === 'package.json'
+
+    const homepage = `${repository.html_url}${
+      relativeDir === '.' ? '' : relativeDir
+    }#readme`
 
     const publishConfig = packageJson.name?.startsWith('@')
       ? { publishConfig: { access: 'public' } }
@@ -45,6 +50,7 @@ export const updatePackageJson =
     const keywords = isRepoRoot ? { keywords: repository.topics ?? [] } : {}
 
     const repoInfo = {
+      homepage,
       ...repoLevelConfig,
       ...description,
       ...publishConfig,
