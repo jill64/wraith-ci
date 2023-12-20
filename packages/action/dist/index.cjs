@@ -24104,7 +24104,7 @@ var require_exec = __commonJS({
     exports2.getExecOutput = exports2.exec = void 0;
     var string_decoder_1 = require("string_decoder");
     var tr = __importStar(require_toolrunner());
-    function exec4(commandLine, args, options) {
+    function exec5(commandLine, args, options) {
       return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine);
         if (commandArgs.length === 0) {
@@ -24116,7 +24116,7 @@ var require_exec = __commonJS({
         return runner.exec();
       });
     }
-    exports2.exec = exec4;
+    exports2.exec = exec5;
     function getExecOutput2(commandLine, args, options) {
       var _a, _b;
       return __awaiter(this, void 0, void 0, function* () {
@@ -24139,7 +24139,7 @@ var require_exec = __commonJS({
           }
         };
         const listeners = Object.assign(Object.assign({}, options === null || options === void 0 ? void 0 : options.listeners), { stdout: stdOutListener, stderr: stdErrListener });
-        const exitCode = yield exec4(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
+        const exitCode = yield exec5(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
         stdout += stdoutDecoder.end();
         stderr += stderrDecoder.end();
         return {
@@ -33811,7 +33811,6 @@ var build = async () => {
 };
 
 // src/ghosts/bump/index.ts
-var import_promises2 = require("node:fs/promises");
 var import_semver2 = __toESM(require_semver2(), 1);
 var import_typescanner2 = __toESM(require_dist(), 1);
 
@@ -33906,6 +33905,43 @@ var formatVersionStr = (str) => {
   return ver ?? "0.0.0";
 };
 
+// src/ghosts/bump/overwriteAllVersion.ts
+var import_promises3 = require("node:fs/promises");
+
+// src/utils/findFile.ts
+var import_promises2 = require("node:fs/promises");
+var findFile = async (filename) => {
+  const all = await (0, import_promises2.readdir)("./", {
+    withFileTypes: true,
+    recursive: true
+  });
+  const files = all.filter((file) => file.isFile() && file.name === filename).map((file) => file.path);
+  return files;
+};
+
+// src/ghosts/bump/overwriteAllVersion.ts
+var overwriteAllVersion = async (newVersion) => {
+  const files = await findFile("package.json");
+  await Promise.allSettled(
+    files.map(async (file) => {
+      const str = await (0, import_promises3.readFile)(file, "utf-8");
+      const json = JSON.parse(str);
+      if (!json.version) {
+        return;
+      }
+      const newJsonStr = JSON.stringify(
+        {
+          ...json,
+          version: newVersion
+        },
+        null,
+        2
+      );
+      await (0, import_promises3.writeFile)(file, newJsonStr);
+    })
+  );
+};
+
 // src/ghosts/bump/index.ts
 var isPackageJson = (0, import_typescanner2.scanner)({
   version: import_typescanner2.string
@@ -33969,10 +34005,8 @@ var bump = async ({ payload, octokit }) => {
     path: "package.json",
     octokit
   });
-  const baseJson = attempt(() => {
-    const json = baseStr ? JSON.parse(baseStr) : null;
-    return isPackageJson(json) ? json : null;
-  }, null);
+  const baseJsonData = baseStr ? JSON.parse(baseStr) : null;
+  const baseJson = isPackageJson(baseJsonData) ? baseJsonData : null;
   const base_version = formatVersionStr(baseJson?.version);
   const head_version = formatVersionStr(headJson.version);
   const semType = cumulativeUpdate ? "patch" : determineSemType(pull_request.title);
@@ -33980,15 +34014,7 @@ var bump = async ({ payload, octokit }) => {
   if (import_semver2.default.eq(head_version, newVersion)) {
     return "success";
   }
-  const newJsonStr = JSON.stringify(
-    {
-      ...headJson,
-      version: newVersion
-    },
-    null,
-    2
-  );
-  await (0, import_promises2.writeFile)("package.json", newJsonStr);
+  await overwriteAllVersion(newVersion);
   await pushCommit(`chore: bump to ${newVersion}`);
   if (cumulativeUpdate) {
     await octokit.rest.issues.createComment({
@@ -34033,17 +34059,6 @@ var deploy = async () => {
     status: "failure",
     detail: result.stderr
   };
-};
-
-// src/utils/findFile.ts
-var import_promises3 = require("node:fs/promises");
-var findFile = async (filename) => {
-  const all = await (0, import_promises3.readdir)("./", {
-    withFileTypes: true,
-    recursive: true
-  });
-  const files = all.filter((file) => file.isFile() && file.name === filename).map((file) => file.path);
-  return files;
 };
 
 // src/ghosts/docs/updatePackageJson.ts
@@ -34586,31 +34601,21 @@ var merge = async ({ payload, octokit }) => {
   return "success";
 };
 
-// src/ghosts/release/publish.ts
+// src/ghosts/release/index.ts
+var import_exec5 = __toESM(require_exec(), 1);
+var import_twitter_api_v2 = __toESM(require_cjs(), 1);
+
+// src/ghosts/release/npmPublish.ts
 var import_exec4 = __toESM(require_exec(), 1);
 var import_promises8 = require("node:fs/promises");
 var import_node_path3 = __toESM(require("node:path"), 1);
-var import_twitter_api_v2 = __toESM(require_cjs(), 1);
 var import_typescanner7 = __toESM(require_dist(), 1);
 var isValidJson5 = (0, import_typescanner7.scanner)({
   name: import_typescanner7.string,
   version: import_typescanner7.string,
   keywords: (0, import_typescanner7.optional)((0, import_typescanner7.array)(import_typescanner7.string))
 });
-var env = (key) => {
-  const value = process.env[key];
-  if (!value) {
-    throw new Error(`Missing env ${key}`);
-  }
-  return value;
-};
-var escape = (str) => str.replaceAll("@", "").replaceAll("#", "");
-var publish = ({
-  repo,
-  owner,
-  monorepo,
-  octokit
-}) => async (file) => {
+var npmPublish = async (file) => {
   const cwd = import_node_path3.default.dirname(file);
   const str = await (0, import_promises8.readFile)(file, "utf-8");
   const package_json = JSON.parse(str);
@@ -34638,12 +34643,36 @@ var publish = ({
   await import_exec4.default.exec("npm publish", void 0, {
     cwd
   });
-  const v = `v${version2}`;
-  await import_exec4.default.exec(
-    "gh release create",
-    [monorepo ? `${package_json.name}@${v}` : v, "--generate-notes"],
-    { cwd }
-  );
+};
+
+// src/ghosts/release/index.ts
+var env = (key) => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`Missing env ${key}`);
+  }
+  return value;
+};
+var escape = (str) => str.replaceAll("@", "").replaceAll("#", "");
+var release = async ({ payload: { owner, repo }, octokit }) => {
+  const files = await findFile("package.json");
+  if (files.length === 0) {
+    return {
+      status: "skipped",
+      detail: "Not found package.json in repo"
+    };
+  }
+  await Promise.allSettled(files.map(npmPublish));
+  const json = await getPackageJson();
+  const rootPackageJson = isValidPackageJson(json) ? json : null;
+  const version2 = rootPackageJson?.version;
+  if (!version2) {
+    return {
+      status: "skipped",
+      detail: "Not found version in root package.json"
+    };
+  }
+  await import_exec5.default.exec("gh release create", [`v${version2}`]);
   if (!version2.endsWith(".0")) {
     return "success";
   }
@@ -34662,44 +34691,21 @@ var publish = ({
     accessToken: env("X_JP_ACCESS_TOKEN"),
     accessSecret: env("X_JP_ACCESS_SECRET")
   });
-  const topics = [
-    .../* @__PURE__ */ new Set([...repo_topics, ...package_json.keywords ?? []])
-  ].filter((x) => x).map((topic) => `#${escape(topic.trim().replaceAll("-", ""))}`).join(" ");
+  const topics = repo_topics.map((topic) => `#${escape(topic.trim().replaceAll("-", ""))}`).join(" ");
   const releaseLink = `https://github.com/${owner}/${repo}/releases/tag/v${version2}`;
+  const name = escape(files.length > 1 ? repo : rootPackageJson.name ?? repo);
   await Promise.all([
     enClient.v2.tweet({
-      text: `${escape(package_json.name)} v${version2} has been released.
+      text: `${name} v${version2} has been released.
 ${topics}
 ${releaseLink}`
     }),
     jpClient.v2.tweet({
-      text: `${escape(package_json.name)} v${version2} \u3092\u30EA\u30EA\u30FC\u30B9\u3057\u307E\u3057\u305F\u3002
+      text: `${name} v${version2} \u3092\u30EA\u30EA\u30FC\u30B9\u3057\u307E\u3057\u305F\u3002
 ${topics}
 ${releaseLink}`
     })
   ]);
-  return "success";
-};
-
-// src/ghosts/release/index.ts
-var release = async ({ payload: { owner, repo }, octokit }) => {
-  const files = await findFile("package.json");
-  if (files.length === 0) {
-    return {
-      status: "skipped",
-      detail: "Not found package.json in repo"
-    };
-  }
-  const monorepo = files.length > 1;
-  const result = files.map(
-    publish({
-      octokit,
-      monorepo,
-      owner,
-      repo
-    })
-  );
-  await Promise.allSettled(result);
   return "success";
 };
 
