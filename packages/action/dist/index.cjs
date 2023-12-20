@@ -22973,7 +22973,7 @@ var require_scanner = __commonJS({
     exports2.__esModule = true;
     exports2.scanner = void 0;
     var typeGuard_1 = require_typeGuard();
-    var scanner8 = function(fields, option) {
+    var scanner9 = function(fields, option) {
       return function(value) {
         if (!(0, typeGuard_1.isObject)(value)) {
           if (option === null || option === void 0 ? void 0 : option.outputLog)
@@ -22989,7 +22989,7 @@ var require_scanner = __commonJS({
         });
       };
     };
-    exports2.scanner = scanner8;
+    exports2.scanner = scanner9;
   }
 });
 
@@ -28460,8 +28460,8 @@ var require_oauth1_helper = __commonJS({
     function sortObject(data) {
       return Object.keys(data).sort().map((key) => ({ key, value: data[key] }));
     }
-    function deParam(string8) {
-      const split = string8.split("&");
+    function deParam(string9) {
+      const split = string9.split("&");
       const data = {};
       for (const coupleKeyValue of split) {
         const [key, value = ""] = coupleKeyValue.split("=");
@@ -28783,8 +28783,8 @@ var require_oauth2_helper = __commonJS({
         }
         return text;
       }
-      static escapeBase64Url(string8) {
-        return string8.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+      static escapeBase64Url(string9) {
+        return string9.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
       }
     };
     exports2.OAuth2Helper = OAuth2Helper;
@@ -33685,7 +33685,7 @@ var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
 // src/index.ts
-var import_typescanner7 = __toESM(require_dist(), 1);
+var import_typescanner8 = __toESM(require_dist(), 1);
 
 // src/ghosts/assign.ts
 var assign = async ({ payload, octokit }) => {
@@ -34004,24 +34004,25 @@ var bump = async ({ payload, octokit }) => {
   };
 };
 
-// src/utils/findFile.ts
-var import_promises3 = require("node:fs/promises");
-var findFile = async (filename) => {
-  const all = await (0, import_promises3.readdir)("./", {
-    withFileTypes: true,
-    recursive: true
-  });
-  const files = all.filter((file) => file.isFile() && file.name === filename).map((file) => file.path);
-  return files;
-};
-
 // src/ghosts/deploy.ts
+var import_typescanner3 = __toESM(require_dist(), 1);
+var isValidJson2 = (0, import_typescanner3.scanner)({
+  scripts: (0, import_typescanner3.scanner)({
+    deploy: import_typescanner3.string
+  })
+});
 var deploy = async () => {
-  const files = await findFile("wrangler.toml");
-  if (files.length === 0) {
+  const package_json = await getPackageJson();
+  if (!package_json) {
     return {
       status: "skipped",
-      detail: "wrangler.toml not found"
+      detail: "Not found package.json in repo"
+    };
+  }
+  if (!isValidJson2(package_json)) {
+    return {
+      status: "skipped",
+      detail: "Deploy command not found in package.json"
     };
   }
   const result = await run("npm run deploy");
@@ -34035,7 +34036,7 @@ var deploy = async () => {
 };
 
 // src/ghosts/docs/index.ts
-var import_promises5 = require("node:fs/promises");
+var import_promises4 = require("node:fs/promises");
 
 // src/ghosts/docs/utils/badge.ts
 var badge = (href) => ({ src, alt }) => (
@@ -34207,27 +34208,27 @@ ${endFooter}
 };
 
 // src/ghosts/docs/utils/isValidPackageJson.ts
-var import_typescanner3 = __toESM(require_dist(), 1);
-var isValidPackageJson = (0, import_typescanner3.scanner)({
-  name: (0, import_typescanner3.optional)(import_typescanner3.string),
-  version: (0, import_typescanner3.optional)(import_typescanner3.string),
-  files: (0, import_typescanner3.optional)((0, import_typescanner3.array)(import_typescanner3.string)),
-  description: (0, import_typescanner3.optional)(import_typescanner3.string)
+var import_typescanner4 = __toESM(require_dist(), 1);
+var isValidPackageJson = (0, import_typescanner4.scanner)({
+  name: (0, import_typescanner4.optional)(import_typescanner4.string),
+  version: (0, import_typescanner4.optional)(import_typescanner4.string),
+  files: (0, import_typescanner4.optional)((0, import_typescanner4.array)(import_typescanner4.string)),
+  description: (0, import_typescanner4.optional)(import_typescanner4.string)
 });
 
 // src/ghosts/docs/utils/listWorkflowFiles.ts
-var import_promises4 = require("node:fs/promises");
+var import_promises3 = require("node:fs/promises");
 var import_node_path = __toESM(require("node:path"), 1);
 var listWorkflowFiles = async () => {
   try {
     const dirPath = ".github/workflows";
-    const dir = await (0, import_promises4.readdir)(dirPath, {
+    const dir = await (0, import_promises3.readdir)(dirPath, {
       withFileTypes: true,
       recursive: true
     });
     const result = dir.filter((dirent) => dirent.isFile()).map(async (file) => ({
       name: file.name,
-      data: await (0, import_promises4.readFile)(import_node_path.default.join(dirPath, file.name), "utf-8")
+      data: await (0, import_promises3.readFile)(import_node_path.default.join(dirPath, file.name), "utf-8")
     }));
     const list = await Promise.all(result);
     return list;
@@ -34253,7 +34254,7 @@ var docs = async ({ payload, octokit }) => {
   }
   const [workflowFiles, readme, packageJsonData] = await Promise.all([
     listWorkflowFiles(),
-    (0, import_promises5.readFile)("README.md", "utf-8"),
+    (0, import_promises4.readFile)("README.md", "utf-8"),
     getPackageJson()
   ]);
   const packageJson = isValidPackageJson(packageJsonData) ? packageJsonData : null;
@@ -34274,7 +34275,7 @@ ${repository.license.spdx_id}
 `
     }) : readme;
     if (readme !== newReadme) {
-      await (0, import_promises5.writeFile)("README.md", newReadme);
+      await (0, import_promises4.writeFile)("README.md", newReadme);
       await pushCommit("chore: synchronize README.md");
     }
   }
@@ -34283,17 +34284,17 @@ ${repository.license.spdx_id}
     repository
   });
   if (newPackageJson) {
-    await (0, import_promises5.writeFile)("package.json", newPackageJson);
+    await (0, import_promises4.writeFile)("package.json", newPackageJson);
     await pushCommit("chore: synchronize package.json");
   }
   return "success";
 };
 
 // src/ghosts/format.ts
-var import_typescanner4 = __toESM(require_dist(), 1);
-var isValidJson2 = (0, import_typescanner4.scanner)({
-  scripts: (0, import_typescanner4.scanner)({
-    format: import_typescanner4.string
+var import_typescanner5 = __toESM(require_dist(), 1);
+var isValidJson3 = (0, import_typescanner5.scanner)({
+  scripts: (0, import_typescanner5.scanner)({
+    format: import_typescanner5.string
   })
 });
 var format = async () => {
@@ -34304,7 +34305,7 @@ var format = async () => {
       detail: "Not found package.json in repo"
     };
   }
-  if (!isValidJson2(package_json)) {
+  if (!isValidJson3(package_json)) {
     return {
       status: "skipped",
       detail: "Format command not found in package.json"
@@ -34329,11 +34330,11 @@ var format = async () => {
 };
 
 // src/ghosts/lint.ts
-var import_promises6 = require("fs/promises");
-var import_typescanner5 = __toESM(require_dist(), 1);
-var isValidJson3 = (0, import_typescanner5.scanner)({
-  scripts: (0, import_typescanner5.scanner)({
-    lint: import_typescanner5.string
+var import_promises5 = require("fs/promises");
+var import_typescanner6 = __toESM(require_dist(), 1);
+var isValidJson4 = (0, import_typescanner6.scanner)({
+  scripts: (0, import_typescanner6.scanner)({
+    lint: import_typescanner6.string
   })
 });
 var lint = async () => {
@@ -34344,7 +34345,7 @@ var lint = async () => {
       detail: "Not found package.json in repo"
     };
   }
-  if (!isValidJson3(package_json)) {
+  if (!isValidJson4(package_json)) {
     return {
       status: "skipped",
       detail: "Lint command not found in package.json"
@@ -34356,9 +34357,9 @@ var lint = async () => {
   }
   const isDepcheckError = lintResult.stdout.includes("Unused dependencies") || lintResult.stdout.includes("Unused devDependencies");
   if (isDepcheckError) {
-    const isValidPackageJson2 = (0, import_typescanner5.scanner)({
-      dependencies: (0, import_typescanner5.optional)((0, import_typescanner5.scanner)({})),
-      devDependencies: (0, import_typescanner5.optional)((0, import_typescanner5.scanner)({}))
+    const isValidPackageJson2 = (0, import_typescanner6.scanner)({
+      dependencies: (0, import_typescanner6.optional)((0, import_typescanner6.scanner)({})),
+      devDependencies: (0, import_typescanner6.optional)((0, import_typescanner6.scanner)({}))
     });
     if (!isValidPackageJson2(package_json)) {
       return {
@@ -34368,9 +34369,9 @@ var lint = async () => {
     }
     const depcheckResult = await run("npx depcheck --json");
     const result = JSON.parse(depcheckResult.stdout);
-    const isValidResult = (0, import_typescanner5.scanner)({
-      dependencies: (0, import_typescanner5.array)(import_typescanner5.string),
-      devDependencies: (0, import_typescanner5.array)(import_typescanner5.string)
+    const isValidResult = (0, import_typescanner6.scanner)({
+      dependencies: (0, import_typescanner6.array)(import_typescanner6.string),
+      devDependencies: (0, import_typescanner6.array)(import_typescanner6.string)
     });
     if (!isValidResult(result)) {
       return {
@@ -34393,7 +34394,7 @@ var lint = async () => {
       ...Object.keys(omittedDeps).length ? { dependencies: omittedDeps } : {},
       ...Object.keys(omittedDevDeps).length ? { devDependencies: omittedDevDeps } : {}
     };
-    await (0, import_promises6.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
+    await (0, import_promises5.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
     await pushCommit("fix: omit unused dependencies");
     return {
       status: "failure",
@@ -34537,11 +34538,11 @@ var merge = async ({ payload, octokit }) => {
 // src/ghosts/release.ts
 var import_exec4 = __toESM(require_exec(), 1);
 var import_twitter_api_v2 = __toESM(require_cjs(), 1);
-var import_typescanner6 = __toESM(require_dist(), 1);
-var isValidJson4 = (0, import_typescanner6.scanner)({
-  name: import_typescanner6.string,
-  version: import_typescanner6.string,
-  keywords: (0, import_typescanner6.optional)((0, import_typescanner6.array)(import_typescanner6.string))
+var import_typescanner7 = __toESM(require_dist(), 1);
+var isValidJson5 = (0, import_typescanner7.scanner)({
+  name: import_typescanner7.string,
+  version: import_typescanner7.string,
+  keywords: (0, import_typescanner7.optional)((0, import_typescanner7.array)(import_typescanner7.string))
 });
 var env = (key) => {
   const value = process.env[key];
@@ -34559,7 +34560,7 @@ var release = async ({ payload, octokit }) => {
       detail: "Not found package.json in repo"
     };
   }
-  if (!isValidJson4(package_json)) {
+  if (!isValidJson5(package_json)) {
     return {
       status: "skipped",
       detail: "No version found in package.json"
@@ -34681,9 +34682,9 @@ var updateOutput = ({
 };
 
 // src/index.ts
-var isValidOutput = (0, import_typescanner7.scanner)({
-  title: import_typescanner7.string,
-  summary: import_typescanner7.string
+var isValidOutput = (0, import_typescanner8.scanner)({
+  title: import_typescanner8.string,
+  summary: import_typescanner8.string
 });
 action(
   async ({ octokit, payload, updateCheckRun }) => {
