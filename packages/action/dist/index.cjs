@@ -34358,11 +34358,14 @@ var updateReadmeList = async ({
 var import_promises6 = require("node:fs/promises");
 var import_node_path4 = __toESM(require("node:path"), 1);
 var listWorkflowFiles = async () => {
-  const dirPath = ".github/workflows";
-  const dir = await (0, import_promises6.readdir)(dirPath, {
-    withFileTypes: true,
-    recursive: true
-  });
+  const dirPath = import_node_path4.default.join(process.cwd(), ".github/workflows");
+  const dir = await attempt(
+    () => (0, import_promises6.readdir)(dirPath, {
+      withFileTypes: true,
+      recursive: true
+    }),
+    []
+  );
   const result = dir.filter((dirent) => dirent.isFile()).map(async (file) => {
     const filepath = import_node_path4.default.join(dirPath, file.name);
     const data = await (0, import_promises6.readFile)(filepath, "utf-8");
