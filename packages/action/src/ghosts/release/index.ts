@@ -39,7 +39,7 @@ export const release: Ghost = async ({ payload: { owner, repo }, octokit }) => {
     }
   }
 
-  await exec.exec('gh release create', [`v${version}`])
+  await exec.exec('gh release create', [`v${version}`, '--generate-notes'])
 
   if (!version.endsWith('.0')) {
     return 'success'
