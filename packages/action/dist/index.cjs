@@ -33842,7 +33842,7 @@ var getFile = async ({
 };
 
 // src/ghosts/bump/checkCumulativeUpdate.ts
-var thresh = 20;
+var thresh = 10;
 var checkCumulativeUpdate = async ({
   repo,
   owner,
@@ -33922,6 +33922,7 @@ var findFile = async (filename) => {
 // src/ghosts/bump/overwriteAllVersion.ts
 var overwriteAllVersion = async (newVersion) => {
   const files = await findFile("package.json");
+  console.log("Detected package.json files:", files);
   await Promise.allSettled(
     files.map(async (file) => {
       const str = await (0, import_promises3.readFile)(file, "utf-8");
@@ -33953,19 +33954,22 @@ var bump = async ({ payload, octokit }) => {
     data: { pull_number }
   } = payload;
   if (!pull_number) {
-    return "skipped";
+    return {
+      status: "skipped",
+      detail: "No pull request number found."
+    };
   }
   const headJson = await getPackageJson();
   if (!isPackageJson(headJson)) {
     return {
       status: "skipped",
-      detail: "This repository's `package.json` is not valid, so we won't perform any version checks or bumps."
+      detail: "No package.json found."
     };
   }
   if (!headJson?.version) {
     return {
       status: "skipped",
-      detail: "This repository is not version controlled, so we won't perform any version checks or bumps."
+      detail: "No version found."
     };
   }
   const [
@@ -33987,7 +33991,7 @@ var bump = async ({ payload, octokit }) => {
   if (pull_request.base.ref !== default_branch) {
     return {
       status: "skipped",
-      detail: "This PR is not targeting the default branch, so we won't perform any version checks or bumps."
+      detail: "PR is not targeting default branch."
     };
   }
   const isChore = pull_request.title.startsWith("chore");
@@ -33995,7 +33999,7 @@ var bump = async ({ payload, octokit }) => {
   if (isChore && !cumulativeUpdate) {
     return {
       status: "skipped",
-      detail: "This PR was considered a trivial change, so we won't perform any version checks or bumps."
+      detail: "PR is not a cumulative update."
     };
   }
   const baseStr = await getFile({
