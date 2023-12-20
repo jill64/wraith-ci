@@ -1206,14 +1206,14 @@ var require_util = __commonJS({
         }
         const port = url.port != null ? url.port : url.protocol === "https:" ? 443 : 80;
         let origin = url.origin != null ? url.origin : `${url.protocol}//${url.hostname}:${port}`;
-        let path3 = url.path != null ? url.path : `${url.pathname || ""}${url.search || ""}`;
+        let path4 = url.path != null ? url.path : `${url.pathname || ""}${url.search || ""}`;
         if (origin.endsWith("/")) {
           origin = origin.substring(0, origin.length - 1);
         }
-        if (path3 && !path3.startsWith("/")) {
-          path3 = `/${path3}`;
+        if (path4 && !path4.startsWith("/")) {
+          path4 = `/${path4}`;
         }
-        url = new URL(origin + path3);
+        url = new URL(origin + path4);
       }
       return url;
     }
@@ -2825,19 +2825,19 @@ var require_parseParams = __commonJS({
 var require_basename = __commonJS({
   "../../node_modules/.pnpm/@fastify+busboy@2.1.0/node_modules/@fastify/busboy/lib/utils/basename.js"(exports2, module2) {
     "use strict";
-    module2.exports = function basename(path3) {
-      if (typeof path3 !== "string") {
+    module2.exports = function basename(path4) {
+      if (typeof path4 !== "string") {
         return "";
       }
-      for (var i = path3.length - 1; i >= 0; --i) {
-        switch (path3.charCodeAt(i)) {
+      for (var i = path4.length - 1; i >= 0; --i) {
+        switch (path4.charCodeAt(i)) {
           case 47:
           case 92:
-            path3 = path3.slice(i + 1);
-            return path3 === ".." || path3 === "." ? "" : path3;
+            path4 = path4.slice(i + 1);
+            return path4 === ".." || path4 === "." ? "" : path4;
         }
       }
-      return path3 === ".." || path3 === "." ? "" : path3;
+      return path4 === ".." || path4 === "." ? "" : path4;
     };
   }
 });
@@ -5815,7 +5815,7 @@ var require_request = __commonJS({
     }
     var Request = class _Request {
       constructor(origin, {
-        path: path3,
+        path: path4,
         method,
         body,
         headers,
@@ -5829,11 +5829,11 @@ var require_request = __commonJS({
         throwOnError,
         expectContinue
       }, handler) {
-        if (typeof path3 !== "string") {
+        if (typeof path4 !== "string") {
           throw new InvalidArgumentError("path must be a string");
-        } else if (path3[0] !== "/" && !(path3.startsWith("http://") || path3.startsWith("https://")) && method !== "CONNECT") {
+        } else if (path4[0] !== "/" && !(path4.startsWith("http://") || path4.startsWith("https://")) && method !== "CONNECT") {
           throw new InvalidArgumentError("path must be an absolute URL or start with a slash");
-        } else if (invalidPathRegex.exec(path3) !== null) {
+        } else if (invalidPathRegex.exec(path4) !== null) {
           throw new InvalidArgumentError("invalid request path");
         }
         if (typeof method !== "string") {
@@ -5896,7 +5896,7 @@ var require_request = __commonJS({
         this.completed = false;
         this.aborted = false;
         this.upgrade = upgrade || null;
-        this.path = query ? util.buildURL(path3, query) : path3;
+        this.path = query ? util.buildURL(path4, query) : path4;
         this.origin = origin;
         this.idempotent = idempotent == null ? method === "HEAD" || method === "GET" : idempotent;
         this.blocking = blocking == null ? false : blocking;
@@ -6913,9 +6913,9 @@ var require_RedirectHandler = __commonJS({
           return this.handler.onHeaders(statusCode, headers, resume, statusText);
         }
         const { origin, pathname, search } = util.parseURL(new URL(this.location, this.opts.origin && new URL(this.opts.path, this.opts.origin)));
-        const path3 = search ? `${pathname}${search}` : pathname;
+        const path4 = search ? `${pathname}${search}` : pathname;
         this.opts.headers = cleanRequestHeaders(this.opts.headers, statusCode === 303, this.opts.origin !== origin);
-        this.opts.path = path3;
+        this.opts.path = path4;
         this.opts.origin = origin;
         this.opts.maxRedirections = 0;
         this.opts.query = null;
@@ -8145,7 +8145,7 @@ var require_client = __commonJS({
         writeH2(client, client[kHTTP2Session], request);
         return;
       }
-      const { body, method, path: path3, host, upgrade, headers, blocking, reset } = request;
+      const { body, method, path: path4, host, upgrade, headers, blocking, reset } = request;
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       if (body && typeof body.read === "function") {
         body.read(0);
@@ -8195,7 +8195,7 @@ var require_client = __commonJS({
       if (blocking) {
         socket[kBlocking] = true;
       }
-      let header = `${method} ${path3} HTTP/1.1\r
+      let header = `${method} ${path4} HTTP/1.1\r
 `;
       if (typeof host === "string") {
         header += `host: ${host}\r
@@ -8258,7 +8258,7 @@ upgrade: ${upgrade}\r
       return true;
     }
     function writeH2(client, session, request) {
-      const { body, method, path: path3, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
+      const { body, method, path: path4, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
       let headers;
       if (typeof reqHeaders === "string")
         headers = Request[kHTTP2CopyHeaders](reqHeaders.trim());
@@ -8304,7 +8304,7 @@ upgrade: ${upgrade}\r
         });
         return true;
       }
-      headers[HTTP2_HEADER_PATH] = path3;
+      headers[HTTP2_HEADER_PATH] = path4;
       headers[HTTP2_HEADER_SCHEME] = "https";
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       if (body && typeof body.read === "function") {
@@ -10537,20 +10537,20 @@ var require_mock_utils = __commonJS({
       }
       return true;
     }
-    function safeUrl(path3) {
-      if (typeof path3 !== "string") {
-        return path3;
+    function safeUrl(path4) {
+      if (typeof path4 !== "string") {
+        return path4;
       }
-      const pathSegments = path3.split("?");
+      const pathSegments = path4.split("?");
       if (pathSegments.length !== 2) {
-        return path3;
+        return path4;
       }
       const qp = new URLSearchParams(pathSegments.pop());
       qp.sort();
       return [...pathSegments, qp.toString()].join("?");
     }
-    function matchKey(mockDispatch2, { path: path3, method, body, headers }) {
-      const pathMatch = matchValue(mockDispatch2.path, path3);
+    function matchKey(mockDispatch2, { path: path4, method, body, headers }) {
+      const pathMatch = matchValue(mockDispatch2.path, path4);
       const methodMatch = matchValue(mockDispatch2.method, method);
       const bodyMatch = typeof mockDispatch2.body !== "undefined" ? matchValue(mockDispatch2.body, body) : true;
       const headersMatch = matchHeaders(mockDispatch2, headers);
@@ -10568,7 +10568,7 @@ var require_mock_utils = __commonJS({
     function getMockDispatch(mockDispatches, key) {
       const basePath = key.query ? buildURL(key.path, key.query) : key.path;
       const resolvedPath = typeof basePath === "string" ? safeUrl(basePath) : basePath;
-      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path: path3 }) => matchValue(safeUrl(path3), resolvedPath));
+      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path: path4 }) => matchValue(safeUrl(path4), resolvedPath));
       if (matchedMockDispatches.length === 0) {
         throw new MockNotMatchedError(`Mock dispatch not matched for path '${resolvedPath}'`);
       }
@@ -10605,9 +10605,9 @@ var require_mock_utils = __commonJS({
       }
     }
     function buildKey(opts) {
-      const { path: path3, method, body, headers, query } = opts;
+      const { path: path4, method, body, headers, query } = opts;
       return {
-        path: path3,
+        path: path4,
         method,
         body,
         headers,
@@ -11056,10 +11056,10 @@ var require_pending_interceptors_formatter = __commonJS({
       }
       format(pendingInterceptors) {
         const withPrettyHeaders = pendingInterceptors.map(
-          ({ method, path: path3, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
+          ({ method, path: path4, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
             Method: method,
             Origin: origin,
-            Path: path3,
+            Path: path4,
             "Status code": statusCode,
             Persistent: persist ? "\u2705" : "\u274C",
             Invocations: timesInvoked,
@@ -15681,8 +15681,8 @@ var require_util6 = __commonJS({
         }
       }
     }
-    function validateCookiePath(path3) {
-      for (const char of path3) {
+    function validateCookiePath(path4) {
+      for (const char of path4) {
         const code = char.charCodeAt(0);
         if (code < 33 || char === ";") {
           throw new Error("Invalid cookie path");
@@ -17374,11 +17374,11 @@ var require_undici = __commonJS({
           if (typeof opts.path !== "string") {
             throw new InvalidArgumentError("invalid opts.path");
           }
-          let path3 = opts.path;
+          let path4 = opts.path;
           if (!opts.path.startsWith("/")) {
-            path3 = `/${path3}`;
+            path4 = `/${path4}`;
           }
-          url = new URL(util.parseOrigin(url).origin + path3);
+          url = new URL(util.parseOrigin(url).origin + path4);
         } else {
           if (!opts) {
             opts = typeof url === "object" ? url : {};
@@ -18317,7 +18317,7 @@ var require_summary = __commonJS({
     exports2.summary = exports2.markdownSummary = exports2.SUMMARY_DOCS_URL = exports2.SUMMARY_ENV_VAR = void 0;
     var os_1 = require("os");
     var fs_1 = require("fs");
-    var { access, appendFile, writeFile: writeFile4 } = fs_1.promises;
+    var { access, appendFile, writeFile: writeFile5 } = fs_1.promises;
     exports2.SUMMARY_ENV_VAR = "GITHUB_STEP_SUMMARY";
     exports2.SUMMARY_DOCS_URL = "https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary";
     var Summary = class {
@@ -18375,7 +18375,7 @@ var require_summary = __commonJS({
         return __awaiter(this, void 0, void 0, function* () {
           const overwrite = !!(options === null || options === void 0 ? void 0 : options.overwrite);
           const filePath = yield this.filePath();
-          const writeFunc = overwrite ? writeFile4 : appendFile;
+          const writeFunc = overwrite ? writeFile5 : appendFile;
           yield writeFunc(filePath, this._buffer, { encoding: "utf8" });
           return this.emptyBuffer();
         });
@@ -18610,7 +18610,7 @@ var require_path_utils = __commonJS({
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.toPlatformPath = exports2.toWin32Path = exports2.toPosixPath = void 0;
-    var path3 = __importStar(require("path"));
+    var path4 = __importStar(require("path"));
     function toPosixPath(pth) {
       return pth.replace(/[\\]/g, "/");
     }
@@ -18620,7 +18620,7 @@ var require_path_utils = __commonJS({
     }
     exports2.toWin32Path = toWin32Path;
     function toPlatformPath(pth) {
-      return pth.replace(/[/\\]/g, path3.sep);
+      return pth.replace(/[/\\]/g, path4.sep);
     }
     exports2.toPlatformPath = toPlatformPath;
   }
@@ -18691,7 +18691,7 @@ var require_core = __commonJS({
     var file_command_1 = require_file_command();
     var utils_1 = require_utils();
     var os = __importStar(require("os"));
-    var path3 = __importStar(require("path"));
+    var path4 = __importStar(require("path"));
     var oidc_utils_1 = require_oidc_utils();
     var ExitCode;
     (function(ExitCode2) {
@@ -18719,7 +18719,7 @@ var require_core = __commonJS({
       } else {
         command_1.issueCommand("add-path", {}, inputPath);
       }
-      process.env["PATH"] = `${inputPath}${path3.delimiter}${process.env["PATH"]}`;
+      process.env["PATH"] = `${inputPath}${path4.delimiter}${process.env["PATH"]}`;
     }
     exports2.addPath = addPath;
     function getInput3(name, options) {
@@ -18874,8 +18874,8 @@ var require_context = __commonJS({
           if ((0, fs_1.existsSync)(process.env.GITHUB_EVENT_PATH)) {
             this.payload = JSON.parse((0, fs_1.readFileSync)(process.env.GITHUB_EVENT_PATH, { encoding: "utf8" }));
           } else {
-            const path3 = process.env.GITHUB_EVENT_PATH;
-            process.stdout.write(`GITHUB_EVENT_PATH ${path3} does not exist${os_1.EOL}`);
+            const path4 = process.env.GITHUB_EVENT_PATH;
+            process.stdout.write(`GITHUB_EVENT_PATH ${path4} does not exist${os_1.EOL}`);
           }
         }
         this.eventName = process.env.GITHUB_EVENT_NAME;
@@ -23184,7 +23184,7 @@ var require_io_util = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getCmdPath = exports2.tryGetExecutablePath = exports2.isRooted = exports2.isDirectory = exports2.exists = exports2.READONLY = exports2.UV_FS_O_EXLOCK = exports2.IS_WINDOWS = exports2.unlink = exports2.symlink = exports2.stat = exports2.rmdir = exports2.rm = exports2.rename = exports2.readlink = exports2.readdir = exports2.open = exports2.mkdir = exports2.lstat = exports2.copyFile = exports2.chmod = void 0;
     var fs = __importStar(require("fs"));
-    var path3 = __importStar(require("path"));
+    var path4 = __importStar(require("path"));
     _a = fs.promises, exports2.chmod = _a.chmod, exports2.copyFile = _a.copyFile, exports2.lstat = _a.lstat, exports2.mkdir = _a.mkdir, exports2.open = _a.open, exports2.readdir = _a.readdir, exports2.readlink = _a.readlink, exports2.rename = _a.rename, exports2.rm = _a.rm, exports2.rmdir = _a.rmdir, exports2.stat = _a.stat, exports2.symlink = _a.symlink, exports2.unlink = _a.unlink;
     exports2.IS_WINDOWS = process.platform === "win32";
     exports2.UV_FS_O_EXLOCK = 268435456;
@@ -23233,7 +23233,7 @@ var require_io_util = __commonJS({
         }
         if (stats && stats.isFile()) {
           if (exports2.IS_WINDOWS) {
-            const upperExt = path3.extname(filePath).toUpperCase();
+            const upperExt = path4.extname(filePath).toUpperCase();
             if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) {
               return filePath;
             }
@@ -23257,11 +23257,11 @@ var require_io_util = __commonJS({
           if (stats && stats.isFile()) {
             if (exports2.IS_WINDOWS) {
               try {
-                const directory = path3.dirname(filePath);
-                const upperName = path3.basename(filePath).toUpperCase();
+                const directory = path4.dirname(filePath);
+                const upperName = path4.basename(filePath).toUpperCase();
                 for (const actualName of yield exports2.readdir(directory)) {
                   if (upperName === actualName.toUpperCase()) {
-                    filePath = path3.join(directory, actualName);
+                    filePath = path4.join(directory, actualName);
                     break;
                   }
                 }
@@ -23361,7 +23361,7 @@ var require_io = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.findInPath = exports2.which = exports2.mkdirP = exports2.rmRF = exports2.mv = exports2.cp = void 0;
     var assert_1 = require("assert");
-    var path3 = __importStar(require("path"));
+    var path4 = __importStar(require("path"));
     var ioUtil = __importStar(require_io_util());
     function cp(source, dest, options = {}) {
       return __awaiter(this, void 0, void 0, function* () {
@@ -23370,7 +23370,7 @@ var require_io = __commonJS({
         if (destStat && destStat.isFile() && !force) {
           return;
         }
-        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path3.join(dest, path3.basename(source)) : dest;
+        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path4.join(dest, path4.basename(source)) : dest;
         if (!(yield ioUtil.exists(source))) {
           throw new Error(`no such file or directory: ${source}`);
         }
@@ -23382,7 +23382,7 @@ var require_io = __commonJS({
             yield cpDirRecursive(source, newDest, 0, force);
           }
         } else {
-          if (path3.relative(source, newDest) === "") {
+          if (path4.relative(source, newDest) === "") {
             throw new Error(`'${newDest}' and '${source}' are the same file`);
           }
           yield copyFile(source, newDest, force);
@@ -23395,7 +23395,7 @@ var require_io = __commonJS({
         if (yield ioUtil.exists(dest)) {
           let destExists = true;
           if (yield ioUtil.isDirectory(dest)) {
-            dest = path3.join(dest, path3.basename(source));
+            dest = path4.join(dest, path4.basename(source));
             destExists = yield ioUtil.exists(dest);
           }
           if (destExists) {
@@ -23406,7 +23406,7 @@ var require_io = __commonJS({
             }
           }
         }
-        yield mkdirP(path3.dirname(dest));
+        yield mkdirP(path4.dirname(dest));
         yield ioUtil.rename(source, dest);
       });
     }
@@ -23469,7 +23469,7 @@ var require_io = __commonJS({
         }
         const extensions = [];
         if (ioUtil.IS_WINDOWS && process.env["PATHEXT"]) {
-          for (const extension of process.env["PATHEXT"].split(path3.delimiter)) {
+          for (const extension of process.env["PATHEXT"].split(path4.delimiter)) {
             if (extension) {
               extensions.push(extension);
             }
@@ -23482,12 +23482,12 @@ var require_io = __commonJS({
           }
           return [];
         }
-        if (tool.includes(path3.sep)) {
+        if (tool.includes(path4.sep)) {
           return [];
         }
         const directories = [];
         if (process.env.PATH) {
-          for (const p of process.env.PATH.split(path3.delimiter)) {
+          for (const p of process.env.PATH.split(path4.delimiter)) {
             if (p) {
               directories.push(p);
             }
@@ -23495,7 +23495,7 @@ var require_io = __commonJS({
         }
         const matches = [];
         for (const directory of directories) {
-          const filePath = yield ioUtil.tryGetExecutablePath(path3.join(directory, tool), extensions);
+          const filePath = yield ioUtil.tryGetExecutablePath(path4.join(directory, tool), extensions);
           if (filePath) {
             matches.push(filePath);
           }
@@ -23616,7 +23616,7 @@ var require_toolrunner = __commonJS({
     var os = __importStar(require("os"));
     var events = __importStar(require("events"));
     var child = __importStar(require("child_process"));
-    var path3 = __importStar(require("path"));
+    var path4 = __importStar(require("path"));
     var io = __importStar(require_io());
     var ioUtil = __importStar(require_io_util());
     var timers_1 = require("timers");
@@ -23831,7 +23831,7 @@ var require_toolrunner = __commonJS({
       exec() {
         return __awaiter(this, void 0, void 0, function* () {
           if (!ioUtil.isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS && this.toolPath.includes("\\"))) {
-            this.toolPath = path3.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
+            this.toolPath = path4.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
           }
           this.toolPath = yield io.which(this.toolPath, true);
           return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
@@ -33821,14 +33821,14 @@ var getFile = async ({
   octokit,
   owner,
   repo,
-  path: path3,
+  path: path4,
   ref
 }) => {
   try {
     const { data } = await octokit.rest.repos.getContent({
       owner,
       repo,
-      path: path3,
+      path: path4,
       ref
     });
     if (!("type" in data && data.type === "file")) {
@@ -34035,19 +34035,117 @@ var deploy = async () => {
   };
 };
 
-// src/ghosts/docs/index.ts
+// src/utils/findFile.ts
+var import_promises3 = require("node:fs/promises");
+var findFile = async (filename) => {
+  const all = await (0, import_promises3.readdir)("./", {
+    withFileTypes: true,
+    recursive: true
+  });
+  const files = all.filter((file) => file.isFile() && file.name === filename).map((file) => file.path);
+  return files;
+};
+
+// src/ghosts/docs/updatePackageJson.ts
 var import_promises4 = require("node:fs/promises");
 
-// src/ghosts/docs/utils/badge.ts
-var badge = (href) => ({ src, alt }) => (
-  /* html */
-  `<a href="${href}"><img src="${src}" alt="${alt}" /></a>`
-);
+// src/ghosts/docs/utils/isValidPackageJson.ts
+var import_typescanner4 = __toESM(require_dist(), 1);
+var isValidPackageJson = (0, import_typescanner4.scanner)({
+  name: (0, import_typescanner4.optional)(import_typescanner4.string),
+  version: (0, import_typescanner4.optional)(import_typescanner4.string),
+  files: (0, import_typescanner4.optional)((0, import_typescanner4.array)(import_typescanner4.string)),
+  description: (0, import_typescanner4.optional)(import_typescanner4.string)
+});
+
+// src/ghosts/docs/updatePackageJson.ts
+var updatePackageJson = (repository) => async (packageJsonPath) => {
+  const packageJsonStr = await (0, import_promises4.readFile)(packageJsonPath, "utf-8");
+  const json = JSON.parse(packageJsonStr);
+  const packageJson = isValidPackageJson(json) ? json : null;
+  if (!packageJson?.version) {
+    return false;
+  }
+  const { topics, owner } = repository;
+  const publishConfig = packageJson.name?.startsWith("@") ? { publishConfig: { access: "public" } } : {};
+  const license = repository.license?.spdx_id ? { license: repository.license.spdx_id } : {};
+  const keywords = topics ?? [];
+  const html = await fetch(repository.html_url).then((res) => res.text());
+  const repo_image = html.match(/<meta property="og:image" content="(\S*)"\s*\/>/)?.[1] ?? "";
+  const repoInfo = {
+    description: repository.description ?? "",
+    ...license,
+    bugs: `${repository.html_url}/issues`,
+    homepage: `${repository.html_url}#readme`,
+    author: {
+      name: owner.login,
+      email: "intents.turrets0h@icloud.com",
+      url: owner.html_url,
+      image: owner.avatar_url
+    },
+    repository: {
+      type: "git",
+      url: repository.clone_url,
+      image: repo_image
+    },
+    ...publishConfig,
+    keywords,
+    prettier: "@jill64/prettier-config"
+  };
+  const oldJson = JSON.stringify(packageJson, null, 2);
+  const newJson = JSON.stringify(
+    {
+      ...packageJson,
+      ...repoInfo
+    },
+    null,
+    2
+  );
+  if (oldJson === newJson) {
+    return false;
+  }
+  await (0, import_promises4.writeFile)(packageJsonPath, newJson + "\n");
+  return true;
+};
+
+// src/ghosts/docs/updatePackageJsonList.ts
+var updatePackageJsonList = async ({
+  repository
+}) => {
+  const files = await findFile("package.json");
+  const result = await Promise.all(files.map(updatePackageJson(repository)));
+  if (result.includes(true)) {
+    await pushCommit("chore: synchronize package.json");
+  }
+};
+
+// src/ghosts/docs/updateReadme.ts
+var import_promises5 = require("node:fs/promises");
+var import_node_path = __toESM(require("node:path"), 1);
 
 // src/ghosts/docs/utils/snippets.ts
 var BEGIN_FIRST = "<!----- BEGIN GHOST DOCS";
 var END_FIRST = "<!----- END GHOST DOCS";
 var LAST_TAIL = "----->";
+
+// src/ghosts/docs/utils/insertSection.ts
+var insertSection = (readme) => {
+  const beginHeader = `${BEGIN_FIRST} HEADER ${LAST_TAIL}`;
+  const endHeader = `${END_FIRST} HEADER ${LAST_TAIL}`;
+  const beginFooter = `${BEGIN_FIRST} FOOTER ${LAST_TAIL}`;
+  const endFooter = `${END_FIRST} FOOTER ${LAST_TAIL}`;
+  const headed = !readme.includes(beginHeader) || !readme.includes(endHeader) ? `${beginHeader}
+
+${endHeader}
+
+${readme}
+` : readme;
+  const footed = !headed.includes(beginFooter) || !headed.includes(endFooter) ? `${headed}
+${beginFooter}
+${endFooter}
+` : headed;
+  return footed;
+};
 
 // src/ghosts/docs/utils/replaceSection.ts
 var replaceSection = ({
@@ -34072,7 +34170,13 @@ ${content}
 ${endMatch[0]}` + source.substring(endIndex);
 };
 
-// src/ghosts/docs/syncHeader.ts
+// src/ghosts/docs/utils/badge.ts
+var badge = (href) => ({ src, alt }) => (
+  /* html */
+  `<a href="${href}"><img src="${src}" alt="${alt}" /></a>`
+);
+
+// src/ghosts/docs/utils/syncHeader.ts
 var syncHeader = ({
   readme,
   packageJson,
@@ -34139,96 +34243,69 @@ ${content}
   });
 };
 
-// src/ghosts/docs/syncPackageJson.ts
-var syncPackageJson = async ({
-  packageJson,
-  repository
+// src/ghosts/docs/updateReadme.ts
+var updateReadme = ({
+  repository,
+  workflowFiles
+}) => async (readmePath) => {
+  const readme = await (0, import_promises5.readFile)(readmePath, "utf-8");
+  if (!readme) {
+    return false;
+  }
+  const dir = import_node_path.default.dirname(readmePath);
+  const packageJsonPath = import_node_path.default.join(dir, "package.json");
+  const packageJsonStr = await (0, import_promises5.readFile)(packageJsonPath, "utf-8");
+  const json = attempt(() => JSON.parse(packageJsonStr), null);
+  const packageJson = isValidPackageJson(json) ? json : null;
+  const headerSynced = syncHeader({
+    workflowFiles,
+    packageJson,
+    readme: insertSection(readme),
+    repository
+  });
+  const newReadme = repository.license?.spdx_id ? replaceSection({
+    source: headerSynced,
+    section: "FOOTER",
+    content: `
+## License
+
+${repository.license.spdx_id}
+`
+  }) : readme;
+  if (readme === newReadme) {
+    return false;
+  }
+  await (0, import_promises5.writeFile)(readmePath, newReadme);
+  return true;
+};
+
+// src/ghosts/docs/updateReadmeList.ts
+var updateReadmeList = async ({
+  repository,
+  workflowFiles
 }) => {
-  if (!packageJson?.version) {
-    return null;
-  }
-  const { topics, owner } = repository;
-  const publishConfig = packageJson.name?.startsWith("@") ? { publishConfig: { access: "public" } } : {};
-  const license = repository.license?.spdx_id ? { license: repository.license.spdx_id } : {};
-  const keywords = topics ?? [];
-  const html = await fetch(repository.html_url).then((res) => res.text());
-  const repo_image = html.match(/<meta property="og:image" content="(\S*)"\s*\/>/)?.[1] ?? "";
-  const repoInfo = {
-    description: repository.description ?? "",
-    ...license,
-    bugs: `${repository.html_url}/issues`,
-    homepage: `${repository.html_url}#readme`,
-    author: {
-      name: owner.login,
-      email: "intents.turrets0h@icloud.com",
-      url: owner.html_url,
-      image: owner.avatar_url
-    },
-    repository: {
-      type: "git",
-      url: repository.clone_url,
-      image: repo_image
-    },
-    ...publishConfig,
-    keywords,
-    prettier: "@jill64/prettier-config"
-  };
-  const oldJson = JSON.stringify(packageJson, null, 2);
-  const newJson = JSON.stringify(
-    {
-      ...packageJson,
-      ...repoInfo
-    },
-    null,
-    2
+  const files = await findFile("README.md");
+  const result = await Promise.all(
+    files.map(updateReadme({ repository, workflowFiles }))
   );
-  if (oldJson === newJson) {
-    return null;
+  if (result.includes(true)) {
+    await pushCommit("chore: synchronize README.md");
   }
-  return newJson + "\n";
 };
-
-// src/ghosts/docs/utils/insertSection.ts
-var insertSection = (readme) => {
-  const beginHeader = `${BEGIN_FIRST} HEADER ${LAST_TAIL}`;
-  const endHeader = `${END_FIRST} HEADER ${LAST_TAIL}`;
-  const beginFooter = `${BEGIN_FIRST} FOOTER ${LAST_TAIL}`;
-  const endFooter = `${END_FIRST} FOOTER ${LAST_TAIL}`;
-  const headed = !readme.includes(beginHeader) || !readme.includes(endHeader) ? `${beginHeader}
-
-${endHeader}
-
-${readme}
-` : readme;
-  const footed = !headed.includes(beginFooter) || !headed.includes(endFooter) ? `${headed}
-${beginFooter}
-${endFooter}
-` : headed;
-  return footed;
-};
-
-// src/ghosts/docs/utils/isValidPackageJson.ts
-var import_typescanner4 = __toESM(require_dist(), 1);
-var isValidPackageJson = (0, import_typescanner4.scanner)({
-  name: (0, import_typescanner4.optional)(import_typescanner4.string),
-  version: (0, import_typescanner4.optional)(import_typescanner4.string),
-  files: (0, import_typescanner4.optional)((0, import_typescanner4.array)(import_typescanner4.string)),
-  description: (0, import_typescanner4.optional)(import_typescanner4.string)
-});
 
 // src/ghosts/docs/utils/listWorkflowFiles.ts
-var import_promises3 = require("node:fs/promises");
-var import_node_path = __toESM(require("node:path"), 1);
+var import_promises6 = require("node:fs/promises");
+var import_node_path2 = __toESM(require("node:path"), 1);
 var listWorkflowFiles = async () => {
   try {
     const dirPath = ".github/workflows";
-    const dir = await (0, import_promises3.readdir)(dirPath, {
+    const dir = await (0, import_promises6.readdir)(dirPath, {
       withFileTypes: true,
       recursive: true
     });
     const result = dir.filter((dirent) => dirent.isFile()).map(async (file) => ({
       name: file.name,
-      data: await (0, import_promises3.readFile)(import_node_path.default.join(dirPath, file.name), "utf-8")
+      data: await (0, import_promises6.readFile)(import_node_path2.default.join(dirPath, file.name), "utf-8")
     }));
     const list = await Promise.all(result);
     return list;
@@ -34239,54 +34316,28 @@ var listWorkflowFiles = async () => {
 };
 
 // src/ghosts/docs/index.ts
-var docs = async ({ payload, octokit }) => {
-  const {
+var docs = async ({
+  payload: {
     owner,
     repo,
     data: { ref }
-  } = payload;
-  const { data: repository } = await octokit.rest.repos.get({
-    owner,
-    repo
-  });
+  },
+  octokit
+}) => {
+  const [{ data: repository }, workflowFiles] = await Promise.all([
+    octokit.rest.repos.get({
+      owner,
+      repo
+    }),
+    listWorkflowFiles()
+  ]);
   if (ref === repository.default_branch) {
     return "skipped";
   }
-  const [workflowFiles, readme, packageJsonData] = await Promise.all([
-    listWorkflowFiles(),
-    (0, import_promises4.readFile)("README.md", "utf-8"),
-    getPackageJson()
+  await Promise.allSettled([
+    updateReadmeList({ repository, workflowFiles }),
+    updatePackageJsonList({ repository })
   ]);
-  const packageJson = isValidPackageJson(packageJsonData) ? packageJsonData : null;
-  if (readme) {
-    const headerSynced = syncHeader({
-      workflowFiles,
-      packageJson,
-      readme: insertSection(readme),
-      repository
-    });
-    const newReadme = repository.license?.spdx_id ? replaceSection({
-      source: headerSynced,
-      section: "FOOTER",
-      content: `
-## License
-
-${repository.license.spdx_id}
-`
-    }) : readme;
-    if (readme !== newReadme) {
-      await (0, import_promises4.writeFile)("README.md", newReadme);
-      await pushCommit("chore: synchronize README.md");
-    }
-  }
-  const newPackageJson = await syncPackageJson({
-    packageJson,
-    repository
-  });
-  if (newPackageJson) {
-    await (0, import_promises4.writeFile)("package.json", newPackageJson);
-    await pushCommit("chore: synchronize package.json");
-  }
   return "success";
 };
 
@@ -34330,7 +34381,7 @@ var format = async () => {
 };
 
 // src/ghosts/lint.ts
-var import_promises5 = require("fs/promises");
+var import_promises7 = require("fs/promises");
 var import_typescanner6 = __toESM(require_dist(), 1);
 var isValidJson4 = (0, import_typescanner6.scanner)({
   scripts: (0, import_typescanner6.scanner)({
@@ -34394,7 +34445,7 @@ var lint = async () => {
       ...Object.keys(omittedDeps).length ? { dependencies: omittedDeps } : {},
       ...Object.keys(omittedDevDeps).length ? { devDependencies: omittedDevDeps } : {}
     };
-    await (0, import_promises5.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
+    await (0, import_promises7.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
     await pushCommit("fix: omit unused dependencies");
     return {
       status: "failure",
@@ -34535,21 +34586,10 @@ var merge = async ({ payload, octokit }) => {
   return "success";
 };
 
-// src/utils/findFile.ts
-var import_promises6 = require("node:fs/promises");
-var findFile = async (filename) => {
-  const all = await (0, import_promises6.readdir)("./", {
-    withFileTypes: true,
-    recursive: true
-  });
-  const files = all.filter((file) => file.isFile() && file.name === filename).map((file) => file.path);
-  return files;
-};
-
 // src/ghosts/release/publish.ts
 var import_exec4 = __toESM(require_exec(), 1);
-var import_promises7 = require("node:fs/promises");
-var import_node_path2 = __toESM(require("node:path"), 1);
+var import_promises8 = require("node:fs/promises");
+var import_node_path3 = __toESM(require("node:path"), 1);
 var import_twitter_api_v2 = __toESM(require_cjs(), 1);
 var import_typescanner7 = __toESM(require_dist(), 1);
 var isValidJson5 = (0, import_typescanner7.scanner)({
@@ -34570,8 +34610,8 @@ var publish = ({
   owner,
   octokit
 }) => async (file) => {
-  const cwd = import_node_path2.default.dirname(file);
-  const str = await (0, import_promises7.readFile)(file, "utf-8");
+  const cwd = import_node_path3.default.dirname(file);
+  const str = await (0, import_promises8.readFile)(file, "utf-8");
   const package_json = JSON.parse(str);
   if (!isValidJson5(package_json)) {
     return {

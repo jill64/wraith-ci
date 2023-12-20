@@ -1,7 +1,8 @@
-import { ActionRepository } from '../../tyeps/ActionRepository.js'
-import { PackageJson } from './types/PackageJson.js'
-import { badge } from './utils/badge.js'
-import { replaceSection } from './utils/replaceSection.js'
+import { ActionRepository } from '../../../types/ActionRepository.js'
+import { PackageJson } from '../types/PackageJson.js'
+import { WorkflowFile } from '../types/WorkflowFile.js'
+import { badge } from './badge.js'
+import { replaceSection } from './replaceSection.js'
 
 export const syncHeader = ({
   readme,
@@ -9,10 +10,7 @@ export const syncHeader = ({
   repository,
   workflowFiles
 }: {
-  workflowFiles: {
-    name: string
-    data: string
-  }[]
+  workflowFiles: WorkflowFile[]
   packageJson: PackageJson | undefined | null
   readme: string
   repository: ActionRepository
