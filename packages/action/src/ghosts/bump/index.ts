@@ -1,6 +1,4 @@
 import { Ghost } from '@/action/types/Ghost.js'
-import { attempt } from '@jill64/attempt'
-import { writeFile } from 'node:fs/promises'
 import semver from 'semver'
 import { scanner, string } from 'typescanner'
 import { getFile } from '../../utils/getFile.js'
@@ -9,6 +7,7 @@ import { pushCommit } from '../../utils/pushCommit.js'
 import { checkCumulativeUpdate } from './checkCumulativeUpdate.js'
 import { determineSemType } from './determineSemType.js'
 import { formatVersionStr } from './formatVersionStr.js'
+import { overwriteAllVersion } from './overwriteAllVersion.js'
 
 const isPackageJson = scanner({
   version: string
@@ -90,10 +89,8 @@ export const bump: Ghost = async ({ payload, octokit }) => {
     octokit
   })
 
-  const baseJson = attempt(() => {
-    const json = baseStr ? JSON.parse(baseStr) : null
-    return isPackageJson(json) ? json : null
-  }, null)
+  const baseJsonData = baseStr ? JSON.parse(baseStr) : null
+  const baseJson = isPackageJson(baseJsonData) ? baseJsonData : null
 
   const base_version = formatVersionStr(baseJson?.version)
   const head_version = formatVersionStr(headJson.version)
@@ -108,16 +105,7 @@ export const bump: Ghost = async ({ payload, octokit }) => {
     return 'success'
   }
 
-  const newJsonStr = JSON.stringify(
-    {
-      ...headJson,
-      version: newVersion
-    },
-    null,
-    2
-  )
-
-  await writeFile('package.json', newJsonStr)
+  await overwriteAllVersion(newVersion)
   await pushCommit(`chore: bump to ${newVersion}`)
 
   if (cumulativeUpdate) {
