@@ -1,10 +1,11 @@
 import { Ghost } from '@/action/types/Ghost.js'
 import { run } from '../utils/run.js'
+import { findFile } from '../utils/findFile.js'
 
 export const deploy: Ghost = async () => {
-  const exists = await run('test -f wrangler.toml')
+  const files = await findFile('wrangler.toml')
 
-  if (exists.exitCode !== 0) {
+  if (files.length === 0) {
     return {
       status: 'skipped',
       detail: 'wrangler.toml not found'
