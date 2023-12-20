@@ -34669,7 +34669,7 @@ var npmPublish = async (file) => {
   const package_json = JSON.parse(str);
   if (!isValidJson5(package_json)) {
     core_exports.info(`[${file}]: No version found.`);
-    return;
+    return false;
   }
   const version2 = package_json.version.trim();
   const publishedVersion = await import_exec4.default.getExecOutput(
@@ -34682,11 +34682,12 @@ var npmPublish = async (file) => {
   );
   if (version2 === publishedVersion.stdout.trim()) {
     core_exports.info(`[${file}]: No update found.`);
-    return;
+    return false;
   }
   await import_exec4.default.exec("npm publish", void 0, {
     cwd
   });
+  return true;
 };
 
 // src/ghosts/release/index.ts
@@ -34706,7 +34707,13 @@ var release = async ({ payload: { owner, repo }, octokit }) => {
       detail: "Not found package.json in repo"
     };
   }
-  await Promise.allSettled(files.map(npmPublish));
+  const result = await Promise.allSettled(files.map(npmPublish));
+  if (!result.some((r) => r.status === "fulfilled" && r.value)) {
+    return {
+      status: "skipped",
+      detail: "No package published"
+    };
+  }
   const json = await getPackageJson();
   const rootPackageJson = isValidPackageJson(json) ? json : null;
   const version2 = rootPackageJson?.version;
