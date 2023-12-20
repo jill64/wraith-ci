@@ -1,10 +1,11 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { findFile } from '../../utils/findFile.js'
+import * as core from 'octoflare/action/core'
 
 export const overwriteAllVersion = async (newVersion: string) => {
   const files = await findFile('package.json')
 
-  console.log('Detected package.json files:', files)
+  core.info(`Detected package.json files: ${JSON.stringify(files)}`)
 
   await Promise.allSettled(
     files.map(async (file) => {
@@ -13,7 +14,7 @@ export const overwriteAllVersion = async (newVersion: string) => {
       const json = JSON.parse(str)
 
       if (!json.version) {
-        console.log('No version found in', file)
+        core.info(`No version found in ${file}`)
         return
       }
 

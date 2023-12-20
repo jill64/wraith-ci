@@ -1,6 +1,7 @@
 import exec from '@actions/exec'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
+import * as core from 'octoflare/action/core'
 import { array, optional, scanner, string } from 'typescanner'
 
 const isValidJson = scanner({
@@ -16,7 +17,7 @@ export const npmPublish = async (file: string) => {
   const package_json = JSON.parse(str)
 
   if (!isValidJson(package_json)) {
-    console.log(`[${file}]: No version found.`)
+    core.info(`[${file}]: No version found.`)
     return
   }
 
@@ -32,7 +33,7 @@ export const npmPublish = async (file: string) => {
   )
 
   if (version === publishedVersion.stdout.trim()) {
-    console.log(`[${file}]: No update found.`)
+    core.info(`[${file}]: No update found.`)
     return
   }
 

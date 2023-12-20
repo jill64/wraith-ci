@@ -749,18 +749,18 @@ var require_tunnel = __commonJS({
             res.statusCode
           );
           socket.destroy();
-          var error = new Error("tunneling socket could not be established, statusCode=" + res.statusCode);
-          error.code = "ECONNRESET";
-          options.request.emit("error", error);
+          var error2 = new Error("tunneling socket could not be established, statusCode=" + res.statusCode);
+          error2.code = "ECONNRESET";
+          options.request.emit("error", error2);
           self.removeSocket(placeholder);
           return;
         }
         if (head.length > 0) {
           debug("got illegal response body from proxy");
           socket.destroy();
-          var error = new Error("got illegal response body from proxy");
-          error.code = "ECONNRESET";
-          options.request.emit("error", error);
+          var error2 = new Error("got illegal response body from proxy");
+          error2.code = "ECONNRESET";
+          options.request.emit("error", error2);
           self.removeSocket(placeholder);
           return;
         }
@@ -775,9 +775,9 @@ var require_tunnel = __commonJS({
           cause.message,
           cause.stack
         );
-        var error = new Error("tunneling socket could not be established, cause=" + cause.message);
-        error.code = "ECONNRESET";
-        options.request.emit("error", error);
+        var error2 = new Error("tunneling socket could not be established, cause=" + cause.message);
+        error2.code = "ECONNRESET";
+        options.request.emit("error", error2);
         self.removeSocket(placeholder);
       }
     };
@@ -5734,7 +5734,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
         throw new TypeError("Body is unusable");
       }
       const promise = createDeferredPromise();
-      const errorSteps = (error) => promise.reject(error);
+      const errorSteps = (error2) => promise.reject(error2);
       const successSteps = (data) => {
         try {
           promise.resolve(convertBytesToJSValue(data));
@@ -6020,16 +6020,16 @@ var require_request = __commonJS({
           this.onError(err);
         }
       }
-      onError(error) {
+      onError(error2) {
         this.onFinally();
         if (channels.error.hasSubscribers) {
-          channels.error.publish({ request: this, error });
+          channels.error.publish({ request: this, error: error2 });
         }
         if (this.aborted) {
           return;
         }
         this.aborted = true;
-        return this[kHandler].onError(error);
+        return this[kHandler].onError(error2);
       }
       onFinally() {
         if (this.errorHandler) {
@@ -6901,8 +6901,8 @@ var require_RedirectHandler = __commonJS({
       onUpgrade(statusCode, headers, socket) {
         this.handler.onUpgrade(statusCode, headers, socket);
       }
-      onError(error) {
-        this.handler.onError(error);
+      onError(error2) {
+        this.handler.onError(error2);
       }
       onHeaders(statusCode, headers, resume, statusText) {
         this.location = this.history.length >= this.maxRedirections || util.isDisturbed(this.opts.body) ? null : parseLocation(statusCode, headers);
@@ -10638,13 +10638,13 @@ var require_mock_utils = __commonJS({
       if (mockDispatch2.data.callback) {
         mockDispatch2.data = { ...mockDispatch2.data, ...mockDispatch2.data.callback(opts) };
       }
-      const { data: { statusCode, data, headers, trailers, error }, delay, persist } = mockDispatch2;
+      const { data: { statusCode, data, headers, trailers, error: error2 }, delay, persist } = mockDispatch2;
       const { timesInvoked, times } = mockDispatch2;
       mockDispatch2.consumed = !persist && timesInvoked >= times;
       mockDispatch2.pending = timesInvoked < times;
-      if (error !== null) {
+      if (error2 !== null) {
         deleteMockDispatch(this[kDispatches], key);
-        handler.onError(error);
+        handler.onError(error2);
         return true;
       }
       if (typeof delay === "number" && delay > 0) {
@@ -10682,19 +10682,19 @@ var require_mock_utils = __commonJS({
         if (agent.isMockActive) {
           try {
             mockDispatch.call(this, opts, handler);
-          } catch (error) {
-            if (error instanceof MockNotMatchedError) {
+          } catch (error2) {
+            if (error2 instanceof MockNotMatchedError) {
               const netConnect = agent[kGetNetConnect]();
               if (netConnect === false) {
-                throw new MockNotMatchedError(`${error.message}: subsequent request to origin ${origin} was not allowed (net.connect disabled)`);
+                throw new MockNotMatchedError(`${error2.message}: subsequent request to origin ${origin} was not allowed (net.connect disabled)`);
               }
               if (checkNetConnect(netConnect, origin)) {
                 originalDispatch.call(this, opts, handler);
               } else {
-                throw new MockNotMatchedError(`${error.message}: subsequent request to origin ${origin} was not allowed (net.connect is not enabled for this origin)`);
+                throw new MockNotMatchedError(`${error2.message}: subsequent request to origin ${origin} was not allowed (net.connect is not enabled for this origin)`);
               }
             } else {
-              throw error;
+              throw error2;
             }
           }
         } else {
@@ -10857,11 +10857,11 @@ var require_mock_interceptor = __commonJS({
       /**
        * Mock an undici request with a defined error.
        */
-      replyWithError(error) {
-        if (typeof error === "undefined") {
+      replyWithError(error2) {
+        if (typeof error2 === "undefined") {
           throw new InvalidArgumentError("error must be defined");
         }
-        const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], { error });
+        const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], { error: error2 });
         return new MockScope(newMockDispatch);
       }
       /**
@@ -13187,17 +13187,17 @@ var require_fetch = __commonJS({
         this.emit("terminated", reason);
       }
       // https://fetch.spec.whatwg.org/#fetch-controller-abort
-      abort(error) {
+      abort(error2) {
         if (this.state !== "ongoing") {
           return;
         }
         this.state = "aborted";
-        if (!error) {
-          error = new DOMException2("The operation was aborted.", "AbortError");
+        if (!error2) {
+          error2 = new DOMException2("The operation was aborted.", "AbortError");
         }
-        this.serializedAbortReason = error;
-        this.connection?.destroy(error);
-        this.emit("terminated", error);
+        this.serializedAbortReason = error2;
+        this.connection?.destroy(error2);
+        this.emit("terminated", error2);
       }
     };
     function fetch2(input, init = {}) {
@@ -13301,13 +13301,13 @@ var require_fetch = __commonJS({
         performance.markResourceTiming(timingInfo, originalURL.href, initiatorType, globalThis2, cacheState);
       }
     }
-    function abortFetch(p, request, responseObject, error) {
-      if (!error) {
-        error = new DOMException2("The operation was aborted.", "AbortError");
+    function abortFetch(p, request, responseObject, error2) {
+      if (!error2) {
+        error2 = new DOMException2("The operation was aborted.", "AbortError");
       }
-      p.reject(error);
+      p.reject(error2);
       if (request.body != null && isReadable(request.body?.stream)) {
-        request.body.stream.cancel(error).catch((err) => {
+        request.body.stream.cancel(error2).catch((err) => {
           if (err.code === "ERR_INVALID_STATE") {
             return;
           }
@@ -13319,7 +13319,7 @@ var require_fetch = __commonJS({
       }
       const response = responseObject[kState];
       if (response.body != null && isReadable(response.body?.stream)) {
-        response.body.stream.cancel(error).catch((err) => {
+        response.body.stream.cancel(error2).catch((err) => {
           if (err.code === "ERR_INVALID_STATE") {
             return;
           }
@@ -14098,13 +14098,13 @@ var require_fetch = __commonJS({
               fetchParams.controller.ended = true;
               this.body.push(null);
             },
-            onError(error) {
+            onError(error2) {
               if (this.abort) {
                 fetchParams.controller.off("terminated", this.abort);
               }
-              this.body?.destroy(error);
-              fetchParams.controller.terminate(error);
-              reject(error);
+              this.body?.destroy(error2);
+              fetchParams.controller.terminate(error2);
+              reject(error2);
             },
             onUpgrade(status, headersList, socket) {
               if (status !== 101) {
@@ -14570,8 +14570,8 @@ var require_util4 = __commonJS({
                   }
                   fr[kResult] = result;
                   fireAProgressEvent("load", fr);
-                } catch (error) {
-                  fr[kError] = error;
+                } catch (error2) {
+                  fr[kError] = error2;
                   fireAProgressEvent("error", fr);
                 }
                 if (fr[kState] !== "loading") {
@@ -14580,13 +14580,13 @@ var require_util4 = __commonJS({
               });
               break;
             }
-          } catch (error) {
+          } catch (error2) {
             if (fr[kAborted]) {
               return;
             }
             queueMicrotask(() => {
               fr[kState] = "done";
-              fr[kError] = error;
+              fr[kError] = error2;
               fireAProgressEvent("error", fr);
               if (fr[kState] !== "loading") {
                 fireAProgressEvent("loadend", fr);
@@ -16602,11 +16602,11 @@ var require_connection = __commonJS({
         });
       }
     }
-    function onSocketError(error) {
+    function onSocketError(error2) {
       const { ws } = this;
       ws[kReadyState] = states.CLOSING;
       if (channels.socketError.hasSubscribers) {
-        channels.socketError.publish(error);
+        channels.socketError.publish(error2);
       }
       this.destroy();
     }
@@ -17755,12 +17755,12 @@ var require_lib = __commonJS({
             throw new Error("Client has already been disposed.");
           }
           const parsedUrl = new URL(requestUrl);
-          let info = this._prepareRequest(verb, parsedUrl, headers);
+          let info5 = this._prepareRequest(verb, parsedUrl, headers);
           const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
           let numTries = 0;
           let response;
           do {
-            response = yield this.requestRaw(info, data);
+            response = yield this.requestRaw(info5, data);
             if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
               let authenticationHandler;
               for (const handler of this.handlers) {
@@ -17770,7 +17770,7 @@ var require_lib = __commonJS({
                 }
               }
               if (authenticationHandler) {
-                return authenticationHandler.handleAuthentication(this, info, data);
+                return authenticationHandler.handleAuthentication(this, info5, data);
               } else {
                 return response;
               }
@@ -17793,8 +17793,8 @@ var require_lib = __commonJS({
                   }
                 }
               }
-              info = this._prepareRequest(verb, parsedRedirectUrl, headers);
-              response = yield this.requestRaw(info, data);
+              info5 = this._prepareRequest(verb, parsedRedirectUrl, headers);
+              response = yield this.requestRaw(info5, data);
               redirectsRemaining--;
             }
             if (!response.message.statusCode || !HttpResponseRetryCodes.includes(response.message.statusCode)) {
@@ -17823,7 +17823,7 @@ var require_lib = __commonJS({
        * @param info
        * @param data
        */
-      requestRaw(info, data) {
+      requestRaw(info5, data) {
         return __awaiter(this, void 0, void 0, function* () {
           return new Promise((resolve, reject) => {
             function callbackForResult(err, res) {
@@ -17835,7 +17835,7 @@ var require_lib = __commonJS({
                 resolve(res);
               }
             }
-            this.requestRawWithCallback(info, data, callbackForResult);
+            this.requestRawWithCallback(info5, data, callbackForResult);
           });
         });
       }
@@ -17845,12 +17845,12 @@ var require_lib = __commonJS({
        * @param data
        * @param onResult
        */
-      requestRawWithCallback(info, data, onResult) {
+      requestRawWithCallback(info5, data, onResult) {
         if (typeof data === "string") {
-          if (!info.options.headers) {
-            info.options.headers = {};
+          if (!info5.options.headers) {
+            info5.options.headers = {};
           }
-          info.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+          info5.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
         }
         let callbackCalled = false;
         function handleResult(err, res) {
@@ -17859,7 +17859,7 @@ var require_lib = __commonJS({
             onResult(err, res);
           }
         }
-        const req = info.httpModule.request(info.options, (msg) => {
+        const req = info5.httpModule.request(info5.options, (msg) => {
           const res = new HttpClientResponse(msg);
           handleResult(void 0, res);
         });
@@ -17871,7 +17871,7 @@ var require_lib = __commonJS({
           if (socket) {
             socket.end();
           }
-          handleResult(new Error(`Request timeout: ${info.options.path}`));
+          handleResult(new Error(`Request timeout: ${info5.options.path}`));
         });
         req.on("error", function(err) {
           handleResult(err);
@@ -17907,27 +17907,27 @@ var require_lib = __commonJS({
         return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
       }
       _prepareRequest(method, requestUrl, headers) {
-        const info = {};
-        info.parsedUrl = requestUrl;
-        const usingSsl = info.parsedUrl.protocol === "https:";
-        info.httpModule = usingSsl ? https : http;
+        const info5 = {};
+        info5.parsedUrl = requestUrl;
+        const usingSsl = info5.parsedUrl.protocol === "https:";
+        info5.httpModule = usingSsl ? https : http;
         const defaultPort = usingSsl ? 443 : 80;
-        info.options = {};
-        info.options.host = info.parsedUrl.hostname;
-        info.options.port = info.parsedUrl.port ? parseInt(info.parsedUrl.port) : defaultPort;
-        info.options.path = (info.parsedUrl.pathname || "") + (info.parsedUrl.search || "");
-        info.options.method = method;
-        info.options.headers = this._mergeHeaders(headers);
+        info5.options = {};
+        info5.options.host = info5.parsedUrl.hostname;
+        info5.options.port = info5.parsedUrl.port ? parseInt(info5.parsedUrl.port) : defaultPort;
+        info5.options.path = (info5.parsedUrl.pathname || "") + (info5.parsedUrl.search || "");
+        info5.options.method = method;
+        info5.options.headers = this._mergeHeaders(headers);
         if (this.userAgent != null) {
-          info.options.headers["user-agent"] = this.userAgent;
+          info5.options.headers["user-agent"] = this.userAgent;
         }
-        info.options.agent = this._getAgent(info.parsedUrl);
+        info5.options.agent = this._getAgent(info5.parsedUrl);
         if (this.handlers) {
           for (const handler of this.handlers) {
-            handler.prepareRequest(info.options);
+            handler.prepareRequest(info5.options);
           }
         }
-        return info;
+        return info5;
       }
       _mergeHeaders(headers) {
         if (this.requestOptions && this.requestOptions.headers) {
@@ -18246,12 +18246,12 @@ var require_oidc_utils = __commonJS({
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
           const httpclient = _OidcClient.createHttpClient();
-          const res = yield httpclient.getJson(id_token_url).catch((error) => {
+          const res = yield httpclient.getJson(id_token_url).catch((error2) => {
             throw new Error(`Failed to get ID Token. 
  
-        Error Code : ${error.statusCode}
+        Error Code : ${error2.statusCode}
  
-        Error Message: ${error.message}`);
+        Error Message: ${error2.message}`);
           });
           const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
           if (!id_token) {
@@ -18272,8 +18272,8 @@ var require_oidc_utils = __commonJS({
             const id_token = yield _OidcClient.getCall(id_token_url);
             core_1.setSecret(id_token);
             return id_token;
-          } catch (error) {
-            throw new Error(`Error message: ${error.message}`);
+          } catch (error2) {
+            throw new Error(`Error message: ${error2.message}`);
           }
         });
       }
@@ -18768,7 +18768,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     exports2.setCommandEcho = setCommandEcho;
     function setFailed2(message) {
       process.exitCode = ExitCode.Failure;
-      error(message);
+      error2(message);
     }
     exports2.setFailed = setFailed2;
     function isDebug() {
@@ -18779,10 +18779,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       command_1.issueCommand("debug", {}, message);
     }
     exports2.debug = debug;
-    function error(message, properties = {}) {
+    function error2(message, properties = {}) {
       command_1.issueCommand("error", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
-    exports2.error = error;
+    exports2.error = error2;
     function warning(message, properties = {}) {
       command_1.issueCommand("warning", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
@@ -18791,10 +18791,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       command_1.issueCommand("notice", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.notice = notice;
-    function info(message) {
+    function info5(message) {
       process.stdout.write(message + os.EOL);
     }
-    exports2.info = info;
+    exports2.info = info5;
     function startGroup(name) {
       command_1.issue("group", name);
     }
@@ -19087,8 +19087,8 @@ var require_add = __commonJS({
       }
       if (kind === "error") {
         hook = function(method, options) {
-          return Promise.resolve().then(method.bind(null, options)).catch(function(error) {
-            return orig(error, options);
+          return Promise.resolve().then(method.bind(null, options)).catch(function(error2) {
+            return orig(error2, options);
           });
         };
       }
@@ -19821,7 +19821,7 @@ var require_dist_node5 = __commonJS({
         }
         if (status >= 400) {
           const data = await getResponseData(response);
-          const error = new import_request_error.RequestError(toErrorMessage(data), status, {
+          const error2 = new import_request_error.RequestError(toErrorMessage(data), status, {
             response: {
               url,
               status,
@@ -19830,7 +19830,7 @@ var require_dist_node5 = __commonJS({
             },
             request: requestOptions
           });
-          throw error;
+          throw error2;
         }
         return parseSuccessResponseBody ? await getResponseData(response) : response.body;
       }).then((data) => {
@@ -19840,17 +19840,17 @@ var require_dist_node5 = __commonJS({
           headers,
           data
         };
-      }).catch((error) => {
-        if (error instanceof import_request_error.RequestError)
-          throw error;
-        else if (error.name === "AbortError")
-          throw error;
-        let message = error.message;
-        if (error.name === "TypeError" && "cause" in error) {
-          if (error.cause instanceof Error) {
-            message = error.cause.message;
-          } else if (typeof error.cause === "string") {
-            message = error.cause;
+      }).catch((error2) => {
+        if (error2 instanceof import_request_error.RequestError)
+          throw error2;
+        else if (error2.name === "AbortError")
+          throw error2;
+        let message = error2.message;
+        if (error2.name === "TypeError" && "cause" in error2) {
+          if (error2.cause instanceof Error) {
+            message = error2.cause.message;
+          } else if (typeof error2.cause === "string") {
+            message = error2.cause;
           }
         }
         throw new import_request_error.RequestError(message, 500, {
@@ -22451,9 +22451,9 @@ var require_dist_node10 = __commonJS({
                 /<([^>]+)>;\s*rel="next"/
               ) || [])[1];
               return { value: normalizedResponse };
-            } catch (error) {
-              if (error.status !== 409)
-                throw error;
+            } catch (error2) {
+              if (error2.status !== 409)
+                throw error2;
               url = "";
               return {
                 value: {
@@ -23906,7 +23906,7 @@ var require_toolrunner = __commonJS({
               this._debug(`STDIO streams have closed for tool '${this.toolPath}'`);
               state.CheckComplete();
             });
-            state.on("done", (error, exitCode) => {
+            state.on("done", (error2, exitCode) => {
               if (stdbuffer.length > 0) {
                 this.emit("stdline", stdbuffer);
               }
@@ -23914,8 +23914,8 @@ var require_toolrunner = __commonJS({
                 this.emit("errline", errbuffer);
               }
               cp.removeAllListeners();
-              if (error) {
-                reject(error);
+              if (error2) {
+                reject(error2);
               } else {
                 resolve(exitCode);
               }
@@ -24010,14 +24010,14 @@ var require_toolrunner = __commonJS({
         this.emit("debug", message);
       }
       _setResult() {
-        let error;
+        let error2;
         if (this.processExited) {
           if (this.processError) {
-            error = new Error(`There was an error when attempting to execute the process '${this.toolPath}'. This may indicate the process failed to start. Error: ${this.processError}`);
+            error2 = new Error(`There was an error when attempting to execute the process '${this.toolPath}'. This may indicate the process failed to start. Error: ${this.processError}`);
           } else if (this.processExitCode !== 0 && !this.options.ignoreReturnCode) {
-            error = new Error(`The process '${this.toolPath}' failed with exit code ${this.processExitCode}`);
+            error2 = new Error(`The process '${this.toolPath}' failed with exit code ${this.processExitCode}`);
           } else if (this.processStderr && this.options.failOnStdErr) {
-            error = new Error(`The process '${this.toolPath}' failed because one or more lines were written to the STDERR stream`);
+            error2 = new Error(`The process '${this.toolPath}' failed because one or more lines were written to the STDERR stream`);
           }
         }
         if (this.timeout) {
@@ -24025,7 +24025,7 @@ var require_toolrunner = __commonJS({
           this.timeout = null;
         }
         this.done = true;
-        this.emit("done", error, this.processExitCode);
+        this.emit("done", error2, this.processExitCode);
       }
       static HandleTimeout(state) {
         if (state.done) {
@@ -27171,7 +27171,7 @@ var require_errors_types = __commonJS({
         }
         if ("code" in errors[0]) {
           const v1errors = errors;
-          return v1errors.some((error) => codes.includes(error.code));
+          return v1errors.some((error2) => codes.includes(error2.code));
         }
         const v2error = this.data;
         return codes.includes(v2error.type);
@@ -27540,16 +27540,16 @@ var require_request_handler_helper = __commonJS({
         return this.requestData.url.href.startsWith("https://api.twitter.com/oauth/");
       }
       /* Error helpers */
-      createRequestError(error) {
+      createRequestError(error2) {
         if (settings_1.TwitterApiV2Settings.debug) {
-          settings_1.TwitterApiV2Settings.logger.log("Request error:", error);
+          settings_1.TwitterApiV2Settings.logger.log("Request error:", error2);
         }
         return new types_1.ApiRequestError("Request failed.", {
           request: this.req,
-          error
+          error: error2
         });
       }
-      createPartialResponseError(error, abortClose) {
+      createPartialResponseError(error2, abortClose) {
         const res = this.res;
         let message = `Request failed with partial response with HTTP code ${res.statusCode}`;
         if (abortClose) {
@@ -27560,15 +27560,15 @@ var require_request_handler_helper = __commonJS({
         return new types_1.ApiPartialResponseError(message, {
           request: this.req,
           response: this.res,
-          responseError: error,
+          responseError: error2,
           rawContent: Buffer.concat(this.responseData).toString()
         });
       }
       formatV1Errors(errors) {
         return errors.map(({ code, message }) => `${message} (Twitter code ${code})`).join(", ");
       }
-      formatV2Error(error) {
-        return `${error.title}: ${error.detail} (see ${error.type})`;
+      formatV2Error(error2) {
+        return `${error2.title}: ${error2.detail} (see ${error2.type})`;
       }
       createResponseError({ res, data, rateLimit, code }) {
         var _a;
@@ -27712,8 +27712,8 @@ var require_request_handler_helper = __commonJS({
         dataStream.on("close", this.onResponseCloseHandler.bind(this, resolve, reject));
         if (this.requestData.requestEventDebugHandler) {
           this.requestData.requestEventDebugHandler("response", { res });
-          res.on("aborted", (error) => this.requestData.requestEventDebugHandler("response-aborted", { error }));
-          res.on("error", (error) => this.requestData.requestEventDebugHandler("response-error", { error }));
+          res.on("aborted", (error2) => this.requestData.requestEventDebugHandler("response-aborted", { error: error2 }));
+          res.on("error", (error2) => this.requestData.requestEventDebugHandler("response-error", { error: error2 }));
           res.on("close", () => this.requestData.requestEventDebugHandler("response-close", { data: this.responseData }));
           res.on("end", () => this.requestData.requestEventDebugHandler("response-end"));
         }
@@ -27810,7 +27810,7 @@ var require_request_handler_helper = __commonJS({
         req.on("abort", () => this.requestData.requestEventDebugHandler("abort"));
         req.on("socket", (socket) => {
           this.requestData.requestEventDebugHandler("socket", { socket });
-          socket.on("error", (error) => this.requestData.requestEventDebugHandler("socket-error", { socket, error }));
+          socket.on("error", (error2) => this.requestData.requestEventDebugHandler("socket-error", { socket, error: error2 }));
           socket.on("connect", () => this.requestData.requestEventDebugHandler("socket-connect", { socket }));
           socket.on("close", (withError) => this.requestData.requestEventDebugHandler("socket-close", { socket, withError }));
           socket.on("end", () => this.requestData.requestEventDebugHandler("socket-end", { socket }));
@@ -27960,8 +27960,8 @@ var require_TweetStreamParser = __commonJS({
                 this.emit(EStreamParserEvent.ParsedData, payload);
                 continue;
               }
-            } catch (error) {
-              this.emit(EStreamParserEvent.ParseError, error);
+            } catch (error2) {
+              this.emit(EStreamParserEvent.ParseError, error2);
             }
           }
           offset++;
@@ -28091,11 +28091,11 @@ var require_TweetStream = __commonJS({
             this.emit(types_1.ETwitterStreamEvent.Data, eventData);
           }
         });
-        this.parser.on(TweetStreamParser_1.EStreamParserEvent.ParseError, (error) => {
-          this.emit(types_1.ETwitterStreamEvent.TweetParseError, error);
+        this.parser.on(TweetStreamParser_1.EStreamParserEvent.ParseError, (error2) => {
+          this.emit(types_1.ETwitterStreamEvent.TweetParseError, error2);
           this.emit(types_1.ETwitterStreamEvent.Error, {
             type: types_1.ETwitterStreamEvent.TweetParseError,
-            error,
+            error: error2,
             message: "Failed to parse stream data."
           });
         });
@@ -28243,8 +28243,8 @@ var require_TweetStream = __commonJS({
           this.makeAutoReconnectRetry(retryOccurrence, e);
         }
       }
-      makeAutoReconnectRetry(retryOccurrence, error) {
-        const nextRetry = this.nextRetryTimeout(retryOccurrence + 1, error);
+      makeAutoReconnectRetry(retryOccurrence, error2) {
+        const nextRetry = this.nextRetryTimeout(retryOccurrence + 1, error2);
         this.retryTimeout = setTimeout(() => {
           this.onConnectionError(retryOccurrence + 1);
         }, nextRetry);
@@ -28294,31 +28294,31 @@ var require_helpers2 = __commonJS({
       return false;
     }
     exports2.hasRequestErrorPlugins = hasRequestErrorPlugins;
-    async function applyResponseHooks(requestParams, computedParams, requestOptions, error) {
+    async function applyResponseHooks(requestParams, computedParams, requestOptions, error2) {
       let override;
-      if (error instanceof types_1.ApiRequestError || error instanceof types_1.ApiPartialResponseError) {
+      if (error2 instanceof types_1.ApiRequestError || error2 instanceof types_1.ApiPartialResponseError) {
         override = await this.applyPluginMethod("onRequestError", {
           client: this,
           url: this.getUrlObjectFromUrlString(requestParams.url),
           params: requestParams,
           computedParams,
           requestOptions,
-          error
+          error: error2
         });
-      } else if (error instanceof types_1.ApiResponseError) {
+      } else if (error2 instanceof types_1.ApiResponseError) {
         override = await this.applyPluginMethod("onResponseError", {
           client: this,
           url: this.getUrlObjectFromUrlString(requestParams.url),
           params: requestParams,
           computedParams,
           requestOptions,
-          error
+          error: error2
         });
       }
       if (override && override instanceof types_1.TwitterApiPluginResponseOverride) {
         return override.value;
       }
-      return Promise.reject(error);
+      return Promise.reject(error2);
     }
     exports2.applyResponseHooks = applyResponseHooks;
   }
@@ -33373,13 +33373,13 @@ var require_client2 = __commonJS({
         return this;
       }
       /* Static helpers */
-      static getErrors(error) {
+      static getErrors(error2) {
         var _a;
-        if (typeof error !== "object")
+        if (typeof error2 !== "object")
           return [];
-        if (!("data" in error))
+        if (!("data" in error2))
           return [];
-        return (_a = error.data.errors) !== null && _a !== void 0 ? _a : [];
+        return (_a = error2.data.errors) !== null && _a !== void 0 ? _a : [];
       }
       /** Extract another image size than obtained in a `profile_image_url` or `profile_image_url_https` field of a user object. */
       static getProfileImageInSize(profileImageUrl, size) {
@@ -33507,20 +33507,20 @@ var schema = {
 var isPromise = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
 function attempt(func, fallback) {
   const argLen = arguments.length;
-  const handle = (error) => {
+  const handle = (error2) => {
     if (argLen === 1) {
-      if (error instanceof Error) {
-        return error;
+      if (error2 instanceof Error) {
+        return error2;
       }
-      throw error;
+      throw error2;
     }
-    return typeof fallback === "function" ? fallback(error instanceof Error ? error : null, error) : fallback;
+    return typeof fallback === "function" ? fallback(error2 instanceof Error ? error2 : null, error2) : fallback;
   };
   try {
     const result = func();
     return isPromise(result) ? result.then((_) => _, handle) : result;
-  } catch (error) {
-    return handle(error);
+  } catch (error2) {
+    return handle(error2);
   }
 }
 
@@ -33541,9 +33541,9 @@ var import_github = __toESM(require_github(), 1);
 var limitStr = (str, num) => str.length > num ? `${str.substring(0, num)}...` : str;
 
 // ../../node_modules/.pnpm/octoflare@0.23.4/node_modules/octoflare/dist/utils/errorLogging.js
-var errorLogging = async ({ octokit, repo, owner, error, info }) => {
+var errorLogging = async ({ octokit, repo, owner, error: error2, info: info5 }) => {
   try {
-    const errorTitle = `Octoflare Error: ${limitStr(error.message, 64)}`;
+    const errorTitle = `Octoflare Error: ${limitStr(error2.message, 64)}`;
     const { data: list } = await octokit.rest.issues.listForRepo({
       owner,
       repo,
@@ -33557,7 +33557,7 @@ var errorLogging = async ({ octokit, repo, owner, error, info }) => {
         owner,
         repo,
         issue_number: exists.number,
-        body: info ?? "+1"
+        body: info5 ?? "+1"
       });
       return;
     }
@@ -33565,19 +33565,19 @@ var errorLogging = async ({ octokit, repo, owner, error, info }) => {
       owner,
       repo,
       title: errorTitle,
-      body: `# ${error.name}
+      body: `# ${error2.name}
 ## Message  
 \`\`\`
-${error.message}
+${error2.message}
 \`\`\`
 
 ## Info  
 [Recent Deliveries](https://github.com/settings/apps/${repo}/advanced)  
-${info ?? "No info provided"}
+${info5 ?? "No info provided"}
 
 ## Stack Trace  
 \`\`\`
-${error.stack}
+${error2.stack}
 \`\`\`
 `,
       labels: ["octoflare-error"]
@@ -33836,7 +33836,7 @@ var getFile = async ({
     const buff = import_node_buffer.Buffer.from(data.content, data.encoding);
     return buff.toString();
   } catch (e) {
-    console.error(e);
+    core_exports.error(e instanceof Error ? e : new Error(JSON.stringify(e)));
     return null;
   }
 };
@@ -33924,13 +33924,13 @@ var findFile = async (filename) => {
 // src/ghosts/bump/overwriteAllVersion.ts
 var overwriteAllVersion = async (newVersion) => {
   const files = await findFile("package.json");
-  console.log("Detected package.json files:", files);
+  core_exports.info(`Detected package.json files: ${JSON.stringify(files)}`);
   await Promise.allSettled(
     files.map(async (file) => {
       const str = await (0, import_promises3.readFile)(file, "utf-8");
       const json = JSON.parse(str);
       if (!json.version) {
-        console.log("No version found in", file);
+        core_exports.info(`No version found in ${file}`);
         return;
       }
       const newJsonStr = JSON.stringify(
@@ -34092,7 +34092,7 @@ var updatePackageJson = (repository) => async (packageJsonPath) => {
   const json = JSON.parse(packageJsonStr);
   const packageJson = isValidPackageJson(json) ? json : null;
   if (!packageJson?.version) {
-    console.log(`[${packageJsonPath}]: No version found.`);
+    core_exports.info(`[${packageJsonPath}]: No version found.`);
     return false;
   }
   const { topics, owner } = repository;
@@ -34131,7 +34131,7 @@ var updatePackageJson = (repository) => async (packageJsonPath) => {
     2
   );
   if (oldJson === newJson) {
-    console.log(`[${packageJsonPath}]: No changes.`);
+    core_exports.info(`[${packageJsonPath}]: No changes.`);
     return false;
   }
   await (0, import_promises4.writeFile)(packageJsonPath, newJson + "\n");
@@ -34280,7 +34280,7 @@ var updateReadme = ({
 }) => async (readmePath) => {
   const readme = await (0, import_promises5.readFile)(readmePath, "utf-8");
   if (!readme) {
-    console.log(`[${readmePath}]: No readme found.`);
+    core_exports.info(`[${readmePath}]: No readme found.`);
     return false;
   }
   const dir = import_node_path.default.dirname(readmePath);
@@ -34304,7 +34304,7 @@ ${repository.license.spdx_id}
 `
   }) : readme;
   if (readme === newReadme) {
-    console.log(`[${readmePath}]: No update found.`);
+    core_exports.info(`[${readmePath}]: No update found.`);
     return false;
   }
   await (0, import_promises5.writeFile)(readmePath, newReadme);
@@ -34315,22 +34315,17 @@ ${repository.license.spdx_id}
 var import_promises6 = require("node:fs/promises");
 var import_node_path2 = __toESM(require("node:path"), 1);
 var listWorkflowFiles = async () => {
-  try {
-    const dirPath = ".github/workflows";
-    const dir = await (0, import_promises6.readdir)(dirPath, {
-      withFileTypes: true,
-      recursive: true
-    });
-    const result = dir.filter((dirent) => dirent.isFile()).map(async (file) => ({
-      name: file.name,
-      data: await (0, import_promises6.readFile)(import_node_path2.default.join(dirPath, file.name), "utf-8")
-    }));
-    const list = await Promise.all(result);
-    return list;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+  const dirPath = ".github/workflows";
+  const dir = await (0, import_promises6.readdir)(dirPath, {
+    withFileTypes: true,
+    recursive: true
+  });
+  const result = dir.filter((dirent) => dirent.isFile()).map(async (file) => ({
+    name: file.name,
+    data: await (0, import_promises6.readFile)(import_node_path2.default.join(dirPath, file.name), "utf-8")
+  }));
+  const list = await Promise.all(result);
+  return list;
 };
 
 // src/ghosts/docs/index.ts
@@ -34623,7 +34618,7 @@ var npmPublish = async (file) => {
   const str = await (0, import_promises8.readFile)(file, "utf-8");
   const package_json = JSON.parse(str);
   if (!isValidJson5(package_json)) {
-    console.log(`[${file}]: No version found.`);
+    core_exports.info(`[${file}]: No version found.`);
     return;
   }
   const version2 = package_json.version.trim();
@@ -34636,7 +34631,7 @@ var npmPublish = async (file) => {
     }
   );
   if (version2 === publishedVersion.stdout.trim()) {
-    console.log(`[${file}]: No update found.`);
+    core_exports.info(`[${file}]: No update found.`);
     return;
   }
   await import_exec4.default.exec("npm publish", void 0, {
