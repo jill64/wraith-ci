@@ -22,7 +22,7 @@ export const updateReadme =
 
     const packageJsonPath = path.join(dir, 'package.json')
     const packageJsonStr = await readFile(packageJsonPath, 'utf-8')
-    
+
     const json = JSON.parse(packageJsonStr)
     const packageJson = isValidPackageJson(json) ? json : null
 
