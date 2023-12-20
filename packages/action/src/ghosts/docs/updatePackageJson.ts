@@ -26,6 +26,11 @@ export const updatePackageJson =
       return false
     }
 
+    if (!packageJson?.name) {
+      core.info(`[${packageJsonPath}]: No name found.`)
+      return false
+    }
+
     const isRepoRoot =
       path.relative(process.cwd(), packageJsonPath) === 'package.json'
 
