@@ -34004,10 +34004,21 @@ var bump = async ({ payload, octokit }) => {
   };
 };
 
+// src/utils/findFile.ts
+var import_promises3 = require("node:fs/promises");
+var findFile = async (filename) => {
+  const all = await (0, import_promises3.readdir)("./", {
+    withFileTypes: true,
+    recursive: true
+  });
+  const files = all.filter((file) => file.isFile() && file.name === filename).map((file) => file.path);
+  return files;
+};
+
 // src/ghosts/deploy.ts
 var deploy = async () => {
-  const exists = await run("test -f wrangler.toml");
-  if (exists.exitCode !== 0) {
+  const files = await findFile("wrangler.toml");
+  if (files.length === 0) {
     return {
       status: "skipped",
       detail: "wrangler.toml not found"
@@ -34024,7 +34035,7 @@ var deploy = async () => {
 };
 
 // src/ghosts/docs/index.ts
-var import_promises4 = require("node:fs/promises");
+var import_promises5 = require("node:fs/promises");
 
 // src/ghosts/docs/utils/badge.ts
 var badge = (href) => ({ src, alt }) => (
@@ -34205,18 +34216,18 @@ var isValidPackageJson = (0, import_typescanner3.scanner)({
 });
 
 // src/ghosts/docs/utils/listWorkflowFiles.ts
-var import_promises3 = require("node:fs/promises");
+var import_promises4 = require("node:fs/promises");
 var import_node_path = __toESM(require("node:path"), 1);
 var listWorkflowFiles = async () => {
   try {
     const dirPath = ".github/workflows";
-    const dir = await (0, import_promises3.readdir)(dirPath, {
+    const dir = await (0, import_promises4.readdir)(dirPath, {
       withFileTypes: true,
       recursive: true
     });
     const result = dir.filter((dirent) => dirent.isFile()).map(async (file) => ({
       name: file.name,
-      data: await (0, import_promises3.readFile)(import_node_path.default.join(dirPath, file.name), "utf-8")
+      data: await (0, import_promises4.readFile)(import_node_path.default.join(dirPath, file.name), "utf-8")
     }));
     const list = await Promise.all(result);
     return list;
@@ -34242,7 +34253,7 @@ var docs = async ({ payload, octokit }) => {
   }
   const [workflowFiles, readme, packageJsonData] = await Promise.all([
     listWorkflowFiles(),
-    (0, import_promises4.readFile)("README.md", "utf-8"),
+    (0, import_promises5.readFile)("README.md", "utf-8"),
     getPackageJson()
   ]);
   const packageJson = isValidPackageJson(packageJsonData) ? packageJsonData : null;
@@ -34263,7 +34274,7 @@ ${repository.license.spdx_id}
 `
     }) : readme;
     if (readme !== newReadme) {
-      await (0, import_promises4.writeFile)("README.md", newReadme);
+      await (0, import_promises5.writeFile)("README.md", newReadme);
       await pushCommit("chore: synchronize README.md");
     }
   }
@@ -34272,7 +34283,7 @@ ${repository.license.spdx_id}
     repository
   });
   if (newPackageJson) {
-    await (0, import_promises4.writeFile)("package.json", newPackageJson);
+    await (0, import_promises5.writeFile)("package.json", newPackageJson);
     await pushCommit("chore: synchronize package.json");
   }
   return "success";
@@ -34318,7 +34329,7 @@ var format = async () => {
 };
 
 // src/ghosts/lint.ts
-var import_promises5 = require("fs/promises");
+var import_promises6 = require("fs/promises");
 var import_typescanner5 = __toESM(require_dist(), 1);
 var isValidJson3 = (0, import_typescanner5.scanner)({
   scripts: (0, import_typescanner5.scanner)({
@@ -34382,7 +34393,7 @@ var lint = async () => {
       ...Object.keys(omittedDeps).length ? { dependencies: omittedDeps } : {},
       ...Object.keys(omittedDevDeps).length ? { devDependencies: omittedDevDeps } : {}
     };
-    await (0, import_promises5.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
+    await (0, import_promises6.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
     await pushCommit("fix: omit unused dependencies");
     return {
       status: "failure",
