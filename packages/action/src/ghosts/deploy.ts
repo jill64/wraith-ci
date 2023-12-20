@@ -1,14 +1,28 @@
 import { Ghost } from '@/action/types/Ghost.js'
+import { scanner, string } from 'typescanner'
+import { getPackageJson } from '../utils/getPackageJson.js'
 import { run } from '../utils/run.js'
-import { findFile } from '../utils/findFile.js'
+
+const isValidJson = scanner({
+  scripts: scanner({
+    deploy: string
+  })
+})
 
 export const deploy: Ghost = async () => {
-  const files = await findFile('wrangler.toml')
+  const package_json = await getPackageJson()
 
-  if (files.length === 0) {
+  if (!package_json) {
     return {
       status: 'skipped',
-      detail: 'wrangler.toml not found'
+      detail: 'Not found package.json in repo'
+    }
+  }
+
+  if (!isValidJson(package_json)) {
+    return {
+      status: 'skipped',
+      detail: 'Deploy command not found in package.json'
     }
   }
 
