@@ -1,7 +1,6 @@
-import * as core from 'octoflare/action/core'
-import { attempt } from '@jill64/attempt'
 import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import * as core from 'octoflare/action/core'
 import { ActionRepository } from '../../types/ActionRepository.js'
 import { WorkflowFile } from './types/WorkflowFile.js'
 import { insertSection } from './utils/insertSection.js'
@@ -28,24 +27,31 @@ export const updateReadme =
     const dir = path.dirname(readmePath)
     const packageJsonPath = path.join(dir, 'package.json')
     const packageJsonStr = await readFile(packageJsonPath, 'utf-8')
-    const json = attempt(() => JSON.parse(packageJsonStr), null)
+    const json = JSON.parse(packageJsonStr)
     const packageJson = isValidPackageJson(json) ? json : null
+
+    const isRepoRoot = path.relative(process.cwd(), readmePath) === 'README.md'
 
     const headerSynced = syncHeader({
       workflowFiles,
       packageJson,
       readme: insertSection(readme),
-      repository
+      repository,
+      isRepoRoot
     })
 
-    const newReadme = repository.license?.spdx_id
+    const license = isRepoRoot
+      ? repository.license?.spdx_id
+      : packageJson?.license
+
+    const newReadme = license
       ? replaceSection({
           source: headerSynced,
           section: 'FOOTER',
           content: `
 ## License
 
-${repository.license.spdx_id}
+${license}
 `
         })
       : readme
