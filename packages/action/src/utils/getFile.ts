@@ -31,7 +31,7 @@ export const getFile = async ({
 
     return buff.toString()
   } catch (e) {
-    core.error(e instanceof Error ? e : new Error(JSON.stringify(e)))
+    core.error(e instanceof Error ? e : new Error(JSON.stringify(e, null, 2)))
     return null
   }
 }
