@@ -31,7 +31,6 @@ export const updatePackageJsonList = async ({
   const repoLevelConfig = {
     ...license,
     bugs: `${repository.html_url}/issues`,
-    homepage: `${repository.html_url}#readme`,
     author: {
       name: owner.login,
       email: owner.email ?? 'intents.turrets0h@icloud.com',
