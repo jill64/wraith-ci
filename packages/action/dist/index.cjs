@@ -33500,10 +33500,6 @@ var schema = {
   assign: {
     alias: "Reviewer Assign",
     trigger: "pull_request"
-  },
-  derive: {
-    alias: "Derive",
-    trigger: "push_main"
   }
 };
 
@@ -34025,11 +34021,6 @@ var deploy = async () => {
     status: "failure",
     detail: result.stderr
   };
-};
-
-// src/ghosts/derive.ts
-var derive = async () => {
-  return "skipped";
 };
 
 // src/ghosts/docs/index.ts
@@ -34623,8 +34614,7 @@ var apps = {
   docs,
   bump,
   merge,
-  assign,
-  derive
+  assign
 };
 
 // ../../node_modules/.pnpm/octoflare@0.23.4/node_modules/octoflare/dist/re-exports/actions/github.js

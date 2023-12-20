@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [build, deploy, docs, format, lint, merge, release, bump, assign, derive]
+        name: [build, deploy, docs, format, lint, merge, release, bump, assign]
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
