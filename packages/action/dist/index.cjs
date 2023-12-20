@@ -34083,6 +34083,7 @@ var updatePackageJson = (repository) => async (packageJsonPath) => {
   const json = JSON.parse(packageJsonStr);
   const packageJson = isValidPackageJson(json) ? json : null;
   if (!packageJson?.version) {
+    console.log(`[${packageJsonPath}]: No version found.`);
     return false;
   }
   const { topics, owner } = repository;
@@ -34121,6 +34122,7 @@ var updatePackageJson = (repository) => async (packageJsonPath) => {
     2
   );
   if (oldJson === newJson) {
+    console.log(`[${packageJsonPath}]: No changes.`);
     return false;
   }
   await (0, import_promises4.writeFile)(packageJsonPath, newJson + "\n");
@@ -34269,6 +34271,7 @@ var updateReadme = ({
 }) => async (readmePath) => {
   const readme = await (0, import_promises5.readFile)(readmePath, "utf-8");
   if (!readme) {
+    console.log(`[${readmePath}]: No readme found.`);
     return false;
   }
   const dir = import_node_path.default.dirname(readmePath);
@@ -34292,6 +34295,7 @@ ${repository.license.spdx_id}
 `
   }) : readme;
   if (readme === newReadme) {
+    console.log(`[${readmePath}]: No update found.`);
     return false;
   }
   await (0, import_promises5.writeFile)(readmePath, newReadme);
@@ -34610,10 +34614,8 @@ var npmPublish = async (file) => {
   const str = await (0, import_promises8.readFile)(file, "utf-8");
   const package_json = JSON.parse(str);
   if (!isValidJson5(package_json)) {
-    return {
-      status: "skipped",
-      detail: "No version found in package.json"
-    };
+    console.log(`[${file}]: No version found.`);
+    return;
   }
   const version2 = package_json.version.trim();
   const publishedVersion = await import_exec4.default.getExecOutput(
@@ -34625,10 +34627,8 @@ var npmPublish = async (file) => {
     }
   );
   if (version2 === publishedVersion.stdout.trim()) {
-    return {
-      status: "skipped",
-      detail: "No version changes"
-    };
+    console.log(`[${file}]: No update found.`);
+    return;
   }
   await import_exec4.default.exec("npm publish", void 0, {
     cwd
