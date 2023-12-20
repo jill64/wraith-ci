@@ -91,6 +91,13 @@ export const bump: Ghost = async ({ payload, octokit }) => {
   const baseJsonData = baseStr ? JSON.parse(baseStr) : null
   const baseJson = isPackageJson(baseJsonData) ? baseJsonData : null
 
+  if (!baseJson?.version) {
+    return {
+      status: 'skipped',
+      detail: 'No base version found.'
+    }
+  }
+
   const base_version = formatVersionStr(baseJson?.version)
   const head_version = formatVersionStr(headJson.version)
 
