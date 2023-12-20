@@ -12,15 +12,18 @@ export const release: Ghost = async ({ payload: { owner, repo }, octokit }) => {
     }
   }
 
-  await Promise.allSettled(
-    files.map(
-      publish({
-        octokit,
-        owner,
-        repo
-      })
-    )
+  const monorepo = files.length > 1
+
+  const result = files.map(
+    publish({
+      octokit,
+      monorepo,
+      owner,
+      repo
+    })
   )
+
+  await Promise.allSettled(result)
 
   return 'success'
 }
