@@ -34106,11 +34106,15 @@ var updatePackageJson = ({
     core_exports.info(`[${packageJsonPath}]: No name found.`);
     return false;
   }
-  const isRepoRoot = import_node_path2.default.relative(process.cwd(), packageJsonPath) === "package.json";
+  const relative = import_node_path2.default.relative(process.cwd(), packageJsonPath);
+  const relativeDir = import_node_path2.default.dirname(relative);
+  const isRepoRoot = relative === "package.json";
+  const homepage = `${repository.html_url}${relativeDir === "." ? "" : relativeDir}#readme`;
   const publishConfig = packageJson.name?.startsWith("@") ? { publishConfig: { access: "public" } } : {};
   const description = isRepoRoot ? { description: repository.description } : {};
   const keywords = isRepoRoot ? { keywords: repository.topics ?? [] } : {};
   const repoInfo = {
+    homepage,
     ...repoLevelConfig,
     ...description,
     ...publishConfig,
@@ -34150,7 +34154,6 @@ var updatePackageJsonList = async ({
   const repoLevelConfig = {
     ...license,
     bugs: `${repository.html_url}/issues`,
-    homepage: `${repository.html_url}#readme`,
     author: {
       name: owner.login,
       email: owner.email ?? "intents.turrets0h@icloud.com",
