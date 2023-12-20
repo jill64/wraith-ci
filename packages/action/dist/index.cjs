@@ -33915,7 +33915,9 @@ var findFile = async (filename) => {
     withFileTypes: true,
     recursive: true
   });
-  const files = all.filter((file) => file.isFile() && file.name === filename).map((file) => file.path);
+  const files = all.filter(
+    (file) => file.isFile() && !file.path.includes("node_modules/") && file.name === filename
+  ).map((file) => file.path);
   return files;
 };
 
@@ -33928,6 +33930,7 @@ var overwriteAllVersion = async (newVersion) => {
       const str = await (0, import_promises3.readFile)(file, "utf-8");
       const json = JSON.parse(str);
       if (!json.version) {
+        console.log("No version found in", file);
         return;
       }
       const newJsonStr = JSON.stringify(
