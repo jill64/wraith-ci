@@ -1,39 +1,41 @@
 import { Ghost } from '@/action/types/Ghost.js'
 
-export const derive: Ghost = async ({ octokit, payload }) => {
-  const { owner, repo } = payload
+export const derive: Ghost = async () => {
+  return 'skipped'
 
-  const { data: repository } = await octokit.rest.repos.get({
-    owner,
-    repo
-  })
+  // const { owner, repo } = payload
 
-  const { data: list } = await octokit.rest.pulls.list({
-    owner,
-    repo,
-    state: 'open',
-    base: repository.default_branch
-  })
+  // const { data: repository } = await octokit.rest.repos.get({
+  //   owner,
+  //   repo
+  // })
 
-  if (!list.length) {
-    return {
-      status: 'skipped',
-      detail: 'No open PRs targeting the default branch were found.'
-    }
-  }
+  // const { data: list } = await octokit.rest.pulls.list({
+  //   owner,
+  //   repo,
+  //   state: 'open',
+  //   base: repository.default_branch
+  // })
 
-  const result = list.map((pull) =>
-    octokit.rest.pulls.updateBranch({
-      owner,
-      repo,
-      pull_number: pull.number
-    })
-  )
+  // if (!list.length) {
+  //   return {
+  //     status: 'skipped',
+  //     detail: 'No open PRs targeting the default branch were found.'
+  //   }
+  // }
 
-  await Promise.allSettled(result)
+  // const result = list.map((pull) =>
+  //   octokit.rest.pulls.updateBranch({
+  //     owner,
+  //     repo,
+  //     pull_number: pull.number
+  //   })
+  // )
 
-  return {
-    status: 'success',
-    detail: `Updated ${result.length} PRs.`
-  }
+  // await Promise.allSettled(result)
+
+  // return {
+  //   status: 'success',
+  //   detail: `Updated ${result.length} PRs.`
+  // }
 }
