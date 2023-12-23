@@ -50,16 +50,6 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ matrix.name == 'deploy' && secrets.CLOUDFLARE_API_TOKEN }}
           NODE_AUTH_TOKEN: ${{ matrix.name == 'release' && secrets.NPM_TOKEN }}
 
-          X_EN_APP_KEY: ${{ matrix.name == 'release' && secrets.X_EN_API_KEY }}
-          X_EN_APP_SECRET: ${{ matrix.name == 'release' && secrets.X_EN_API_SECRET }}
-          X_EN_ACCESS_TOKEN: ${{ matrix.name == 'release' && secrets.X_EN_ACCESS_TOKEN }}
-          X_EN_ACCESS_SECRET: ${{ matrix.name == 'release' && secrets.X_EN_ACCESS_SECRET }}
-
-          X_JP_APP_KEY: ${{ matrix.name == 'release' && secrets.X_JP_API_KEY }}
-          X_JP_APP_SECRET: ${{ matrix.name == 'release' && secrets.X_JP_API_SECRET }}
-          X_JP_ACCESS_TOKEN: ${{ matrix.name == 'release' && secrets.X_JP_ACCESS_TOKEN }}
-          X_JP_ACCESS_SECRET: ${{ matrix.name == 'release' && secrets.X_JP_ACCESS_SECRET }}
-
   try-repair-lock:
     needs: wraith-ci
     if: failure()
