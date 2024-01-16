@@ -21,7 +21,7 @@
     "@jill64/unfurl": "2.0.3",
     "@playwright/test": "1.40.1",
     "eslint": "8.56.0",
-    "octoflare": "0.24.2",
+    "octoflare": "0.24.3",
     "prettier": "3.2.2",
     "typescanner": "0.5.3",
     "typescript": "5.3.3",
