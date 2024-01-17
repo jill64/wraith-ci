@@ -22,7 +22,7 @@
     "@playwright/test": "1.41.0",
     "eslint": "8.56.0",
     "octoflare": "0.24.3",
-    "prettier": "3.2.3",
+    "prettier": "3.2.4",
     "typescanner": "0.5.3",
     "typescript": "5.3.3",
     "vitest": "1.2.0"
