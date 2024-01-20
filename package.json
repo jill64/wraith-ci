@@ -19,7 +19,7 @@
     "@jill64/playwright-config": "2.2.2",
     "@jill64/prettier-config": "1.0.0",
     "@jill64/unfurl": "2.0.3",
-    "@playwright/test": "1.41.0",
+    "@playwright/test": "1.41.1",
     "eslint": "8.56.0",
     "octoflare": "0.24.5",
     "prettier": "3.2.4",
