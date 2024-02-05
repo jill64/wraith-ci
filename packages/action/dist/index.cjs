@@ -27293,7 +27293,12 @@ var updatePackageJsonList = async ({
   const result = await Promise.all(
     files.map(updatePackageJson({ repository, repoLevelConfig }))
   );
-  if (result.includes(true)) {
+  if (!result.includes(true)) {
+    return;
+  }
+  await run("npm run format");
+  const diff = await gitDiff();
+  if (diff) {
     await pushCommit("chore: synchronize package.json");
   }
 };
@@ -27472,7 +27477,12 @@ var updateReadmeList = async ({
       })
     )
   );
-  if (result.includes(true)) {
+  if (!result.includes(true)) {
+    return;
+  }
+  await run("npm run format");
+  const diff = await gitDiff();
+  if (diff) {
     await pushCommit("chore: synchronize README.md");
   }
 };
