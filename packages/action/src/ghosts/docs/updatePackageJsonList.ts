@@ -1,7 +1,9 @@
 import * as core from 'octoflare/action/core'
 import { ActionRepository } from '../../types/ActionRepository.js'
 import { findFile } from '../../utils/findFile.js'
+import { gitDiff } from '../../utils/gitDiff.js'
 import { pushCommit } from '../../utils/pushCommit.js'
+import { run } from '../../utils/run.js'
 import { updatePackageJson } from './updatePackageJson.js'
 
 export const updatePackageJsonList = async ({
@@ -49,7 +51,15 @@ export const updatePackageJsonList = async ({
     files.map(updatePackageJson({ repository, repoLevelConfig }))
   )
 
-  if (result.includes(true)) {
+  if (!result.includes(true)) {
+    return
+  }
+
+  await run('npm run format')
+
+  const diff = await gitDiff()
+
+  if (diff) {
     await pushCommit('chore: synchronize package.json')
   }
 }
