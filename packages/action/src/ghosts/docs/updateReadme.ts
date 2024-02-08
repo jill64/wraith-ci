@@ -46,7 +46,7 @@ export const updateReadme =
           content: `
 ## License
 
-${license}
+[${license}](LICENSE)
 `
         })
       : readme
