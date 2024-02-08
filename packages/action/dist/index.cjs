@@ -27462,7 +27462,7 @@ var updateReadme = ({
     content: `
 ## License
 
-${license}
+[${license}](LICENSE)
 `
   }) : readme;
   if (readme === newReadme) {
