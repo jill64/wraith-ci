@@ -8,6 +8,7 @@ import { checkCumulativeUpdate } from './checkCumulativeUpdate.js'
 import { determineSemType } from './determineSemType.js'
 import { formatVersionStr } from './formatVersionStr.js'
 import { overwriteAllVersion } from './overwriteAllVersion.js'
+import { run } from '../../utils/run.js'
 
 const isPackageJson = scanner({
   version: string
@@ -112,6 +113,7 @@ export const bump: Ghost = async ({ payload, octokit }) => {
   }
 
   await overwriteAllVersion(newVersion)
+  await run('npm run format')
   await pushCommit(`chore: bump to ${newVersion}`)
 
   if (cumulativeUpdate) {
