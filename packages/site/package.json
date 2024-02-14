@@ -17,7 +17,7 @@
     "@jill64/svelte-tailwind": "1.0.28",
     "@sveltejs/kit": "2.5.0",
     "svelte": "4.2.10",
-    "vite": "5.1.1",
+    "vite": "5.1.2",
     "@sveltejs/vite-plugin-svelte": "3.0.2"
   }
 }
