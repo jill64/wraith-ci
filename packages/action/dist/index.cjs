@@ -20285,9 +20285,9 @@ var require_dist_node8 = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.2.0_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js
+// ../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.3.0_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js
 var require_dist_node9 = __commonJS({
-  "../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.2.0_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports2, module2) {
+  "../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.3.0_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports2, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -20312,7 +20312,7 @@ var require_dist_node9 = __commonJS({
       restEndpointMethods: () => restEndpointMethods
     });
     module2.exports = __toCommonJS2(dist_src_exports);
-    var VERSION = "10.2.0";
+    var VERSION = "10.3.0";
     var Endpoints = {
       actions: {
         addCustomLabelsToSelfHostedRunnerForOrg: [
@@ -20437,6 +20437,9 @@ var require_dist_node9 = __commonJS({
           "GET /repos/{owner}/{repo}/actions/permissions/selected-actions"
         ],
         getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+        getCustomOidcSubClaimForRepo: [
+          "GET /repos/{owner}/{repo}/actions/oidc/customization/sub"
+        ],
         getEnvironmentPublicKey: [
           "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key"
         ],
@@ -20588,6 +20591,9 @@ var require_dist_node9 = __commonJS({
         ],
         setCustomLabelsForSelfHostedRunnerForRepo: [
           "PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"
+        ],
+        setCustomOidcSubClaimForRepo: [
+          "PUT /repos/{owner}/{repo}/actions/oidc/customization/sub"
         ],
         setGithubActionsDefaultWorkflowPermissionsOrganization: [
           "PUT /orgs/{org}/actions/permissions/workflow"
@@ -21248,6 +21254,14 @@ var require_dist_node9 = __commonJS({
           {
             deprecated: "octokit.rest.migrations.updateImport() is deprecated, see https://docs.github.com/rest/migrations/source-imports#update-an-import"
           }
+        ]
+      },
+      oidc: {
+        getOidcCustomSubTemplateForOrg: [
+          "GET /orgs/{org}/actions/oidc/customization/sub"
+        ],
+        updateOidcCustomSubTemplateForOrg: [
+          "PUT /orgs/{org}/actions/oidc/customization/sub"
         ]
       },
       orgs: {
