@@ -19258,7 +19258,7 @@ var require_dist_node2 = __commonJS({
       }
       return obj;
     }
-    function merge2(defaults, route, options) {
+    function merge(defaults, route, options) {
       if (typeof route === "string") {
         let [method, url] = route.split(" ");
         options = Object.assign(url ? { method, url } : { url: method }, options);
@@ -19506,15 +19506,15 @@ var require_dist_node2 = __commonJS({
       );
     }
     function endpointWithDefaults(defaults, route, options) {
-      return parse2(merge2(defaults, route, options));
+      return parse2(merge(defaults, route, options));
     }
     function withDefaults(oldDefaults, newDefaults) {
-      const DEFAULTS2 = merge2(oldDefaults, newDefaults);
+      const DEFAULTS2 = merge(oldDefaults, newDefaults);
       const endpoint2 = endpointWithDefaults.bind(null, DEFAULTS2);
       return Object.assign(endpoint2, {
         DEFAULTS: DEFAULTS2,
         defaults: withDefaults.bind(null, DEFAULTS2),
-        merge: merge2.bind(null, DEFAULTS2),
+        merge: merge.bind(null, DEFAULTS2),
         parse: parse2
       });
     }
@@ -26685,10 +26685,6 @@ var schema = {
     alias: "Lint",
     trigger: "push"
   },
-  merge: {
-    alias: "Auto Merge",
-    trigger: "pull_request"
-  },
   release: {
     alias: "Release",
     trigger: "push_main"
@@ -27732,134 +27728,6 @@ var lint = async () => {
   };
 };
 
-// src/ghosts/merge/enableAutoMerge.ts
-var enableAutoMerge = async ({
-  repo,
-  owner,
-  octokit,
-  pull_number
-}) => {
-  const {
-    repository: {
-      pullRequest: { id: pullRequestId }
-    }
-  } = await octokit.graphql(
-    /* GraphQL */
-    `
-    query Query {
-      repository(name: "${repo}", owner: "${owner}") {
-        pullRequest(number: ${pull_number}) {
-          id
-        }
-      }
-    }
-  `
-  );
-  try {
-    await octokit.graphql(
-      /* GraphQL */
-      `
-    mutation MyMutation {
-      enablePullRequestAutoMerge(input: { pullRequestId: "${pullRequestId}" }) {
-        clientMutationId
-      }
-    }
-  `
-    );
-  } catch {
-    await octokit.rest.pulls.merge({
-      repo,
-      owner,
-      pull_number
-    });
-  }
-};
-
-// src/ghosts/merge/isAllowedUsers.ts
-var defaultAllowUsers = ["dependabot[bot]", "renovate[bot]", "wraith-ci[bot]"];
-var isAllowUsers = async ({
-  name,
-  owner,
-  octokit,
-  ownerType
-}) => {
-  if (!name) {
-    throw new Error("name is undefined");
-  }
-  if (defaultAllowUsers.includes(name)) {
-    return true;
-  }
-  if (name === owner) {
-    return true;
-  }
-  if (ownerType !== "Organization") {
-    return false;
-  }
-  const {
-    data: { role }
-  } = await octokit.rest.orgs.getMembershipForUser({
-    org: owner,
-    username: name
-  });
-  return role === "admin";
-};
-
-// src/ghosts/merge/index.ts
-var merge = async ({ payload, octokit }) => {
-  const {
-    owner,
-    repo,
-    data: { pull_number }
-  } = payload;
-  if (!pull_number) {
-    return "skipped";
-  }
-  const [{ data: pull_request }, { data: repository }] = await Promise.all([
-    octokit.rest.pulls.get({
-      owner,
-      repo,
-      pull_number
-    }),
-    octokit.rest.repos.get({
-      owner,
-      repo
-    })
-  ]);
-  const allow = await isAllowUsers({
-    owner,
-    octokit,
-    name: pull_request.user.login,
-    ownerType: repository.owner.type
-  });
-  if (!allow) {
-    return {
-      status: "skipped",
-      detail: "This user is not allowed to merge"
-    };
-  }
-  const branch_protection = await attempt(
-    () => octokit.rest.repos.getBranchProtection({
-      owner,
-      repo,
-      branch: pull_request.base.ref
-    }),
-    null
-  );
-  if (!branch_protection?.data.required_status_checks?.contexts.length) {
-    return {
-      status: "skipped",
-      detail: "This repository does not have required status checks"
-    };
-  }
-  await enableAutoMerge({
-    repo,
-    owner,
-    octokit,
-    pull_number: pull_request.number
-  });
-  return "success";
-};
-
 // src/ghosts/release/index.ts
 var import_exec5 = __toESM(require_exec(), 1);
 
@@ -27938,7 +27806,6 @@ var apps = {
   release,
   docs,
   bump,
-  merge,
   assign
 };
 
