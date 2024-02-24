@@ -1,5 +1,6 @@
 name = "wraith-ci"
 main = "src/index.ts"
+account_id = "824d8f80ef73b60f8cc6bac2b679f599"
 compatibility_date = "2023-11-06"
 compatibility_flags = ["nodejs_compat"]
 
