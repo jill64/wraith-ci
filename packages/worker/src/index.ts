@@ -8,6 +8,8 @@ import { onPR } from './onPR.js'
 import { onPRCommentEdited } from './onPRCommentEdited.js'
 import { onPush } from './onPush.js'
 
+const allowedUsers = ['dependabot[bot]', 'renovate[bot]']
+
 export default octoflare<WraithPayload>(async ({ payload, installation }) => {
   if (!installation) {
     return new Response('Skip Event: No Installation', {
@@ -22,6 +24,56 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
     payload.action === 'edited' &&
     'comment' in payload &&
     'issue' in payload
+
+  // Auto Merge
+  if ('check_run' in payload && payload.action === 'completed') {
+    const { check_run, repository } = payload
+
+    const {
+      owner: { login: owner },
+      name: repo
+    } = repository
+
+    if (check_run.conclusion !== 'success') {
+      return new Response('Skip Event: Conclusion is not success', {
+        status: 200
+      })
+    }
+
+    const pull_number = check_run.check_suite.pull_requests[0]?.number
+
+    if (!pull_number) {
+      return new Response('Skip Event: No Pull Request', {
+        status: 200
+      })
+    }
+
+    const { data: pull_request } = await installation.kit.rest.pulls.get({
+      owner,
+      repo,
+      pull_number
+    })
+
+    if (!allowedUsers.includes(pull_request.user.login)) {
+      return new Response('Skip Event: Not Allowed User', {
+        status: 200
+      })
+    }
+
+    const { data: checks } = await installation.kit.rest.checks.listForRef({
+      owner,
+      repo,
+      ref: pull_request.head.ref
+    })
+
+    if (checks.check_runs.every((check) => check.conclusion === 'success')) {
+      await installation.kit.rest.pulls.merge({
+        owner,
+        repo,
+        pull_number: pull_request.number
+      })
+    }
+  }
 
   if (!(is_pull_request || is_push || is_pr_comment_edited)) {
     return new Response('Skip Event: No Trigger Event', {
