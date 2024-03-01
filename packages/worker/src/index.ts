@@ -33,12 +33,6 @@ export default octoflare<WraithPayload>(
         name: repo
       } = repository
 
-      if (check_run.conclusion !== 'success') {
-        return new Response('Skip Event: Conclusion is not success', {
-          status: 200
-        })
-      }
-
       const pull_number = check_run.check_suite.pull_requests[0]?.number
 
       if (!pull_number) {
@@ -69,7 +63,14 @@ export default octoflare<WraithPayload>(
         ref: pull_request.head.ref
       })
 
-      if (checks.check_runs.every((check) => check.conclusion === 'success')) {
+      if (
+        checks.check_runs.every(
+          (check) =>
+            check.conclusion === 'success' ||
+            check_run.conclusion === 'skipped' ||
+            check_run.conclusion === 'neutral'
+        )
+      ) {
         await installation.kit.rest.pulls.merge({
           owner,
           repo,
