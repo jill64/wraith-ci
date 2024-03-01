@@ -27767,11 +27767,7 @@ var enableAutoMerge = async ({
   `
     );
   } catch {
-    await octokit.rest.pulls.merge({
-      repo,
-      owner,
-      pull_number
-    });
+    throw new Error("Failed to enable auto merge");
   }
 };
 
