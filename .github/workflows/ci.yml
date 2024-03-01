@@ -5,5 +5,3 @@ on: push
 jobs:
   test:
     uses: jill64/.github/.github/workflows/run-vitest.yml@main
-  test-e2e:
-    uses: jill64/playwright-config/.github/workflows/run-playwright.yml@main
