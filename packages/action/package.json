@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "build": "npx tsx scripts/build.ts",
+    "build": "tsx scripts/build.ts",
     "lint": "eslint . && tsc",
     "format": "prettier -w ."
   },
