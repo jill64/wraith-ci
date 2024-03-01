@@ -1,12 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "cd packages/site && pnpm dev",
     "build": "pnpm build:sync && pnpm -r build",
-    "build:sync": "npx tsx scripts/sync.ts",
-    "preview": "cd packages/site && pnpm preview",
+    "build:sync": "tsx scripts/sync.ts",
     "deploy": "cd packages/worker && pnpm run deploy",
-    "sync": "cd packages/site && pnpm sync",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
     "test": "pnpm sync && vitest",
@@ -24,6 +21,7 @@
     "octoflare": "0.24.14",
     "prettier": "3.2.5",
     "typescanner": "0.5.3",
+    "tsx": "4.7.1",
     "typescript": "5.3.3",
     "vitest": "1.3.1"
   }
