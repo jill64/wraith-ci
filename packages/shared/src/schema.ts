@@ -22,6 +22,10 @@ export const schema = {
     alias: 'Lint',
     trigger: 'push'
   },
+  merge: {
+    alias: 'Auto Merge',
+    trigger: 'pull_request'
+  },
   release: {
     alias: 'Release',
     trigger: 'push_main'
