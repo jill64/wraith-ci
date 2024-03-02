@@ -20285,9 +20285,9 @@ var require_dist_node8 = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.4.0_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js
+// ../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.4.1_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js
 var require_dist_node9 = __commonJS({
-  "../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.4.0_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports2, module2) {
+  "../../node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.4.1_@octokit+core@5.1.0/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports2, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -20312,7 +20312,7 @@ var require_dist_node9 = __commonJS({
       restEndpointMethods: () => restEndpointMethods
     });
     module2.exports = __toCommonJS2(dist_src_exports);
-    var VERSION = "10.4.0";
+    var VERSION = "10.4.1";
     var Endpoints = {
       actions: {
         addCustomLabelsToSelfHostedRunnerForOrg: [
