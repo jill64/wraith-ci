@@ -4,6 +4,7 @@ import { GhostStatus } from '@/shared/types/GhostStatus.js'
 import { WraithPayload } from '@/shared/types/WraithPayload.js'
 import { octoflare } from 'octoflare'
 import { generateOutput } from './generateOutput.js'
+import { isOwnerTransferred } from './isOwnerTransfered.js'
 import { onPR } from './onPR.js'
 import { onPRCommentEdited } from './onPRCommentEdited.js'
 import { onPush } from './onPush.js'
@@ -34,7 +35,14 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
   const repo = repository.name
   const owner = repository.owner.login
 
-  if (repository.fork) {
+  if (
+    repository.fork &&
+    !(await isOwnerTransferred({
+      octokit: installation.kit,
+      owner,
+      repo
+    }))
+  ) {
     return new Response('Skip Event: Forked Repo', {
       status: 200
     })
