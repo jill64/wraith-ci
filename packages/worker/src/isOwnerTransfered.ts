@@ -3,7 +3,7 @@ import { Octokit } from 'octoflare/octokit'
 import { scanner, string } from 'typescanner'
 
 const isValid = scanner({
-  owner: scanner({
+  author: scanner({
     name: string
   })
 })
@@ -39,5 +39,5 @@ export const isOwnerTransferred = async ({
     return false
   }
 
-  return packageJson.owner.name === owner
+  return packageJson.author.name === owner
 }
