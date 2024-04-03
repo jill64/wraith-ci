@@ -35,19 +35,6 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
   const repo = repository.name
   const owner = repository.owner.login
 
-  if (
-    repository.fork &&
-    !(await isOwnerTransferred({
-      octokit: installation.kit,
-      owner,
-      repo
-    }))
-  ) {
-    return new Response('Skip Event: Forked Repo', {
-      status: 200
-    })
-  }
-
   const context = {
     repo,
     owner,
@@ -65,6 +52,20 @@ export default octoflare<WraithPayload>(async ({ payload, installation }) => {
   }
 
   const { ref, event, head_sha, pull_number, task } = processed
+
+  if (
+    repository.fork &&
+    !(await isOwnerTransferred({
+      octokit: installation.kit,
+      owner,
+      ref,
+      repo
+    }))
+  ) {
+    return new Response('Skip Event: Forked Repo', {
+      status: 200
+    })
+  }
 
   if (!(head_sha && Number(head_sha) !== 0)) {
     return new Response('Skip Event: No Head SHA', {

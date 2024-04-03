@@ -11,16 +11,19 @@ const isValid = scanner({
 export const isOwnerTransferred = async ({
   octokit,
   owner,
+  ref,
   repo
 }: {
   octokit: Octokit
   owner: string
+  ref: string
   repo: string
 }): Promise<boolean> => {
   const { data } = await octokit.rest.repos.getContent({
     owner,
     repo,
-    path: 'package.json'
+    path: 'package.json',
+    ref
   })
 
   if (Array.isArray(data)) {
