@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "lint": "eslint . && tsc",
+    "lint": "npx eslint . && tsc",
     "format": "prettier -w ."
   }
 }

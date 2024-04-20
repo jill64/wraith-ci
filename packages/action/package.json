@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "lint": "eslint . && tsc",
+    "lint": "npx eslint . && tsc",
     "format": "prettier -w ."
   },
   "devDependencies": {
