@@ -35,7 +35,7 @@ export const updatePackageJsonList = async ({
     bugs: `${repository.html_url}/issues`,
     author: {
       name: owner.login,
-      email: owner.email ?? 'intents.turrets0h@icloud.com',
+      email: owner.email ?? 'contact@jill64.dev',
       url: owner.html_url,
       image: owner.avatar_url
     },
