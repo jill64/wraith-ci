@@ -8,6 +8,6 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20240502.0",
-    "@types/node": "20.12.8"
+    "@types/node": "20.12.9"
   }
 }
