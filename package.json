@@ -20,7 +20,7 @@
     "octoflare": "0.24.34",
     "prettier": "3.2.5",
     "typescanner": "0.5.3",
-    "tsx": "4.9.1",
+    "tsx": "4.9.3",
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   }
