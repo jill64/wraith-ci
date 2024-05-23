@@ -26572,8 +26572,8 @@ var findFile = async (filename) => {
     recursive: true
   });
   const files = all.filter(
-    (file) => file.isFile() && !file.parentPath.includes("node_modules/") && file.name === filename
-  ).map((file) => import_node_path.default.join(file.parentPath, file.name));
+    (file) => file.isFile() && !file.path.includes("node_modules/") && file.name === filename
+  ).map((file) => import_node_path.default.join(file.path, file.name));
   core_exports.info(`[search "${filename}"]: ${JSON.stringify(files, null, 2)}}`);
   return files;
 };
