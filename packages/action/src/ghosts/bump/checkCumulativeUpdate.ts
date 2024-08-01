@@ -1,6 +1,6 @@
 import { ActionOctokit } from 'octoflare/action'
 
-const thresh = 20
+const thresh = 50
 
 export const checkCumulativeUpdate = async ({
   repo,
