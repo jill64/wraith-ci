@@ -26515,7 +26515,7 @@ var getFile = async ({
 };
 
 // src/ghosts/bump/checkCumulativeUpdate.ts
-var thresh = 20;
+var thresh = 50;
 var checkCumulativeUpdate = async ({
   repo,
   owner,
