@@ -542,9 +542,9 @@ var require_file_command = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/@actions+http-client@2.2.1/node_modules/@actions/http-client/lib/proxy.js
+// ../../node_modules/.pnpm/@actions+http-client@2.2.2/node_modules/@actions/http-client/lib/proxy.js
 var require_proxy = __commonJS({
-  "../../node_modules/.pnpm/@actions+http-client@2.2.1/node_modules/@actions/http-client/lib/proxy.js"(exports2) {
+  "../../node_modules/.pnpm/@actions+http-client@2.2.2/node_modules/@actions/http-client/lib/proxy.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.checkBypass = exports2.getProxyUrl = void 0;
@@ -562,10 +562,10 @@ var require_proxy = __commonJS({
       })();
       if (proxyVar) {
         try {
-          return new URL(proxyVar);
+          return new DecodedURL(proxyVar);
         } catch (_a) {
           if (!proxyVar.startsWith("http://") && !proxyVar.startsWith("https://"))
-            return new URL(`http://${proxyVar}`);
+            return new DecodedURL(`http://${proxyVar}`);
         }
       } else {
         return void 0;
@@ -608,6 +608,19 @@ var require_proxy = __commonJS({
       const hostLower = host.toLowerCase();
       return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
     }
+    var DecodedURL = class extends URL {
+      constructor(url, base) {
+        super(url, base);
+        this._decodedUsername = decodeURIComponent(super.username);
+        this._decodedPassword = decodeURIComponent(super.password);
+      }
+      get username() {
+        return this._decodedUsername;
+      }
+      get password() {
+        return this._decodedPassword;
+      }
+    };
   }
 });
 
@@ -17584,9 +17597,9 @@ var require_undici = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/@actions+http-client@2.2.1/node_modules/@actions/http-client/lib/index.js
+// ../../node_modules/.pnpm/@actions+http-client@2.2.2/node_modules/@actions/http-client/lib/index.js
 var require_lib = __commonJS({
-  "../../node_modules/.pnpm/@actions+http-client@2.2.1/node_modules/@actions/http-client/lib/index.js"(exports2) {
+  "../../node_modules/.pnpm/@actions+http-client@2.2.2/node_modules/@actions/http-client/lib/index.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -18203,9 +18216,9 @@ var require_lib = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/@actions+http-client@2.2.1/node_modules/@actions/http-client/lib/auth.js
+// ../../node_modules/.pnpm/@actions+http-client@2.2.2/node_modules/@actions/http-client/lib/auth.js
 var require_auth = __commonJS({
-  "../../node_modules/.pnpm/@actions+http-client@2.2.1/node_modules/@actions/http-client/lib/auth.js"(exports2) {
+  "../../node_modules/.pnpm/@actions+http-client@2.2.2/node_modules/@actions/http-client/lib/auth.js"(exports2) {
     "use strict";
     var __awaiter = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
