@@ -41,7 +41,7 @@ export const updatePackageJsonList = async ({
     },
     repository: {
       type: 'git',
-      url: repository.clone_url,
+      url: `git+${repository.clone_url}`,
       image: repoImage
     },
     prettier: '@jill64/prettier-config'
