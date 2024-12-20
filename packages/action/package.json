@@ -8,7 +8,7 @@
   "devDependencies": {
     "@actions/exec": "1.1.1",
     "ts-retry": "5.0.1",
-    "esbuild": "0.24.0",
+    "esbuild": "0.24.1",
     "@types/semver": "7.5.8",
     "semver": "7.6.3"
   }
