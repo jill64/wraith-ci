@@ -17,7 +17,7 @@
     "@jill64/prettier-config": "1.0.0",
     "@jill64/unfurl": "2.0.6",
     "@playwright/test": "1.49.1",
-    "octoflare": "0.26.1",
+    "octoflare": "0.26.2",
     "prettier": "3.4.2",
     "typescanner": "0.5.3",
     "tsx": "4.19.2",
