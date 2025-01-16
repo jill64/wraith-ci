@@ -26013,7 +26013,7 @@ var schema = {
   }
 };
 
-// ../../node_modules/.pnpm/@jill64+attempt@1.1.3/node_modules/@jill64/attempt/dist/index.js
+// ../../node_modules/.pnpm/@jill64+attempt@1.1.4/node_modules/@jill64/attempt/dist/index.js
 var isPromise = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
 function attempt(func, fallback) {
   const argLen = arguments.length;
