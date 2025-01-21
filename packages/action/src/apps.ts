@@ -3,7 +3,6 @@ import { Ghost } from '../types/Ghost.js'
 import { assign } from './ghosts/assign.js'
 import { build } from './ghosts/build.js'
 import { bump } from './ghosts/bump/index.js'
-import { deploy } from './ghosts/deploy.js'
 import { docs } from './ghosts/docs/index.js'
 import { format } from './ghosts/format.js'
 import { lint } from './ghosts/lint.js'
@@ -12,7 +11,6 @@ import { release } from './ghosts/release/index.js'
 
 export const apps = {
   build,
-  deploy,
   format,
   lint,
   release,
