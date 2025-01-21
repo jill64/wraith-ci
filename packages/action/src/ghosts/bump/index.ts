@@ -1,17 +1,18 @@
 import { Ghost } from '@/action/types/Ghost.js'
 import semver from 'semver'
-import { scanner, string } from 'typescanner'
+import { boolean, optional, scanner, string } from 'typescanner'
 import { getFile } from '../../utils/getFile.js'
 import { getPackageJson } from '../../utils/getPackageJson.js'
 import { pushCommit } from '../../utils/pushCommit.js'
+import { run } from '../../utils/run.js'
 import { checkCumulativeUpdate } from './checkCumulativeUpdate.js'
 import { determineSemType } from './determineSemType.js'
 import { formatVersionStr } from './formatVersionStr.js'
 import { overwriteAllVersion } from './overwriteAllVersion.js'
-import { run } from '../../utils/run.js'
 
 const isPackageJson = scanner({
-  version: string
+  version: string,
+  private: optional(boolean)
 })
 
 export const bump: Ghost = async ({ payload, octokit }) => {
@@ -41,6 +42,13 @@ export const bump: Ghost = async ({ payload, octokit }) => {
     return {
       status: 'skipped',
       detail: 'No version found.'
+    }
+  }
+
+  if (headJson?.private) {
+    return {
+      status: 'skipped',
+      detail: 'Private package.json found.'
     }
   }
 
