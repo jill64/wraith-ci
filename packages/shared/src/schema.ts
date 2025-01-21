@@ -5,10 +5,6 @@ export const schema = {
     alias: 'Build',
     trigger: 'push'
   },
-  deploy: {
-    alias: 'Deploy',
-    trigger: 'push_main'
-  },
   docs: {
     alias: 'Docs',
     trigger: 'push'
