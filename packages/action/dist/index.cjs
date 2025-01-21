@@ -24044,7 +24044,7 @@ var require_fields = __commonJS({
       };
     };
     exports2.array = array4;
-    var optional4 = function() {
+    var optional5 = function() {
       var conditions = [];
       for (var _i = 0; _i < arguments.length; _i++) {
         conditions[_i] = arguments[_i];
@@ -24053,7 +24053,7 @@ var require_fields = __commonJS({
         return typeGuard_1.isOptional.apply(void 0, __spreadArray([value], conditions, false));
       };
     };
-    exports2.optional = optional4;
+    exports2.optional = optional5;
     var list = function(array5) {
       return function(value) {
         return (0, typeGuard_1.isList)(value, array5);
@@ -26031,10 +26031,10 @@ function attempt(func, fallback) {
 }
 
 // ../../node_modules/.pnpm/@jill64+unfurl@2.0.7/node_modules/@jill64/unfurl/dist/unfurl.js
-var unfurl = async (data, ...optional4) => {
+var unfurl = async (data, ...optional5) => {
   const [result] = await Promise.all([
     Promise.all(Object.entries(data).map(async ([key, value]) => [key, await value])),
-    ...optional4.map(async (value) => await value)
+    ...optional5.map(async (value) => await value)
   ]);
   return Object.fromEntries(result);
 };
@@ -26456,7 +26456,8 @@ var overwriteAllVersion = async (newVersion) => {
 
 // src/ghosts/bump/index.ts
 var isPackageJson = (0, import_typescanner2.scanner)({
-  version: import_typescanner2.string
+  version: import_typescanner2.string,
+  private: (0, import_typescanner2.optional)(import_typescanner2.boolean)
 });
 var bump = async ({ payload, octokit }) => {
   const {
@@ -26481,6 +26482,12 @@ var bump = async ({ payload, octokit }) => {
     return {
       status: "skipped",
       detail: "No version found."
+    };
+  }
+  if (headJson?.private) {
+    return {
+      status: "skipped",
+      detail: "Private package.json found."
     };
   }
   const [
