@@ -14,6 +14,7 @@
   } from '@jill64/svelte-suite/i18n/app'
   import logo from './logo.png'
   import '../app.postcss'
+  import { applyGoogleTranslate } from '$shared/applyGoogleTranslate'
 
   let { children } = $props()
 
@@ -68,3 +69,33 @@
   <FlipButton />
 </header>
 {@render children()}
+
+<footer class="sticky top-full flex justify-center items-center p-2">
+  <small class="text-zinc-500 dark:text-zinc-400">
+    © {new Date().getFullYear()}
+    <a
+      href={i.translate({
+        en: applyGoogleTranslate('https://suwasystem.com', 'en'),
+        ja: 'https://suwasystem.com'
+      })}
+      class="hover:underline"
+    >
+      {i.translate({ en: 'SuwaSystem', ja: '諏訪システム' })}
+    </a>
+    ・
+    <a href="/terms/privacy" class="hover:underline">
+      {i.translate({ en: 'Privacy Policy', ja: 'プライバシーポリシー' })}
+    </a>
+    ・
+    <a href="/terms" class="hover:underline">
+      {i.translate({ en: 'Terms of Service', ja: '利用規約' })}
+    </a>
+    ・
+    <a href="/terms/commercial" class="hover:underline">
+      {i.translate({
+        en: 'Specific Commercial Transaction Law',
+        ja: '特定商取引法に基づく表記'
+      })}
+    </a>
+  </small>
+</footer>
