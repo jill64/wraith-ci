@@ -1,0 +1,19 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "npm run build && vite preview",
+    "check": "svelte-kit sync && npx svelte-check",
+    "lint": "npm run check && npx eslint .",
+    "format": "npx psvx",
+    "test": "vitest",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@jill64/playwright-config": "2.4.2",
+    "@jill64/svelte-suite": "2.1.0",
+    "@jill64/svelte-tailwind": "1.2.77",
+    "@playwright/test": "1.49.1"
+  }
+}
