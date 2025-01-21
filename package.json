@@ -21,9 +21,9 @@
     "svelte": "5.19.0",
     "typescript": "5.7.3",
     "vite": "6.0.10",
-    "vitest": "3.0.2",
     "kysely": "0.27.5",
     "kysely-d1": "0.3.0",
-    "kysely-d1-external": "1.0.2"
+    "kysely-d1-external": "1.0.2",
+    "vitest": "3.0.3"
   }
 }
