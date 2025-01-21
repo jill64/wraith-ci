@@ -21,9 +21,11 @@
     "svelte": "5.19.0",
     "typescript": "5.7.3",
     "vite": "6.0.10",
+    "vitest": "3.0.3",
     "kysely": "0.27.5",
-    "kysely-d1": "0.3.0",
-    "kysely-d1-external": "1.0.2",
-    "vitest": "3.0.3"
+    "kysely-solarsystem": "0.0.1",
+    "typescanner": "0.5.3",
+    "dayjs": "1.11.13",
+    "nanoid": "5.0.9"
   }
 }
