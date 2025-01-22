@@ -1,6 +1,6 @@
-import { GITHUB_APP_WEBHOOK_SECRET } from "$env/static/private"
-import { error } from "@sveltejs/kit"
-import { createHmac, timingSafeEqual } from "node:crypto"
+import { GITHUB_APP_WEBHOOK_SECRET } from '$env/static/private'
+import { error } from '@sveltejs/kit'
+import crypto from 'node:crypto'
 
 export const verifyGitHubRequest = async (request: Request) => {
   const { headers, method } = request
@@ -17,7 +17,8 @@ export const verifyGitHubRequest = async (request: Request) => {
 
   const body = await request.text()
 
-  const signature = createHmac('sha256', GITHUB_APP_WEBHOOK_SECRET)
+  const signature = crypto
+    .createHmac('sha256', GITHUB_APP_WEBHOOK_SECRET)
     .update(body)
     .digest('hex')
 
@@ -30,7 +31,7 @@ export const verifyGitHubRequest = async (request: Request) => {
   const signature_array = new TextEncoder().encode(`sha256=${signature}`)
   const header_sig_array = new TextEncoder().encode(headerSignature)
 
-  if (!timingSafeEqual(signature_array, header_sig_array)) {
+  if (!crypto.timingSafeEqual(signature_array, header_sig_array)) {
     error(403, 'Forbidden')
   }
 
