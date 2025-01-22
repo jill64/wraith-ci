@@ -12,7 +12,7 @@ async function encryptWithAes(
   plainText: string
 ): Promise<{ encryptedData: ArrayBuffer; iv: Uint8Array }> {
   // AES-CTR ではカウンタとして 96 ビット (12バイト) の IV を推奨
-  const iv = crypto.getRandomValues(new Uint8Array(12))
+  const iv = crypto.getRandomValues(new Uint8Array(16))
 
   // テキストを UTF-8 エンコード
   const encoder = new TextEncoder()
