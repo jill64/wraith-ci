@@ -1,10 +1,20 @@
+import { Octokit } from 'octokit'
 import { findFile } from '../../utils/findFile.js'
 import { getPackageJson } from '../../utils/getPackageJson.js'
 import { run } from '../../utils/run.js'
 import { isValidPackageJson } from '../docs/utils/isValidPackageJson.js'
 import { npmPublish } from './npmPublish.js'
+import { Payload } from '../../types/Payload.js'
 
-export const release = async () => {
+export const release = async ({
+  payload,
+  octokit
+}: {
+  payload: Payload
+  octokit: Octokit
+}) => {
+  const { owner, repo } = payload
+
   const files = await findFile('package.json')
 
   if (files.length === 0) {
@@ -34,7 +44,14 @@ export const release = async () => {
     }
   }
 
-  await run(`gh release create v${version} --generate-notes`)
+  await octokit.rest.repos.createRelease({
+    owner,
+    repo,
+    tag_name: `v${version}`,
+    draft: false,
+    prerelease: false,
+    generate_release_notes: true
+  })
 
   return 'success'
 }
