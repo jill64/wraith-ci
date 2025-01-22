@@ -1,4 +1,5 @@
 import { API_BRIDGE_PUBLIC_KEY } from "$env/static/private"
+import crypto from 'node:crypto'
 
 export const encrypt = async (plainText: string) => {
   const plainBuffer = new TextEncoder().encode(plainText)

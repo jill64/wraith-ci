@@ -127,7 +127,7 @@ export const POST = async ({ request }) => {
     status: 'in_progress'
   })
 
-  await Promise.allSettled(
+  await Promise.all(
     triggered_ghosts.map(async (ghost) => {
       const body = await encrypt(
         JSON.stringify({
