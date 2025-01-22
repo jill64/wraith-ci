@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { ActionRepository } from '../../types/ActionRepository.js'
+import { Octokit } from 'octokit'
 import { WorkflowFile } from './types/WorkflowFile.js'
 import { insertSection } from './utils/insertSection.js'
 import { isValidPackageJson } from './utils/isValidPackageJson.js'
@@ -12,7 +12,7 @@ export const updateReadme =
     repository,
     workflowFiles
   }: {
-    repository: ActionRepository
+    repository: Awaited<ReturnType<Octokit['rest']['repos']['get']>>['data']
     workflowFiles: WorkflowFile[]
   }) =>
   async (readmePath: string): Promise<boolean> => {

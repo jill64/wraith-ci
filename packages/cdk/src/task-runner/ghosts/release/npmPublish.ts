@@ -9,7 +9,7 @@ const isValidJson = scanner({
   keywords: optional(array(string))
 })
 
-export const npmPublish = async (file: string) => {
+export const npmPublish = async (file: string, repo: string) => {
   const cwd = path.dirname(file)
 
   const str = await readFile(file, 'utf-8')
@@ -22,14 +22,14 @@ export const npmPublish = async (file: string) => {
 
   const version = package_json.version.trim()
 
-  const publishedVersion = await run('npm view . version', { cwd })
+  const publishedVersion = await run('npm view . version', repo, { cwd })
 
   if (version === publishedVersion.stdout.trim()) {
     console.info(`[${file}]: No update found.`)
     return false
   }
 
-  await run('npm publish')
+  await run('npm publish', repo)
 
   return true
 }

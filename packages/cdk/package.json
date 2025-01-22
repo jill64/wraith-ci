@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@jill64/types-lambda": "1.2.3",
+    "@jill64/eslint-config-ts": "2.0.3",
     "@aws-sdk/client-ses": "3.731.1",
     "aws-cdk-lib": "2.176.0",
     "constructs": "10.4.2",

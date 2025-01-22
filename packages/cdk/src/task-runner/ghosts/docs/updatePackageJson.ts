@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { ActionRepository } from '../../types/ActionRepository.js'
+import { Octokit } from 'octokit'
 import { isValidPackageJson } from './utils/isValidPackageJson.js'
 
 type Dict = {
@@ -12,7 +12,7 @@ export const updatePackageJson =
     repository,
     repoLevelConfig
   }: {
-    repository: ActionRepository
+    repository: Awaited<ReturnType<Octokit['rest']['repos']['get']>>['data']
     repoLevelConfig: Dict
   }) =>
   async (packageJsonPath: string): Promise<boolean> => {

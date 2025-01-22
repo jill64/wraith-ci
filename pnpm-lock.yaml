@@ -86,6 +86,9 @@ importers:
       '@aws-sdk/client-ses':
         specifier: 3.731.1
         version: 3.731.1
+      '@jill64/eslint-config-ts':
+        specifier: 2.0.3
+        version: 2.0.3(jiti@1.21.7)(typescript@5.7.3)
       '@jill64/types-lambda':
         specifier: 1.2.3
         version: 1.2.3(typescript@5.7.3)
@@ -806,6 +809,9 @@ packages:
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0
 
+  '@jill64/eslint-config-ts@2.0.3':
+    resolution: {integrity: sha512-RoJtHbaGlzgAY+TxrQ9cg+IiKglocLccvtvHA0fUb6n60aHUgf8edjN/LN1UY+Wzs/54ngOGqlPPAQXLFvIJqQ==}
+
   '@jill64/playwright-config@2.4.2':
     resolution: {integrity: sha512-ECt9e+Bqc5m42a6vZ2F8/iCW9tT48+nUHrte/8Ie08UApBirxF11vpWmykv/IHYhKorWcwS8cr9VciunlBkIHQ==}
     peerDependencies:
@@ -1407,6 +1413,9 @@ packages:
   '@types/cookie@1.0.0':
     resolution: {integrity: sha512-mGFXbkDQJ6kAXByHS7QAggRXgols0mAdP4MuXgloGY1tXokvzaFFM4SMqWvf7AH0oafI7zlFJwoGWzmhDqTZ9w==}
     deprecated: This is a stub types definition. cookie provides its own type definitions, so you do not need this installed.
+
+  '@types/eslint-config-prettier@6.11.3':
+    resolution: {integrity: sha512-3wXCiM8croUnhg9LdtZUJQwNcQYGWxxdOWDjPe1ykCqJFPVpzAKfs/2dgSoCtAvdPeaponcWPI7mPcGGp9dkKQ==}
 
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
@@ -3572,6 +3581,20 @@ snapshots:
       - ts-node
       - typescript
 
+  '@jill64/eslint-config-ts@2.0.3(jiti@1.21.7)(typescript@5.7.3)':
+    dependencies:
+      '@eslint/js': 9.18.0
+      '@types/eslint': 9.6.1
+      '@types/eslint-config-prettier': 6.11.3
+      '@typescript-eslint/eslint-plugin': 8.19.0(@typescript-eslint/parser@8.19.0(eslint@9.18.0(jiti@1.21.7))(typescript@5.7.3))(eslint@9.18.0(jiti@1.21.7))(typescript@5.7.3)
+      '@typescript-eslint/parser': 8.19.0(eslint@9.18.0(jiti@1.21.7))(typescript@5.7.3)
+      eslint: 9.18.0(jiti@1.21.7)
+      eslint-config-prettier: 10.0.1(eslint@9.18.0(jiti@1.21.7))
+    transitivePeerDependencies:
+      - jiti
+      - supports-color
+      - typescript
+
   '@jill64/playwright-config@2.4.2(@playwright/test@1.49.1)':
     dependencies:
       '@playwright/test': 1.49.1
@@ -4364,6 +4387,8 @@ snapshots:
   '@types/cookie@1.0.0':
     dependencies:
       cookie: 1.0.2
+
+  '@types/eslint-config-prettier@6.11.3': {}
 
   '@types/eslint@9.6.1':
     dependencies:

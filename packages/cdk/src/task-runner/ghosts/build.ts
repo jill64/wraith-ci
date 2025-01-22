@@ -15,7 +15,7 @@ const isValidJson = scanner({
 })
 
 export const build = async (payload: Payload, octokit: Octokit) => {
-  await gitClone(payload.url, payload.ref)
+  await gitClone(payload.url, payload.ref, payload.repo)
 
   const package_json = await getPackageJson()
 
@@ -33,7 +33,7 @@ export const build = async (payload: Payload, octokit: Octokit) => {
     } as const
   }
 
-  const result = await attempt(() => run('npm run build'))
+  const result = await attempt(() => run('npm run build', payload.repo))
 
   if (result instanceof Error) {
     return {
@@ -42,13 +42,13 @@ export const build = async (payload: Payload, octokit: Octokit) => {
     } as const
   }
 
-  const diff = await attempt(gitDiff)
+  const diff = await attempt(() => gitDiff(payload.repo))
 
   if (!(diff instanceof Error)) {
     return 'success' as const
   }
 
-  await pushCommit('chore: regenerate artifact')
+  await pushCommit('chore: regenerate artifact', payload.repo)
 
   return {
     status: 'failure',

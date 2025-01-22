@@ -1,10 +1,9 @@
 import { Octokit } from 'octokit'
+import { Payload } from '../../types/Payload.js'
 import { findFile } from '../../utils/findFile.js'
 import { getPackageJson } from '../../utils/getPackageJson.js'
-import { run } from '../../utils/run.js'
 import { isValidPackageJson } from '../docs/utils/isValidPackageJson.js'
 import { npmPublish } from './npmPublish.js'
-import { Payload } from '../../types/Payload.js'
 
 export const release = async ({
   payload,
@@ -24,7 +23,7 @@ export const release = async ({
     } as const
   }
 
-  const result = await Promise.allSettled(files.map(npmPublish))
+  const result = await Promise.allSettled(files.map((file) => npmPublish(file, repo)))
 
   if (!result.some((r) => r.status === 'fulfilled' && r.value)) {
     return {

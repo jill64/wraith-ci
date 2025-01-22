@@ -124,8 +124,8 @@ export const bump = async ({
   }
 
   await overwriteAllVersion(newVersion)
-  await run('npm run format')
-  await pushCommit(`chore: bump to ${newVersion}`)
+  await run('npm run format', repo)
+  await pushCommit(`chore: bump to ${newVersion}`, repo)
 
   if (cumulativeUpdate) {
     await octokit.rest.issues.createComment({

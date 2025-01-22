@@ -14,7 +14,7 @@ const isValidJson = scanner({
 })
 
 export const format = async (payload: Payload) => {
-  await gitClone(payload.url, payload.ref)
+  await gitClone(payload.url, payload.ref, payload.repo)
 
   const package_json = await getPackageJson()
 
@@ -32,7 +32,7 @@ export const format = async (payload: Payload) => {
     } as const
   }
 
-  const formatResult = await attempt(() => run('npm run format'))
+  const formatResult = await attempt(() => run('npm run format', payload.repo))
 
   if (formatResult instanceof Error) {
     return {
@@ -41,13 +41,13 @@ export const format = async (payload: Payload) => {
     } as const
   }
 
-  const diff = await attempt(gitDiff)
+  const diff = await attempt(() => gitDiff(payload.repo))
 
   if (!(diff instanceof Error)) {
     return 'success' as const
   }
 
-  await pushCommit('chore: format')
+  await pushCommit('chore: format', payload.repo)
 
   return {
     status: 'failure',

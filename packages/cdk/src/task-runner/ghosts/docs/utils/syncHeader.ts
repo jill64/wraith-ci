@@ -1,4 +1,4 @@
-import { ActionRepository } from '../../../types/ActionRepository.js'
+import { Octokit } from 'octokit'
 import { PackageJson } from '../types/PackageJson.js'
 import { WorkflowFile } from '../types/WorkflowFile.js'
 import { badge } from './badge.js'
@@ -14,7 +14,7 @@ export const syncHeader = ({
   workflowFiles: WorkflowFile[]
   packageJson: PackageJson | undefined | null
   readme: string
-  repository: ActionRepository
+  repository: Awaited<ReturnType<Octokit['rest']['repos']['get']>>['data']
 }) => {
   const escapedWebsiteUrl = repository.homepage
     ? encodeURIComponent(repository.homepage)

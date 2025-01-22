@@ -1,5 +1,5 @@
 import { attempt } from '@jill64/attempt'
-import { ActionRepository } from '../../types/ActionRepository.js'
+import { Octokit } from 'octokit'
 import { findFile } from '../../utils/findFile.js'
 import { gitDiff } from '../../utils/gitDiff.js'
 import { pushCommit } from '../../utils/pushCommit.js'
@@ -9,7 +9,7 @@ import { updatePackageJson } from './updatePackageJson.js'
 export const updatePackageJsonList = async ({
   repository
 }: {
-  repository: ActionRepository
+  repository: Awaited<ReturnType<Octokit['rest']['repos']['get']>>['data']
 }) => {
   const { owner } = repository
 
@@ -54,11 +54,11 @@ export const updatePackageJsonList = async ({
     return
   }
 
-  await run('npm run format')
+  await run('npm run format', repository.name)
 
-  const diff = await attempt(gitDiff)
+  const diff = await attempt(() => gitDiff(repository.name))
 
   if (diff instanceof Error) {
-    await pushCommit('chore: synchronize package.json')
+    await pushCommit('chore: synchronize package.json', repository.name)
   }
 }

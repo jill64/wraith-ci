@@ -14,7 +14,7 @@ const isValidJson = scanner({
 })
 
 export const lint = async (payload: Payload) => {
-  await gitClone(payload.url, payload.ref)
+  await gitClone(payload.url, payload.ref, payload.repo)
 
   const package_json = await getPackageJson()
 
@@ -32,7 +32,7 @@ export const lint = async (payload: Payload) => {
     } as const
   }
 
-  const lintResult = await attempt(() => run('npm run lint'))
+  const lintResult = await attempt(() => run('npm run lint', payload.repo))
 
   if (!(lintResult instanceof Error)) {
     return 'success' as const

@@ -14,6 +14,7 @@ export const updateOutput = ({
     title: string | null
     summary: string | null
   }
+  job_url?: string | null
 }) => {
   const alias = schema[ghost_name].alias
   const ghost_status = typeof result === 'string' ? { status: result } : result
