@@ -15,9 +15,9 @@ class CDKStack extends Stack {
 
     new DockerImageFunction(this, 'TaskRunner', {
       code: DockerImageCode.fromImageAsset('dist/task-runner', {
-        platform: Platform.LINUX_AMD64
+        platform: Platform.LINUX_ARM64
       }),
-      architecture: aws_lambda.Architecture.X86_64,
+      architecture: aws_lambda.Architecture.ARM_64,
       timeout: Duration.minutes(15),
       memorySize: 512
     }).addFunctionUrl({
