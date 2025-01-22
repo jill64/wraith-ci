@@ -1,4 +1,3 @@
-import { text } from '@sveltejs/kit'
 import { env } from 'node:process'
 
 export const decrypt = async (encrypted_text: string) => {
@@ -25,5 +24,5 @@ export const decrypt = async (encrypted_text: string) => {
 
   const decrypted_text = new TextDecoder().decode(decrypted_buffer)
 
-  return text(decrypted_text)
+  return decrypted_text
 }
