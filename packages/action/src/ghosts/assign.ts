@@ -1,4 +1,4 @@
-import { Ghost } from '@/action/types/Ghost.js'
+import { Ghost } from '../../types/Ghost.js'
 
 export const assign: Ghost = async ({ payload, octokit }) => {
   const {

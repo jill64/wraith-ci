@@ -12,6 +12,10 @@
   },
   "devDependencies": {
     "@jill64/svelte-suite": "2.1.0",
-    "cf-auth0": "0.5.0"
+    "cf-auth0": "0.5.0",
+    "@jill64/svelte-observer": "0.0.1",
+    "svelte-hydrated": "2.0.0",
+    "svelte-loading-spinners": "0.3.6",
+    "svelte-page-tab": "2.0.4"
   }
 }

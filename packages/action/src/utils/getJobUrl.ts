@@ -1,4 +1,4 @@
-import { GhostName } from '@/shared/types/GhostName.js'
+import { GhostName } from '$shared/ghost/types/GhostName.js'
 import { ActionOctokit } from 'octoflare/action'
 import * as core from 'octoflare/action/core'
 import * as github from 'octoflare/action/github'

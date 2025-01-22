@@ -1,4 +1,4 @@
-import { Ghost } from '@/action/types/Ghost.js'
+import { Ghost } from '../../../types/Ghost.js'
 import exec from '@actions/exec'
 import { findFile } from '../../utils/findFile.js'
 import { getPackageJson } from '../../utils/getPackageJson.js'
