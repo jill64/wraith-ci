@@ -1,4 +1,4 @@
-import { env } from 'node:process'
+import process from 'node:process'
 import crypto from 'node:crypto'
 
 export const decrypt = async (encrypted_text: string) => {
@@ -7,7 +7,7 @@ export const decrypt = async (encrypted_text: string) => {
 
   const privateKey = await crypto.subtle.importKey(
     'jwk',
-    JSON.parse(env.API_BRIDGE_PRIVATE_KEY!),
+    JSON.parse(process.env.API_BRIDGE_PRIVATE_KEY!),
     {
       name: 'RSA-OAEP',
       hash: { name: 'SHA-256' }
