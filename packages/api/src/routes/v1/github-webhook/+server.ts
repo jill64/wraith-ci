@@ -106,6 +106,8 @@ export const POST = async ({ request }) => {
     ])
   )
 
+  console.log({ triggered_ghosts, wraith_status })
+
   const runWorkflow = async () => {
     const {
       data: { id: check_run_id }
@@ -130,9 +132,18 @@ export const POST = async ({ request }) => {
           })
         )
 
-        await fetch(TASK_RUNNER_URL, {
+        const res = await fetch(TASK_RUNNER_URL, {
           method: 'POST',
           body
+        })
+
+        const res_txt = await res.text()
+
+        console.log({
+          res_txt,
+          res_ok: res.ok,
+          status: res.status,
+          statusText: res.statusText
         })
       })
     )
