@@ -1,5 +1,6 @@
 import { i } from '$lib/i18n'
 import { authHandle } from '$lib/server/auth/authHandle'
+import { csrfHandle } from '$lib/server/auth/csrfHandle'
 import { dbHandle } from '$lib/server/db/dbHandle'
 import { init } from '@jill64/sentry-sveltekit-cloudflare/server'
 import { ogpAttach, onRender } from '@jill64/svelte-suite'
@@ -10,7 +11,7 @@ const { onHandle, onError } = init(
 )
 
 export const handle = onHandle(
-  sequence(i.attach, onRender(), ogpAttach, authHandle, dbHandle)
+  sequence(csrfHandle, i.attach, onRender(), ogpAttach, authHandle, dbHandle)
 )
 
 export const handleError = onError()
