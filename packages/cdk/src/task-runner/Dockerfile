@@ -1,8 +1,8 @@
-FROM public.ecr.aws/lambda/nodejs:latest@sha256:9242d48c5a9fb0310ef7c0909d20ec3d0c0ede294758a0ae847a0cca7516e48a
+FROM public.ecr.aws/lambda/nodejs:latest
 
-RUN yum update -y && \
-  yum install -y git && \
-  yum clean all
+RUN apt-get update && \
+  apt-get install -y git && \
+  apt-get clean
 
 COPY server.js ./
 
