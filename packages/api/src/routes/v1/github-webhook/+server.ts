@@ -112,10 +112,6 @@ export const POST = async ({ request }) => {
     ])
   )
 
-  console.log({ triggered_ghosts, wraith_status })
-
-  await task()
-
   const {
     data: { id: check_run_id }
   } = await octokit.rest.checks.create({
@@ -127,8 +123,9 @@ export const POST = async ({ request }) => {
     status: 'in_progress'
   })
 
-  await Promise.all(
-    triggered_ghosts.map(async (ghost) => {
+  await Promise.all([
+    task(),
+    ...triggered_ghosts.map(async (ghost) => {
       const body = await encrypt(
         JSON.stringify({
           ghost,
@@ -147,7 +144,7 @@ export const POST = async ({ request }) => {
       // wait 1000ms
       await new Promise((resolve) => setTimeout(resolve, 1000))
     })
-  )
+  ])
 
   return text('Wraith CI Workflow Bridged', {
     status: 202

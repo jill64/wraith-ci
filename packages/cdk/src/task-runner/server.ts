@@ -4,19 +4,9 @@ import { decrypt } from './decrypt.js'
 export const handler: LambdaHandler = async (
   event
 ): Promise<LambdaResponsePayload> => {
-  console.log('Starting task runner...')
+  const { body } = event
 
-  try {
-    const { body } = event
-
-    console.log('Decrypting...')
-
-    const text = await decrypt(body)
-
-    console.log({ text })
-  } catch (e) {
-    console.error(e)
-  }
+  await decrypt(body)
 
   return {
     statusCode: 200,
