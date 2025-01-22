@@ -143,6 +143,9 @@ export const POST = async ({ request }) => {
         method: 'POST',
         body
       })
+
+      // wait 1000ms
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     })
   )
 
