@@ -6,9 +6,7 @@
     "preview": "npm run build && vite preview",
     "check": "svelte-kit sync && npx svelte-check",
     "lint": "npm run check && npx eslint .",
-    "format": "npx psvx",
-    "test": "svelte-kit sync && vitest",
-    "test:e2e": "playwright test"
+    "format": "npx psvx"
   },
   "devDependencies": {
     "@jill64/svelte-suite": "2.1.0",
