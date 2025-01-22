@@ -12,7 +12,7 @@ export const encrypt = async (plainText: string) => {
       hash: { name: 'SHA-256' }
     },
     true,
-    ['decrypt']
+    ['encrypt']
   )
 
   const encryptedBuffer = await crypto.subtle.encrypt(
