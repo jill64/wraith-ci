@@ -23,7 +23,9 @@ export const release = async ({
     } as const
   }
 
-  const result = await Promise.allSettled(files.map((file) => npmPublish(file, repo)))
+  const result = await Promise.allSettled(
+    files.map((file) => npmPublish(file, repo))
+  )
 
   if (!result.some((r) => r.status === 'fulfilled' && r.value)) {
     return {
