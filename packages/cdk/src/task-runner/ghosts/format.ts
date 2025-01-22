@@ -22,14 +22,14 @@ export const format = async (payload: Payload) => {
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
-    }
+    } as const
   }
 
   if (!isValidJson(package_json)) {
     return {
       status: 'skipped',
       detail: 'Format command not found in package.json'
-    }
+    } as const
   }
 
   const formatResult = await attempt(() => run('npm run format'))
@@ -38,13 +38,13 @@ export const format = async (payload: Payload) => {
     return {
       status: 'failure',
       detail: formatResult.message
-    }
+    } as const
   }
 
   const diff = await attempt(gitDiff)
 
   if (!(diff instanceof Error)) {
-    return 'success'
+    return 'success' as const
   }
 
   await pushCommit('chore: format')
@@ -52,5 +52,5 @@ export const format = async (payload: Payload) => {
   return {
     status: 'failure',
     detail: 'Formatted code has been pushed.'
-  }
+  } as const
 }

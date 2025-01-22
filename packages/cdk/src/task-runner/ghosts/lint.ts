@@ -22,24 +22,24 @@ export const lint = async (payload: Payload) => {
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
-    }
+    } as const
   }
 
   if (!isValidJson(package_json)) {
     return {
       status: 'skipped',
       detail: 'Lint command not found in package.json'
-    }
+    } as const
   }
 
   const lintResult = await attempt(() => run('npm run lint'))
 
   if (!(lintResult instanceof Error)) {
-    return 'success'
+    return 'success' as const
   }
 
   return {
     status: 'failure',
     detail: lintResult.message
-  }
+  } as const
 }

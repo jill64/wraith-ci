@@ -1,37 +1,34 @@
-import { getStatusEmoji } from '@/shared/src/getStatusEmoji.js'
-import { schema } from '@/shared/src/schema.js'
-import { GhostName } from '@/shared/types/GhostName.js'
-import { GhostStatusShortHand } from '@/shared/types/GhostStatusShortHand.js'
-import { ChecksOutput } from 'octoflare'
+import { getStatusEmoji } from './getStatusEmoji.js'
+import { schema } from './schema.js'
+import { GhostStatusShortHand } from './GhostStatusShortHand.js'
+import { Payload } from '../types/Payload.js'
 
 export const updateOutput = ({
   ghost_name,
   result,
-  output,
-  job_url
+  output
 }: {
-  ghost_name: GhostName
+  ghost_name: Payload['ghost']
   result: GhostStatusShortHand
   output: {
-    title: string
-    summary: string
+    title: string | null
+    summary: string | null
   }
-  job_url: string | undefined | null
-}): ChecksOutput => {
+}) => {
   const alias = schema[ghost_name].alias
   const ghost_status = typeof result === 'string' ? { status: result } : result
   const status_emoji = getStatusEmoji(ghost_status)
 
-  const title = output.title.replace(
+  const title = output.title?.replace(
     new RegExp(`\\S* ${alias}`),
     `${status_emoji} ${alias}`
   )
 
-  const name = job_url ? `[${alias}](${job_url})` : alias
+  const name = alias
 
   const detail = (ghost_status.detail?.replace(/[|]/g, '') ?? '').split('\n')[0]
 
-  const summary = output.summary.replace(
+  const summary = output.summary?.replace(
     new RegExp(`\\| ${alias} \\| .* \\| .* \\|`),
     `| ${name} | ${status_emoji} ${ghost_status.status} | ${detail} |`
   )

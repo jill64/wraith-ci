@@ -29,7 +29,7 @@ export const bump = async ({
     return {
       status: 'skipped',
       detail: 'No pull request number found.'
-    }
+    } as const
   }
 
   const headJson = await getPackageJson()
@@ -38,21 +38,21 @@ export const bump = async ({
     return {
       status: 'skipped',
       detail: 'No package.json found.'
-    }
+    } as const
   }
 
   if (!headJson?.version) {
     return {
       status: 'skipped',
       detail: 'No version found.'
-    }
+    } as const
   }
 
   if (headJson?.private) {
     return {
       status: 'skipped',
       detail: 'Private package.json found.'
-    }
+    } as const
   }
 
   const [
@@ -76,7 +76,7 @@ export const bump = async ({
     return {
       status: 'skipped',
       detail: 'PR is not targeting default branch.'
-    }
+    } as const
   }
 
   const isChore = pull_request.title.startsWith('chore')
@@ -89,7 +89,7 @@ export const bump = async ({
     return {
       status: 'skipped',
       detail: 'PR is not a cumulative update.'
-    }
+    } as const
   }
 
   const baseStr = await getFile({
@@ -107,7 +107,7 @@ export const bump = async ({
     return {
       status: 'skipped',
       detail: 'No base version found.'
-    }
+    } as const
   }
 
   const base_version = formatVersionStr(baseJson?.version)
@@ -120,7 +120,7 @@ export const bump = async ({
   const newVersion = semver.inc(base_version, semType) ?? head_version
 
   if (semver.eq(head_version, newVersion)) {
-    return 'success'
+    return 'success' as const
   }
 
   await overwriteAllVersion(newVersion)
@@ -139,5 +139,5 @@ export const bump = async ({
   return {
     status: 'failure',
     detail: `Auto Bump \`${head_version}\` => \`${newVersion}\``
-  }
+  } as const
 }

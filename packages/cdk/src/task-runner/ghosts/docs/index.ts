@@ -20,7 +20,7 @@ export const docs = async ({
   ])
 
   if (ref === repository.default_branch) {
-    return 'skipped'
+    return 'skipped' as const
   }
 
   await Promise.allSettled([
@@ -28,5 +28,5 @@ export const docs = async ({
     updatePackageJsonList({ repository })
   ])
 
-  return 'success'
+  return 'success' as const
 }

@@ -21,7 +21,7 @@ export const release = async ({
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
-    }
+    } as const
   }
 
   const result = await Promise.allSettled(files.map(npmPublish))
@@ -30,7 +30,7 @@ export const release = async ({
     return {
       status: 'skipped',
       detail: 'No package published'
-    }
+    } as const
   }
 
   const json = await getPackageJson()
@@ -41,7 +41,7 @@ export const release = async ({
     return {
       status: 'skipped',
       detail: 'Not found version in root package.json'
-    }
+    } as const
   }
 
   await octokit.rest.repos.createRelease({
@@ -53,5 +53,5 @@ export const release = async ({
     generate_release_notes: true
   })
 
-  return 'success'
+  return 'success' as const
 }

@@ -23,14 +23,14 @@ export const build = async (payload: Payload, octokit: Octokit) => {
     return {
       status: 'skipped',
       detail: 'Not found package.json in repo'
-    }
+    } as const
   }
 
   if (!isValidJson(package_json)) {
     return {
       status: 'skipped',
       detail: 'Build command not found in package.json'
-    }
+    } as const
   }
 
   const result = await attempt(() => run('npm run build'))
@@ -39,13 +39,13 @@ export const build = async (payload: Payload, octokit: Octokit) => {
     return {
       status: 'failure',
       detail: result.message
-    }
+    } as const
   }
 
   const diff = await attempt(gitDiff)
 
   if (!(diff instanceof Error)) {
-    return 'success'
+    return 'success' as const
   }
 
   await pushCommit('chore: regenerate artifact')
@@ -53,5 +53,5 @@ export const build = async (payload: Payload, octokit: Octokit) => {
   return {
     status: 'failure',
     detail: 'The updated artifact will be pushed shortly'
-  }
+  } as const
 }

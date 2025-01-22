@@ -5,7 +5,7 @@ export const assign = async (payload: Payload, octokit: Octokit) => {
   const { pull_number, owner, repo } = payload
 
   if (!pull_number) {
-    return 'skipped'
+    return 'skipped' as const
   }
 
   const { data: pull_request } = await octokit.rest.pulls.get({
@@ -18,7 +18,7 @@ export const assign = async (payload: Payload, octokit: Octokit) => {
     return {
       status: 'skipped',
       reason: 'Pull Request is by Owner'
-    }
+    } as const
   }
 
   if (
@@ -29,7 +29,7 @@ export const assign = async (payload: Payload, octokit: Octokit) => {
     return {
       status: 'skipped',
       reason: 'Owner is already a reviewer'
-    }
+    } as const
   }
 
   await octokit.rest.pulls.requestReviewers({
@@ -42,5 +42,5 @@ export const assign = async (payload: Payload, octokit: Octokit) => {
     ]
   })
 
-  return 'success'
+  return 'success' as const
 }
