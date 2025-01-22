@@ -1,6 +1,6 @@
 import type { TriggerEvent } from '$shared/ghost/types/TriggerEvent.js'
 import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
-import type { PullRequestEvent } from '@octokit/webhooks-types'
+import type { PullRequestEvent } from 'octoflare/webhook'
 import type { OctoflareInstallation } from 'octoflare'
 
 export const onPR = async (
@@ -34,7 +34,7 @@ export const onPR = async (
 
   const task = async () => {
     try {
-      const { data } = await installation.rest.issues.listComments({
+      const { data } = await installation.kit.rest.issues.listComments({
         owner,
         repo,
         issue_number: pull_request.number
@@ -47,7 +47,7 @@ export const onPR = async (
             body?.includes('] Wraith CI / PR')
         )
       ) {
-        await installation.rest.issues.createComment({
+        await installation.kit.rest.issues.createComment({
           owner,
           repo,
           issue_number: pull_request.number,

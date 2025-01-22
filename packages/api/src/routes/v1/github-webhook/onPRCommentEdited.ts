@@ -1,7 +1,7 @@
 import type { TriggerEvent } from '$shared/ghost/types/TriggerEvent.js'
 import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
 import { attempt } from '@jill64/attempt'
-import type { IssueCommentEditedEvent } from '@octokit/webhooks-types'
+import type { IssueCommentEditedEvent } from 'octoflare/webhook'
 import { text } from '@sveltejs/kit'
 import type { OctoflareInstallation } from 'octoflare'
 
@@ -42,7 +42,7 @@ export const onPRCommentEdited = async (
   }
 
   const commented_pr = await attempt(async () => {
-    const { data } = await installation.rest.pulls.get({
+    const { data } = await installation.kit.rest.pulls.get({
       pull_number: issue.number,
       owner,
       repo
@@ -64,13 +64,13 @@ export const onPRCommentEdited = async (
   const task = async () => {
     try {
       await Promise.allSettled([
-        installation.rest.issues.updateComment({
+        installation.kit.rest.issues.updateComment({
           owner,
           repo,
           comment_id: comment.id,
           body: before
         }),
-        installation.rest.reactions.createForIssueComment({
+        installation.kit.rest.reactions.createForIssueComment({
           owner,
           repo,
           comment_id: comment.id,
