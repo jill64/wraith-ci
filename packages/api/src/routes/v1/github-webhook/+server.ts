@@ -139,7 +139,7 @@ export const POST = async ({ request }) => {
         })
       )
 
-      await fetch(TASK_RUNNER_URL, {
+      fetch(TASK_RUNNER_URL, {
         method: 'POST',
         body
       })
