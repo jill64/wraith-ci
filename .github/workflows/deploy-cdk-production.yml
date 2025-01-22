@@ -43,3 +43,4 @@ jobs:
         run: npm run deploy:all
         env:
           DEPLOY_STAGE: 'production'
+          API_BRIDGE_PRIVATE_KEY: ${{ secrets.API_BRIDGE_PRIVATE_KEY_PROD }}
