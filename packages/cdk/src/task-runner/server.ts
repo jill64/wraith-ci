@@ -11,8 +11,7 @@ export const handler: LambdaHandler = async (
 
     console.log('Decrypting...')
 
-    // const text = await decrypt(body)
-    const text = body
+    const text = await decrypt(body)
 
     console.log({ text })
   } catch (e) {
