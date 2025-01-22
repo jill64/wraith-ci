@@ -1,8 +1,12 @@
 import process from 'node:process'
 import crypto from 'node:crypto'
 
-export const decrypt = async (encrypted_text: string) => {
+// ヘルパー関数
+function base64ToBuffer(base64: string): Uint8Array {
+  return new Uint8Array(Buffer.from(base64, 'base64'))
+}
 
+export const decrypt = async (encrypted_text: string) => {
   console.log('Imported private key...')
 
   const privateKey = await crypto.subtle.importKey(
@@ -18,7 +22,8 @@ export const decrypt = async (encrypted_text: string) => {
 
   console.log('Converting encrypted text to buffer...')
 
-  const encrypted_buffer = new TextEncoder().encode(encrypted_text)
+  // encrypted_text は Base64 として受け取る
+  const encryptedBytes = base64ToBuffer(encrypted_text)
 
   console.log('Decrypting buffer...')
 
@@ -27,7 +32,7 @@ export const decrypt = async (encrypted_text: string) => {
       name: 'RSA-OAEP'
     },
     privateKey,
-    encrypted_buffer
+    encryptedBytes
   )
 
   console.log('Converting decrypted buffer to text...')

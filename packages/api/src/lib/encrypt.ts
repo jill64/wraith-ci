@@ -1,5 +1,12 @@
 import { API_BRIDGE_PUBLIC_KEY } from "$env/static/private"
 import crypto from 'node:crypto'
+import {Buffer} from 'node:buffer'
+
+
+// ヘルパー関数
+function bufferToBase64(buffer: Uint8Array) {
+  return Buffer.from(buffer).toString('base64')
+}
 
 export const encrypt = async (plainText: string) => {
   const plainBuffer = new TextEncoder().encode(plainText)
@@ -23,7 +30,11 @@ export const encrypt = async (plainText: string) => {
     plainBuffer
   )
 
-  const encryptedText = new TextDecoder().decode(encryptedBuffer)
+  // 暗号バイナリを Uint8Array に変換
+  const encryptedBytes = new Uint8Array(encryptedBuffer)
 
-  return encryptedText
+  // Base64形式の文字列に変換
+  const encryptedBase64 = bufferToBase64(encryptedBytes)
+
+  return encryptedBase64
 }
