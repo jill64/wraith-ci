@@ -1,0 +1,17 @@
+name: Wraith CI
+description: GitHub Action for Wraith CI
+
+inputs:
+  payload:
+    description: Octoflare Payload
+    required: true
+  name:
+    description: Ghost App Name
+    required: true
+  run_attempt:
+    description: github.run_attempt
+    required: true
+
+runs:
+  using: node20
+  main: packages/action/dist/index.cjs
