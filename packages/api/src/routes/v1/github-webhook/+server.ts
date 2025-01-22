@@ -51,8 +51,8 @@ export const POST = async ({ request }) => {
       const processed = await (is_push
         ? onPush(payload)
         : is_pull_request
-        ? onPR(payload, context)
-        : onPRCommentEdited(payload, context))
+          ? onPR(payload, context)
+          : onPRCommentEdited(payload, context))
 
       if (processed instanceof Response) {
         return processed

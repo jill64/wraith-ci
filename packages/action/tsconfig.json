@@ -8,7 +8,7 @@
     "moduleResolution": "NodeNext",
     "paths": {
       "$shared/*": ["../shared/*"]
-    },
+    }
   },
   "include": ["."],
   "exclude": ["dist"]
