@@ -6,12 +6,15 @@ export const handler: LambdaHandler = async (
 ): Promise<LambdaResponsePayload> => {
   const { body } = event
 
-  const text = await decrypt(body)
-
-  console.log({ text })
+  try {
+    const text = await decrypt(body)
+    console.log({ text })
+  } catch (e) {
+    console.error(e)
+  }
 
   return {
     statusCode: 200,
-    body: text
+    body: 'OK'
   }
 }

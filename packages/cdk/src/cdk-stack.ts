@@ -21,7 +21,7 @@ class CDKStack extends Stack {
       timeout: Duration.minutes(15),
       memorySize: 512,
       environment: {
-        API_BRIDGE_PRIVATE_KEY: env.API_BRIDGE_PRIVATE_KEY!,
+        API_BRIDGE_PRIVATE_KEY: env.API_BRIDGE_PRIVATE_KEY!
       }
     }).addFunctionUrl({
       authType: aws_lambda.FunctionUrlAuthType.NONE
