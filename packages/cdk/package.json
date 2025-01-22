@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "npx tsx scripts/build.ts && npx cdk synth",
+    "lint": "tsc && eslint .",
+    "format": "npx psvx",
+    "bootstrap": "npx cdk bootstrap",
+    "deploy": "npm run build && npx cdk deploy --require-approval never",
+    "destroy": "npx cdk destroy --all"
+  },
+  "devDependencies": {
+    "@jill64/types-lambda": "1.2.3",
+    "@aws-sdk/client-ses": "3.731.1",
+    "aws-cdk-lib": "2.176.0",
+    "constructs": "10.4.2",
+    "esbuild": "0.24.2",
+    "dotenv": "16.4.7",
+    "tsx": "4.19.2"
+  }
+}
