@@ -1,4 +1,4 @@
-import type { TriggerEvent } from '$lib/types/TriggerEvent.js'
+import type { TriggerEvent } from '$shared/ghost/types/TriggerEvent.js'
 import type { PushEvent } from '@octokit/webhooks-types'
 
 export const onPush = (payload: PushEvent) => {

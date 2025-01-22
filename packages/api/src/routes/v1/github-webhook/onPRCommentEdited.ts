@@ -1,8 +1,9 @@
-import type { TriggerEvent } from '$lib/types/TriggerEvent.js'
+import type { TriggerEvent } from '$shared/ghost/types/TriggerEvent.js'
+import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
 import { attempt } from '@jill64/attempt'
 import type { IssueCommentEditedEvent } from '@octokit/webhooks-types'
 import { text } from '@sveltejs/kit'
-import type { Octokit } from 'octokit'
+import type { OctoflareInstallation } from 'octoflare'
 
 export const onPRCommentEdited = async (
   { issue, comment, changes }: IssueCommentEditedEvent,
@@ -13,7 +14,7 @@ export const onPRCommentEdited = async (
   }: {
     repo: string
     owner: string
-    installation: Octokit
+    installation: OctoflareInstallation<WraithPayload>
   }
 ) => {
   if (comment.user.login !== 'wraith-ci[bot]') {

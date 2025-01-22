@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "lint": "npx eslint . && tsc",
+    "format": "prettier -w ."
+  },
+  "devDependencies": {
+    "@actions/exec": "1.1.1",
+    "ts-retry": "5.0.1",
+    "esbuild": "0.24.2",
+    "@types/semver": "7.5.8",
+    "semver": "7.6.3"
+  }
+}

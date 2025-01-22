@@ -1,6 +1,7 @@
-import type { TriggerEvent } from '$lib/types/TriggerEvent.js'
+import type { TriggerEvent } from '$shared/ghost/types/TriggerEvent.js'
+import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
 import type { PullRequestEvent } from '@octokit/webhooks-types'
-import type { Octokit } from 'octokit'
+import type { OctoflareInstallation } from 'octoflare'
 
 export const onPR = async (
   { action, pull_request }: PullRequestEvent,
@@ -11,7 +12,7 @@ export const onPR = async (
   }: {
     repo: string
     owner: string
-    installation: Octokit
+    installation: OctoflareInstallation<WraithPayload>
   }
 ) => {
   if (

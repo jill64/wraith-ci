@@ -1,6 +1,6 @@
-import { getGhostAlias } from '$lib/getGhostAlias.js'
-import { getStatusEmoji } from '$lib/getStatusEmoji.js'
-import type { WraithStatus } from '$lib/types/WraithStatus.js'
+import { getGhostAlias } from '$shared/ghost/getGhostAlias.js'
+import { getStatusEmoji } from '$shared/ghost/getStatusEmoji.js'
+import type { WraithStatus } from '$shared/ghost/types/WraithStatus.js'
 
 export const generateOutput = (wraith_status: WraithStatus) => {
   const entries = Object.entries(wraith_status)

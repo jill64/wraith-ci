@@ -7,8 +7,5 @@
     "check": "svelte-kit sync && svelte-check",
     "lint": "npm run check && eslint .",
     "format": "npx psvx"
-  },
-  "devDependencies": {
-    "@octokit/webhooks-types": "7.6.1"
   }
 }
