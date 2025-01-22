@@ -1,4 +1,5 @@
 import { env } from 'node:process'
+import crypto from 'node:crypto'
 
 export const decrypt = async (encrypted_text: string) => {
   const privateKey = await crypto.subtle.importKey(

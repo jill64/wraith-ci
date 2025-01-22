@@ -4,8 +4,6 @@ import { decrypt } from './decrypt.js'
 export const handler: LambdaHandler = async (
   event
 ): Promise<LambdaResponsePayload> => {
-  console.log(event)
-
   const { body } = event
 
   const text = await decrypt(body)
