@@ -8,7 +8,7 @@ import type { GhostName } from '$lib/types/GhostName'
 import type { GhostStatus } from '$lib/types/GhostStatus'
 import { verifyGitHubRequest } from '$lib/verifyGitHubRequeest.js'
 import type { WebhookEvent } from '@octokit/webhooks-types'
-import { text } from '@sveltejs/kit'
+import { error, text } from '@sveltejs/kit'
 import { App } from 'octokit'
 import { generateOutput } from './generateOutput'
 import { isOwnerTransferred } from './isOwnerTransfered'
@@ -25,10 +25,16 @@ export const POST = async ({ request }) => {
 
   const payload = JSON.parse(result) as WebhookEvent
 
+  if (!('installation' in payload && payload.installation)) {
+    error(500, 'Installation not found')
+  }
+
   const app = new App({
     appId: 420132,
     privateKey: GITHUB_APP_PRIVATEKEY_PKCS8
   })
+
+  const octokit = await app.getInstallationOctokit(payload.installation.id)
 
   const is_push = 'commits' in payload
   const is_pull_request = 'pull_request' in payload && 'number' in payload
@@ -50,7 +56,7 @@ export const POST = async ({ request }) => {
   const context = {
     repo,
     owner,
-    installation: app.octokit
+    installation: octokit
   }
 
   const processed = await (is_push
@@ -112,7 +118,7 @@ export const POST = async ({ request }) => {
 
   const {
     data: { id: check_run_id }
-  } = await app.octokit.rest.checks.create({
+  } = await octokit.rest.checks.create({
     head_sha,
     owner,
     repo,
@@ -133,18 +139,9 @@ export const POST = async ({ request }) => {
         })
       )
 
-      const res = await fetch(TASK_RUNNER_URL, {
+      fetch(TASK_RUNNER_URL, {
         method: 'POST',
         body
-      })
-
-      const res_txt = await res.text()
-
-      console.log({
-        res_txt,
-        res_ok: res.ok,
-        status: res.status,
-        statusText: res.statusText
       })
     })
   )
