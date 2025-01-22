@@ -130,13 +130,10 @@ export const POST = async ({ request }) => {
           })
         )
 
-        fetch(TASK_RUNNER_URL, {
+        await fetch(TASK_RUNNER_URL, {
           method: 'POST',
           body
         })
-
-        // wait 100ms
-        await new Promise((resolve) => setTimeout(resolve, 100))
       })
     )
   }
