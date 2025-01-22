@@ -10,6 +10,8 @@ export const handler: LambdaHandler = async (
 
   const text = await decrypt(body)
 
+  console.log({ text })
+
   return {
     statusCode: 200,
     body: text
