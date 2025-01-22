@@ -8,9 +8,6 @@ const config = {
     adapter: adapter(),
     alias: {
       $shared: '../shared'
-    },
-    csrf: {
-      checkOrigin: false
     }
   }
 }
