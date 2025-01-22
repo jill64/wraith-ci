@@ -108,48 +108,46 @@ export const POST = async ({ request }) => {
 
   console.log({ triggered_ghosts, wraith_status })
 
-  const runWorkflow = async () => {
-    const {
-      data: { id: check_run_id }
-    } = await app.octokit.rest.checks.create({
-      head_sha,
-      owner,
-      repo,
-      name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
-      output: generateOutput(wraith_status),
-      status: 'in_progress'
-    })
+  await task()
 
-    await Promise.allSettled(
-      triggered_ghosts.map(async (ghost) => {
-        const body = await encrypt(
-          JSON.stringify({
-            ghost,
-            pull_number,
-            head_sha,
-            ref,
-            check_run_id
-          })
-        )
+  const {
+    data: { id: check_run_id }
+  } = await app.octokit.rest.checks.create({
+    head_sha,
+    owner,
+    repo,
+    name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
+    output: generateOutput(wraith_status),
+    status: 'in_progress'
+  })
 
-        const res = await fetch(TASK_RUNNER_URL, {
-          method: 'POST',
-          body
+  await Promise.allSettled(
+    triggered_ghosts.map(async (ghost) => {
+      const body = await encrypt(
+        JSON.stringify({
+          ghost,
+          pull_number,
+          head_sha,
+          ref,
+          check_run_id
         })
+      )
 
-        const res_txt = await res.text()
-
-        console.log({
-          res_txt,
-          res_ok: res.ok,
-          status: res.status,
-          statusText: res.statusText
-        })
+      const res = await fetch(TASK_RUNNER_URL, {
+        method: 'POST',
+        body
       })
-    )
-  }
 
-  await Promise.allSettled([task(), runWorkflow()])
+      const res_txt = await res.text()
+
+      console.log({
+        res_txt,
+        res_ok: res.ok,
+        status: res.status,
+        statusText: res.statusText
+      })
+    })
+  )
 
   return text('Wraith CI Workflow Bridged', {
     status: 202
