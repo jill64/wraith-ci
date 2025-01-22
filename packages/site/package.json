@@ -7,7 +7,7 @@
     "check": "svelte-kit sync && npx svelte-check",
     "lint": "npm run check && npx eslint .",
     "format": "npx psvx",
-    "test": "vitest",
+    "test": "svelte-kit sync && vitest",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
