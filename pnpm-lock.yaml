@@ -47,6 +47,9 @@ importers:
       kysely-solarsystem:
         specifier: 0.0.1
         version: 0.0.1
+      octokit:
+        specifier: 4.1.0
+        version: 4.1.0
       svelte:
         specifier: 5.19.0
         version: 5.19.0
@@ -68,9 +71,6 @@ importers:
       '@octokit/webhooks-types':
         specifier: 7.6.1
         version: 7.6.1
-      octokit:
-        specifier: 4.1.0
-        version: 4.1.0
 
   packages/app:
     devDependencies:
@@ -89,6 +89,9 @@ importers:
       '@jill64/types-lambda':
         specifier: 1.2.3
         version: 1.2.3(typescript@5.7.3)
+      '@types/semver':
+        specifier: 7.5.8
+        version: 7.5.8
       aws-cdk-lib:
         specifier: 2.176.0
         version: 2.176.0(constructs@10.4.2)
@@ -101,6 +104,9 @@ importers:
       esbuild:
         specifier: 0.24.2
         version: 0.24.2
+      semver:
+        specifier: 7.6.3
+        version: 7.6.3
       tsx:
         specifier: 4.19.2
         version: 4.19.2
@@ -1413,6 +1419,9 @@ packages:
 
   '@types/node@22.10.7':
     resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
+
+  '@types/semver@7.5.8':
+    resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
 
   '@typescript-eslint/eslint-plugin@8.19.0':
     resolution: {integrity: sha512-NggSaEZCdSrFddbctrVjkVZvFC6KGfKfNK0CU7mNK/iKHGKbzT4Wmgm08dKpcZECBu9f5FypndoMyRHkdqfT1Q==}
@@ -4368,6 +4377,8 @@ snapshots:
   '@types/node@22.10.7':
     dependencies:
       undici-types: 6.20.0
+
+  '@types/semver@7.5.8': {}
 
   '@typescript-eslint/eslint-plugin@8.19.0(@typescript-eslint/parser@8.19.0(eslint@9.18.0(jiti@1.21.7))(typescript@5.7.3))(eslint@9.18.0(jiti@1.21.7))(typescript@5.7.3)':
     dependencies:

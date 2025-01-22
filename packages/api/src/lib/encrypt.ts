@@ -1,7 +1,6 @@
-import { API_BRIDGE_PUBLIC_KEY } from "$env/static/private"
+import { API_BRIDGE_PUBLIC_KEY } from '$env/static/private'
 import crypto from 'node:crypto'
-import {Buffer} from 'node:buffer'
-
+import { Buffer } from 'node:buffer'
 
 // ヘルパー関数
 function bufferToBase64(buffer: Uint8Array) {

@@ -1,8 +1,8 @@
 FROM public.ecr.aws/lambda/nodejs:latest
 
-RUN cat /etc/os-release
-
 RUN dnf install -y git
+
+RUN npm i -g pnpm
 
 COPY server.js ./
 

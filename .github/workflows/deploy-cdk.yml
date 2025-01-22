@@ -42,3 +42,5 @@ jobs:
         env:
           DEPLOY_STAGE: dev
           API_BRIDGE_PRIVATE_KEY: ${{ secrets.API_BRIDGE_PRIVATE_KEY }}
+          GITHUB_APP_PRIVATEKEY_PKCS8: ${{ secrets._GITHUB_APP_PRIVATEKEY_PKCS8 }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

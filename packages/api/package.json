@@ -6,10 +6,9 @@
     "preview": "npm run build && vite preview",
     "check": "svelte-kit sync && svelte-check",
     "lint": "npm run check && eslint .",
-    "format": "psvx"
+    "format": "npx psvx"
   },
   "devDependencies": {
-    "@octokit/webhooks-types": "7.6.1",
-    "octokit": "4.1.0"
+    "@octokit/webhooks-types": "7.6.1"
   }
 }

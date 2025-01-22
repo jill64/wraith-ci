@@ -26,7 +26,7 @@ export const POST = async ({ request }) => {
   const payload = JSON.parse(result) as WebhookEvent
 
   if (!('installation' in payload && payload.installation)) {
-    error(500, 'Installation not found')
+    throw error(500, 'Installation not found')
   }
 
   const app = new App({
@@ -62,8 +62,8 @@ export const POST = async ({ request }) => {
   const processed = await (is_push
     ? onPush(payload)
     : is_pull_request
-    ? onPR(payload, context)
-    : onPRCommentEdited(payload, context))
+      ? onPR(payload, context)
+      : onPRCommentEdited(payload, context))
 
   if (processed instanceof Response) {
     return processed
@@ -126,13 +126,21 @@ export const POST = async ({ request }) => {
   await Promise.all([
     task(),
     ...triggered_ghosts.map(async (ghost) => {
+      if (!payload.installation?.id) {
+        return
+      }
+
       const body = await encrypt(
         JSON.stringify({
           ghost,
           pull_number,
           head_sha,
           ref,
-          check_run_id
+          check_run_id,
+          installation_id: payload.installation.id,
+          owner,
+          repo,
+          url: payload.repository.clone_url
         })
       )
 

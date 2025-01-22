@@ -6,7 +6,8 @@
     "format": "npx psvx",
     "bootstrap": "npx cdk bootstrap",
     "deploy": "npm run build && npx cdk deploy --require-approval never",
-    "destroy": "npx cdk destroy --all"
+    "destroy": "npx cdk destroy --all",
+    "test": "vitest"
   },
   "devDependencies": {
     "@jill64/types-lambda": "1.2.3",
@@ -15,6 +16,8 @@
     "constructs": "10.4.2",
     "esbuild": "0.24.2",
     "dotenv": "16.4.7",
-    "tsx": "4.19.2"
+    "tsx": "4.19.2",
+    "semver": "7.6.3",
+    "@types/semver": "7.5.8"
   }
 }

@@ -28,6 +28,7 @@
     "kysely-solarsystem": "0.0.1",
     "typescanner": "0.5.3",
     "dayjs": "1.11.13",
-    "@jill64/attempt": "1.1.4"
+    "@jill64/attempt": "1.1.4",
+    "octokit": "4.1.0"
   }
 }
