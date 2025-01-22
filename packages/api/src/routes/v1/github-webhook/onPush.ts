@@ -1,5 +1,5 @@
 import type { TriggerEvent } from '$shared/ghost/types/TriggerEvent.js'
-import type { PushEvent } from '@octokit/webhooks-types'
+import type { PushEvent } from 'octoflare/webhook'
 
 export const onPush = (payload: PushEvent) => {
   const { repository, after: head_sha } = payload

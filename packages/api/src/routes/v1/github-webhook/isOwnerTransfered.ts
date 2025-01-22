@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer'
-import type { Octokit } from 'octokit'
+import type { Octokit } from 'octoflare/octokit'
 import { scanner, string } from 'typescanner'
 
 const isValid = scanner({
