@@ -1,4 +1,4 @@
-import { Ghost } from '@/action/types/Ghost.js'
+import { Ghost } from '../../../types/Ghost.js'
 import semver from 'semver'
 import { boolean, optional, scanner, string } from 'typescanner'
 import { getFile } from '../../utils/getFile.js'

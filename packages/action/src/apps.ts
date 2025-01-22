@@ -1,4 +1,4 @@
-import { GhostName } from '@/shared/types/GhostName.js'
+import { GhostName } from '$shared/ghost/types/GhostName.js'
 import { Ghost } from '../types/Ghost.js'
 import { assign } from './ghosts/assign.js'
 import { build } from './ghosts/build.js'

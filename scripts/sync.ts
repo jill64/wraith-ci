@@ -1,4 +1,4 @@
-import { schema } from '@/shared/src/schema.js'
+import { schema } from '$shared/ghost/schema.js'
 import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'

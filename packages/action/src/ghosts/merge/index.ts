@@ -1,4 +1,4 @@
-import { Ghost } from '@/action/types/Ghost.js'
+import { Ghost } from '../../../types/Ghost.js'
 import { attempt } from '@jill64/attempt'
 import { enableAutoMerge } from './enableAutoMerge.js'
 import { isAllowUsers } from './isAllowedUsers.js'

@@ -1,7 +1,7 @@
-import { getStatusEmoji } from '@/shared/src/getStatusEmoji.js'
-import { schema } from '@/shared/src/schema.js'
-import { GhostName } from '@/shared/types/GhostName.js'
-import { GhostStatusShortHand } from '@/shared/types/GhostStatusShortHand.js'
+import { getStatusEmoji } from '$shared/ghost/getStatusEmoji.js'
+import { schema } from '$shared/ghost/schema.js'
+import { GhostName } from '$shared/ghost/types/GhostName.js'
+import { GhostStatusShortHand } from '$shared/ghost/types/GhostStatusShortHand.js'
 import { ChecksOutput } from 'octoflare'
 
 export const updateOutput = ({

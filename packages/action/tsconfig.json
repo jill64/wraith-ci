@@ -1,7 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "skipLibCheck": true
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "noEmit": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "paths": {
+      "$shared/*": ["../shared/*"]
+    }
   },
   "include": ["."],
   "exclude": ["dist"]

@@ -1,5 +1,5 @@
-import { schema } from '@/shared/src/schema.js'
-import { WraithPayload } from '@/shared/types/WraithPayload.js'
+import { schema } from '$shared/ghost/schema.js'
+import { WraithPayload } from '$shared/ghost/types/WraithPayload.js'
 import { attempt } from '@jill64/attempt'
 import { unfurl } from '@jill64/unfurl'
 import { action } from 'octoflare/action'

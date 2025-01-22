@@ -25972,7 +25972,7 @@ var require_semver2 = __commonJS({
   }
 });
 
-// ../shared/src/schema.ts
+// ../shared/ghost/schema.ts
 var schema = {
   build: {
     alias: "Build",
@@ -27241,7 +27241,7 @@ var getJobUrl = async ({
   return job?.html_url;
 };
 
-// ../shared/src/getStatusEmoji.ts
+// ../shared/ghost/getStatusEmoji.ts
 var getStatusEmoji = ({ status }) => status === "processing" ? "\u23F3" : status === "success" ? "\u2705" : status === "failure" ? "\u274C" : "\u30FC";
 
 // src/utils/updateOutput.ts

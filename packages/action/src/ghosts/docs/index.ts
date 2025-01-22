@@ -1,4 +1,4 @@
-import { Ghost } from '@/action/types/Ghost.js'
+import { Ghost } from '../../../types/Ghost.js'
 import { updatePackageJsonList } from './updatePackageJsonList.js'
 import { updateReadmeList } from './updateReadmeList.js'
 import { listWorkflowFiles } from './utils/listWorkflowFiles.js'

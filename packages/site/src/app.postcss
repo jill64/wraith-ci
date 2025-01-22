@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind utilities;
+
+@layer utilities {
+  .link {
+    @apply text-[royalblue] dark:text-blue-400 hover:underline;
+  }
+  .main {
+    @apply bg-white enabled:push-effect dark:border-transparent dark:text-main-bg;
+  }
+  .btn {
+    @apply border border-main-border whitespace-nowrap inline-flex items-center justify-center flex-shrink-0 rounded-full disabled:bg-zinc-400 disabled:dark:bg-zinc-600;
+  }
+  .delete-btn {
+    @apply border push-effect md whitespace-nowrap bg-red-500 border-red-500 font-bold text-white inline-flex items-center justify-center flex-shrink-0 rounded-full disabled:bg-zinc-400 disabled:dark:bg-zinc-600 disabled:border-zinc-400 disabled:dark:border-zinc-600 disabled:text-black;
+  }
+  .txt {
+    @apply p-1 bg-inherit border-b border-main-border focus:border-main-text focus-under disabled:dark:bg-sub-bg disabled:text-sub-text;
+  }
+  .main-txt {
+    @apply min-w-[50vw] sm:min-w-[50vw] lg:min-w-[30vw] txt;
+  }
+  .menu {
+    @apply rounded-lg border border-sub-border backdrop-blur shadow bg-glass-bg;
+  }
+  .lg {
+    @apply py-1.5 px-3.5 text-lg font-bold;
+  }
+  .md {
+    @apply py-1 px-3;
+  }
+  .sm {
+    @apply py-0.5 px-2.5 text-sm;
+  }
+  .pp {
+    @apply push-effect dark:pop-effect;
+  }
+}
+
+body {
+  @apply bg-main-bg text-main-text;
+}
+
+:root {
+  --main-bg: #fff;
+  --sub-bg: #eee;
+  --glass-bg: rgba(238, 238, 238, 0.7);
+  --main-text: #000;
+  --sub-text: #666;
+  --main-border: #ccc;
+  --sub-border: #bbb;
+}
+
+:root.dark {
+  --main-bg: #161616;
+  --sub-bg: #2b2b2b;
+  --glass-bg: rgba(32, 32, 32, 0.7);
+  --main-text: #eee;
+  --sub-text: #aaa;
+  --main-border: #555;
+  --sub-border: #444;
+}

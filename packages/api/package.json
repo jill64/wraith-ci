@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "npm run build && vite preview",
+    "check": "svelte-kit sync && svelte-check",
+    "lint": "npm run check && eslint .",
+    "format": "npx psvx"
+  }
+}

@@ -1,5 +1,5 @@
-import { GhostStatusShortHand } from '@/shared/types/GhostStatusShortHand.js'
-import { WraithPayload } from '@/shared/types/WraithPayload.js'
+import { GhostStatusShortHand } from '$shared/ghost/types/GhostStatusShortHand.js'
+import { WraithPayload } from '$shared/ghost/types/WraithPayload.js'
 import { OctoflarePayload } from 'octoflare'
 import { ActionOctokit } from 'octoflare/action'
 
