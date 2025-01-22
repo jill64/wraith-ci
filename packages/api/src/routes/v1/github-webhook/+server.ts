@@ -130,7 +130,7 @@ export const POST = async ({ request }) => {
         return
       }
 
-      const body = await encrypt(
+      const cryptoSet = await encrypt(
         JSON.stringify({
           ghost,
           pull_number,
@@ -146,7 +146,7 @@ export const POST = async ({ request }) => {
 
       fetch(TASK_RUNNER_URL, {
         method: 'POST',
-        body
+        body: JSON.stringify(cryptoSet)
       })
 
       // wait 1000ms
