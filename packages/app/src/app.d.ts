@@ -1,7 +1,6 @@
 import type { Database } from '$shared/db/schema'
 import type { Kysely } from 'kysely'
 import type { Octokit } from 'octokit'
-
 declare global {
   namespace App {
     // interface Error {}
@@ -15,6 +14,9 @@ declare global {
         picture?: string
       }
       kit: Octokit
+      installation: Awaited<
+        ReturnType<Octokit['rest']['apps']['getInstallation']>
+      >['data']
     }
     interface PageData {
       title: {

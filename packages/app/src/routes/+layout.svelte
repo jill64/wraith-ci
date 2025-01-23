@@ -89,7 +89,7 @@
         transition:slide
       >
         <a
-          href="/me"
+          href="/settings"
           class="flex items-center whitespace-nowrap gap-2 pp p-2 rounded"
           onclick={close}
         >

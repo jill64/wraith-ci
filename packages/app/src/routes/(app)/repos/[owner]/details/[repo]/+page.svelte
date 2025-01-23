@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { page } from '$app/state'
   import NavigationMenu from '$lib/components/NavigationMenu.svelte'
   import { dict } from '$lib/dict.svelte'
   import { i } from '$lib/i18n'
@@ -12,7 +13,7 @@
   list={[
     { href: '/', text: dict('top') },
     {
-      href: '/repos',
+      href: `/repos/${page.params.owner}`,
       text: i.translate({
         en: 'Repositories',
         ja: 'リポジトリ'

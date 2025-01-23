@@ -7,7 +7,7 @@
   <h2 class="text-2xl font-bold">Repositories</h2>
   {#each data.allRepo.data as repo}
     <a
-      href={`/repo/${repo.owner.login}/${repo.name}`}
+      href={`/repos/${repo.owner.login}/details/${repo.name}`}
       class="block p-4 hover:underline pp rounded-lg shadow-md dark:shadow-none dark:border-gray-500"
     >
       <h3 class="text-xl font-bold">{repo.name}</h3>

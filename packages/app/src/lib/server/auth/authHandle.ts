@@ -1,6 +1,7 @@
 import { error, type Handle, redirect } from '@sveltejs/kit'
-import { auth } from './index'
 import { boolean, optional, scanner, string } from 'typescanner'
+import { genOctokit } from './genOctokit'
+import { auth } from './index'
 
 const isOAuthUser = scanner({
   sub: string,
@@ -38,6 +39,11 @@ export const authHandle: Handle = async ({ resolve, event }) => {
     email_verified: result.email_verified,
     picture: result.picture
   }
+
+  const { kit, installation } = await genOctokit(result.sub)
+  
+  event.locals.kit = kit
+  event.locals.installation = installation
 
   return resolve(event)
 }

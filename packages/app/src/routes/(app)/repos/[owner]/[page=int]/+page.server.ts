@@ -1,16 +1,14 @@
 export const load = async ({
-  locals: { oauth_user, kit },
-  params: { page }
+  locals: { kit },
+  params: { page, owner }
 }) => {
   const allRepo = await kit.rest.repos.listForUser({
-    username: oauth_user.name,
+    username: owner,
     per_page: 20,
     page: Number(page)
   })
 
   let lastPage = 0
-
-  console.log(allRepo.headers.link)
 
   allRepo.headers.link?.split(',').forEach((link) => {
     const [url, rel] = link.split(';').map((str) => str.trim())
