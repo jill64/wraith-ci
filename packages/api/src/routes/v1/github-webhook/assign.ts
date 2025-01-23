@@ -1,14 +1,20 @@
-import { Ghost } from '../../types/Ghost.js'
+import type { Octokit } from 'octoflare/octokit'
 
-export const assign: Ghost = async ({ payload, octokit }) => {
-  const {
-    repo,
-    owner,
-    data: { pull_number }
-  } = payload
+export const assign = async ({
+  payload,
+  octokit
+}: {
+  payload: {
+    repo: string
+    owner: string
+    pull_number: number | null
+  }
+  octokit: Octokit
+}) => {
+  const { repo, owner, pull_number } = payload
 
   if (!pull_number) {
-    return 'skipped'
+    return 'skipped' as const
   }
 
   const { data: pull_request } = await octokit.rest.pulls.get({
@@ -21,7 +27,7 @@ export const assign: Ghost = async ({ payload, octokit }) => {
     return {
       status: 'skipped',
       reason: 'Pull Request is by Owner'
-    }
+    } as const
   }
 
   if (
@@ -32,7 +38,7 @@ export const assign: Ghost = async ({ payload, octokit }) => {
     return {
       status: 'skipped',
       reason: 'Owner is already a reviewer'
-    }
+    } as const
   }
 
   await octokit.rest.pulls.requestReviewers({
@@ -45,5 +51,5 @@ export const assign: Ghost = async ({ payload, octokit }) => {
     ]
   })
 
-  return 'success'
+  return 'success' as const
 }
