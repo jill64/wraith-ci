@@ -2,6 +2,10 @@ import { ENVS_PUBLIC_KEY } from '$env/static/private'
 import { encrypt } from '$lib/server/encrypt.js'
 import { run } from '$shared/db/run.js'
 import { ok } from '$shared/response/ok.js'
+import { error } from '@sveltejs/kit'
+import { scanner } from 'typescanner'
+
+const isValidJson = scanner({})
 
 export const PUT = async ({
   locals: { kit, db, github_user },
@@ -12,6 +16,13 @@ export const PUT = async ({
     kit.repos.get({ owner, repo }),
     request.text()
   ])
+
+  const envs_json = JSON.parse(envs)
+  const isValid = isValidJson(envs_json)
+
+  if (!isValid) {
+    error(400, 'Invalid JSON')
+  }
 
   const [encrypted_envs, me] = await Promise.all([
     encrypt(envs, ENVS_PUBLIC_KEY),

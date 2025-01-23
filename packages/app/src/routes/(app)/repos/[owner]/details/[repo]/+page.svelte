@@ -14,18 +14,17 @@
   let key = $state('')
   let value = $state('')
 
-  let envs = $state(data.envs)
+  let data_envs = $derived(Object.entries(data.envs))
+
+  let envs = $state(data_envs)
 
   let key_dom: HTMLInputElement | undefined
 
-  $effect(() => {
-    if (JSON.stringify(envs) !== JSON.stringify(data.envs)) {
-      const text = JSON.stringify(envs)
-      request.put('envs', {
-        invalidate: () => false,
-        body: text
-      })
-    }
+  let duplicatedKeys = $derived.by(() => {
+    const keys = envs.map((x) => x[0])
+    const set = [...new Set(keys)]
+
+    return new Set(set.filter((x) => keys.filter((k) => k === x).length !== 1))
   })
 </script>
 
@@ -43,11 +42,17 @@
 />
 
 <main class="mx-4">
-  <h2 class="text-5xl font-semibold mb-2">{repo.name}</h2>
+  <h2 class="text-5xl font-semibold mt-1 mb-4">{repo.name}</h2>
   <p>{repo.description}</p>
   <h3 class="text-3xl font-bold mt-4">
     {i.translate({ en: 'Environment Variable', ja: '環境変数' })}
   </h3>
+  <p>
+    {i.translate({
+      en: 'All environment variables are saved encrypted by default.',
+      ja: 'すべての環境変数はデフォルトで暗号化して保存されます。'
+    })}
+  </p>
   <table>
     <thead>
       <tr>
@@ -57,16 +62,28 @@
       </tr>
     </thead>
     <tbody>
-      {#each Object.entries(envs) as [key, value]}
+      {#each envs as [key, value], index}
         <tr>
-          <td>{key}</td>
+          <td>
+            <input
+              type="text"
+              value={key}
+              class={duplicatedKeys.has(key)
+                ? 'border-red-500'
+                : 'border-zinc-500'}
+              oninput={(e) => {
+                envs[index][0] = e.currentTarget.value
+              }}
+            />
+          </td>
           <td>=</td>
           <td>
             <input
               type="text"
               {value}
-              onchange={(e) => {
-                envs[key] = e.currentTarget.value
+              class="border-zinc-500"
+              oninput={(e) => {
+                envs[index][1] = e.currentTarget.value
               }}
             />
           </td>
@@ -74,7 +91,7 @@
             <button
               class="pp p-2 rounded-full hover:text-red-500"
               onclick={() => {
-                delete envs[key]
+                envs.splice(index, 1)
               }}
             >
               <Trash2Icon />
@@ -88,9 +105,10 @@
             type="text"
             bind:this={key_dom}
             bind:value={key}
+            class="border-zinc-500"
             onkeypress={(e) => {
               if (e.key === 'Enter') {
-                envs[key] = value
+                envs[envs.length] = [key, value]
                 key = ''
                 value = ''
               }
@@ -102,9 +120,10 @@
           <input
             type="text"
             bind:value
+            class="border-zinc-500"
             onkeypress={(e) => {
               if (e.key === 'Enter' && key) {
-                envs[key] = value
+                envs[envs.length] = [key, value]
                 key = ''
                 value = ''
                 key_dom?.focus()
@@ -117,7 +136,7 @@
             <ActionButton
               Class="pp p-2 rounded-full"
               onClick={() => {
-                envs[key] = value
+                envs[envs.length] = [key, value]
                 key = ''
                 value = ''
                 key_dom?.focus()
@@ -130,11 +149,24 @@
       </tr>
     </tbody>
   </table>
+  <ActionButton
+    Class="btn main md mt-4"
+    onClick={() =>
+      request.put('envs', {
+        invalidate: () => true,
+        body: JSON.stringify(Object.fromEntries(envs))
+      })}
+    label={i.translate({
+      en: 'Save',
+      ja: '保存'
+    })}
+    disabled={duplicatedKeys.size !== 0}
+  />
 </main>
 
 <style lang="postcss">
   input {
-    @apply bg-inherit border border-zinc-500 rounded py-1 px-2;
+    @apply bg-inherit border rounded py-1 px-2;
   }
   th,
   td {

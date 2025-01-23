@@ -36,7 +36,10 @@ export const load = async ({
   }
 
   const envs = db_repo?.envs
-    ? JSON.parse(await decrypt(db_repo.envs, ENVS_PRIVATE_KEY)) as Record<string, string>
+    ? (JSON.parse(await decrypt(db_repo.envs, ENVS_PRIVATE_KEY)) as Record<
+        string,
+        string
+      >)
     : {}
 
   return {
