@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { goto, invalidateAll } from '$app/navigation'
   import { page } from '$app/state'
   import ProfileImage from '$lib/components/ProfileImage.svelte'
+  import TabMenu from '$lib/components/TabMenu.svelte'
+  import { dict } from '$lib/dict.svelte'
   import { i } from '$lib/i18n'
   import { applyGoogleTranslate } from '$shared/applyGoogleTranslate'
   import {
@@ -15,15 +18,12 @@
     LanguageManager,
     LanguageSwitcher
   } from '@jill64/svelte-suite/i18n/app'
+  import { LogOutIcon, SettingsIcon } from '@jill64/svelte-suite/icons'
+  import { ActionButton } from '@jill64/svelte-suite/input'
+  import { slide } from 'svelte/transition'
   import '../app.postcss'
   import LoadingBar from './LoadingBar.svelte'
   import logo from './logo.png'
-  import { slide } from 'svelte/transition'
-  import { LogOutIcon, SettingsIcon } from '@jill64/svelte-suite/icons'
-  import { ActionButton } from '@jill64/svelte-suite/input'
-  import { goto, invalidateAll } from '$app/navigation'
-  import TabMenu from '$lib/components/TabMenu.svelte'
-  import { dict } from '$lib/dict.svelte'
 
   let { data, children } = $props()
 
@@ -54,10 +54,12 @@
 
 <LoadingBar />
 <header class="flex items-center justify-between">
-  <img src={logo} alt="logo" width="48px" />
-  <h1 class="text-2xl font-bold bg-[#161616] text-white py-2 pr-2">
-    Wraith CI
-  </h1>
+  <a href="/" class="flex items-center">
+    <img src={logo} alt="logo" width="48px" />
+    <h1 class="text-2xl font-bold bg-[#161616] text-white py-2 pr-2">
+      Wraith CI
+    </h1>
+  </a>
   <span
     class="mr-auto font-bold text-xs rounded-full bg-orange-500 px-1.5 py-0.5 text-white"
   >

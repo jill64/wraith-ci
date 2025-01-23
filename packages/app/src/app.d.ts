@@ -1,5 +1,6 @@
 import type { Database } from '$shared/db/schema'
 import type { Kysely } from 'kysely'
+import type { Octokit } from 'octokit'
 
 declare global {
   namespace App {
@@ -13,6 +14,7 @@ declare global {
         email_verified?: boolean
         picture?: string
       }
+      kit: Octokit
     }
     interface PageData {
       title: {

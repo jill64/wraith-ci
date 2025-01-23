@@ -53,6 +53,9 @@ importers:
       octoflare:
         specifier: 0.26.2
         version: 0.26.2
+      octokit:
+        specifier: 4.1.0
+        version: 4.1.0
       svelte:
         specifier: 5.19.2
         version: 5.19.2
@@ -100,6 +103,9 @@ importers:
       '@jill64/svelte-observer':
         specifier: 0.0.1
         version: 0.0.1(svelte@5.19.2)
+      '@jill64/svelte-pagination':
+        specifier: 3.1.0
+        version: 3.1.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
       '@jill64/svelte-suite':
         specifier: 2.1.1
         version: 2.1.1(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
@@ -765,6 +771,12 @@ packages:
 
   '@jill64/svelte-ogp@2.0.2':
     resolution: {integrity: sha512-BGXZ+NBu1H5Sks3ZunwcTWJiLQugi+k9FizpqS1A/bKj2NBmSU88uJF+4Jibs9D00Spy+nJ96nZC0ASGtiyxUA==}
+    peerDependencies:
+      '@sveltejs/kit': ^2.0.0
+      svelte: ^5.0.0
+
+  '@jill64/svelte-pagination@3.1.0':
+    resolution: {integrity: sha512-EFgy+JK3bURBX0u57amVm44hSLHQxaeDcc6mvERQx1pZfDpVDB25CmJUVV38x/Bsxa3e/CEOZbfb2B+mDzqQNg==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
       svelte: ^5.0.0
@@ -1956,6 +1968,10 @@ packages:
     resolution: {integrity: sha512-kfqH80Yuuux4fLbZ4SvObjCvVu89U0eCh5+fulh6tr/hJkDYS1inXDGnNJDOp312GANMEhWWMLYmjQR8MvSSMQ==}
     engines: {node: '>= 18'}
 
+  octokit@4.1.0:
+    resolution: {integrity: sha512-/UrQAOSvkc+lUUWKNzy4ByAgYU9KpFzZQt8DnC962YmQuDiZb1SNJ90YukCCK5aMzKqqCA+z1kkAlmzYvdYKag==}
+    engines: {node: '>= 18'}
+
   ohash@1.1.4:
     resolution: {integrity: sha512-FlDryZAahJmEF3VR3w1KogSEdWX3WhA5GPakFx4J81kEAiHyLMpdLLElS8n8dfNadMgAne/MywcvmogzscVt4g==}
 
@@ -3065,7 +3081,16 @@ snapshots:
       '@sveltejs/kit': 2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
       svelte: 5.19.2
 
+<<<<<<< HEAD
   '@jill64/svelte-storage@2.0.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)':
+=======
+  '@jill64/svelte-pagination@3.1.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)':
+    dependencies:
+      '@sveltejs/kit': 2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
+      svelte: 5.19.2
+
+  '@jill64/svelte-storage@2.0.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.8)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)':
+>>>>>>> ab28d20 (feat: implement repository listing and navigation, add octokit integration)
     dependencies:
       '@jill64/typed-storage': 3.1.5
       '@sveltejs/kit': 2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
@@ -4369,6 +4394,19 @@ snapshots:
       octokit: 4.0.3
 
   octokit@4.0.3:
+    dependencies:
+      '@octokit/app': 15.1.2
+      '@octokit/core': 6.1.3
+      '@octokit/oauth-app': 7.1.5
+      '@octokit/plugin-paginate-graphql': 5.2.4(@octokit/core@6.1.3)
+      '@octokit/plugin-paginate-rest': 11.4.0(@octokit/core@6.1.3)
+      '@octokit/plugin-rest-endpoint-methods': 13.3.0(@octokit/core@6.1.3)
+      '@octokit/plugin-retry': 7.1.3(@octokit/core@6.1.3)
+      '@octokit/plugin-throttling': 9.4.0(@octokit/core@6.1.3)
+      '@octokit/request-error': 6.1.6
+      '@octokit/types': 13.7.0
+
+  octokit@4.1.0:
     dependencies:
       '@octokit/app': 15.1.2
       '@octokit/core': 6.1.3
