@@ -1,8 +1,9 @@
+import { ACCESS_TOKEN_PRIVATE_KEY } from '$env/static/private'
 import { PUBLIC_BASE_URL } from '$env/static/public'
 import { attempt } from '@jill64/attempt'
 import { error, redirect, type RequestEvent } from '@sveltejs/kit'
-import { logout } from './logout'
 import { decrypt } from '../decrypt'
+import { logout } from './logout'
 
 export const auth = async (event: RequestEvent) => {
   const { cookies, url } = event
@@ -10,7 +11,7 @@ export const auth = async (event: RequestEvent) => {
   const cookie = cookies.get('auth')
 
   if (cookie) {
-    const accessToken = await decrypt(cookie)
+    const accessToken = await decrypt(cookie, ACCESS_TOKEN_PRIVATE_KEY)
 
     const payload = await attempt(
       async () => {

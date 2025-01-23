@@ -1,4 +1,3 @@
-import { ACCESS_TOKEN_PRIVATE_KEY } from '$env/static/private'
 import crypto from 'node:crypto'
 
 const base64ToBuffer = (base64: string): Uint8Array =>
@@ -46,7 +45,7 @@ async function decryptWithAes(
   const decoder = new TextDecoder()
   return decoder.decode(decrypted)
 }
-export const decrypt = async (encrypted_text: string) => {
+export const decrypt = async (encrypted_text: string, key: string) => {
   const { encryptedData, iv, encryptedSessionKey } = JSON.parse(
     encrypted_text
   ) as {
@@ -61,7 +60,7 @@ export const decrypt = async (encrypted_text: string) => {
 
   const privateKey = await crypto.subtle.importKey(
     'jwk',
-    JSON.parse(ACCESS_TOKEN_PRIVATE_KEY),
+    JSON.parse(key),
     {
       name: 'RSA-OAEP',
       hash: { name: 'SHA-256' }

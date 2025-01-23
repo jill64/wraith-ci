@@ -1,4 +1,3 @@
-import { ACCESS_TOKEN_PUBLIC_KEY } from '$env/static/private'
 import { Buffer } from 'node:buffer'
 import crypto from 'node:crypto'
 
@@ -49,11 +48,11 @@ async function encryptAesKeyWithRsa(
   )
 }
 
-export const encrypt = async (plainText: string) => {
+export const encrypt = async (plainText: string, key: string) => {
   const [publicKey, aesKey] = await Promise.all([
     crypto.subtle.importKey(
       'jwk',
-      JSON.parse(ACCESS_TOKEN_PUBLIC_KEY),
+      JSON.parse(key),
       {
         name: 'RSA-OAEP',
         hash: { name: 'SHA-256' }

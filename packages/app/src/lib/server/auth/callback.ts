@@ -1,4 +1,5 @@
 import {
+  ACCESS_TOKEN_PUBLIC_KEY,
   GITHUB_OAUTH_CLIENT_ID,
   GITHUB_OAUTH_CLIENT_SECRET
 } from '$env/static/private'
@@ -81,7 +82,7 @@ export const callback = async ({ url, cookies }: RequestEvent) => {
     error(401, 'Invalid access token (verification failed).')
   }
 
-  const encryptedToken = await encrypt(accessToken)
+  const encryptedToken = await encrypt(accessToken, ACCESS_TOKEN_PUBLIC_KEY)
 
   cookies.set('auth', encryptedToken, {
     httpOnly: true,
