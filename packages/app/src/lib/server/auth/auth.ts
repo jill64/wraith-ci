@@ -2,6 +2,7 @@ import { PUBLIC_BASE_URL } from '$env/static/public'
 import { attempt } from '@jill64/attempt'
 import { error, redirect, type RequestEvent } from '@sveltejs/kit'
 import { logout } from './logout'
+import { decrypt } from '../decrypt'
 
 export const auth = async (event: RequestEvent) => {
   const { cookies, url } = event
@@ -9,12 +10,14 @@ export const auth = async (event: RequestEvent) => {
   const cookie = cookies.get('auth')
 
   if (cookie) {
+    const accessToken = await decrypt(cookie)
+    
     const payload = await attempt(
       async () => {
         const userResponse = await fetch('https://api.github.com/user', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${cookie}`,
+            Authorization: `Bearer ${accessToken}`,
             Accept: 'application/json'
           }
         })

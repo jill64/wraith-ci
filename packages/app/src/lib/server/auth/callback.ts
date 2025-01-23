@@ -4,6 +4,7 @@ import {
 } from '$env/static/private'
 import { PUBLIC_BASE_URL } from '$env/static/public'
 import { error, redirect, type RequestEvent } from '@sveltejs/kit'
+import { encrypt } from '../encrypt'
 
 export const callback = async ({ url, cookies }: RequestEvent) => {
   const code = url.searchParams.get('code')
@@ -80,7 +81,9 @@ export const callback = async ({ url, cookies }: RequestEvent) => {
     error(401, 'Invalid access token (verification failed).')
   }
 
-  cookies.set('auth', accessToken, {
+  const encryptedToken = await encrypt(accessToken)
+
+  cookies.set('auth', encryptedToken, {
     httpOnly: true,
     sameSite: 'lax',
     maxAge: 1000,

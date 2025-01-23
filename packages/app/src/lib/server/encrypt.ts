@@ -1,4 +1,4 @@
-import { API_BRIDGE_PUBLIC_KEY } from '$env/static/private'
+import { ACCESS_TOKEN_PUBLIC_KEY } from '$env/static/private'
 import { Buffer } from 'node:buffer'
 import crypto from 'node:crypto'
 
@@ -53,7 +53,7 @@ export const encrypt = async (plainText: string) => {
   const [publicKey, aesKey] = await Promise.all([
     crypto.subtle.importKey(
       'jwk',
-      JSON.parse(API_BRIDGE_PUBLIC_KEY),
+      JSON.parse(ACCESS_TOKEN_PUBLIC_KEY),
       {
         name: 'RSA-OAEP',
         hash: { name: 'SHA-256' }
@@ -74,9 +74,9 @@ export const encrypt = async (plainText: string) => {
   const { encryptedData, iv } = await encryptWithAes(aesKey, plainText)
   const encryptedSessionKey = await encryptAesKeyWithRsa(publicKey, aesKey)
 
-  return {
+  return JSON.stringify({
     encryptedData: bufferToBase64(new Uint8Array(encryptedData)),
     iv: bufferToBase64(iv),
     encryptedSessionKey: bufferToBase64(new Uint8Array(encryptedSessionKey))
-  }
+  })
 }

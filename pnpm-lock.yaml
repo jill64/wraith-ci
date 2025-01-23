@@ -59,6 +59,9 @@ importers:
       svelte:
         specifier: 5.19.2
         version: 5.19.2
+      tsx:
+        specifier: 4.19.2
+        version: 4.19.2
       typescanner:
         specifier: 0.5.3
         version: 0.5.3
