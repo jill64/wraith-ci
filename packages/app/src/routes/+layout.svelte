@@ -1,9 +1,11 @@
 <script lang="ts">
   import { page } from '$app/state'
+  import ProfileImage from '$lib/components/ProfileImage.svelte'
   import { i } from '$lib/i18n'
   import { applyGoogleTranslate } from '$shared/applyGoogleTranslate'
   import {
     FlipButton,
+    Menu,
     OGP,
     ThemeManager,
     Toaster,
@@ -16,8 +18,14 @@
   import '../app.postcss'
   import LoadingBar from './LoadingBar.svelte'
   import logo from './logo.png'
+  import { slide } from 'svelte/transition'
+  import { LogOutIcon, SettingsIcon } from '@jill64/svelte-suite/icons'
+  import { ActionButton } from '@jill64/svelte-suite/input'
+  import { goto, invalidateAll } from '$app/navigation'
+  import TabMenu from '$lib/components/TabMenu.svelte'
+  import { dict } from '$lib/dict.svelte'
 
-  let { children } = $props()
+  let { data, children } = $props()
 
   let title = $derived(
     page.data.title
@@ -55,6 +63,51 @@
   >
     BETA
   </span>
+  <TabMenu
+    routes={[
+      ['/pricing', dict('plan')],
+      ['https://wraith.dev/docs', dict('documentation')],
+      ['/faq', 'FAQ'],
+      [
+        i.translate({
+          en: applyGoogleTranslate('https://suwasystem.com/contact', 'en'),
+          ja: 'https://suwasystem.com/contact'
+        }),
+        i.translate({ en: 'Contact us', ja: 'お問い合わせ' })
+      ]
+    ]}
+  />
+  <Menu Class="relative">
+    {#snippet button()}
+      <ProfileImage user={data.oauth_user} />
+    {/snippet}
+    {#snippet contents(close)}
+      <div
+        class="absolute right-0 top-10 p-4 menu flex-col gap-2"
+        transition:slide
+      >
+        <a
+          href="/me"
+          class="flex items-center whitespace-nowrap gap-2 pp p-2 rounded"
+          onclick={close}
+        >
+          <SettingsIcon />
+          {i.translate({ en: 'Settings', ja: '設定' })}
+        </a>
+        <ActionButton
+          Class="flex items-center whitespace-nowrap gap-2 pp p-2 rounded"
+          onClick={async () => {
+            await invalidateAll()
+            await goto('/api/auth/logout')
+            close()
+          }}
+          label={i.translate({ en: 'Logout', ja: 'ログアウト' })}
+        >
+          <LogOutIcon />
+        </ActionButton>
+      </div>
+    {/snippet}
+  </Menu>
   <LanguageSwitcher
     stroke={theme.isDark ? '#FFF' : '#000'}
     menuClass="absolute top-10 right-0 menu flex flex-col"
