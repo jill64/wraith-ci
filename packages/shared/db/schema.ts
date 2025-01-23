@@ -32,7 +32,7 @@ export interface UserTable extends Metadata {
 
 export interface RepoTable extends Metadata {
   github_repo_id: Unique<Immutable<number>>
-  envs?: string
+  encrypted_envs?: string
 }
 
 export type User = Selectable<UserTable>
