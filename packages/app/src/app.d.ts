@@ -1,22 +1,15 @@
 import type { Database } from '$shared/db/schema'
 import type { Kysely } from 'kysely'
-import type { Octokit } from 'octokit'
+import type { Octokit } from '@octokit/rest'
 declare global {
   namespace App {
     // interface Error {}
     interface Locals {
       db: Kysely<Database>
-      oauth_user: {
-        id: string
-        name: string
-        email: string
-        email_verified?: boolean
-        picture?: string
-      }
-      kit: Octokit
-      installation: Awaited<
-        ReturnType<Octokit['rest']['apps']['getInstallation']>
+      github_user: Awaited<
+        ReturnType<Octokit['rest']['users']['getAuthenticated']>
       >['data']
+      kit: Octokit
     }
     interface PageData {
       title: {

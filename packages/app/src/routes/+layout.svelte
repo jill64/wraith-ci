@@ -81,7 +81,7 @@
   />
   <Menu Class="relative">
     {#snippet button()}
-      <ProfileImage user={data.oauth_user} />
+      <ProfileImage user={data.github_user} />
     {/snippet}
     {#snippet contents(close)}
       <div

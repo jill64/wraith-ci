@@ -1,7 +1,3 @@
-import { auth } from '$lib/server/auth'
-import { redirect } from '@sveltejs/kit'
+import { callback } from '$lib/server/auth/callback.js'
 
-export const GET = async (param) => {
-  const url = await auth.callback(param)
-  redirect(302, url)
-}
+export const GET = callback

@@ -1,6 +1,6 @@
-export const load = async ({ locals: { kit, oauth_user } }) => {
+export const load = async ({ locals: { kit, github_user } }) => {
   // const { data: org_list } = await kit.request('GET /user/orgs', {
-  //   username: oauth_user.name,
+  //   username: github_user.name,
   //   per_page: 100
   // })
 

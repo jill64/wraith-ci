@@ -4,21 +4,18 @@
     user
   }: {
     size?: string
-    user: {
-      name: string | null
-      picture?: string | null
-    }
+    user: App.Locals['github_user']
   } = $props()
 
   let initial = $derived(user.name?.[0] || '')
 </script>
 
-{#if user.picture}
+{#if user.avatar_url}
   <img
     style:width={size}
     style:height={size}
     class="object-cover rounded-full"
-    src={user.picture}
+    src={user.avatar_url}
     alt="profile"
   />
 {:else}
