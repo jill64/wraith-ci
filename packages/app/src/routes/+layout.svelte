@@ -46,8 +46,8 @@
 <OGP {title} {description} site_name={title} image="/og-image.png" />
 
 <svelte:head>
-  <link rel="icon" href="favicon.png" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="icon" href="/favicon.png" />
+  <link rel="/apple-touch-icon" href="apple-touch-icon.png" />
   <title>{title}</title>
   <meta name="description" content={description} />
 </svelte:head>
