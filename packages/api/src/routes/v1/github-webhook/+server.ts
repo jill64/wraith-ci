@@ -5,7 +5,6 @@ import {
   OCTOFLARE_PRIVATE_KEY_PKCS8,
   OCTOFLARE_WEBHOOK_SECRET
 } from '$env/static/private'
-import { encrypt } from '$lib/encrypt'
 import { schema } from '$shared/ghost/schema'
 import type { GhostName } from '$shared/ghost/types/GhostName'
 import type { GhostStatus } from '$shared/ghost/types/GhostStatus'
@@ -18,7 +17,7 @@ import { onPR } from './onPR'
 import { onPRCommentEdited } from './onPRCommentEdited'
 import { onPush } from './onPush'
 
-export const POST = async ({ request }) => {
+export const POST = async ({ request, locals: { db } }) => {
   const fetcher = octoflare<WraithPayload>(
     async ({ payload, installation }) => {
       if (!installation) {
@@ -109,7 +108,11 @@ export const POST = async ({ request }) => {
         output: generateOutput(wraith_status)
       })
 
-      const encrypted = await encrypt(JSON.stringify({}))
+      const { envs: encrypted_envs } = await db
+        .selectFrom('repo')
+        .select('envs')
+        .where('github_repo_id', '=', repository.id)
+        .executeTakeFirstOrThrow()
 
       await Promise.all([
         task(),
@@ -118,7 +121,7 @@ export const POST = async ({ request }) => {
           head_sha,
           ref,
           pull_number,
-          encrypted
+          encrypted_envs
         })
       ])
 

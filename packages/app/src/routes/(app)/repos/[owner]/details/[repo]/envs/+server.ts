@@ -1,5 +1,5 @@
 import { ENVS_PUBLIC_KEY } from '$env/static/private'
-import { encrypt } from '$lib/server/encrypt.js'
+import { encrypt } from '$shared/encrypt.js'
 import { run } from '$shared/db/run.js'
 import { ok } from '$shared/response/ok.js'
 import { error } from '@sveltejs/kit'

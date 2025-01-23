@@ -2,7 +2,7 @@ import { ACCESS_TOKEN_PRIVATE_KEY } from '$env/static/private'
 import { PUBLIC_BASE_URL } from '$env/static/public'
 import { attempt } from '@jill64/attempt'
 import { error, redirect, type RequestEvent } from '@sveltejs/kit'
-import { decrypt } from '../decrypt'
+import { decrypt } from '$shared/decrypt'
 import { logout } from './logout'
 
 export const auth = async (event: RequestEvent) => {

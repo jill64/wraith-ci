@@ -1,5 +1,5 @@
 import { ENVS_PRIVATE_KEY } from '$env/static/private'
-import { decrypt } from '$lib/server/decrypt.js'
+import { decrypt } from '$shared/decrypt.js'
 import { run } from '$shared/db/run.js'
 
 export const load = async ({

@@ -5,7 +5,7 @@ import {
 } from '$env/static/private'
 import { PUBLIC_BASE_URL } from '$env/static/public'
 import { error, redirect, type RequestEvent } from '@sveltejs/kit'
-import { encrypt } from '../encrypt'
+import { encrypt } from '$shared/encrypt'
 
 export const callback = async ({ url, cookies }: RequestEvent) => {
   const code = url.searchParams.get('code')

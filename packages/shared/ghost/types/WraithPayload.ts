@@ -13,9 +13,5 @@ export type WraithPayload = {
     }
   }
   */
-  encrypted: {
-    encryptedData: string
-    iv: string
-    encryptedSessionKey: string
-  }
+  encrypted_envs?: string
 }
