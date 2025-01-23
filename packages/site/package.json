@@ -12,7 +12,7 @@
   "devDependencies": {
     "@jill64/playwright-config": "2.4.2",
     "@jill64/svelte-suite": "2.1.1",
-    "@jill64/svelte-tailwind": "1.2.78",
+    "@jill64/svelte-tailwind": "1.2.79",
     "@playwright/test": "1.49.1"
   }
 }
