@@ -12,11 +12,14 @@ import type { GhostStatus } from '$shared/ghost/types/GhostStatus'
 import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
 import { error, text } from '@sveltejs/kit'
 import { octoflare, type OctoflareEnv } from 'octoflare'
+import { assign } from './assign'
 import { generateOutput } from './generateOutput'
 import { isOwnerTransferred } from './isOwnerTransfered'
+import { merge } from './merge'
 import { onPR } from './onPR'
 import { onPRCommentEdited } from './onPRCommentEdited'
 import { onPush } from './onPush'
+import { updateOutput } from './updateOutput'
 
 export const POST = async ({ request }) => {
   const fetcher = octoflare<WraithPayload>(
@@ -101,15 +104,70 @@ export const POST = async ({ request }) => {
         ])
       )
 
-      const { dispatchWorkflow } = await installation.createCheckRun({
-        head_sha,
-        owner,
-        repo,
-        name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
-        output: generateOutput(wraith_status)
-      })
+      const { dispatchWorkflow, updateCheckRun } =
+        await installation.createCheckRun({
+          head_sha,
+          owner,
+          repo,
+          name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
+          output: generateOutput(wraith_status)
+        })
 
       const encrypted = await encrypt(JSON.stringify({}))
+
+      if (triggered_ghosts.includes('merge')) {
+        const result = await merge({
+          payload: {
+            owner,
+            repo,
+            pull_number
+          },
+          octokit: installation.kit
+        })
+
+        const conclusion = typeof result === 'string' ? result : result.status
+
+        await updateCheckRun(
+          updateOutput({
+            ghost_name: 'merge',
+            result: conclusion,
+            output: {
+              title: 'Auto Merge',
+              summary: typeof result === 'string' ? '' : result.detail
+            },
+            job_url: undefined
+          })
+        )
+
+        triggered_ghosts.splice(triggered_ghosts.indexOf('merge'), 1)
+      }
+
+      if (triggered_ghosts.includes('assign')) {
+        const result = await assign({
+          payload: {
+            owner,
+            repo,
+            pull_number
+          },
+          octokit: installation.kit
+        })
+
+        const conclusion = typeof result === 'string' ? result : result.status
+
+        await updateCheckRun(
+          updateOutput({
+            ghost_name: 'assign',
+            result: conclusion,
+            output: {
+              title: 'Reviewer Assign',
+              summary: typeof result === 'string' ? '' : result.reason
+            },
+            job_url: undefined
+          })
+        )
+
+        triggered_ghosts.splice(triggered_ghosts.indexOf('assign'), 1)
+      }
 
       await Promise.all([
         task(),

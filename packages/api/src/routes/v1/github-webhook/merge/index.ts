@@ -1,17 +1,23 @@
-import { Ghost } from '../../../types/Ghost.js'
 import { attempt } from '@jill64/attempt'
+import type { Octokit } from 'octoflare/octokit'
 import { enableAutoMerge } from './enableAutoMerge.js'
 import { isAllowUsers } from './isAllowedUsers.js'
 
-export const merge: Ghost = async ({ payload, octokit }) => {
-  const {
-    owner,
-    repo,
-    data: { pull_number }
-  } = payload
+export const merge = async ({
+  payload,
+  octokit
+}: {
+  payload: {
+    owner: string
+    repo: string
+    pull_number: number | null
+  }
+  octokit: Octokit
+}) => {
+  const { owner, repo, pull_number } = payload
 
   if (!pull_number) {
-    return 'skipped'
+    return 'skipped' as const
   }
 
   const [{ data: pull_request }, { data: repository }] = await Promise.all([
@@ -37,7 +43,7 @@ export const merge: Ghost = async ({ payload, octokit }) => {
     return {
       status: 'skipped',
       detail: 'This user is not allowed to merge'
-    }
+    } as const
   }
 
   const branch_protection = await attempt(
@@ -54,7 +60,7 @@ export const merge: Ghost = async ({ payload, octokit }) => {
     return {
       status: 'skipped',
       detail: 'This repository does not have required status checks'
-    }
+    } as const
   }
 
   await enableAutoMerge({
@@ -64,5 +70,5 @@ export const merge: Ghost = async ({ payload, octokit }) => {
     pull_number: pull_request.number
   })
 
-  return 'success'
+  return 'success' as const
 }

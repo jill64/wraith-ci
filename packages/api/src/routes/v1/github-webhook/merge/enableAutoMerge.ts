@@ -1,4 +1,4 @@
-import { ActionOctokit } from 'octoflare/action'
+import type { Octokit } from 'octoflare/octokit'
 
 export const enableAutoMerge = async ({
   repo,
@@ -8,7 +8,7 @@ export const enableAutoMerge = async ({
 }: {
   repo: string
   owner: string
-  octokit: ActionOctokit
+  octokit: Octokit
   pull_number: number
 }) => {
   const {

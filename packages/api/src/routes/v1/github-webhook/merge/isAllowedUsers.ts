@@ -1,4 +1,4 @@
-import { ActionOctokit } from 'octoflare/action'
+import type { Octokit } from 'octoflare/octokit'
 
 const defaultAllowUsers = ['dependabot[bot]', 'renovate[bot]', 'wraith-ci[bot]']
 
@@ -10,7 +10,7 @@ export const isAllowUsers = async ({
 }: {
   name: string | undefined
   owner: string
-  octokit: ActionOctokit
+  octokit: Octokit
   ownerType: string
 }) => {
   if (!name) {
