@@ -111,20 +111,13 @@ importers:
         version: 0.0.1(svelte@5.19.2)
       '@jill64/svelte-pagination':
         specifier: 3.1.0
-        version: 3.1.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
+        version: 3.1.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
       '@jill64/svelte-suite':
         specifier: 2.1.1
-<<<<<<< HEAD
-        version: 2.1.1(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
+        version: 2.1.1(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
       '@octokit/rest':
         specifier: 21.1.0
         version: 21.1.0
-=======
-        version: 2.1.1(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
-      cf-auth0:
-        specifier: 0.5.0
-        version: 0.5.0
->>>>>>> origin/main
       svelte-hydrated:
         specifier: 2.0.0
         version: 2.0.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)
@@ -3083,16 +3076,12 @@ snapshots:
       '@sveltejs/kit': 2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
       svelte: 5.19.2
 
-<<<<<<< HEAD
-  '@jill64/svelte-pagination@3.1.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)':
+  '@jill64/svelte-pagination@3.1.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)':
     dependencies:
-      '@sveltejs/kit': 2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
+      '@sveltejs/kit': 2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
       svelte: 5.19.2
 
-  '@jill64/svelte-storage@2.0.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.9)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)':
-=======
   '@jill64/svelte-storage@2.0.0(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)':
->>>>>>> origin/main
     dependencies:
       '@jill64/typed-storage': 3.1.5
       '@sveltejs/kit': 2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.2)(vite@6.0.11(@types/node@22.10.10)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
