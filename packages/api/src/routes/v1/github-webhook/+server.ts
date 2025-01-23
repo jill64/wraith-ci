@@ -108,9 +108,9 @@ export const POST = async ({ request, locals: { db } }) => {
         output: generateOutput(wraith_status)
       })
 
-      const { envs: encrypted_envs } = await db
+      const { encrypted_envs } = await db
         .selectFrom('repo')
-        .select('envs')
+        .select('encrypted_envs')
         .where('github_repo_id', '=', repository.id)
         .executeTakeFirstOrThrow()
 

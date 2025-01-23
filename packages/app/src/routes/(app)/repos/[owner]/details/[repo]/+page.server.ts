@@ -1,6 +1,6 @@
 import { ENVS_PRIVATE_KEY } from '$env/static/private'
-import { decrypt } from '$shared/decrypt.js'
 import { run } from '$shared/db/run.js'
+import { decrypt } from '$shared/decrypt.js'
 
 export const load = async ({
   locals: { kit, db, github_user },
@@ -13,7 +13,7 @@ export const load = async ({
 
   const db_repo = await db
     .selectFrom('repo')
-    .select(['id', 'envs'])
+    .select(['id', 'encrypted_envs'])
     .where('github_repo_id', '=', repository.id)
     .executeTakeFirst()
 
@@ -35,11 +35,10 @@ export const load = async ({
     )
   }
 
-  const envs = db_repo?.envs
-    ? (JSON.parse(await decrypt(db_repo.envs, ENVS_PRIVATE_KEY)) as Record<
-        string,
-        string
-      >)
+  const envs = db_repo?.encrypted_envs
+    ? (JSON.parse(
+        await decrypt(db_repo.encrypted_envs, ENVS_PRIVATE_KEY)
+      ) as Record<string, string>)
     : {}
 
   return {

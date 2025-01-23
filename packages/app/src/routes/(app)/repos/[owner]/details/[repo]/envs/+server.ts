@@ -37,7 +37,7 @@ export const PUT = async ({
     db
       .updateTable('repo')
       .set({
-        envs: encrypted_envs,
+        encrypted_envs,
         updated_at: new Date().toISOString(),
         updated_by: me.id
       })
