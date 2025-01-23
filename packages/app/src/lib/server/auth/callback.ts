@@ -90,10 +90,5 @@ export const callback = async ({ url, cookies }: RequestEvent) => {
     path: '/'
   })
 
-  // await this.setAuthCookie({
-  //   cookies,
-  //   payload: authUser
-  // })
-
   redirect(302, returnUrl)
 }

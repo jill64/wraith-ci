@@ -11,7 +11,7 @@ export const auth = async (event: RequestEvent) => {
 
   if (cookie) {
     const accessToken = await decrypt(cookie)
-    
+
     const payload = await attempt(
       async () => {
         const userResponse = await fetch('https://api.github.com/user', {
@@ -38,7 +38,7 @@ export const auth = async (event: RequestEvent) => {
 
     return {
       payload,
-      accessToken: cookie
+      accessToken
     }
   }
 

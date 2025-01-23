@@ -1,6 +1,6 @@
+import { Octokit } from '@octokit/rest'
 import { type Handle, redirect } from '@sveltejs/kit'
 import { auth } from './auth'
-import { genOctokit } from './genOctokit'
 import { logout } from './logout'
 
 export const authHandle: Handle = async ({ resolve, event }) => {
@@ -17,7 +17,9 @@ export const authHandle: Handle = async ({ resolve, event }) => {
 
   event.locals.github_user = payload
 
-  const kit = await genOctokit(event, accessToken)
+  const kit = new Octokit({
+    auth: accessToken
+  })
 
   event.locals.kit = kit
 
