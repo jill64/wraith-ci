@@ -23,7 +23,7 @@ interface Metadata {
   updated_by: ID
 }
 export interface UserTable extends Metadata {
-  oauth_id: Unique<Immutable<string>>
+  github_user_id: Unique<Immutable<number>>
   plan_cache: 'FREE' | 'STARTER' | 'PRO'
   plan_cached_at: string
 }
