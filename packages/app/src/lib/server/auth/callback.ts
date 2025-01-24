@@ -4,8 +4,8 @@ import {
   GITHUB_OAUTH_CLIENT_SECRET
 } from '$env/static/private'
 import { PUBLIC_BASE_URL } from '$env/static/public'
-import { error, redirect, type RequestEvent } from '@sveltejs/kit'
 import { encrypt } from '$shared/encrypt'
+import { error, redirect, type RequestEvent } from '@sveltejs/kit'
 
 export const callback = async ({ url, cookies }: RequestEvent) => {
   const code = url.searchParams.get('code')
@@ -79,7 +79,10 @@ export const callback = async ({ url, cookies }: RequestEvent) => {
   )
 
   if (!checkResponse.ok) {
-    error(401, 'Invalid access token (verification failed).')
+    error(
+      401,
+      `Invalid access token (verification failed). : ${await checkResponse.text()}`
+    )
   }
 
   const encryptedToken = await encrypt(accessToken, ACCESS_TOKEN_PUBLIC_KEY)
