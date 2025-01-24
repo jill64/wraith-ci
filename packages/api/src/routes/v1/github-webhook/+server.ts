@@ -100,6 +100,8 @@ export const POST = async ({ request, locals: { db } }) => {
         ])
       )
 
+      console.log('wraith_status', wraith_status)
+
       const { dispatchWorkflow } = await installation.createCheckRun({
         head_sha,
         owner,
@@ -108,11 +110,15 @@ export const POST = async ({ request, locals: { db } }) => {
         output: generateOutput(wraith_status)
       })
 
+      console.log('dispatchWorkflow')
+
       const registered_repo = await db
         .selectFrom('repo')
         .select('encrypted_envs')
         .where('github_repo_id', '=', repository.id)
         .executeTakeFirst()
+
+      console.log('registered_repo', registered_repo)
 
       await Promise.all([
         task(),
@@ -131,13 +137,16 @@ export const POST = async ({ request, locals: { db } }) => {
     }
   )
 
-  const res = await fetcher.fetch(request, {
-    OCTOFLARE_APP_ID,
-    OCTOFLARE_PRIVATE_KEY_PKCS8,
-    OCTOFLARE_WEBHOOK_SECRET,
-    OCTOFLARE_APP_OWNER,
-    OCTOFLARE_APP_REPO
-  } as Record<string, never> & OctoflareEnv)
-
-  return res
+  try {
+    const res = await fetcher.fetch(request, {
+      OCTOFLARE_APP_ID,
+      OCTOFLARE_PRIVATE_KEY_PKCS8,
+      OCTOFLARE_WEBHOOK_SECRET,
+      OCTOFLARE_APP_OWNER,
+      OCTOFLARE_APP_REPO
+    } as Record<string, never> & OctoflareEnv)
+    return res
+  } catch (err) {
+    return error(500, (err as Error).message)
+  }
 }
