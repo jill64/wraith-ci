@@ -47,7 +47,6 @@ jobs:
           name: ${{ matrix.name }}
           run_attempt: ${{ github.run_attempt }}
         env:
-          CLOUDFLARE_API_TOKEN: ${{ matrix.name == 'deploy' && secrets.CLOUDFLARE_API_TOKEN }}
           NODE_AUTH_TOKEN: ${{ matrix.name == 'release' && secrets.NPM_TOKEN }}
           ENVS_PRIVATE_KEY: ${{ secrets.ENVS_PRIVATE_KEY}}
 
