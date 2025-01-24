@@ -18143,7 +18143,7 @@ var require_summary = __commonJS({
     exports2.summary = exports2.markdownSummary = exports2.SUMMARY_DOCS_URL = exports2.SUMMARY_ENV_VAR = void 0;
     var os_1 = require("os");
     var fs_1 = require("fs");
-    var { access, appendFile, writeFile: writeFile6 } = fs_1.promises;
+    var { access, appendFile, writeFile: writeFile5 } = fs_1.promises;
     exports2.SUMMARY_ENV_VAR = "GITHUB_STEP_SUMMARY";
     exports2.SUMMARY_DOCS_URL = "https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary";
     var Summary = class {
@@ -18201,7 +18201,7 @@ var require_summary = __commonJS({
         return __awaiter(this, void 0, void 0, function* () {
           const overwrite = !!(options === null || options === void 0 ? void 0 : options.overwrite);
           const filePath = yield this.filePath();
-          const writeFunc = overwrite ? writeFile6 : appendFile;
+          const writeFunc = overwrite ? writeFile5 : appendFile;
           yield writeFunc(filePath, this._buffer, { encoding: "utf8" });
           return this.emptyBuffer();
         });
@@ -26929,7 +26929,6 @@ var format = async ({ run }) => {
 };
 
 // src/ghosts/lint.ts
-var import_promises7 = require("fs/promises");
 var import_typescanner5 = __toESM(require_dist(), 1);
 var isValidJson3 = (0, import_typescanner5.scanner)({
   scripts: (0, import_typescanner5.scanner)({
@@ -26953,52 +26952,6 @@ var lint = async ({ run }) => {
   const lintResult = await run("npm run lint");
   if (lintResult.exitCode === 0) {
     return "success";
-  }
-  const isDepcheckError = lintResult.stdout.includes("Unused dependencies") || lintResult.stdout.includes("Unused devDependencies");
-  if (isDepcheckError) {
-    const isValidPackageJson2 = (0, import_typescanner5.scanner)({
-      dependencies: (0, import_typescanner5.optional)((0, import_typescanner5.scanner)({})),
-      devDependencies: (0, import_typescanner5.optional)((0, import_typescanner5.scanner)({}))
-    });
-    if (!isValidPackageJson2(package_json)) {
-      return {
-        status: "failure",
-        detail: "Invalid Package.json"
-      };
-    }
-    const depcheckResult = await run("npx depcheck --json");
-    const result = JSON.parse(depcheckResult.stdout);
-    const isValidResult = (0, import_typescanner5.scanner)({
-      dependencies: (0, import_typescanner5.array)(import_typescanner5.string),
-      devDependencies: (0, import_typescanner5.array)(import_typescanner5.string)
-    });
-    if (!isValidResult(result)) {
-      return {
-        status: "failure",
-        detail: "Invalid Depcheck Result"
-      };
-    }
-    const omittedDeps = Object.fromEntries(
-      Object.entries(package_json.dependencies ?? {}).filter(
-        ([key]) => !result.dependencies.includes(key)
-      )
-    );
-    const omittedDevDeps = Object.fromEntries(
-      Object.entries(package_json.devDependencies ?? {}).filter(
-        ([key]) => !result.devDependencies.includes(key)
-      )
-    );
-    const omittedPackageJson = {
-      ...package_json,
-      ...Object.keys(omittedDeps).length ? { dependencies: omittedDeps } : {},
-      ...Object.keys(omittedDevDeps).length ? { devDependencies: omittedDevDeps } : {}
-    };
-    await (0, import_promises7.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
-    await pushCommit("fix: omit unused dependencies", run);
-    return {
-      status: "failure",
-      detail: "New package.json has been pushed"
-    };
   }
   return {
     status: "failure",
@@ -27135,7 +27088,7 @@ var import_exec3 = __toESM(require_exec(), 1);
 
 // src/ghosts/release/npmPublish.ts
 var import_exec2 = __toESM(require_exec(), 1);
-var import_promises8 = require("node:fs/promises");
+var import_promises7 = require("node:fs/promises");
 var import_node_path5 = __toESM(require("node:path"), 1);
 var import_typescanner6 = __toESM(require_dist(), 1);
 var isValidJson4 = (0, import_typescanner6.scanner)({
@@ -27145,7 +27098,7 @@ var isValidJson4 = (0, import_typescanner6.scanner)({
 });
 var npmPublish = async (file, run) => {
   const cwd = import_node_path5.default.dirname(file);
-  const str = await (0, import_promises8.readFile)(file, "utf-8");
+  const str = await (0, import_promises7.readFile)(file, "utf-8");
   const package_json = JSON.parse(str);
   if (!isValidJson4(package_json)) {
     core_exports.info(`[${file}]: No version found.`);
@@ -27330,7 +27283,7 @@ var decrypt = async (encrypted_text, key) => {
 
 // src/utils/injectEnvs.ts
 var core2 = __toESM(require_core(), 1);
-var import_promises9 = require("node:fs/promises");
+var import_promises8 = require("node:fs/promises");
 var import_node_path6 = __toESM(require("node:path"), 1);
 var import_node_process = require("node:process");
 
@@ -27358,7 +27311,7 @@ var injectEnvs = async (encrypted_envs) => {
   const path_list = await findFile("package.json");
   await Promise.all(
     path_list.map(
-      (path_to_json) => (0, import_promises9.writeFile)(
+      (path_to_json) => (0, import_promises8.writeFile)(
         import_node_path6.default.join(path_to_json.replace("package.json", ""), ".env"),
         Object.entries(json).map(([key, value]) => `${key}=${value}`).join("\n")
       )
