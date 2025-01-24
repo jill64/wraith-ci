@@ -21,7 +21,7 @@ export const POST = async ({ request, locals: { db } }) => {
   const fetcher = octoflare<WraithPayload>(
     async ({ payload, installation }) => {
       if (!installation) {
-        return error(500, 'Installation Not Found')
+        error(500, 'Installation Not Found')
       }
 
       const is_push = 'commits' in payload
@@ -147,6 +147,6 @@ export const POST = async ({ request, locals: { db } }) => {
     } as Record<string, never> & OctoflareEnv)
     return res
   } catch (err) {
-    return error(500, (err as Error).message)
+    error(500, (err as Error).message)
   }
 }
