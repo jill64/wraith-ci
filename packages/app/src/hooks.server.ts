@@ -13,4 +13,10 @@ export const handle = onHandle(
   sequence(i.attach, onRender(), ogpAttach, authHandle, dbHandle)
 )
 
-export const handleError = onError()
+export const handleError = onError((e, id) => {
+  console.error(e)
+  return {
+    message: e.message,
+    id
+  }
+})
