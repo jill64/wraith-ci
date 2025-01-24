@@ -19,7 +19,8 @@ export const auth = async (event: RequestEvent) => {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            Accept: 'application/json'
+            Accept: 'application/json',
+            'User-Agent': 'Wraith CI'
           }
         })
 
