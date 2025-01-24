@@ -26870,7 +26870,8 @@ var docs = async ({
     repo,
     data: { ref }
   },
-  octokit
+  octokit,
+  run
 }) => {
   const [{ data: repository }, workflowFiles] = await Promise.all([
     octokit.rest.repos.get({
@@ -26883,8 +26884,8 @@ var docs = async ({
     return "skipped";
   }
   await Promise.allSettled([
-    updateReadmeList({ repository, workflowFiles }),
-    updatePackageJsonList({ repository })
+    updateReadmeList({ repository, workflowFiles, run }),
+    updatePackageJsonList({ repository, run })
   ]);
   return "success";
 };
