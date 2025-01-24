@@ -27,10 +27,18 @@
     @apply flex items-center justify-center gap-2;
   }
   div :global(.paginate-page-link) {
-    @apply link p-1.5 pp;
+    @apply text-[royalblue] hover:underline p-1.5 push-effect;
   }
   div :global(.paginate-navigation) {
-    @apply link p-1.5 pp;
+    @apply text-[royalblue] hover:underline p-1.5 push-effect;
+  }
+  :global(.dark) {
+    div :global(.paginate-page-link) {
+      @apply text-blue-400 pop-effect;
+    }
+    div :global(.paginate-navigation) {
+      @apply text-blue-400 pop-effect;
+    }
   }
   div :global(.paginate-rest-indicator) {
     /* Rest Indicator (...) Style */
