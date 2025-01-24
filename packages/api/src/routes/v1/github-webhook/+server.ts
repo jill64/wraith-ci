@@ -108,11 +108,11 @@ export const POST = async ({ request, locals: { db } }) => {
         output: generateOutput(wraith_status)
       })
 
-      const { encrypted_envs } = await db
+      const registered_repo = await db
         .selectFrom('repo')
         .select('encrypted_envs')
         .where('github_repo_id', '=', repository.id)
-        .executeTakeFirstOrThrow()
+        .executeTakeFirst()
 
       await Promise.all([
         task(),
@@ -121,7 +121,7 @@ export const POST = async ({ request, locals: { db } }) => {
           head_sha,
           ref,
           pull_number,
-          encrypted_envs
+          encrypted_envs: registered_repo?.encrypted_envs
         })
       ])
 
