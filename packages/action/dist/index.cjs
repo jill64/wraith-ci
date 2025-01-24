@@ -27336,7 +27336,10 @@ var import_node_process = require("node:process");
 // src/utils/preRun.ts
 var import_exec4 = __toESM(require_exec(), 1);
 var preRun = (env2) => (cmd, opt) => (0, import_exec4.getExecOutput)(cmd, void 0, {
-  env: env2,
+  env: {
+    ...process.env,
+    ...env2
+  },
   cwd: opt?.cwd,
   ignoreReturnCode: true
 });

@@ -9,7 +9,10 @@ export const preRun =
     }
   ) =>
     getExecOutput(cmd, undefined, {
-      env,
+      env: {
+        ...(process.env as Record<string, string>),
+        ...env
+      },
       cwd: opt?.cwd,
       ignoreReturnCode: true
     })
