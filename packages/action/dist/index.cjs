@@ -19414,7 +19414,7 @@ var require_exec = __commonJS({
     exports2.getExecOutput = exports2.exec = void 0;
     var string_decoder_1 = require("string_decoder");
     var tr = __importStar(require_toolrunner());
-    function exec6(commandLine, args, options) {
+    function exec4(commandLine, args, options) {
       return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine);
         if (commandArgs.length === 0) {
@@ -19426,7 +19426,7 @@ var require_exec = __commonJS({
         return runner.exec();
       });
     }
-    exports2.exec = exec6;
+    exports2.exec = exec4;
     function getExecOutput2(commandLine, args, options) {
       var _a, _b;
       return __awaiter(this, void 0, void 0, function* () {
@@ -19449,7 +19449,7 @@ var require_exec = __commonJS({
           }
         };
         const listeners = Object.assign(Object.assign({}, options === null || options === void 0 ? void 0 : options.listeners), { stdout: stdOutListener, stderr: stdErrListener });
-        const exitCode = yield exec6(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
+        const exitCode = yield exec4(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
         stdout += stdoutDecoder.end();
         stderr += stderrDecoder.end();
         return {
@@ -19527,12 +19527,12 @@ var require_platform = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getDetails = exports2.isLinux = exports2.isMacOS = exports2.isWindows = exports2.arch = exports2.platform = void 0;
     var os_1 = __importDefault(require("os"));
-    var exec6 = __importStar(require_exec());
+    var exec4 = __importStar(require_exec());
     var getWindowsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
-      const { stdout: version } = yield exec6.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
+      const { stdout: version } = yield exec4.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
         silent: true
       });
-      const { stdout: name } = yield exec6.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
+      const { stdout: name } = yield exec4.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
         silent: true
       });
       return {
@@ -19542,7 +19542,7 @@ var require_platform = __commonJS({
     });
     var getMacOsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
       var _a, _b, _c, _d;
-      const { stdout } = yield exec6.getExecOutput("sw_vers", void 0, {
+      const { stdout } = yield exec4.getExecOutput("sw_vers", void 0, {
         silent: true
       });
       const version = (_b = (_a = stdout.match(/ProductVersion:\s*(.+)/)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : "";
@@ -19553,7 +19553,7 @@ var require_platform = __commonJS({
       };
     });
     var getLinuxInfo = () => __awaiter(void 0, void 0, void 0, function* () {
-      const { stdout } = yield exec6.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
+      const { stdout } = yield exec4.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
         silent: true
       });
       const [name, version] = stdout.trim().split("\n");
@@ -19663,10 +19663,10 @@ var require_core = __commonJS({
       (0, command_1.issueCommand)("set-env", { name }, convertedVal);
     }
     exports2.exportVariable = exportVariable;
-    function setSecret(secret) {
+    function setSecret2(secret) {
       (0, command_1.issueCommand)("add-mask", {}, secret);
     }
-    exports2.setSecret = setSecret;
+    exports2.setSecret = setSecret2;
     function addPath(inputPath) {
       const filePath = process.env["GITHUB_PATH"] || "";
       if (filePath) {
@@ -26249,18 +26249,10 @@ var getPackageJson = async () => {
 };
 
 // src/utils/gitDiff.ts
-var import_exec2 = __toESM(require_exec(), 1);
-
-// src/utils/run.ts
 var import_exec = __toESM(require_exec(), 1);
-var run = (cmd) => (0, import_exec.getExecOutput)(cmd, void 0, {
-  ignoreReturnCode: true
-});
-
-// src/utils/gitDiff.ts
-var gitDiff = async () => {
+var gitDiff = async (run) => {
   await run("git add -N .");
-  const diff = await import_exec2.default.exec("git diff --exit-code", void 0, {
+  const diff = await import_exec.default.exec("git diff --exit-code", void 0, {
     ignoreReturnCode: true,
     silent: true
   });
@@ -26268,14 +26260,13 @@ var gitDiff = async () => {
 };
 
 // src/utils/pushCommit.ts
-var import_exec3 = __toESM(require_exec(), 1);
-var pushCommit = async (message) => {
-  await (0, import_exec3.exec)("git config user.name wraith-ci[bot]");
-  await (0, import_exec3.exec)("git config user.email wraith-ci[bot]@users.noreply.github.com");
-  await (0, import_exec3.exec)("git add .");
-  await (0, import_exec3.exec)("git commit", ["-m", message]);
-  await (0, import_exec3.exec)("git pull --rebase");
-  await (0, import_exec3.exec)("git push origin");
+var pushCommit = async (message, run) => {
+  await run("git config user.name wraith-ci[bot]");
+  await run("git config user.email wraith-ci[bot]@users.noreply.github.com");
+  await run("git add .");
+  await run(`git commit -m ${message}`);
+  await run("git pull --rebase");
+  await run("git push origin");
 };
 
 // src/ghosts/build.ts
@@ -26284,7 +26275,7 @@ var isValidJson = (0, import_typescanner.scanner)({
     build: import_typescanner.string
   })
 });
-var build = async () => {
+var build = async ({ run }) => {
   const package_json = await getPackageJson();
   if (!package_json) {
     return {
@@ -26305,11 +26296,11 @@ var build = async () => {
       detail: result.stderr
     };
   }
-  const diff = await gitDiff();
+  const diff = await gitDiff(run);
   if (diff === 0) {
     return "success";
   }
-  await pushCommit("chore: regenerate artifact");
+  await pushCommit("chore: regenerate artifact", run);
   return {
     status: "failure",
     detail: "The updated artifact will be pushed shortly"
@@ -26423,7 +26414,7 @@ var findFile = async (filename) => {
     recursive: true
   });
   const files = all.filter(
-    (file) => file.isFile() && !file.path.includes("node_modules/") && file.name === filename
+    (file) => file.isFile() && !file.parentPath.includes("node_modules/") && file.name === filename
   ).map((file) => import_node_path.default.join(file.path, file.name));
   core_exports.info(`[search "${filename}"]: ${JSON.stringify(files, null, 2)}}`);
   return files;
@@ -26459,7 +26450,7 @@ var isPackageJson = (0, import_typescanner2.scanner)({
   version: import_typescanner2.string,
   private: (0, import_typescanner2.optional)(import_typescanner2.boolean)
 });
-var bump = async ({ payload, octokit }) => {
+var bump = async ({ payload, octokit, run }) => {
   const {
     owner,
     repo,
@@ -26544,7 +26535,7 @@ var bump = async ({ payload, octokit }) => {
   }
   await overwriteAllVersion(newVersion);
   await run("npm run format");
-  await pushCommit(`chore: bump to ${newVersion}`);
+  await pushCommit(`chore: bump to ${newVersion}`, run);
   if (cumulativeUpdate) {
     await octokit.rest.issues.createComment({
       owner,
@@ -26622,7 +26613,8 @@ var updatePackageJson = ({
 
 // src/ghosts/docs/updatePackageJsonList.ts
 var updatePackageJsonList = async ({
-  repository
+  repository,
+  run
 }) => {
   const { owner } = repository;
   const [files, html] = await Promise.all([
@@ -26656,9 +26648,9 @@ var updatePackageJsonList = async ({
     return;
   }
   await run("npm run format");
-  const diff = await gitDiff();
+  const diff = await gitDiff(run);
   if (diff) {
-    await pushCommit("chore: synchronize package.json");
+    await pushCommit("chore: synchronize package.json", run);
   }
 };
 
@@ -26825,7 +26817,8 @@ var updateReadme = ({
 // src/ghosts/docs/updateReadmeList.ts
 var updateReadmeList = async ({
   repository,
-  workflowFiles
+  workflowFiles,
+  run
 }) => {
   const files = await findFile("README.md");
   const result = await Promise.all(
@@ -26840,9 +26833,9 @@ var updateReadmeList = async ({
     return;
   }
   await run("npm run format");
-  const diff = await gitDiff();
+  const diff = await gitDiff(run);
   if (diff) {
-    await pushCommit("chore: synchronize README.md");
+    await pushCommit("chore: synchronize README.md", run);
   }
 };
 
@@ -26903,7 +26896,7 @@ var isValidJson2 = (0, import_typescanner4.scanner)({
     format: import_typescanner4.string
   })
 });
-var format = async () => {
+var format = async ({ run }) => {
   const package_json = await getPackageJson();
   if (!package_json) {
     return {
@@ -26924,11 +26917,11 @@ var format = async () => {
       detail: formatResult.stderr
     };
   }
-  const diff = await gitDiff();
+  const diff = await gitDiff(run);
   if (diff === 0) {
     return "success";
   }
-  await pushCommit("chore: format");
+  await pushCommit("chore: format", run);
   return {
     status: "failure",
     detail: "Formatted code has been pushed."
@@ -26943,7 +26936,7 @@ var isValidJson3 = (0, import_typescanner5.scanner)({
     lint: import_typescanner5.string
   })
 });
-var lint = async () => {
+var lint = async ({ run }) => {
   const package_json = await getPackageJson();
   if (!package_json) {
     return {
@@ -27001,7 +26994,7 @@ var lint = async () => {
       ...Object.keys(omittedDevDeps).length ? { devDependencies: omittedDevDeps } : {}
     };
     await (0, import_promises7.writeFile)("package.json", JSON.stringify(omittedPackageJson, null, 2));
-    await pushCommit("fix: omit unused dependencies");
+    await pushCommit("fix: omit unused dependencies", run);
     return {
       status: "failure",
       detail: "New package.json has been pushed"
@@ -27138,10 +27131,10 @@ var merge = async ({ payload, octokit }) => {
 };
 
 // src/ghosts/release/index.ts
-var import_exec5 = __toESM(require_exec(), 1);
+var import_exec3 = __toESM(require_exec(), 1);
 
 // src/ghosts/release/npmPublish.ts
-var import_exec4 = __toESM(require_exec(), 1);
+var import_exec2 = __toESM(require_exec(), 1);
 var import_promises8 = require("node:fs/promises");
 var import_node_path5 = __toESM(require("node:path"), 1);
 var import_typescanner6 = __toESM(require_dist(), 1);
@@ -27150,7 +27143,7 @@ var isValidJson4 = (0, import_typescanner6.scanner)({
   version: import_typescanner6.string,
   keywords: (0, import_typescanner6.optional)((0, import_typescanner6.array)(import_typescanner6.string))
 });
-var npmPublish = async (file) => {
+var npmPublish = async (file, run) => {
   const cwd = import_node_path5.default.dirname(file);
   const str = await (0, import_promises8.readFile)(file, "utf-8");
   const package_json = JSON.parse(str);
@@ -27159,7 +27152,7 @@ var npmPublish = async (file) => {
     return false;
   }
   const version = package_json.version.trim();
-  const publishedVersion = await import_exec4.default.getExecOutput(
+  const publishedVersion = await import_exec2.default.getExecOutput(
     "npm view . version",
     void 0,
     {
@@ -27171,14 +27164,14 @@ var npmPublish = async (file) => {
     core_exports.info(`[${file}]: No update found.`);
     return false;
   }
-  await import_exec4.default.exec("npm publish", void 0, {
+  await run("npm publish", {
     cwd
   });
   return true;
 };
 
 // src/ghosts/release/index.ts
-var release = async () => {
+var release = async ({ run }) => {
   const files = await findFile("package.json");
   if (files.length === 0) {
     return {
@@ -27186,7 +27179,7 @@ var release = async () => {
       detail: "Not found package.json in repo"
     };
   }
-  const result = await Promise.allSettled(files.map(npmPublish));
+  const result = await Promise.allSettled(files.map((x) => npmPublish(x, run)));
   if (!result.some((r) => r.status === "fulfilled" && r.value)) {
     return {
       status: "skipped",
@@ -27202,7 +27195,7 @@ var release = async () => {
       detail: "Not found version in root package.json"
     };
   }
-  await import_exec5.default.exec("gh release create", [`v${version}`, "--generate-notes"]);
+  await import_exec3.default.exec("gh release create", [`v${version}`, "--generate-notes"]);
   return "success";
 };
 
@@ -27336,26 +27329,33 @@ var decrypt = async (encrypted_text, key) => {
 };
 
 // src/utils/injectEnvs.ts
-var import_core2 = __toESM(require_core(), 1);
-var import_exec6 = __toESM(require_exec(), 1);
+var core2 = __toESM(require_core(), 1);
 var import_promises9 = require("node:fs/promises");
 var import_node_process = require("node:process");
+
+// src/utils/preRun.ts
+var import_exec4 = __toESM(require_exec(), 1);
+var preRun = (env2) => (cmd, opt) => (0, import_exec4.getExecOutput)(cmd, void 0, {
+  env: env2,
+  cwd: opt?.cwd,
+  ignoreReturnCode: true
+});
+
+// src/utils/injectEnvs.ts
 var injectEnvs = async (encrypted_envs) => {
   if (!encrypted_envs) {
-    return;
+    return preRun({});
   }
   const text = await decrypt(encrypted_envs, import_node_process.env.ENVS_PRIVATE_KEY);
   const json = JSON.parse(text);
-  import_core2.default.info(`Injecting envs: ${JSON.stringify(json, null, 2)}`);
-  await Promise.all([
-    ...Object.entries(json).map(([key, value]) => {
-      (0, import_exec6.exec)(`export ${key}=${value}`);
-    }),
-    (0, import_promises9.writeFile)(
-      ".env",
-      Object.entries(json).map(([key, value]) => `${key}=${value}`).join("\n")
-    )
-  ]);
+  Object.values(json).forEach((value) => {
+    core2.setSecret(value);
+  });
+  await (0, import_promises9.writeFile)(
+    ".env",
+    Object.entries(json).map(([key, value]) => `${key}=${value}`).join("\n")
+  );
+  return preRun(json);
 };
 
 // src/index.ts
@@ -27381,11 +27381,12 @@ action(
       return;
     }
     const app = apps[ghost_name];
-    await injectEnvs(payload.data.encrypted_envs);
+    const run = await injectEnvs(payload.data.encrypted_envs);
     const result = await attempt(
       () => app({
         octokit,
-        payload
+        payload,
+        run
       }),
       (e, o) => ({
         status: "failure",

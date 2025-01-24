@@ -2,14 +2,16 @@ import * as core from 'octoflare/action/core'
 import { ActionRepository } from '../../types/ActionRepository.js'
 import { findFile } from '../../utils/findFile.js'
 import { gitDiff } from '../../utils/gitDiff.js'
-import { run } from '../../utils/preRun.js'
 import { pushCommit } from '../../utils/pushCommit.js'
+import { Run } from '../../utils/run.js'
 import { updatePackageJson } from './updatePackageJson.js'
 
 export const updatePackageJsonList = async ({
-  repository
+  repository,
+  run
 }: {
   repository: ActionRepository
+  run: Run
 }) => {
   const { owner } = repository
 
@@ -56,9 +58,9 @@ export const updatePackageJsonList = async ({
 
   await run('npm run format')
 
-  const diff = await gitDiff()
+  const diff = await gitDiff(run)
 
   if (diff) {
-    await pushCommit('chore: synchronize package.json')
+    await pushCommit('chore: synchronize package.json', run)
   }
 }
