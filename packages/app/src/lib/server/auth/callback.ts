@@ -70,7 +70,8 @@ export const callback = async ({ url, cookies }: RequestEvent) => {
       headers: {
         Authorization: `Basic ${basicAuth}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'User-Agent': 'Wraith CI'
       },
       body: JSON.stringify({
         access_token: accessToken
