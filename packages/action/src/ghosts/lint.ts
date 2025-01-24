@@ -1,8 +1,6 @@
-import { writeFile } from 'fs/promises'
-import { array, optional, scanner, string } from 'typescanner'
+import { scanner, string } from 'typescanner'
 import { Ghost } from '../../types/Ghost.js'
 import { getPackageJson } from '../utils/getPackageJson.js'
-import { pushCommit } from '../utils/pushCommit.js'
 
 const isValidJson = scanner({
   scripts: scanner({
