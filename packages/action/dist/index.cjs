@@ -23936,12 +23936,12 @@ var require_typeGuard = __commonJS({
       });
     };
     exports2.isUnion = isUnion;
-    var isArray = function(array4) {
+    var isArray = function(array3) {
       var conditions = [];
       for (var _i = 1; _i < arguments.length; _i++) {
         conditions[_i - 1] = arguments[_i];
       }
-      return Array.isArray(array4) && array4.every(function(value) {
+      return Array.isArray(array3) && array3.every(function(value) {
         return conditions.some(function(cond) {
           return cond(value);
         });
@@ -23962,8 +23962,8 @@ var require_typeGuard = __commonJS({
       });
     };
     exports2.isOptional = isOptional;
-    var isList = function(value, array4) {
-      return array4.length !== 0 && array4.includes(value);
+    var isList = function(value, array3) {
+      return array3.length !== 0 && array3.includes(value);
     };
     exports2.isList = isList;
     var isInstanceOf = function(value, constructor) {
@@ -24034,7 +24034,7 @@ var require_fields = __commonJS({
       };
     };
     exports2.union = union;
-    var array4 = function() {
+    var array3 = function() {
       var conditions = [];
       for (var _i = 0; _i < arguments.length; _i++) {
         conditions[_i] = arguments[_i];
@@ -24043,8 +24043,8 @@ var require_fields = __commonJS({
         return typeGuard_1.isArray.apply(void 0, __spreadArray([value], conditions, false));
       };
     };
-    exports2.array = array4;
-    var optional5 = function() {
+    exports2.array = array3;
+    var optional4 = function() {
       var conditions = [];
       for (var _i = 0; _i < arguments.length; _i++) {
         conditions[_i] = arguments[_i];
@@ -24053,10 +24053,10 @@ var require_fields = __commonJS({
         return typeGuard_1.isOptional.apply(void 0, __spreadArray([value], conditions, false));
       };
     };
-    exports2.optional = optional5;
-    var list = function(array5) {
+    exports2.optional = optional4;
+    var list = function(array4) {
       return function(value) {
-        return (0, typeGuard_1.isList)(value, array5);
+        return (0, typeGuard_1.isList)(value, array4);
       };
     };
     exports2.list = list;
@@ -26031,10 +26031,10 @@ function attempt(func, fallback) {
 }
 
 // ../../node_modules/.pnpm/@jill64+unfurl@2.0.7/node_modules/@jill64/unfurl/dist/unfurl.js
-var unfurl = async (data, ...optional5) => {
+var unfurl = async (data, ...optional4) => {
   const [result] = await Promise.all([
     Promise.all(Object.entries(data).map(async ([key, value]) => [key, await value])),
-    ...optional5.map(async (value) => await value)
+    ...optional4.map(async (value) => await value)
   ]);
   return Object.fromEntries(result);
 };
