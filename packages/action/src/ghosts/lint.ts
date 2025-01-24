@@ -33,68 +33,6 @@ export const lint: Ghost = async ({ run }) => {
     return 'success'
   }
 
-  const isDepcheckError =
-    lintResult.stdout.includes('Unused dependencies') ||
-    lintResult.stdout.includes('Unused devDependencies')
-
-  if (isDepcheckError) {
-    const isValidPackageJson = scanner({
-      dependencies: optional(scanner({})),
-      devDependencies: optional(scanner({}))
-    })
-
-    if (!isValidPackageJson(package_json)) {
-      return {
-        status: 'failure',
-        detail: 'Invalid Package.json'
-      }
-    }
-
-    const depcheckResult = await run('npx depcheck --json')
-    const result = JSON.parse(depcheckResult.stdout)
-
-    const isValidResult = scanner({
-      dependencies: array(string),
-      devDependencies: array(string)
-    })
-
-    if (!isValidResult(result)) {
-      return {
-        status: 'failure',
-        detail: 'Invalid Depcheck Result'
-      }
-    }
-
-    const omittedDeps = Object.fromEntries(
-      Object.entries(package_json.dependencies ?? {}).filter(
-        ([key]) => !result.dependencies.includes(key)
-      )
-    )
-
-    const omittedDevDeps = Object.fromEntries(
-      Object.entries(package_json.devDependencies ?? {}).filter(
-        ([key]) => !result.devDependencies.includes(key)
-      )
-    )
-
-    const omittedPackageJson = {
-      ...package_json,
-      ...(Object.keys(omittedDeps).length ? { dependencies: omittedDeps } : {}),
-      ...(Object.keys(omittedDevDeps).length
-        ? { devDependencies: omittedDevDeps }
-        : {})
-    }
-
-    await writeFile('package.json', JSON.stringify(omittedPackageJson, null, 2))
-
-    await pushCommit('fix: omit unused dependencies', run)
-
-    return {
-      status: 'failure',
-      detail: 'New package.json has been pushed'
-    }
-  }
-
   return {
     status: 'failure',
     detail: lintResult.stderr
