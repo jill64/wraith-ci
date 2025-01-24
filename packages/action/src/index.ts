@@ -8,6 +8,7 @@ import { scanner, string } from 'typescanner'
 import { apps } from './apps.js'
 import { getJobUrl } from './utils/getJobUrl.js'
 import { updateOutput } from './utils/updateOutput.js'
+import { injectEnvs } from './utils/injectEnvs.js'
 
 const isValidOutput = scanner({
   title: string,
@@ -37,6 +38,8 @@ action<WraithPayload>(
     }
 
     const app = apps[ghost_name]
+
+    await injectEnvs(payload.data.encrypted_envs)
 
     const result = await attempt(
       () =>

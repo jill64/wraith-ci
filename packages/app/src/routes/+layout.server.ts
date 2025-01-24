@@ -3,12 +3,12 @@ import { run } from '$shared/db/run.js'
 import dayjs from 'dayjs'
 
 export const load = async ({ locals }) => {
-  const { db, oauth_user } = locals
+  const { db, github_user } = locals
 
   const createUser = async () => {
     await run(
       db.insertInto('user').values({
-        oauth_id: oauth_user.id,
+        github_user_id: github_user.id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         created_by: 0,
@@ -21,7 +21,7 @@ export const load = async ({ locals }) => {
     const me = await db
       .selectFrom('user')
       .selectAll()
-      .where('oauth_id', '=', oauth_user.id)
+      .where('github_user_id', '=', github_user.id)
       .executeTakeFirstOrThrow()
 
     return me
@@ -31,33 +31,35 @@ export const load = async ({ locals }) => {
     (await db
       .selectFrom('user')
       .selectAll()
-      .where('user.oauth_id', '=', oauth_user.id)
+      .where('user.github_user_id', '=', github_user.id)
       .executeTakeFirst()) ?? (await createUser())
 
   if (
     dayjs().diff(dayjs(me.plan_cached_at), 'minute') > 1 ||
     dayjs().diff(dayjs(me.created_at), 'minute') < 1
   ) {
-    const plan_name = await getSubscriptionNameFromEmail(oauth_user.email)
+    if (github_user.email) {
+      const plan_name = await getSubscriptionNameFromEmail(github_user.email)
 
-    const plan_cache = plan_name.toUpperCase().split(' ')[0] as
-      | 'FREE'
-      | 'STARTER'
-      | 'PRO'
+      const plan_cache = plan_name.toUpperCase().split(' ')[0] as
+        | 'FREE'
+        | 'STARTER'
+        | 'PRO'
 
-    await run(
-      db
-        .updateTable('user')
-        .set({
-          plan_cache,
-          plan_cached_at: new Date().toISOString()
-        })
-        .where('id', '=', me.id)
-    )
+      await run(
+        db
+          .updateTable('user')
+          .set({
+            plan_cache,
+            plan_cached_at: new Date().toISOString()
+          })
+          .where('id', '=', me.id)
+      )
+    }
   }
 
   return {
     me,
-    oauth_user
+    github_user
   }
 }

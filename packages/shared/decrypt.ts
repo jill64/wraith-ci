@@ -1,5 +1,4 @@
 import crypto from 'node:crypto'
-import process from 'node:process'
 
 const base64ToBuffer = (base64: string): Uint8Array =>
   new Uint8Array(Buffer.from(base64, 'base64'))
@@ -46,7 +45,7 @@ async function decryptWithAes(
   const decoder = new TextDecoder()
   return decoder.decode(decrypted)
 }
-export const decrypt = async (encrypted_text: string) => {
+export const decrypt = async (encrypted_text: string, key: string) => {
   const { encryptedData, iv, encryptedSessionKey } = JSON.parse(
     encrypted_text
   ) as {
@@ -61,7 +60,7 @@ export const decrypt = async (encrypted_text: string) => {
 
   const privateKey = await crypto.subtle.importKey(
     'jwk',
-    JSON.parse(process.env.API_BRIDGE_PRIVATE_KEY!),
+    JSON.parse(key),
     {
       name: 'RSA-OAEP',
       hash: { name: 'SHA-256' }

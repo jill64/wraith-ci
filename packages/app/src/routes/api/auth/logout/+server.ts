@@ -1,7 +1,7 @@
-import { auth } from '$lib/server/auth'
+import { logout } from '$lib/server/auth/logout.js'
 import { redirect } from '@sveltejs/kit'
 
 export const GET = (param) => {
-  const url = auth.logout(param)
-  redirect(302, url)
+  logout(param)
+  redirect(302, '/')
 }

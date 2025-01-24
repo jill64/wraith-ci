@@ -26,10 +26,10 @@
       @apply py-2 px-4 push-effect text-sub-text;
     }
     :global(a[data-current-location]) {
-      @apply border-[rebeccapurple] text-main-text border-b font-bold;
+      @apply border-black text-main-text border-b font-bold;
     }
   }
   :global(.dark) ul :global(a) {
-    @apply border-[rebeccapurple] pop-effect;
+    @apply border-white pop-effect;
   }
 </style>

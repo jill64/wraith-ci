@@ -1,7 +1,3 @@
-import { auth } from '$lib/server/auth'
-import { redirect } from '@sveltejs/kit'
+import { login } from '$lib/server/auth/login'
 
-export const GET = (param) => {
-  const url = auth.login(param)
-  redirect(302, url)
-}
+export const GET = login
