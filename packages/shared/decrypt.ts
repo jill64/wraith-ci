@@ -5,7 +5,7 @@ const base64ToBuffer = (base64: string): Uint8Array =>
 
 async function decryptAesKeyWithRsa(
   privateKey: CryptoKey,
-  encryptedSessionKey: Uint8Array<ArrayBufferLike>
+  encryptedSessionKey: Uint8Array
 ): Promise<CryptoKey> {
   // RSA-OAEP を用いて AESキーを復号
   const rawAesKey = await crypto.subtle.decrypt(
@@ -30,7 +30,7 @@ async function decryptAesKeyWithRsa(
 }
 async function decryptWithAes(
   key: CryptoKey,
-  encryptedData: Uint8Array<ArrayBufferLike>,
+  encryptedData: Uint8Array,
   iv: Uint8Array
 ): Promise<string> {
   const decrypted = await crypto.subtle.decrypt(

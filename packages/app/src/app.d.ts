@@ -3,7 +3,10 @@ import type { Kysely } from 'kysely'
 import type { Octokit } from '@octokit/rest'
 declare global {
   namespace App {
-    // interface Error {}
+    interface Error {
+      message: string
+      id?: string
+    }
     interface Locals {
       db: Kysely<Database>
       github_user: Awaited<
