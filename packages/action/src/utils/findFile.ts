@@ -15,7 +15,7 @@ export const findFile = async (filename: string): Promise<string[]> => {
         !file.parentPath.includes('node_modules/') &&
         file.name === filename
     )
-    .map((file) => path.join(file.path, file.name))
+    .map((file) => path.join(file.parentPath, file.name))
 
   core.info(`[search "${filename}"]: ${JSON.stringify(files, null, 2)}}`)
 
