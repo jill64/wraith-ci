@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import * as core from 'octoflare/action/core'
 import { array, optional, scanner, string } from 'typescanner'
+import { Run } from '../../utils/run.js'
 
 const isValidJson = scanner({
   name: string,
@@ -10,7 +11,7 @@ const isValidJson = scanner({
   keywords: optional(array(string))
 })
 
-export const npmPublish = async (file: string) => {
+export const npmPublish = async (file: string, run: Run) => {
   const cwd = path.dirname(file)
 
   const str = await readFile(file, 'utf-8')
@@ -37,7 +38,7 @@ export const npmPublish = async (file: string) => {
     return false
   }
 
-  await exec.exec('npm publish', undefined, {
+  await run('npm publish', {
     cwd
   })
 

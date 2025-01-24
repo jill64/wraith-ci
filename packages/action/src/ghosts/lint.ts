@@ -1,9 +1,8 @@
-import { Ghost } from '../../types/Ghost.js'
 import { writeFile } from 'fs/promises'
 import { array, optional, scanner, string } from 'typescanner'
+import { Ghost } from '../../types/Ghost.js'
 import { getPackageJson } from '../utils/getPackageJson.js'
 import { pushCommit } from '../utils/pushCommit.js'
-import { run } from '../utils/run.js'
 
 const isValidJson = scanner({
   scripts: scanner({
@@ -11,7 +10,7 @@ const isValidJson = scanner({
   })
 })
 
-export const lint: Ghost = async () => {
+export const lint: Ghost = async ({ run }) => {
   const package_json = await getPackageJson()
 
   if (!package_json) {
@@ -88,7 +87,7 @@ export const lint: Ghost = async () => {
 
     await writeFile('package.json', JSON.stringify(omittedPackageJson, null, 2))
 
-    await pushCommit('fix: omit unused dependencies')
+    await pushCommit('fix: omit unused dependencies', run)
 
     return {
       status: 'failure',

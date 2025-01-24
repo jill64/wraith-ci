@@ -1,6 +1,3 @@
-import { getExecOutput } from '@actions/exec'
+import { preRun } from './preRun.js'
 
-export const run = (cmd: string) =>
-  getExecOutput(cmd, undefined, {
-    ignoreReturnCode: true
-  })
+export type Run = ReturnType<typeof preRun>
