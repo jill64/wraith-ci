@@ -1,12 +1,12 @@
-import { exec } from '@actions/exec'
+import { Run } from './run.js'
 
-export const pushCommit = async (message: string) => {
-  await exec('git config user.name wraith-ci[bot]')
-  await exec('git config user.email wraith-ci[bot]@users.noreply.github.com')
+export const pushCommit = async (message: string, run: Run) => {
+  await run('git config user.name wraith-ci[bot]')
+  await run('git config user.email wraith-ci[bot]@users.noreply.github.com')
 
-  await exec('git add .')
-  await exec('git commit', ['-m', message])
+  await run('git add .')
+  await run(`git commit -m ${message}`)
 
-  await exec('git pull --rebase')
-  await exec('git push origin')
+  await run('git pull --rebase')
+  await run('git push origin')
 }

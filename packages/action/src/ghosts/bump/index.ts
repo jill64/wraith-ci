@@ -1,10 +1,9 @@
-import { Ghost } from '../../../types/Ghost.js'
 import semver from 'semver'
 import { boolean, optional, scanner, string } from 'typescanner'
+import { Ghost } from '../../../types/Ghost.js'
 import { getFile } from '../../utils/getFile.js'
 import { getPackageJson } from '../../utils/getPackageJson.js'
 import { pushCommit } from '../../utils/pushCommit.js'
-import { run } from '../../utils/run.js'
 import { checkCumulativeUpdate } from './checkCumulativeUpdate.js'
 import { determineSemType } from './determineSemType.js'
 import { formatVersionStr } from './formatVersionStr.js'
@@ -15,7 +14,7 @@ const isPackageJson = scanner({
   private: optional(boolean)
 })
 
-export const bump: Ghost = async ({ payload, octokit }) => {
+export const bump: Ghost = async ({ payload, octokit, run }) => {
   const {
     owner,
     repo,
@@ -122,7 +121,7 @@ export const bump: Ghost = async ({ payload, octokit }) => {
 
   await overwriteAllVersion(newVersion)
   await run('npm run format')
-  await pushCommit(`chore: bump to ${newVersion}`)
+  await pushCommit(`chore: bump to ${newVersion}`, run)
 
   if (cumulativeUpdate) {
     await octokit.rest.issues.createComment({

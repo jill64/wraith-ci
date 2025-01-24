@@ -1,8 +1,8 @@
 import { ActionRepository } from '../../types/ActionRepository.js'
 import { findFile } from '../../utils/findFile.js'
 import { gitDiff } from '../../utils/gitDiff.js'
+import { run } from '../../utils/preRun.js'
 import { pushCommit } from '../../utils/pushCommit.js'
-import { run } from '../../utils/run.js'
 import { WorkflowFile } from './types/WorkflowFile.js'
 import { updateReadme } from './updateReadme.js'
 

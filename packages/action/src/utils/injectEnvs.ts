@@ -1,29 +1,29 @@
 import { decrypt } from '$shared/decrypt.js'
-import core from '@actions/core'
-import { exec } from '@actions/exec'
+import * as core from '@actions/core'
 import { writeFile } from 'node:fs/promises'
 import { env } from 'node:process'
+import { preRun } from './preRun.js'
+import { Run } from './run.js'
 
-export const injectEnvs = async (encrypted_envs?: string) => {
+export const injectEnvs = async (encrypted_envs?: string): Promise<Run> => {
   if (!encrypted_envs) {
-    return
+    return preRun({})
   }
 
   const text = await decrypt(encrypted_envs, env.ENVS_PRIVATE_KEY!)
 
   const json = JSON.parse(text)
 
-  core.info(`Injecting envs: ${JSON.stringify(json, null, 2)}`)
+  Object.values(json).forEach((value) => {
+    core.setSecret(value as string)
+  })
 
-  await Promise.all([
-    ...Object.entries(json).map(([key, value]) => {
-      exec(`export ${key}=${value}`)
-    }),
-    writeFile(
-      '.env',
-      Object.entries(json)
-        .map(([key, value]) => `${key}=${value}`)
-        .join('\n')
-    )
-  ])
+  await writeFile(
+    '.env',
+    Object.entries(json)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('\n')
+  )
+
+  return preRun(json)
 }

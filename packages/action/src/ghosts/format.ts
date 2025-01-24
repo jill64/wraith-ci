@@ -1,9 +1,8 @@
-import { Ghost } from '../../types/Ghost.js'
 import { scanner, string } from 'typescanner'
+import { Ghost } from '../../types/Ghost.js'
 import { getPackageJson } from '../utils/getPackageJson.js'
 import { gitDiff } from '../utils/gitDiff.js'
 import { pushCommit } from '../utils/pushCommit.js'
-import { run } from '../utils/run.js'
 
 const isValidJson = scanner({
   scripts: scanner({
@@ -11,7 +10,7 @@ const isValidJson = scanner({
   })
 })
 
-export const format: Ghost = async () => {
+export const format: Ghost = async ({ run }) => {
   const package_json = await getPackageJson()
 
   if (!package_json) {
@@ -37,13 +36,13 @@ export const format: Ghost = async () => {
     }
   }
 
-  const diff = await gitDiff()
+  const diff = await gitDiff(run)
 
   if (diff === 0) {
     return 'success'
   }
 
-  await pushCommit('chore: format')
+  await pushCommit('chore: format', run)
 
   return {
     status: 'failure',

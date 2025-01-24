@@ -5,7 +5,7 @@ import { getPackageJson } from '../../utils/getPackageJson.js'
 import { isValidPackageJson } from '../docs/utils/isValidPackageJson.js'
 import { npmPublish } from './npmPublish.js'
 
-export const release: Ghost = async () => {
+export const release: Ghost = async ({ run }) => {
   const files = await findFile('package.json')
 
   if (files.length === 0) {
@@ -15,7 +15,7 @@ export const release: Ghost = async () => {
     }
   }
 
-  const result = await Promise.allSettled(files.map(npmPublish))
+  const result = await Promise.allSettled(files.map((x) => npmPublish(x, run)))
 
   if (!result.some((r) => r.status === 'fulfilled' && r.value)) {
     return {

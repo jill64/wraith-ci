@@ -39,13 +39,14 @@ action<WraithPayload>(
 
     const app = apps[ghost_name]
 
-    await injectEnvs(payload.data.encrypted_envs)
+    const run = await injectEnvs(payload.data.encrypted_envs)
 
     const result = await attempt(
       () =>
         app({
           octokit,
-          payload
+          payload,
+          run
         }),
       (e, o) => ({
         status: 'failure' as const,
