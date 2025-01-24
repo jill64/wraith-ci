@@ -4,9 +4,9 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "npm run build && vite preview",
-    "check": "svelte-kit sync && npx svelte-check",
-    "lint": "npm run check && npx eslint .",
-    "format": "npx psvx"
+    "check": "svelte-kit sync && svelte-check",
+    "lint": "npm run check && eslint .",
+    "format": "psvx"
   },
   "devDependencies": {
     "@jill64/svelte-suite": "2.1.1",

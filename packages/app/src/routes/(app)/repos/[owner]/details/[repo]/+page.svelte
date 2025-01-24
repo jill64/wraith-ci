@@ -16,6 +16,7 @@
 
   let data_envs = $derived(Object.entries(data.envs))
 
+  // eslint-disable-next-line
   let envs = $state(data_envs)
 
   let key_dom: HTMLInputElement | undefined
