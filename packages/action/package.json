@@ -2,8 +2,8 @@
   "type": "module",
   "scripts": {
     "build": "npx tsx scripts/build.ts",
-    "lint": "npx eslint . && tsc",
-    "format": "npx prettier -w ."
+    "lint": "eslint . && tsc",
+    "format": "psvx"
   },
   "devDependencies": {
     "@jill64/eslint-config-ts": "2.0.3",
