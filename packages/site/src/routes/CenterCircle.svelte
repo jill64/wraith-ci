@@ -156,7 +156,7 @@
       </p>
     {/if}
     <a
-      href="/docs/{isBuild
+      href="/docs/ghost/{isBuild
         ? 'build'
         : isLint
           ? 'lint'
