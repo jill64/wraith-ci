@@ -2,7 +2,8 @@ export const load = async ({ locals: { kit }, params: { page, owner } }) => {
   const allRepo = await kit.rest.repos.listForUser({
     username: owner,
     per_page: 20,
-    page: Number(page)
+    page: Number(page),
+    type: 'all'
   })
 
   let lastPage = 0

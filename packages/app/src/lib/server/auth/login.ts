@@ -22,7 +22,7 @@ export const login = ({ cookies, url }: RequestEvent) => {
     path: '/'
   })
 
-  const scope = 'read:user user:email repo read:org'
+  const scope = 'read:user user:email repo:read read:org'
 
   redirect(
     302,
