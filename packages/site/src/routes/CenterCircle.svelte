@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment'
+  import { slide } from 'svelte/transition'
 
   let circle: HTMLDivElement | undefined
   let angle = $state(0)
@@ -120,10 +121,49 @@
       </h2>
     </div>
   </div>
-  <p>Description Text</p>
+  <div class="w-80">
+    {#if isBuild}
+      <p class="description" transition:slide>
+        正しくビルドが行われるかチェックし、アーティファクトが更新されていなければ、自動的にコミットします。
+      </p>
+    {:else if isAssign}
+      <p class="description" transition:slide>
+        PRが作成されると、事前に指定されたレビュアーを自動的に割り当てます。
+      </p>
+    {:else if isBump}
+      <p class="description" transition:slide>
+        あらかじめ決められたPRメッセージルールに基づいて、package.jsonのバージョンを自動で更新します。
+      </p>
+    {:else if isMerge}
+      <p class="description" transition:slide>
+        あらかじめ決められたユーザーからのPRを自動でマージします。
+      </p>
+    {:else if isDocs}
+      <p class="description" transition:slide>
+        README.mdやpackage.jsonといったドキュメントを自動更新し、最新の状態に保ちます。
+      </p>
+    {:else if isFormat}
+      <p class="description" transition:slide>
+        フォーマットを実行し、差分を自動でコミットします。
+      </p>
+    {:else if isTest}
+      <p class="description" transition:slide>
+        各種テストを自動で実行し、カバレッジを取得します。
+      </p>
+    {:else if isLint}
+      <p class="description" transition:slide>
+        Lintを実行し、コードの品質を保つための修正を行います。
+      </p>
+    {/if}
+  </div>
 </div>
 
 <style>
+  .description {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
   /* 親コンテナ */
   .circle-container {
     position: relative;
