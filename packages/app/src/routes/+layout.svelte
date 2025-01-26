@@ -85,7 +85,7 @@
     {/snippet}
     {#snippet contents(close)}
       <div
-        class="absolute right-0 top-10 p-4 menu flex-col gap-2"
+        class="absolute right-0 top-10 p-4 menu flex-col gap-2 z-10"
         transition:slide
       >
         <a
