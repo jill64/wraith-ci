@@ -1,6 +1,8 @@
 <script lang="ts">
   import { page } from '$app/state'
+  import { dict } from '$lib/dict.svelte'
   import { i } from '$lib/i18n'
+  import { applyGoogleTranslate } from '$shared/applyGoogleTranslate'
   import {
     FlipButton,
     OGP,
@@ -12,9 +14,9 @@
     LanguageManager,
     LanguageSwitcher
   } from '@jill64/svelte-suite/i18n/app'
-  import logo from './logo.png'
+  import { TabItems } from 'svelte-page-tab'
   import '../app.postcss'
-  import { applyGoogleTranslate } from '$shared/applyGoogleTranslate'
+  import logo from './logo.png'
 
   let { children } = $props()
 
@@ -29,6 +31,8 @@
       ? i.translate(page.data.description)
       : 'CI suite in the dark'
   )
+
+  let lang = $derived(i.translate({ en: 'en', ja: 'ja' }))
 </script>
 
 <Toaster dark={theme.isDark} />
@@ -44,14 +48,36 @@
 </svelte:head>
 
 <header class="flex items-center justify-between">
-  <img src={logo} alt="logo" width="48px" />
-  <h1 class="text-2xl font-bold bg-[#161616] text-white py-2 pr-2">
-    Wraith CI
-  </h1>
-  <span
-    class="mr-auto font-bold text-xs rounded-full bg-orange-500 px-1.5 py-0.5 text-white"
-    >BETA</span
-  >
+  <a href="/" class="flex items-center mr-auto">
+    <img src={logo} alt="logo" width="48px" />
+    <h1 class="text-2xl font-bold bg-[#161616] text-white py-2 pr-2">
+      Wraith CI
+    </h1>
+    <span
+      class="mr-auto font-bold text-xs rounded-full bg-orange-500 px-1.5 py-0.5 text-white"
+      >BETA</span
+    >
+  </a>
+
+  <ul class="ml-auto flex items-center overflow-x-auto">
+    <TabItems
+      routes={new Map([
+        ['/docs', dict('documentation')],
+        [`/blog/${lang}`, i.translate({ en: 'Blog', ja: 'ブログ' })],
+        ['/pricing', dict('pricing')],
+        [
+          `/contact/${lang}`,
+          i.translate({ en: 'Contact us', ja: 'お問い合わせ' })
+        ]
+      ])}
+    >
+      {#snippet children(item)}
+        <span class="whitespace-nowrap">
+          {item}
+        </span>
+      {/snippet}
+    </TabItems>
+  </ul>
   <LanguageSwitcher
     stroke={theme.isDark ? '#FFF' : '#000'}
     menuClass="absolute top-10 right-0 menu flex flex-col"
@@ -99,3 +125,12 @@
     </a>
   </small>
 </footer>
+
+<style>
+  ul :global(a) {
+    @apply py-2 px-4 border-b-2 border-transparent hover:border-zinc-500;
+  }
+  ul :global(a[data-current-location]) {
+    @apply border-white;
+  }
+</style>
