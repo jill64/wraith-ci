@@ -19,7 +19,7 @@ import { onPush } from './onPush'
 
 export const POST = async ({ request, locals: { db } }) => {
   const fetcher = octoflare<WraithPayload>(
-    async ({ payload, installation }) => {
+    async ({ payload, installation, app }) => {
       if (!installation) {
         error(500, 'Installation Not Found')
       }
@@ -102,13 +102,14 @@ export const POST = async ({ request, locals: { db } }) => {
 
       console.log('wraith_status', wraith_status)
 
-      const { dispatchWorkflow } = await installation.createCheckRun({
-        head_sha,
-        owner,
-        repo,
-        name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
-        output: generateOutput(wraith_status)
-      })
+      const { dispatchWorkflow, check_run_id } =
+        await installation.createCheckRun({
+          head_sha,
+          owner,
+          repo,
+          name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
+          output: generateOutput(wraith_status)
+        })
 
       console.log('dispatchWorkflow')
 
@@ -120,15 +121,64 @@ export const POST = async ({ request, locals: { db } }) => {
 
       console.log('registered_repo', registered_repo)
 
+      const startPrivateWorkflow = async () => {
+        const {
+          data: { id: app_installation_id }
+        } = await installation.kit.rest.apps.getRepoInstallation({
+          owner: 'jill64',
+          repo: 'wraith-ci-private'
+        })
+
+        const app_kit = await app.getInstallationOctokit(app_installation_id)
+
+        const [token, app_token] = await Promise.all([
+          installation.kit.rest.apps
+            .createInstallationAccessToken({
+              installation_id: installation.id
+            })
+            .then(({ data: { token } }) => token),
+          app_kit.rest.apps
+            .createInstallationAccessToken({
+              installation_id: app_installation_id
+            })
+            .then(({ data: { token } }) => token)
+        ])
+
+        await app_kit.rest.actions.createWorkflowDispatch({
+          repo: 'wraith-ci-private',
+          owner: 'jill64',
+          workflow_id: 'wraith-ci.yml',
+          ref: 'main',
+          inputs: {
+            payload: JSON.stringify({
+              token,
+              app_token,
+              repo,
+              owner,
+              check_run_id,
+              data: {
+                triggered_ghosts,
+                head_sha,
+                ref,
+                pull_number,
+                encrypted_envs: registered_repo?.encrypted_envs
+              }
+            })
+          }
+        })
+      }
+
       await Promise.all([
         task(),
-        dispatchWorkflow({
-          triggered_ghosts,
-          head_sha,
-          ref,
-          pull_number,
-          encrypted_envs: registered_repo?.encrypted_envs
-        })
+        repository.private
+          ? startPrivateWorkflow()
+          : dispatchWorkflow({
+              triggered_ghosts,
+              head_sha,
+              ref,
+              pull_number,
+              encrypted_envs: registered_repo?.encrypted_envs
+            })
       ])
 
       return text('Wraith CI Workflow Bridged', {
