@@ -6,6 +6,8 @@ export const load = async ({ locals: { kit }, params: { page, owner } }) => {
     type: 'all'
   })
 
+  console.log('allRepo.status', allRepo.status)
+
   let lastPage = 0
 
   allRepo.headers.link?.split(',').forEach((link) => {
