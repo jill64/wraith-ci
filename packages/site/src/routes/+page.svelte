@@ -18,7 +18,7 @@
     </span>
   </div>
   <h2 class="mx-4 my-6 font-bold text-xl md:text-4xl flex justify-center">
-    Wraith CI is Zero Config CI for Node.js Application
+    Zero Config CI for Node.js Application
   </h2>
   <CenterCircle />
   <p class="flex justify-center">

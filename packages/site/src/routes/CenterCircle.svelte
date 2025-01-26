@@ -155,6 +155,24 @@
         Lintを実行し、コードの品質を保つための修正を行います。
       </p>
     {/if}
+    <a
+      href="/docs/{isBuild
+        ? 'build'
+        : isLint
+          ? 'lint'
+          : isTest
+            ? 'test'
+            : isFormat
+              ? 'format'
+              : isDocs
+                ? 'docs'
+                : isMerge
+                  ? 'merge'
+                  : isBump
+                    ? 'bump'
+                    : 'assign'}"
+      class="link">Read more</a
+    >
   </div>
 </div>
 
@@ -214,7 +232,7 @@
     transform: rotate(0deg) translate(100px);
   }
   .item:nth-child(1)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(49, 94, 230); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(1)::before {
     background: rgb(34, 54, 115); /* 同じ背景色 */
@@ -225,7 +243,7 @@
     transform: rotate(45deg) translate(100px);
   }
   .item:nth-child(2)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(151, 235, 88); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(2)::before {
     background: rgb(91, 135, 57); /* 同じ背景色 */
@@ -236,7 +254,7 @@
     transform: rotate(90deg) translate(100px);
   }
   .item:nth-child(3)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(233, 85, 85); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(3)::before {
     background: rgb(135, 57, 57); /* 同じ背景色 */
@@ -247,7 +265,7 @@
     transform: rotate(135deg) translate(100px);
   }
   .item:nth-child(4)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(111, 55, 223); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(4)::before {
     background: rgb(83, 57, 135); /* 同じ背景色 */
@@ -258,7 +276,7 @@
     transform: rotate(180deg) translate(100px);
   }
   .item:nth-child(5)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(56, 213, 219); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(5)::before {
     background: rgb(57, 132, 135); /* 同じ背景色 */
@@ -269,7 +287,7 @@
     transform: rotate(225deg) translate(100px);
   }
   .item:nth-child(6)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(225, 182, 65); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(6)::before {
     background: rgb(135, 114, 57); /* 同じ背景色 */
@@ -280,7 +298,7 @@
     transform: rotate(270deg) translate(100px);
   }
   .item:nth-child(7)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(48, 207, 66); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(7)::before {
     background: rgb(57, 135, 66); /* 同じ背景色 */
@@ -291,7 +309,7 @@
     transform: rotate(315deg) translate(100px);
   }
   .item:nth-child(8)::before {
-    background: rgb(57, 57, 135); /* 同じ背景色 */
+    background: rgb(220, 61, 183); /* 同じ背景色 */
   }
   :global(.dark) .item:nth-child(8)::before {
     background: rgb(135, 57, 117); /* 同じ背景色 */
