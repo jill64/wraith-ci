@@ -1,12 +1,20 @@
 export const load = async ({ locals: { kit }, params: { page, owner } }) => {
-  const allRepo = await kit.rest.repos.listForUser({
-    username: owner,
-    per_page: 20,
-    page: Number(page),
-    type: 'all'
+  const { data: user } = await kit.rest.users.getByUsername({
+    username: owner
   })
 
-  console.log('allRepo.status', allRepo.status)
+  const allRepo = await (user.type === 'User'
+    ? kit.rest.repos.listForAuthenticatedUser({
+        per_page: 20,
+        page: Number(page),
+        type: 'all'
+      })
+    : kit.rest.repos.listForOrg({
+        org: owner,
+        per_page: 20,
+        page: Number(page),
+        type: 'all'
+      }))
 
   let lastPage = 0
 
