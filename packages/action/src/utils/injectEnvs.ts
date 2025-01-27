@@ -12,14 +12,18 @@ export const injectEnvs = async ({
   encrypted_envs,
   encrypted_npm_token
 }: WraithPayload): Promise<Run> => {
-  if (!encrypted_envs) {
-    return preRun({})
-  }
+  const [npm_token, text] = await Promise.all([
+    encrypted_npm_token
+      ? decrypt(encrypted_npm_token, env.ENVS_PRIVATE_KEY!)
+      : '',
+    encrypted_envs ? decrypt(encrypted_envs, env.ENVS_PRIVATE_KEY!) : ''
+  ])
 
-  const text = await decrypt(encrypted_envs, env.ENVS_PRIVATE_KEY!)
-  const npm_token = encrypted_npm_token
-    ? await decrypt(encrypted_npm_token, env.ENVS_PRIVATE_KEY!)
-    : ''
+  if (!encrypted_envs) {
+    return preRun({
+      NODE_AUTH_TOKEN: npm_token
+    })
+  }
 
   const json = {
     ...JSON.parse(text),
