@@ -4,8 +4,9 @@
   import { dict } from '$lib/dict.svelte'
   import { i } from '$lib/i18n'
   import { request } from '$lib/request.svelte.js'
+  import { schema } from '$shared/ghost/schema'
   import { Trash2Icon } from '@jill64/svelte-suite/icons'
-  import { ActionButton } from '@jill64/svelte-suite/input'
+  import { ActionButton, CheckBox } from '@jill64/svelte-suite/input'
 
   let { data } = $props()
 
@@ -163,6 +164,24 @@
     })}
     disabled={duplicatedKeys.size !== 0}
   />
+  <h2 class="text-3xl font-bold my-4">Ghost Setting</h2>
+  <div class="flex flex-col gap-2">
+    {#each Object.keys(schema) as ghost}
+      <CheckBox
+        value={!data.ignore_ghosts.includes(ghost)}
+        onChange={(v) =>
+          request.put('ignore-ghosts', {
+            invalidate: () => true,
+            body: JSON.stringify([
+              ...data.ignore_ghosts.filter((x) => x !== ghost),
+              ...(v ? [] : [ghost])
+            ])
+          })}
+      >
+        <span class="ml-2">Ghost {ghost}</span>
+      </CheckBox>
+    {/each}
+  </div>
 </main>
 
 <style lang="postcss">
