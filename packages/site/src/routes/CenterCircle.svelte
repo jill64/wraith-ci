@@ -24,7 +24,7 @@
   }
 
   let isBuild = $derived(relativeAngle === 0)
-  let isAssign = $derived(relativeAngle === 315)
+  let isRelease = $derived(relativeAngle === 315)
   let isBump = $derived(relativeAngle === 270)
   let isMerge = $derived(relativeAngle === 225)
   let isDocs = $derived(relativeAngle === 180)
@@ -33,7 +33,7 @@
   let isLint = $derived(relativeAngle === 45)
 </script>
 
-<div class="flex flex-wrap justify-center items-center gap-20 my-28">
+<div class="flex flex-wrap justify-center items-center gap-24 my-28">
   <div class="circle-container">
     <h2 class="absolute top-[130px] left-[110px] text-4xl font-bold z-10">
       Ghost
@@ -46,17 +46,17 @@
             rotate(angle)
           }}
         >
-          build
+          Build
         </button>
       </h2>
-      <h2 class="item {isAssign ? 'text-4xl z-10' : 'text-gray-500'}">
+      <h2 class="item {isRelease ? 'text-4xl z-10' : 'text-gray-500'}">
         <button
           onclick={() => {
             angle = 315
             rotate(angle)
           }}
         >
-          Assign
+          Release
         </button>
       </h2>
       <h2 class="item {isBump ? 'text-4xl z-10' : 'text-gray-500'}">
@@ -126,9 +126,9 @@
       <p class="description" transition:slide>
         正しくビルドが行われるかチェックし、アーティファクトが更新されていなければ、自動的にコミットします。
       </p>
-    {:else if isAssign}
+    {:else if isRelease}
       <p class="description" transition:slide>
-        PRが作成されると、事前に指定されたレビュアーを自動的に割り当てます。
+        デフォルトブランチへのプッシュ時にnpmライブラリを自動的に公開します。
       </p>
     {:else if isBump}
       <p class="description" transition:slide>
@@ -170,9 +170,11 @@
                   ? 'merge'
                   : isBump
                     ? 'bump'
-                    : 'assign'}"
-      class="link">Read more</a
+                    : 'release'}"
+      class="link"
     >
+      Read more
+    </a>
   </div>
 </div>
 
@@ -220,7 +222,7 @@
     position: absolute;
     top: -30px;
     left: -20px;
-    right: -100px;
+    right: -120px;
     bottom: -30px;
     border-radius: 9999px;
     filter: blur(8px); /* ここでぼかし */

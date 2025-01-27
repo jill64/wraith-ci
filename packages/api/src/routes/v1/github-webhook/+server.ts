@@ -78,9 +78,30 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
+      console.log('Processing:', { repo, owner, event, head_sha })
+
+      const target_repo = await attempt(
+        () =>
+          db
+            .selectFrom('repo')
+            .select(['encrypted_envs'])
+            .where('github_repo_id', '=', repository.id)
+            .executeTakeFirst(),
+        (e, o) => {
+          console.error(e)
+          throw o
+        }
+      )
+
+      console.log('Target Repo:', target_repo)
+
       const triggered_ghosts = Object.entries(schema)
-        .filter(([, config]) => {
+        .filter(([ghost, config]) => {
           const skip_bot = 'skip_bot' in config && config.skip_bot === true
+
+          if (JSON.parse('[]').includes(ghost)) {
+            return false
+          }
 
           if (send_by_bot && skip_bot) {
             return false
@@ -94,14 +115,14 @@ export const POST = async ({ request, locals: { db } }) => {
         })
         .map(([name]) => name as GhostName)
 
+      console.log('Triggered Ghosts', triggered_ghosts)
+
       const wraith_status = Object.fromEntries(
         triggered_ghosts.map((name) => [
           name,
           { status: 'processing' } as GhostStatus
         ])
       )
-
-      console.log('wraith_status', wraith_status)
 
       const { dispatchWorkflow, check_run_id } =
         await installation.createCheckRun({
@@ -169,7 +190,7 @@ export const POST = async ({ request, locals: { db } }) => {
                 head_sha,
                 ref,
                 pull_number,
-                encrypted_envs: registered_repo?.encrypted_envs
+                encrypted_envs: target_repo?.encrypted_envs
               }
             })
           }
@@ -185,7 +206,7 @@ export const POST = async ({ request, locals: { db } }) => {
               head_sha,
               ref,
               pull_number,
-              encrypted_envs: registered_repo?.encrypted_envs
+              encrypted_envs: target_repo?.encrypted_envs
             })
       ])
 
