@@ -84,7 +84,7 @@ export const POST = async ({ request, locals: { db } }) => {
         () =>
           db
             .selectFrom('repo')
-            .select(['ignore_ghosts', 'encrypted_envs'])
+            .select(['encrypted_envs'])
             .where('github_repo_id', '=', repository.id)
             .executeTakeFirst(),
         (e, o) => {
@@ -99,7 +99,7 @@ export const POST = async ({ request, locals: { db } }) => {
         .filter(([ghost, config]) => {
           const skip_bot = 'skip_bot' in config && config.skip_bot === true
 
-          if (JSON.parse(target_repo?.ignore_ghosts ?? '[]').includes(ghost)) {
+          if (JSON.parse('[]').includes(ghost)) {
             return false
           }
 
