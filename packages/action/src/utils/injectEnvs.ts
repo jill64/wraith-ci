@@ -26,6 +26,8 @@ export const injectEnvs = async ({
     NODE_AUTH_TOKEN: npm_token
   }
 
+  console.log({ env: json })
+
   Object.values(json).forEach((value) => {
     core.setSecret(value as string)
   })
