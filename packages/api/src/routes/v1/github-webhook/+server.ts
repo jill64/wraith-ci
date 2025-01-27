@@ -77,19 +77,9 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
-      const target_repo = await db
-        .selectFrom('repo')
-        .select(['ignore_ghosts', 'encrypted_envs'])
-        .where('github_repo_id', '=', repository.id)
-        .executeTakeFirst()
-
       const triggered_ghosts = Object.entries(schema)
-        .filter(([ghost, config]) => {
+        .filter(([, config]) => {
           const skip_bot = 'skip_bot' in config && config.skip_bot === true
-
-          if (target_repo?.ignore_ghosts?.includes(ghost)) {
-            return false
-          }
 
           if (send_by_bot && skip_bot) {
             return false
@@ -110,6 +100,8 @@ export const POST = async ({ request, locals: { db } }) => {
         ])
       )
 
+      console.log('wraith_status', wraith_status)
+
       const { dispatchWorkflow, check_run_id } =
         await installation.createCheckRun({
           head_sha,
@@ -118,6 +110,16 @@ export const POST = async ({ request, locals: { db } }) => {
           name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
           output: generateOutput(wraith_status)
         })
+
+      console.log('dispatchWorkflow')
+
+      const registered_repo = await db
+        .selectFrom('repo')
+        .select('encrypted_envs')
+        .where('github_repo_id', '=', repository.id)
+        .executeTakeFirst()
+
+      console.log('registered_repo', registered_repo)
 
       const startPrivateWorkflow = async () => {
         const {
@@ -159,7 +161,7 @@ export const POST = async ({ request, locals: { db } }) => {
                 head_sha,
                 ref,
                 pull_number,
-                encrypted_envs: target_repo?.encrypted_envs
+                encrypted_envs: registered_repo?.encrypted_envs
               }
             })
           }
@@ -175,7 +177,7 @@ export const POST = async ({ request, locals: { db } }) => {
               head_sha,
               ref,
               pull_number,
-              encrypted_envs: target_repo?.encrypted_envs
+              encrypted_envs: registered_repo?.encrypted_envs
             })
       ])
 
