@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [build, docs, format, lint, merge, release, bump, assign]
+        name: [build, docs, format, lint, merge, release, bump]
     timeout-minutes: 15
     runs-on: ubuntu-latest
     outputs:
@@ -62,7 +62,7 @@ jobs:
       
       - name: Setup npm
         if: ${{ steps.check-package-manager.outputs.name == 'npm' }}
-        run: npm ci
+        run: npm i
 
       - name: Ghost ${{ matrix.name }}
         uses: jill64/wraith-ci@main
@@ -145,7 +145,7 @@ jobs:
 
       - name: Retry npm install
         if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
-        run: npm ci
+        run: npm i
 
       - name: Staging
         if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
