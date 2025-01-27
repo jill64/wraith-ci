@@ -120,6 +120,9 @@ export const POST = async ({ request, locals: { db } }) => {
         ? me?.encrypted_npm_token
         : undefined
 
+      console.log('triggered_ghosts', triggered_ghosts)
+      console.log('encrypted_npm_token', encrypted_npm_token)
+
       const { dispatchWorkflow, check_run_id } =
         await installation.createCheckRun({
           head_sha,
