@@ -84,7 +84,7 @@ export const POST = async ({ request, locals: { db } }) => {
         () =>
           db
             .selectFrom('repo')
-            .select(['encrypted_envs'])
+            .select(['encrypted_envs', 'ignore_ghosts'])
             .where('github_repo_id', '=', repository.id)
             .executeTakeFirst(),
         (e, o) => {
@@ -93,13 +93,11 @@ export const POST = async ({ request, locals: { db } }) => {
         }
       )
 
-      console.log('Target Repo:', target_repo)
-
       const triggered_ghosts = Object.entries(schema)
         .filter(([ghost, config]) => {
           const skip_bot = 'skip_bot' in config && config.skip_bot === true
 
-          if (JSON.parse('[]').includes(ghost)) {
+          if (JSON.parse(target_repo?.ignore_ghosts ?? '[]').includes(ghost)) {
             return false
           }
 
@@ -114,8 +112,6 @@ export const POST = async ({ request, locals: { db } }) => {
             : trigger === event
         })
         .map(([name]) => name as GhostName)
-
-      console.log('Triggered Ghosts', triggered_ghosts)
 
       const wraith_status = Object.fromEntries(
         triggered_ghosts.map((name) => [
@@ -132,23 +128,6 @@ export const POST = async ({ request, locals: { db } }) => {
           name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
           output: generateOutput(wraith_status)
         })
-
-      console.log('dispatchWorkflow')
-
-      const registered_repo = await attempt(
-        () =>
-          db
-            .selectFrom('repo')
-            .select('encrypted_envs')
-            .where('github_repo_id', '=', repository.id)
-            .executeTakeFirst(),
-        (e, o) => {
-          console.error(e)
-          throw o
-        }
-      )
-
-      console.log('registered_repo', registered_repo)
 
       const startPrivateWorkflow = async () => {
         const {
