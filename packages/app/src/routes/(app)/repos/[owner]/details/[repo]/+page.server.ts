@@ -13,7 +13,7 @@ export const load = async ({
 
   const db_repo = await db
     .selectFrom('repo')
-    .select(['id', 'encrypted_envs'])
+    .select(['id', 'encrypted_envs', 'ignore_ghosts'])
     .where('github_repo_id', '=', repository.id)
     .executeTakeFirst()
 
@@ -41,9 +41,14 @@ export const load = async ({
       ) as Record<string, string>)
     : {}
 
+  const ignore_ghosts = db_repo?.ignore_ghosts
+    ? (JSON.parse(db_repo.ignore_ghosts) as string[])
+    : []
+
   return {
     repository,
     envs,
+    ignore_ghosts,
     title: {
       en: `${repo} - Repository`,
       ja: `${repo} - リポジトリ`
