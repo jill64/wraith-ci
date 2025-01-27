@@ -9,7 +9,6 @@ import { schema } from '$shared/ghost/schema'
 import type { GhostName } from '$shared/ghost/types/GhostName'
 import type { GhostStatus } from '$shared/ghost/types/GhostStatus'
 import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
-import { attempt } from '@jill64/attempt'
 import { error, text } from '@sveltejs/kit'
 import { octoflare, type OctoflareEnv } from 'octoflare'
 import { generateOutput } from './generateOutput'
@@ -80,18 +79,11 @@ export const POST = async ({ request, locals: { db } }) => {
 
       console.log('Processing:', { repo, owner, event, head_sha })
 
-      const target_repo = await attempt(
-        () =>
-          db
-            .selectFrom('repo')
-            .select(['ignore_ghosts', 'encrypted_envs'])
-            .where('github_repo_id', '=', repository.id)
-            .executeTakeFirst(),
-        (e, o) => {
-          console.error(e)
-          throw o
-        }
-      )
+      const target_repo = await db
+        .selectFrom('repo')
+        .select(['ignore_ghosts', 'encrypted_envs'])
+        .where('github_repo_id', '=', repository.id)
+        .executeTakeFirst()
 
       console.log('Target Repo:', target_repo)
 
@@ -99,7 +91,7 @@ export const POST = async ({ request, locals: { db } }) => {
         .filter(([ghost, config]) => {
           const skip_bot = 'skip_bot' in config && config.skip_bot === true
 
-          if (JSON.parse(target_repo?.ignore_ghosts ?? '[]').includes(ghost)) {
+          if (target_repo?.ignore_ghosts?.includes(ghost)) {
             return false
           }
 
