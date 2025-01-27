@@ -78,9 +78,19 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
+      const target_repo = await db
+        .selectFrom('repo')
+        .select(['ignore_ghosts', 'encrypted_envs'])
+        .where('github_repo_id', '=', repository.id)
+        .executeTakeFirst()
+
       const triggered_ghosts = Object.entries(schema)
-        .filter(([, config]) => {
+        .filter(([ghost, config]) => {
           const skip_bot = 'skip_bot' in config && config.skip_bot === true
+
+          if (target_repo?.ignore_ghosts?.includes(ghost)) {
+            return false
+          }
 
           if (send_by_bot && skip_bot) {
             return false
@@ -100,8 +110,6 @@ export const POST = async ({ request, locals: { db } }) => {
           { status: 'processing' } as GhostStatus
         ])
       )
-
-      console.log('wraith_status', wraith_status)
 
       const { dispatchWorkflow, check_run_id } =
         await installation.createCheckRun({
@@ -169,7 +177,7 @@ export const POST = async ({ request, locals: { db } }) => {
                 head_sha,
                 ref,
                 pull_number,
-                encrypted_envs: registered_repo?.encrypted_envs
+                encrypted_envs: target_repo?.encrypted_envs
               }
             })
           }
@@ -185,7 +193,7 @@ export const POST = async ({ request, locals: { db } }) => {
               head_sha,
               ref,
               pull_number,
-              encrypted_envs: registered_repo?.encrypted_envs
+              encrypted_envs: target_repo?.encrypted_envs
             })
       ])
 
