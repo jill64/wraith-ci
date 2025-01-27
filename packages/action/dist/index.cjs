@@ -27310,13 +27310,23 @@ var injectEnvs = async (encrypted_envs) => {
     core2.setSecret(value);
   });
   const path_list = await findFile("package.json");
+  const gitIgnorePaths = await findFile(".gitignore");
   await Promise.all(
-    path_list.map(
-      (path_to_json) => (0, import_promises8.writeFile)(
+    gitIgnorePaths.map(async (path_to_gitignore) => {
+      const text2 = await (0, import_promises8.readFile)(path_to_gitignore);
+      const lines = text2.toString().split("\n");
+      if (!lines.includes(".env")) {
+        await (0, import_promises8.writeFile)(path_to_gitignore, [...lines, ".env"].join("\n"));
+      }
+    })
+  );
+  await Promise.all(
+    path_list.map(async (path_to_json) => {
+      await (0, import_promises8.writeFile)(
         import_node_path6.default.join(path_to_json.replace("package.json", ""), ".env"),
         Object.entries(json).map(([key, value]) => `${key}=${value}`).join("\n")
-      )
-    )
+      );
+    })
   );
   return preRun(json);
 };
