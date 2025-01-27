@@ -77,11 +77,15 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
+      console.log('Processing:', { repo, owner, event, head_sha })
+
       const target_repo = await db
         .selectFrom('repo')
         .select(['ignore_ghosts', 'encrypted_envs'])
         .where('github_repo_id', '=', repository.id)
         .executeTakeFirst()
+
+      console.log('Target Repo:', target_repo)
 
       const triggered_ghosts = Object.entries(schema)
         .filter(([ghost, config]) => {
@@ -102,6 +106,8 @@ export const POST = async ({ request, locals: { db } }) => {
             : trigger === event
         })
         .map(([name]) => name as GhostName)
+
+      console.log('Triggered Ghosts', triggered_ghosts)
 
       const wraith_status = Object.fromEntries(
         triggered_ghosts.map((name) => [
