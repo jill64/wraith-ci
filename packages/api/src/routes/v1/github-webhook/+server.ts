@@ -78,8 +78,6 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
-      console.log('Processing:', { repo, owner, event, head_sha })
-
       const target_repo = await attempt(
         () =>
           db
