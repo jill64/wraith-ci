@@ -9,7 +9,6 @@ import { schema } from '$shared/ghost/schema'
 import type { GhostName } from '$shared/ghost/types/GhostName'
 import type { GhostStatus } from '$shared/ghost/types/GhostStatus'
 import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
-import { attempt } from '@jill64/attempt'
 import { error, text } from '@sveltejs/kit'
 import { octoflare, type OctoflareEnv } from 'octoflare'
 import { generateOutput } from './generateOutput'
@@ -78,30 +77,9 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
-      console.log('Processing:', { repo, owner, event, head_sha })
-
-      const target_repo = await attempt(
-        () =>
-          db
-            .selectFrom('repo')
-            .select(['encrypted_envs'])
-            .where('github_repo_id', '=', repository.id)
-            .executeTakeFirst(),
-        (e, o) => {
-          console.error(e)
-          throw o
-        }
-      )
-
-      console.log('Target Repo:', target_repo)
-
       const triggered_ghosts = Object.entries(schema)
-        .filter(([ghost, config]) => {
+        .filter(([, config]) => {
           const skip_bot = 'skip_bot' in config && config.skip_bot === true
-
-          if (JSON.parse('[]').includes(ghost)) {
-            return false
-          }
 
           if (send_by_bot && skip_bot) {
             return false
@@ -115,14 +93,14 @@ export const POST = async ({ request, locals: { db } }) => {
         })
         .map(([name]) => name as GhostName)
 
-      console.log('Triggered Ghosts', triggered_ghosts)
-
       const wraith_status = Object.fromEntries(
         triggered_ghosts.map((name) => [
           name,
           { status: 'processing' } as GhostStatus
         ])
       )
+
+      console.log('wraith_status', wraith_status)
 
       const { dispatchWorkflow, check_run_id } =
         await installation.createCheckRun({
@@ -132,6 +110,16 @@ export const POST = async ({ request, locals: { db } }) => {
           name: `Wraith CI${event === 'pull_request' ? ' / PR' : ''}`,
           output: generateOutput(wraith_status)
         })
+
+      console.log('dispatchWorkflow')
+
+      const registered_repo = await db
+        .selectFrom('repo')
+        .select('encrypted_envs')
+        .where('github_repo_id', '=', repository.id)
+        .executeTakeFirst()
+
+      console.log('registered_repo', registered_repo)
 
       const startPrivateWorkflow = async () => {
         const {
@@ -173,7 +161,7 @@ export const POST = async ({ request, locals: { db } }) => {
                 head_sha,
                 ref,
                 pull_number,
-                encrypted_envs: target_repo?.encrypted_envs
+                encrypted_envs: registered_repo?.encrypted_envs
               }
             })
           }
@@ -189,7 +177,7 @@ export const POST = async ({ request, locals: { db } }) => {
               head_sha,
               ref,
               pull_number,
-              encrypted_envs: target_repo?.encrypted_envs
+              encrypted_envs: registered_repo?.encrypted_envs
             })
       ])
 

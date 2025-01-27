@@ -41,15 +41,9 @@ export const load = async ({
       ) as Record<string, string>)
     : {}
 
-  const ignore_ghosts = [] as string[]
-  // db_repo?.ignore_ghosts
-  // ? (JSON.parse(db_repo.ignore_ghosts) as string[])
-  // : []
-
   return {
     repository,
     envs,
-    ignore_ghosts,
     title: {
       en: `${repo} - Repository`,
       ja: `${repo} - リポジトリ`
