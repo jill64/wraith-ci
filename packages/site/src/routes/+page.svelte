@@ -1,4 +1,5 @@
 <script>
+  import { i } from '$lib/i18n'
   import CenterCircle from './CenterCircle.svelte'
 </script>
 
@@ -22,6 +23,9 @@
   </h2>
   <CenterCircle />
   <p class="flex justify-center">
-    様々なゴースト達があなたのアプリケーションを暗闇の中から支援します。
+    {i.translate({
+      en: 'Various ghosts will help your application from the darkness.',
+      ja: '様々なゴースト達があなたのアプリケーションを暗闇の中から支援します。'
+    })}
   </p>
 </main>
