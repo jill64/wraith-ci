@@ -27267,6 +27267,7 @@ var injectEnvs = async ({
     ...JSON.parse(text),
     NODE_AUTH_TOKEN: npm_token
   };
+  console.log({ env: json });
   Object.values(json).forEach((value) => {
     core2.setSecret(value);
   });
