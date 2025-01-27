@@ -28,6 +28,9 @@
 
     return new Set(set.filter((x) => keys.filter((k) => k === x).length !== 1))
   })
+
+  const capitalizeFirstLetter = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1)
 </script>
 
 <NavigationMenu
@@ -178,7 +181,7 @@
             ])
           })}
       >
-        <span class="ml-2">Ghost {ghost}</span>
+        <span class="ml-2">Ghost {capitalizeFirstLetter(ghost)}</span>
       </CheckBox>
     {/each}
   </div>

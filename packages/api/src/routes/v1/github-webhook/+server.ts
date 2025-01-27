@@ -9,7 +9,6 @@ import { schema } from '$shared/ghost/schema'
 import type { GhostName } from '$shared/ghost/types/GhostName'
 import type { GhostStatus } from '$shared/ghost/types/GhostStatus'
 import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
-import { attempt } from '@jill64/attempt'
 import { error, text } from '@sveltejs/kit'
 import { octoflare, type OctoflareEnv } from 'octoflare'
 import { generateOutput } from './generateOutput'
@@ -78,18 +77,17 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
-      const target_repo = await attempt(
-        () =>
-          db
-            .selectFrom('repo')
-            .select(['encrypted_envs', 'ignore_ghosts'])
-            .where('github_repo_id', '=', repository.id)
-            .executeTakeFirst(),
-        (e, o) => {
-          console.error(e)
-          throw o
-        }
-      )
+      const target_repo = await db
+        .selectFrom('repo')
+        .select(['encrypted_envs', 'ignore_ghosts'])
+        .where('github_repo_id', '=', repository.id)
+        .executeTakeFirst()
+
+      const me = await db
+        .selectFrom('user')
+        .select('encrypted_npm_token')
+        .where('github_user_id', '=', repository.owner.id)
+        .executeTakeFirst()
 
       const triggered_ghosts = Object.entries(schema)
         .filter(([ghost, config]) => {
@@ -117,6 +115,10 @@ export const POST = async ({ request, locals: { db } }) => {
           { status: 'processing' } as GhostStatus
         ])
       )
+
+      const encrypted_npm_token = triggered_ghosts.includes('release')
+        ? me?.encrypted_npm_token
+        : undefined
 
       const { dispatchWorkflow, check_run_id } =
         await installation.createCheckRun({
@@ -167,7 +169,8 @@ export const POST = async ({ request, locals: { db } }) => {
                 head_sha,
                 ref,
                 pull_number,
-                encrypted_envs: target_repo?.encrypted_envs
+                encrypted_envs: target_repo?.encrypted_envs,
+                encrypted_npm_token
               }
             })
           }
@@ -183,7 +186,8 @@ export const POST = async ({ request, locals: { db } }) => {
               head_sha,
               ref,
               pull_number,
-              encrypted_envs: target_repo?.encrypted_envs
+              encrypted_envs: target_repo?.encrypted_envs,
+              encrypted_npm_token
             })
       ])
 

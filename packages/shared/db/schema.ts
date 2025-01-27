@@ -28,6 +28,7 @@ export interface UserTable extends Metadata {
   github_user_id: Unique<Immutable<number>>
   plan_cache: 'FREE' | 'STARTER' | 'PRO'
   plan_cached_at: string
+  encrypted_npm_token?: string
 }
 
 export interface RepoTable extends Metadata {
