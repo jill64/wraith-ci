@@ -24,7 +24,7 @@
           ['/ghost/docs', 'Ghost Docs'],
           ['/ghost/merge', 'Ghost Merge'],
           ['/ghost/bump', 'Ghost Bump'],
-          ['/ghost/assign', 'Ghost Assign']
+          ['/ghost/release', 'Ghost Release']
         ])}
       />
     </ul>
