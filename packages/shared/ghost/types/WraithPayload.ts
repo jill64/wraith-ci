@@ -14,4 +14,5 @@ export type WraithPayload = {
   }
   */
   encrypted_envs?: string
+  encrypted_npm_token?: string
 }
