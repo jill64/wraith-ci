@@ -27254,12 +27254,20 @@ var preRun = (env2) => (cmd, opt) => (0, import_exec4.getExecOutput)(cmd, void 0
 });
 
 // src/utils/injectEnvs.ts
-var injectEnvs = async (encrypted_envs) => {
+var injectEnvs = async ({
+  encrypted_envs,
+  encrypted_npm_token
+}) => {
   if (!encrypted_envs) {
     return preRun({});
   }
   const text = await decrypt(encrypted_envs, import_node_process.env.ENVS_PRIVATE_KEY);
-  const json = JSON.parse(text);
+  const npm_token = encrypted_npm_token ? await decrypt(encrypted_npm_token, import_node_process.env.NPM_TOKEN_PRIVATE_KEY) : "";
+  core2.setSecret(npm_token);
+  const json = {
+    ...JSON.parse(text),
+    NODE_AUTH_TOKEN: npm_token
+  };
   Object.values(json).forEach((value) => {
     core2.setSecret(value);
   });
@@ -27267,8 +27275,8 @@ var injectEnvs = async (encrypted_envs) => {
   const gitIgnorePaths = await findFile(".gitignore");
   await Promise.all(
     gitIgnorePaths.map(async (path_to_gitignore) => {
-      const text2 = await (0, import_promises8.readFile)(path_to_gitignore);
-      const lines = text2.toString().split("\n");
+      const text2 = await (0, import_promises8.readFile)(path_to_gitignore, "utf-8");
+      const lines = text2.split("\n");
       if (!lines.includes(".env")) {
         await (0, import_promises8.writeFile)(path_to_gitignore, [...lines, ".env"].join("\n"));
       }
@@ -27308,7 +27316,7 @@ action(
       return;
     }
     const app = apps[ghost_name];
-    const run = await injectEnvs(payload.data.encrypted_envs);
+    const run = await injectEnvs(payload.data);
     const result = await attempt(
       () => app({
         octokit,
