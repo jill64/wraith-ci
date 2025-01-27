@@ -11,8 +11,7 @@ export const dbHandle: Handle = async ({ event, resolve }) => {
       teamName: 'jill64',
       clusterName: 'WraithCI',
       branchName: PUBLIC_STAGE === 'prod' ? 'main' : 'dev',
-      apiKey: SOLARSYSTEM_API_KEY,
-      baseUrl: 'https://dev.api-solarsystemdb.pages.dev'
+      apiKey: SOLARSYSTEM_API_KEY
     })
   })
 
