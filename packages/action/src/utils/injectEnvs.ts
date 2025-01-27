@@ -18,10 +18,8 @@ export const injectEnvs = async ({
 
   const text = await decrypt(encrypted_envs, env.ENVS_PRIVATE_KEY!)
   const npm_token = encrypted_npm_token
-    ? await decrypt(encrypted_npm_token, env.NPM_TOKEN_PRIVATE_KEY!)
+    ? await decrypt(encrypted_npm_token, env.ENVS_PRIVATE_KEY!)
     : ''
-
-  core.setSecret(npm_token)
 
   const json = {
     ...JSON.parse(text),
