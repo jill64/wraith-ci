@@ -27262,8 +27262,7 @@ var injectEnvs = async ({
     return preRun({});
   }
   const text = await decrypt(encrypted_envs, import_node_process.env.ENVS_PRIVATE_KEY);
-  const npm_token = encrypted_npm_token ? await decrypt(encrypted_npm_token, import_node_process.env.NPM_TOKEN_PRIVATE_KEY) : "";
-  core2.setSecret(npm_token);
+  const npm_token = encrypted_npm_token ? await decrypt(encrypted_npm_token, import_node_process.env.ENVS_PRIVATE_KEY) : "";
   const json = {
     ...JSON.parse(text),
     NODE_AUTH_TOKEN: npm_token
