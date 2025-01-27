@@ -39,7 +39,7 @@ action<WraithPayload>(
 
     const app = apps[ghost_name]
 
-    const run = await injectEnvs(payload.data.encrypted_envs)
+    const run = await injectEnvs(payload.data)
 
     const result = await attempt(
       () =>
