@@ -27258,11 +27258,15 @@ var injectEnvs = async ({
   encrypted_envs,
   encrypted_npm_token
 }) => {
+  const [npm_token, text] = await Promise.all([
+    encrypted_npm_token ? decrypt(encrypted_npm_token, import_node_process.env.ENVS_PRIVATE_KEY) : "",
+    encrypted_envs ? decrypt(encrypted_envs, import_node_process.env.ENVS_PRIVATE_KEY) : ""
+  ]);
   if (!encrypted_envs) {
-    return preRun({});
+    return preRun({
+      NODE_AUTH_TOKEN: npm_token
+    });
   }
-  const text = await decrypt(encrypted_envs, import_node_process.env.ENVS_PRIVATE_KEY);
-  const npm_token = encrypted_npm_token ? await decrypt(encrypted_npm_token, import_node_process.env.ENVS_PRIVATE_KEY) : "";
   const json = {
     ...JSON.parse(text),
     NODE_AUTH_TOKEN: npm_token
