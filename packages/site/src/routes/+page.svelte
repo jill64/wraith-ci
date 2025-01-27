@@ -1,4 +1,5 @@
 <script>
+  import { i } from '$lib/i18n'
   import CenterCircle from './CenterCircle.svelte'
 </script>
 
@@ -13,7 +14,7 @@
         href="https://warithci.dev"
         class="whitespace-nowrap border border-black dark:border-transparent push-effect bg-white rounded-full font-bold text-black text-xl md:text-5xl md md:py-4 md:px-8"
       >
-        Get Started
+        {i.translate({ en: 'Get Started', ja: '使用を開始する' })}
       </a>
     </span>
   </div>
@@ -22,6 +23,9 @@
   </h2>
   <CenterCircle />
   <p class="flex justify-center">
-    様々なゴースト達があなたのアプリケーションを暗闇の中から支援します。
+    {i.translate({
+      en: 'Various ghosts will help your application from the darkness.',
+      ja: '様々なゴースト達があなたのアプリケーションを暗闇の中から支援します。'
+    })}
   </p>
 </main>
