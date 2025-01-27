@@ -51,8 +51,8 @@ importers:
         specifier: 0.27.5
         version: 0.27.5
       kysely-solarsystem:
-        specifier: 0.0.9
-        version: 0.0.9
+        specifier: 0.0.13
+        version: 0.0.13
       octoflare:
         specifier: 1.2.0
         version: 1.2.0
@@ -1877,8 +1877,8 @@ packages:
   known-css-properties@0.35.0:
     resolution: {integrity: sha512-a/RAk2BfKk+WFGhhOCAYqSiFLc34k8Mt/6NWRI4joER0EYUzXIcFivjjnoD3+XU1DggLn/tZc3DOAgke7l8a4A==}
 
-  kysely-solarsystem@0.0.9:
-    resolution: {integrity: sha512-0/uMSQbAgQOj58hRvXJQJh+bfZzJuy630XLe5VoXPPScHphlGV8d7T1NSCxlSUNSDdc6kwemetbhzDmPnVSQ6A==}
+  kysely-solarsystem@0.0.13:
+    resolution: {integrity: sha512-cAeg5hHXqLQM2nHHWnVClYSYn7Esim1pZOI84ooi5JwHtKbu+NCFpBj6W8YYBOBAWDQcAvxNiDSV36L6qXx6vw==}
 
   kysely@0.27.5:
     resolution: {integrity: sha512-s7hZHcQeSNKpzCkHRm8yA+0JPLjncSWnjb+2TIElwS2JAqYr+Kv3Ess+9KFfJS0C1xcQ1i9NkNHpWwCYpHMWsA==}
@@ -4373,7 +4373,7 @@ snapshots:
 
   known-css-properties@0.35.0: {}
 
-  kysely-solarsystem@0.0.9:
+  kysely-solarsystem@0.0.13:
     dependencies:
       '@jill64/attempt': 1.1.4
       kysely: 0.27.5
