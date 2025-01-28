@@ -7,8 +7,11 @@ export const onMajor = async ({
   pull_request_title: string
   ghost_bump_config: GhostBumpConfig
 }): Promise<'major' | 'minor' | 'patch' | 'skipped'> => {
-  const minorPrefixes = ghost_bump_config?.skip?.split(',') ?? ['feat', 'minor']
-  const patchPrefixes = ghost_bump_config?.skip?.split(',') ?? ['*']
+  const minorPrefixes = ghost_bump_config?.minor?.split(',') ?? [
+    'feat',
+    'minor'
+  ]
+  const patchPrefixes = ghost_bump_config?.patch?.split(',') ?? ['*']
   const skipPrefixes = ghost_bump_config?.skip?.split(',') ?? ['chore']
 
   const semType = minorPrefixes.some((prefix) =>

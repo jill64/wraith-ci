@@ -7,12 +7,15 @@ export const fallback = async ({
   ghost_bump_config: GhostBumpConfig
   pull_request_title: string
 }): Promise<'major' | 'minor' | 'patch' | 'skipped'> => {
-  const majorPrefixes = ghost_bump_config?.skip?.split(',') ?? [
+  const majorPrefixes = ghost_bump_config?.major?.split(',') ?? [
     'major',
     'breaking'
   ]
-  const minorPrefixes = ghost_bump_config?.skip?.split(',') ?? ['minor', 'feat']
-  const patchPrefixes = ghost_bump_config?.skip?.split(',') ?? ['*']
+  const minorPrefixes = ghost_bump_config?.minor?.split(',') ?? [
+    'minor',
+    'feat'
+  ]
+  const patchPrefixes = ghost_bump_config?.patch?.split(',') ?? ['*']
   const skipPrefixes = ghost_bump_config?.skip?.split(',') ?? ['chore']
 
   const semType = majorPrefixes.some((prefix) =>

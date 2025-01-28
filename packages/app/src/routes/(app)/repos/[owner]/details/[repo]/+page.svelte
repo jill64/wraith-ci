@@ -79,7 +79,7 @@
                   value={key}
                   class="{duplicatedKeys.has(key)
                     ? 'border-red-500'
-                    : 'border-zinc-500'} disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
+                    : 'border-zinc-500'} disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
                   oninput={(e) => {
                     envs[index][0] = e.currentTarget.value
                   }}
@@ -91,7 +91,7 @@
                 <input
                   type="text"
                   {value}
-                  class="border-zinc-500 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
+                  class="border-zinc-500 disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
                   oninput={(e) => {
                     envs[index][1] = e.currentTarget.value
                   }}
@@ -117,7 +117,7 @@
                 type="text"
                 bind:this={key_dom}
                 bind:value={key}
-                class="border-zinc-500 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
+                class="border-zinc-500 disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
                 onkeypress={(e) => {
                   if (e.key === 'Enter') {
                     envs[envs.length] = [key, value]
@@ -133,7 +133,7 @@
               <input
                 type="text"
                 bind:value
-                class="border-zinc-500 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
+                class="border-zinc-500 disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
                 onkeypress={(e) => {
                   if (e.key === 'Enter' && key) {
                     envs[envs.length] = [key, value]
@@ -225,34 +225,39 @@
         <div class="inline-grid cols-auto-2 items-center gap-2">
           <div>Major</div>
           <input
-            class="txt"
+            class="txt disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
             placeholder="major,breaking"
             bind:value={ghostBumpConfig.major}
+            disabled={bump_config_sending}
           />
           <div>Minor</div>
           <input
-            class="txt"
+            class="txt disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
             placeholder="minor,feat"
             bind:value={ghostBumpConfig.minor}
+            disabled={bump_config_sending}
           />
           <div>Patch</div>
           <input
-            class="txt"
+            class="txt disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
             placeholder="*"
             bind:value={ghostBumpConfig.patch}
+            disabled={bump_config_sending}
           />
           <div>Skip</div>
           <input
-            class="txt"
+            class="txt disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
             placeholder="chore"
             bind:value={ghostBumpConfig.skip}
+            disabled={bump_config_sending}
           />
           <div>Cumulative Update</div>
           <input
             type="number"
-            class="txt"
+            class="txt disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
             placeholder="50"
             bind:value={ghostBumpConfig.cumulative_update}
+            disabled={bump_config_sending}
           />
         </div>
       </div>
@@ -272,7 +277,7 @@
           en: 'Save',
           ja: '保存'
         })}
-        disabled={duplicatedKeys.size !== 0}
+        disabled={duplicatedKeys.size !== 0 || bump_config_sending}
       />
     </div>
   </div>

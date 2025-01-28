@@ -77,17 +77,18 @@ export const POST = async ({ request, locals: { db } }) => {
 
       const send_by_bot = payload.sender.type === 'Bot'
 
-      const target_repo = await db
-        .selectFrom('repo')
-        .select(['encrypted_envs', 'ignore_ghosts'])
-        .where('github_repo_id', '=', repository.id)
-        .executeTakeFirst()
-
-      const me = await db
-        .selectFrom('user')
-        .select('encrypted_npm_token')
-        .where('github_user_id', '=', repository.owner.id)
-        .executeTakeFirst()
+      const [target_repo, me] = await Promise.all([
+        db
+          .selectFrom('repo')
+          .select(['encrypted_envs', 'ignore_ghosts'])
+          .where('github_repo_id', '=', repository.id)
+          .executeTakeFirst(),
+        db
+          .selectFrom('user')
+          .select('encrypted_npm_token')
+          .where('github_user_id', '=', repository.owner.id)
+          .executeTakeFirst()
+      ])
 
       const triggered_ghosts = Object.entries(schema)
         .filter(([ghost, config]) => {
@@ -208,6 +209,7 @@ export const POST = async ({ request, locals: { db } }) => {
       OCTOFLARE_APP_OWNER,
       OCTOFLARE_APP_REPO
     } as Record<string, never> & OctoflareEnv)
+
     return res
   } catch (err) {
     error(500, (err as Error).message)
