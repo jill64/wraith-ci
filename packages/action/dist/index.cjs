@@ -25991,6 +25991,10 @@ var schema = {
     alias: "Lint",
     trigger: "push"
   },
+  test: {
+    alias: "Test",
+    trigger: "push"
+  },
   merge: {
     alias: "Auto Merge",
     trigger: "pull_request"
