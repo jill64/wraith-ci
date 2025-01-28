@@ -1,38 +1,35 @@
 <script lang="ts">
   import { i } from '$lib/i18n'
   import { request } from '$lib/request.svelte.js'
-  import { schema } from '$shared/ghost/schema'
   import { toast } from '@jill64/svelte-suite'
-  import { SettingsIcon } from '@jill64/svelte-suite/icons'
+  import { AlignLeftIcon } from '@jill64/svelte-suite/icons'
   import { CheckBox } from '@jill64/svelte-suite/input'
 
-  let { ignore_ghosts }: { ignore_ghosts: string[] } = $props()
+  let { ghost_docs_ignore_files }: { ghost_docs_ignore_files: string[] } =
+    $props()
 
-  const capitalizeFirstLetter = (str: string) =>
-    str.charAt(0).toUpperCase() + str.slice(1)
-
-  let ignores = $state(ignore_ghosts)
+  let ignore_files = $state(ghost_docs_ignore_files)
 </script>
 
 <article>
   <hgroup class="flex items-center gap-2">
-    <SettingsIcon />
-    <h3 class="text-3xl font-bold my-4">Ghost Setting</h3>
+    <AlignLeftIcon />
+    <h3 class="text-3xl font-bold my-4">Ghost Docs</h3>
   </hgroup>
   <div class="flex flex-col gap-2">
-    {#each Object.keys(schema) as ghost}
+    {#each ['README.md', 'package.json'] as file}
       <CheckBox
-        value={!ignores.includes(ghost)}
+        value={!ignore_files.includes(file)}
         onChange={async (v) => {
           const new_json = [
-            ...ignores.filter((x) => x !== ghost),
-            ...(v ? [] : [ghost])
+            ...ignore_files.filter((x) => x !== file),
+            ...(v ? [] : [file])
           ]
 
-          ignores = new_json
+          ignore_files = new_json
 
           await toast.promise(
-            request.put('ignore-ghosts', {
+            request.put('ghost/docs', {
               invalidate: () => true,
               body: JSON.stringify(new_json)
             }),
@@ -53,7 +50,7 @@
           )
         }}
       >
-        <span class="ml-2">Ghost {capitalizeFirstLetter(ghost)}</span>
+        <span class="ml-2">{file}</span>
       </CheckBox>
     {/each}
   </div>
