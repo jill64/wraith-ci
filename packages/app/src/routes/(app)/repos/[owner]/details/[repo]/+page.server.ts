@@ -2,6 +2,7 @@ import { ENVS_PRIVATE_KEY } from '$env/static/private'
 import { run } from '$shared/db/run.js'
 import { decrypt } from '$shared/decrypt.js'
 import type { GhostBumpConfig } from '$shared/ghost/types/GhostBumpConfig.js'
+import { attempt } from '@jill64/attempt'
 
 export const load = async ({
   locals: { kit, db, github_user },
@@ -12,17 +13,24 @@ export const load = async ({
     repo
   })
 
-  const db_repo = await db
-    .selectFrom('repo')
-    .select(['id', 'encrypted_envs', 'ignore_ghosts', 'ghost_bump_config'])
-    .where('github_repo_id', '=', repository.id)
-    .executeTakeFirst()
-
-  const me = await db
-    .selectFrom('user')
-    .select('id')
-    .where('github_user_id', '=', github_user.id)
-    .executeTakeFirstOrThrow()
+  const [me, db_repo] = await Promise.all([
+    db
+      .selectFrom('user')
+      .select('id')
+      .where('github_user_id', '=', github_user.id)
+      .executeTakeFirstOrThrow(),
+    db
+      .selectFrom('repo')
+      .select([
+        'id',
+        'encrypted_envs',
+        'ignore_ghosts',
+        'ghost_bump_config',
+        'ghost_merge_ignores'
+      ])
+      .where('github_repo_id', '=', repository.id)
+      .executeTakeFirst()
+  ])
 
   if (!db_repo) {
     await run(
@@ -36,25 +44,44 @@ export const load = async ({
     )
   }
 
-  const envs = db_repo?.encrypted_envs
-    ? (JSON.parse(
-        await decrypt(db_repo.encrypted_envs, ENVS_PRIVATE_KEY)
-      ) as Record<string, string>)
-    : {}
+  const envs = await attempt(
+    async () =>
+      db_repo?.encrypted_envs
+        ? JSON.parse(await decrypt(db_repo.encrypted_envs, ENVS_PRIVATE_KEY))
+        : ({} as Record<string, string>),
+    {}
+  )
 
-  const ignore_ghosts = db_repo?.ignore_ghosts
-    ? (JSON.parse(db_repo.ignore_ghosts) as string[])
-    : []
+  const ignore_ghosts = attempt(
+    () =>
+      db_repo?.ignore_ghosts
+        ? (JSON.parse(db_repo.ignore_ghosts) as string[])
+        : [],
+    []
+  )
 
-  const ghost_bump_configs = db_repo?.ghost_bump_config
-    ? (JSON.parse(db_repo.ghost_bump_config) as GhostBumpConfig)
-    : {}
+  const ghost_bump_configs = attempt(
+    () =>
+      db_repo?.ghost_bump_config
+        ? (JSON.parse(db_repo.ghost_bump_config) as GhostBumpConfig)
+        : {},
+    {}
+  )
+
+  const ghost_merge_ignores = attempt(
+    () =>
+      db_repo?.ghost_merge_ignores
+        ? (JSON.parse(db_repo.ghost_merge_ignores) as string[])
+        : [],
+    []
+  )
 
   return {
     repository,
     envs,
     ignore_ghosts,
     ghost_bump_configs,
+    ghost_merge_ignores,
     title: {
       en: `${repo} - Repository`,
       ja: `${repo} - リポジトリ`
