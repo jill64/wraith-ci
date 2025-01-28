@@ -5,6 +5,7 @@
   import { i } from '$lib/i18n'
   import EnvironmentVariable from './EnvironmentVariable.svelte'
   import GhostBumpConfig from './GhostBumpConfig.svelte'
+  import GhostDocs from './GhostDocs.svelte'
   import GhostMerge from './GhostMerge.svelte'
   import GhostSettings from './GhostSettings.svelte'
 
@@ -34,6 +35,7 @@
     <GhostSettings ignore_ghosts={data.ignore_ghosts} />
     <GhostBumpConfig ghost_bump_configs={data.ghost_bump_configs} />
     <GhostMerge ghost_merge_ignores={data.ghost_merge_ignores} />
+    <GhostDocs ghost_docs_ignore_files={data.ghost_docs_ignore_files} />
   </div>
 </main>
 

@@ -26,7 +26,8 @@ export const load = async ({
         'encrypted_envs',
         'ignore_ghosts',
         'ghost_bump_config',
-        'ghost_merge_ignores'
+        'ghost_merge_ignores',
+        'ghost_docs_ignore_files'
       ])
       .where('github_repo_id', '=', repository.id)
       .executeTakeFirst()
@@ -76,12 +77,21 @@ export const load = async ({
     []
   )
 
+  const ghost_docs_ignore_files = attempt(
+    () =>
+      db_repo?.ghost_docs_ignore_files
+        ? (JSON.parse(db_repo.ghost_docs_ignore_files) as string[])
+        : [],
+    []
+  )
+
   return {
     repository,
     envs,
     ignore_ghosts,
     ghost_bump_configs,
     ghost_merge_ignores,
+    ghost_docs_ignore_files,
     title: {
       en: `${repo} - Repository`,
       ja: `${repo} - リポジトリ`

@@ -19,14 +19,18 @@
     {#each ['owner', 'dependabot[bot]', 'renovate[bot]', 'wraith-ci[bot]'] as user}
       <CheckBox
         value={!ignores.includes(user)}
-        onChange={(v) =>
-          toast.promise(
+        onChange={async (v) => {
+          const new_json = [
+            ...ignores.filter((x) => x !== user),
+            ...(v ? [] : [user])
+          ]
+
+          ignores = new_json
+
+          await toast.promise(
             request.put('ghost/merge', {
               invalidate: () => true,
-              body: JSON.stringify([
-                ...ignores.filter((x) => x !== user),
-                ...(v ? [] : [user])
-              ])
+              body: JSON.stringify(new_json)
             }),
             {
               loading: i.translate({
@@ -42,7 +46,8 @@
                 ja: '保存に失敗しました'
               })
             }
-          )}
+          )
+        }}
       >
         <span class="ml-2">{user}</span>
       </CheckBox>

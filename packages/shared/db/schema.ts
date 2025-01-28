@@ -60,6 +60,14 @@ export interface RepoTable extends Metadata {
    * ]
    */
   ghost_merge_ignores?: string
+
+  /**
+   * [
+   *   "README.md",
+   *   "package.json"
+   * ]
+   */
+  ghost_docs_ignore_files?: string
 }
 
 export type User = Selectable<UserTable>
