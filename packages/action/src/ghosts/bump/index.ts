@@ -8,8 +8,11 @@ import { getFile } from '../../utils/getFile.js'
 import { getPackageJson } from '../../utils/getPackageJson.js'
 import { pushCommit } from '../../utils/pushCommit.js'
 import { checkCumulativeUpdate } from './checkCumulativeUpdate.js'
-import { determineSemType } from './determineSemType.js'
+import { fallback } from './fallback.js'
 import { formatVersionStr } from './formatVersionStr.js'
+import { onMajor } from './onMajor.js'
+import { onMinor } from './onMinor.js'
+import { onPatch } from './onPatch.js'
 import { overwriteAllVersion } from './overwriteAllVersion.js'
 
 const isPackageJson = scanner({
@@ -92,11 +95,32 @@ export const bump: Ghost = async ({ payload, octokit, run }) => {
     {}
   ) as GhostBumpConfig
 
-  const skipPrefixes = ghost_bump_config?.skip?.split(',') ?? ['chore']
+  const fallbackType = Object.keys(ghost_bump_config).find((key) =>
+    key.split(',').includes('*')
+  ) as keyof GhostBumpConfig | undefined
 
-  const isSkip = skipPrefixes.some((prefix) =>
-    prefix === '*' ? true : pull_request.title.startsWith(prefix)
-  )
+  const sem_type =
+    fallbackType === 'major'
+      ? await onMajor({
+          ghost_bump_config,
+          pull_request_title: pull_request.title
+        })
+      : fallbackType === 'minor'
+        ? await onMinor({
+            ghost_bump_config,
+            pull_request_title: pull_request.title
+          })
+        : fallbackType === 'patch'
+          ? await onPatch({
+              ghost_bump_config,
+              pull_request_title: pull_request.title
+            })
+          : await fallback({
+              ghost_bump_config,
+              pull_request_title: pull_request.title
+            })
+
+  const isSkip = sem_type === 'skipped'
 
   const cumulativeUpdate = isSkip
     ? await checkCumulativeUpdate({
@@ -111,9 +135,13 @@ export const bump: Ghost = async ({ payload, octokit, run }) => {
   if (isSkip && !cumulativeUpdate) {
     return {
       status: 'skipped',
-      detail: 'PR is not a cumulative update.'
+      detail: 'No semantic type found.'
     }
   }
+
+  const semType = cumulativeUpdate
+    ? 'patch'
+    : (sem_type as 'major' | 'minor' | 'patch')
 
   const baseStr = await getFile({
     repo,
@@ -135,17 +163,6 @@ export const bump: Ghost = async ({ payload, octokit, run }) => {
 
   const base_version = formatVersionStr(baseJson?.version)
   const head_version = formatVersionStr(headJson.version)
-
-  const semType = cumulativeUpdate
-    ? 'patch'
-    : determineSemType({ title: pull_request.title, ghost_bump_config })
-
-  if (semType === 'skip') {
-    return {
-      status: 'skipped',
-      detail: 'No semantic type found.'
-    }
-  }
 
   const newVersion = semver.inc(base_version, semType) ?? head_version
 
