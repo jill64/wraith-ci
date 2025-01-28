@@ -30,7 +30,8 @@ export const merge: Ghost = async ({ payload, octokit }) => {
     owner,
     octokit,
     name: pull_request.user.login,
-    ownerType: repository.owner.type
+    ownerType: repository.owner.type,
+    repo_id: repository.id
   })
 
   if (!allow) {

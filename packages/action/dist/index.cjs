@@ -40372,15 +40372,17 @@ var isAllowUsers = async ({
   name,
   owner,
   octokit,
-  ownerType
+  ownerType,
+  repo_id
 }) => {
   if (!name) {
     throw new Error("name is undefined");
   }
-  if (defaultAllowUsers.includes(name)) {
+  const repository = await db.selectFrom("repo").select("ghost_merge_ignores").where("github_repo_id", "=", repo_id).executeTakeFirst();
+  if (defaultAllowUsers.includes(name) && !repository?.ghost_merge_ignores?.includes(name)) {
     return true;
   }
-  if (name === owner) {
+  if (name === owner && !repository?.ghost_merge_ignores?.includes("owner")) {
     return true;
   }
   if (ownerType !== "Organization") {
@@ -40392,7 +40394,7 @@ var isAllowUsers = async ({
     org: owner,
     username: name
   });
-  return role === "admin";
+  return role === "admin" && !repository?.ghost_merge_ignores?.includes("owner");
 };
 
 // src/ghosts/merge/index.ts
@@ -40420,7 +40422,8 @@ var merge = async ({ payload, octokit }) => {
     owner,
     octokit,
     name: pull_request.user.login,
-    ownerType: repository.owner.type
+    ownerType: repository.owner.type,
+    repo_id: repository.id
   });
   if (!allow) {
     return {
