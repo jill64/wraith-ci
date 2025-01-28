@@ -34,11 +34,22 @@ export interface UserTable extends Metadata {
 export interface RepoTable extends Metadata {
   github_repo_id: Unique<Immutable<number>>
 
-  // Record<string, string>
+  /** Record<string, string> */
   encrypted_envs?: string
 
-  // string[]
+  /** string[] */
   ignore_ghosts?: string
+
+  /**
+   * {
+   *   "major" ?: "major,breaking",
+   *   "minor" ?: "minor,feat",
+   *   "patch" ?: "*",
+   *   "skip"  ?: "chore",
+   *   "cumulative_update": "50"
+   * }
+   */
+  ghost_bump_config?: string
 }
 
 export type User = Selectable<UserTable>

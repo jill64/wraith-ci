@@ -1,20 +1,49 @@
-export const determineSemType = (title: string) => {
+import { GhostBumpConfig } from '$shared/ghost/types/GhostBumpConfig.js'
+
+export const determineSemType = ({
+  title,
+  ghost_bump_config
+}: {
+  title: string
+  ghost_bump_config: GhostBumpConfig
+}) => {
   const str = title.toLocaleLowerCase()
-  if (str.startsWith('breaking:')) {
-    return 'major'
+
+  const majorPrefixes = ghost_bump_config?.major?.split(',') ?? [
+    'major',
+    'breaking'
+  ]
+
+  const minorPrefixes = ghost_bump_config?.minor?.split(',') ?? [
+    'minor',
+    'feat'
+  ]
+
+  const patchPrefixes = ghost_bump_config?.patch?.split(',') ?? ['*']
+
+  if (
+    patchPrefixes.some((prefix) =>
+      prefix === '*' ? true : str.startsWith(prefix)
+    )
+  ) {
+    return 'patch'
   }
 
-  if (title.startsWith('major:')) {
-    return 'major'
-  }
-
-  if (title.startsWith('minor:')) {
+  if (
+    minorPrefixes.some((prefix) =>
+      prefix === '*' ? true : str.startsWith(prefix)
+    )
+  ) {
     return 'minor'
   }
 
-  if (title.startsWith('feat:')) {
-    return 'minor'
+  if (
+    majorPrefixes.some((prefix) =>
+      prefix === '*' ? true : str.startsWith(prefix)
+    )
+  ) {
+    return 'major'
   }
 
-  return 'patch'
+  return 'skip'
 }

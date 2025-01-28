@@ -1,18 +1,21 @@
+import type { GhostBumpConfig } from '$shared/ghost/types/GhostBumpConfig.js'
 import { ActionOctokit } from 'octoflare/action'
-
-const thresh = 50
 
 export const checkCumulativeUpdate = async ({
   repo,
   owner,
   default_branch,
+  ghost_bump_config,
   octokit
 }: {
   repo: string
   owner: string
+  ghost_bump_config: GhostBumpConfig
   default_branch: string
   octokit: ActionOctokit
 }): Promise<boolean> => {
+  const thresh = Number(ghost_bump_config?.cumulative_update ?? '50')
+
   const [
     {
       data: { published_at }

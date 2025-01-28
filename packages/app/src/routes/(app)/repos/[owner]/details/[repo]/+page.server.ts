@@ -1,6 +1,7 @@
 import { ENVS_PRIVATE_KEY } from '$env/static/private'
 import { run } from '$shared/db/run.js'
 import { decrypt } from '$shared/decrypt.js'
+import type { GhostBumpConfig } from '$shared/ghost/types/GhostBumpConfig.js'
 
 export const load = async ({
   locals: { kit, db, github_user },
@@ -13,7 +14,7 @@ export const load = async ({
 
   const db_repo = await db
     .selectFrom('repo')
-    .select(['id', 'encrypted_envs', 'ignore_ghosts'])
+    .select(['id', 'encrypted_envs', 'ignore_ghosts', 'ghost_bump_config'])
     .where('github_repo_id', '=', repository.id)
     .executeTakeFirst()
 
@@ -45,10 +46,15 @@ export const load = async ({
     ? (JSON.parse(db_repo.ignore_ghosts) as string[])
     : []
 
+  const ghost_bump_configs = db_repo?.ghost_bump_config
+    ? (JSON.parse(db_repo.ghost_bump_config) as GhostBumpConfig)
+    : {}
+
   return {
     repository,
     envs,
     ignore_ghosts,
+    ghost_bump_configs,
     title: {
       en: `${repo} - Repository`,
       ja: `${repo} - リポジトリ`
