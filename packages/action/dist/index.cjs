@@ -40250,9 +40250,16 @@ var docs = async ({
   if (ref === repository.default_branch) {
     return "skipped";
   }
+  const registered_repository = await db.selectFrom("repo").select("ghost_docs_ignore_files").where("github_repo_id", "=", repository.id).executeTakeFirst();
+  const ignore_files = attempt(
+    () => JSON.parse(
+      registered_repository?.ghost_docs_ignore_files || "[]"
+    ),
+    []
+  );
   await Promise.allSettled([
-    updateReadmeList({ repository, workflowFiles, run }),
-    updatePackageJsonList({ repository, run })
+    ignore_files.includes("README.md") ? [] : updateReadmeList({ repository, workflowFiles, run }),
+    ignore_files.includes("packages.json") ? [] : updatePackageJsonList({ repository, run })
   ]);
   return "success";
 };
