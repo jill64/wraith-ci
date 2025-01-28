@@ -23980,7 +23980,7 @@ var require_scanner = __commonJS({
     exports2.__esModule = true;
     exports2.scanner = void 0;
     var typeGuard_1 = require_typeGuard();
-    var scanner8 = function(fields, option) {
+    var scanner9 = function(fields, option) {
       return function(value) {
         if (!(0, typeGuard_1.isObject)(value)) {
           if (option === null || option === void 0 ? void 0 : option.outputLog)
@@ -23996,7 +23996,7 @@ var require_scanner = __commonJS({
         });
       };
     };
-    exports2.scanner = scanner8;
+    exports2.scanner = scanner9;
   }
 });
 
@@ -26191,7 +26191,7 @@ var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
 // src/index.ts
-var import_typescanner7 = __toESM(require_dist(), 1);
+var import_typescanner8 = __toESM(require_dist(), 1);
 
 // src/ghosts/build.ts
 var import_typescanner = __toESM(require_dist(), 1);
@@ -40520,6 +40520,37 @@ var release = async ({ run }) => {
   return "success";
 };
 
+// src/ghosts/test.ts
+var import_typescanner7 = __toESM(require_dist(), 1);
+var isValidJson5 = (0, import_typescanner7.scanner)({
+  scripts: (0, import_typescanner7.scanner)({
+    test: import_typescanner7.string
+  })
+});
+var test = async ({ run }) => {
+  const package_json = await getPackageJson();
+  if (!package_json) {
+    return {
+      status: "skipped",
+      detail: "Not found package.json in repo"
+    };
+  }
+  if (!isValidJson5(package_json)) {
+    return {
+      status: "skipped",
+      detail: "Test command not found in package.json"
+    };
+  }
+  const testResult = await run("npm run test");
+  if (testResult.exitCode === 0) {
+    return "success";
+  }
+  return {
+    status: "failure",
+    detail: testResult.stderr
+  };
+};
+
 // src/apps.ts
 var apps = {
   build,
@@ -40528,7 +40559,8 @@ var apps = {
   release,
   docs,
   bump,
-  merge
+  merge,
+  test
 };
 
 // ../../node_modules/.pnpm/octoflare@1.2.0/node_modules/octoflare/dist/re-exports/actions/github.js
@@ -40710,9 +40742,9 @@ var injectEnvs = async ({
 };
 
 // src/index.ts
-var isValidOutput = (0, import_typescanner7.scanner)({
-  title: import_typescanner7.string,
-  summary: import_typescanner7.string
+var isValidOutput = (0, import_typescanner8.scanner)({
+  title: import_typescanner8.string,
+  summary: import_typescanner8.string
 });
 action(
   async ({ octokit, payload, updateCheckRun }) => {
