@@ -6,7 +6,13 @@
   import { request } from '$lib/request.svelte.js'
   import { schema } from '$shared/ghost/schema'
   import { toast } from '@jill64/svelte-suite'
-  import { Trash2Icon } from '@jill64/svelte-suite/icons'
+  import {
+    GitMergeIcon,
+    SettingsIcon,
+    SlidersIcon,
+    TagIcon,
+    Trash2Icon
+  } from '@jill64/svelte-suite/icons'
   import { ActionButton, CheckBox } from '@jill64/svelte-suite/input'
 
   let { data } = $props()
@@ -52,10 +58,13 @@
   <h2 class="text-5xl font-semibold mt-1 mb-4">{repo.name}</h2>
   <p>{repo.description}</p>
   <div class="flex flex-wrap gap-10">
-    <div>
-      <h3 class="text-3xl font-bold my-4">
-        {i.translate({ en: 'Environment Variable', ja: '環境変数' })}
-      </h3>
+    <article>
+      <hgroup class="flex items-center gap-2">
+        <SlidersIcon />
+        <h3 class="text-3xl font-bold my-4">
+          {i.translate({ en: 'Environment Variable', ja: '環境変数' })}
+        </h3>
+      </hgroup>
       <p>
         {i.translate({
           en: 'All environment variables are saved encrypted by default.',
@@ -182,9 +191,12 @@
         })}
         disabled={duplicatedKeys.size !== 0 || envs_sending}
       />
-    </div>
-    <div>
-      <h2 class="text-3xl font-bold my-4">Ghost Setting</h2>
+    </article>
+    <article>
+      <hgroup class="flex items-center gap-2">
+        <SettingsIcon />
+        <h3 class="text-3xl font-bold my-4">Ghost Setting</h3>
+      </hgroup>
       <div class="flex flex-col gap-2">
         {#each Object.keys(schema) as ghost}
           <CheckBox
@@ -218,9 +230,12 @@
           </CheckBox>
         {/each}
       </div>
-    </div>
-    <div>
-      <h3 class="text-3xl font-bold my-4">Ghost Bump Config</h3>
+    </article>
+    <article>
+      <hgroup class="flex items-center gap-2">
+        <TagIcon />
+        <h3 class="text-3xl font-bold my-4">Ghost Bump Config</h3>
+      </hgroup>
       <div>
         <div class="inline-grid cols-auto-2 items-center gap-2">
           <div>Major</div>
@@ -279,7 +294,13 @@
         })}
         disabled={duplicatedKeys.size !== 0 || bump_config_sending}
       />
-    </div>
+    </article>
+    <article>
+      <hgroup class="flex items-center gap-2">
+        <GitMergeIcon />
+        <h3 class="text-3xl font-bold my-4">Ghost Merge</h3>
+      </hgroup>
+    </article>
   </div>
 </main>
 
