@@ -50,6 +50,16 @@ export interface RepoTable extends Metadata {
    * }
    */
   ghost_bump_config?: string
+
+  /**
+   * [
+   *   "dependabot[bot]",
+   *   "renovate[bot]",
+   *   "wraith-ci[bot]",
+   *   "owner"
+   * ]
+   */
+  ghost_merge_ignores?: string
 }
 
 export type User = Selectable<UserTable>
