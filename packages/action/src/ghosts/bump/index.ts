@@ -1,6 +1,9 @@
+import { GhostBumpConfig } from '$shared/ghost/types/GhostBumpConfig.js'
+import { attempt } from '@jill64/attempt'
 import semver from 'semver'
 import { boolean, optional, scanner, string } from 'typescanner'
 import { Ghost } from '../../../types/Ghost.js'
+import { db } from '../../utils/db.js'
 import { getFile } from '../../utils/getFile.js'
 import { getPackageJson } from '../../utils/getPackageJson.js'
 import { pushCommit } from '../../utils/pushCommit.js'
@@ -54,7 +57,7 @@ export const bump: Ghost = async ({ payload, octokit, run }) => {
   const [
     { data: pull_request },
     {
-      data: { default_branch }
+      data: { default_branch, id: repo_id }
     }
   ] = await Promise.all([
     octokit.rest.pulls.get({
@@ -75,13 +78,37 @@ export const bump: Ghost = async ({ payload, octokit, run }) => {
     }
   }
 
-  const isChore = pull_request.title.startsWith('chore')
+  const repository = await db
+    .selectFrom('repo')
+    .select('ghost_bump_config')
+    .where('github_repo_id', '=', repo_id)
+    .executeTakeFirst()
 
-  const cumulativeUpdate = isChore
-    ? await checkCumulativeUpdate({ owner, repo, default_branch, octokit })
+  const ghost_bump_config = attempt(
+    () =>
+      repository?.ghost_bump_config
+        ? JSON.parse(repository.ghost_bump_config)
+        : {},
+    {}
+  ) as GhostBumpConfig
+
+  const skipPrefixes = ghost_bump_config?.skip?.split(',') ?? ['chore']
+
+  const isSkip = skipPrefixes.some((prefix) =>
+    prefix === '*' ? true : pull_request.title.startsWith(prefix)
+  )
+
+  const cumulativeUpdate = isSkip
+    ? await checkCumulativeUpdate({
+        owner,
+        repo,
+        default_branch,
+        octokit,
+        ghost_bump_config
+      })
     : false
 
-  if (isChore && !cumulativeUpdate) {
+  if (isSkip && !cumulativeUpdate) {
     return {
       status: 'skipped',
       detail: 'PR is not a cumulative update.'
@@ -111,7 +138,14 @@ export const bump: Ghost = async ({ payload, octokit, run }) => {
 
   const semType = cumulativeUpdate
     ? 'patch'
-    : determineSemType(pull_request.title)
+    : determineSemType({ title: pull_request.title, ghost_bump_config })
+
+  if (semType === 'skip') {
+    return {
+      status: 'skipped',
+      detail: 'No semantic type found.'
+    }
+  }
 
   const newVersion = semver.inc(base_version, semType) ?? head_version
 

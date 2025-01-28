@@ -1,14 +1,7 @@
 import { ENVS_PRIVATE_KEY } from '$env/static/private'
 import { run } from '$shared/db/run.js'
 import { decrypt } from '$shared/decrypt.js'
-
-type GhostBumpConfig = {
-  major?: string
-  minor?: string
-  patch?: string
-  skip?: string
-  cumulative_update?: string
-}
+import type { GhostBumpConfig } from '$shared/ghost/types/GhostBumpConfig.js'
 
 export const load = async ({
   locals: { kit, db, github_user },
