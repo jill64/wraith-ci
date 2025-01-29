@@ -23,13 +23,10 @@
 <style lang="postcss">
   ul {
     :global(a) {
-      @apply py-2 px-4 push-effect text-sub-text;
+      @apply py-2 px-4 push-effect text-sub-text dark:text-white dark:pop-effect;
     }
     :global(a[data-current-location]) {
       @apply border-black text-main-text border-b font-bold;
     }
-  }
-  :global(.dark) ul :global(a) {
-    @apply border-white pop-effect;
   }
 </style>

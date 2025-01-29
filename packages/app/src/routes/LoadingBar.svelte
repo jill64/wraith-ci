@@ -24,4 +24,7 @@
   })
 </script>
 
-<div class="fixed top-0 h-0.5 bg-white" style="width: {size.current}vw;"></div>
+<div
+  class="fixed top-0 h-0.5 bg-black dark:bg-white"
+  style="width: {size.current}vw;"
+></div>
