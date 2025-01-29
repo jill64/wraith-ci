@@ -38,7 +38,7 @@ jobs:
       - name: Check package manager
         id: check-package-manager
         run: |
-          if [ -f yarn.lock ]; then
+          if [ -f yarn-lock.json ]; then
             echo "name=yarn" >> $GITHUB_OUTPUT
           elif [ -f pnpm-lock.yaml ]; then
             echo "name=pnpm" >> $GITHUB_OUTPUT
@@ -93,24 +93,26 @@ jobs:
           node-version: 20
 
       - name: Try yarn install
+        id: yarn-install
         if: ${{ needs.wraith-ci.outputs.package-name == 'yarn' }}
         run: yarn install --frozen-lockfile
 
       - name: Delete yarn-lock.json
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'yarn' }}
+        if: failure() && ${{ steps.yarn-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'yarn' }}
         run: rm -f yarn-lock.json
 
       - name: Setup yarn
-        if: ${{ needs.wraith-ci.outputs.package-name == 'yarn' }}
+        if: failure() && ${{ steps.yarn-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'yarn' }}
         run: yarn install --frozen-lockfile
 
       - name: Staging
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'yarn' }}
+        if: failure() && ${{ steps.yarn-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'yarn' }}
         run: git add yarn-lock.json
 
 # ------------------------------------------------------------------------------------------
 
       - name: Try pnpm install
+        id: pnpm-install
         if: ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
         uses: pnpm/action-setup@v2
         with:
@@ -119,11 +121,11 @@ jobs:
             recursive: true
 
       - name: Delete pnpm-lock.yaml
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
+        if: failure() && ${{ steps.pnpm-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
         run: rm -f pnpm-lock.yaml
 
       - name: Retry pnpm install
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
+        if: failure() && ${{ steps.pnpm-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
         uses: pnpm/action-setup@v2
         with:
           version: latest
@@ -131,25 +133,26 @@ jobs:
             recursive: true
 
       - name: Staging
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
+        if: failure() && ${{ steps.pnpm-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
         run: git add pnpm-lock.yaml
 
 # ------------------------------------------------------------------------------------------
 
       - name: Try npm install
+        id: npm-install
         if: ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
         run: npm ci
 
       - name: Delete package-lock.json
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
+        if: failure() && ${{ steps.npm-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
         run: rm -f package-lock.json
 
       - name: Retry npm install
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
+        if: failure() && ${{ steps.npm-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
         run: npm i
 
       - name: Staging
-        if: failure() && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
+        if: failure() && ${{ steps.npm-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'npm' }}
         run: git add package-lock.json
 
       - name: Push
