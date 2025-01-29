@@ -54,9 +54,10 @@
       Wraith CI
     </h1>
     <span
-      class="mr-auto font-bold text-xs rounded-full bg-orange-500 px-1.5 py-0.5 text-white"
-      >BETA</span
+      class="mr-auto z-10 font-bold text-xs rounded-full bg-orange-500 px-1.5 py-0.5 text-white"
     >
+      BETA
+    </span>
   </a>
 
   <ul class="ml-auto flex items-center overflow-x-auto">
