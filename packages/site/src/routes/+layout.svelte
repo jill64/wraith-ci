@@ -81,7 +81,7 @@
   </ul>
   <LanguageSwitcher
     stroke={theme.isDark ? '#FFF' : '#000'}
-    menuClass="absolute top-10 right-0 menu flex flex-col"
+    menuClass="absolute top-10 right-0 menu flex flex-col z-10"
     liClass="whitespace-nowrap"
   >
     {#snippet children(label)}
