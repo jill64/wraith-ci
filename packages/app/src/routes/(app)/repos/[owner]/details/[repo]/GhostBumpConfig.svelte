@@ -50,7 +50,7 @@
       <input
         type="number"
         class="txt disabled:text-zinc-600 disabled:bg-zinc-300 disabled:dark:text-gray-500 disabled:dark:bg-gray-900"
-        placeholder="50"
+        placeholder="50 (0=disable)"
         bind:value={ghostBumpConfig.cumulative_update}
         disabled={bump_config_sending}
       />
