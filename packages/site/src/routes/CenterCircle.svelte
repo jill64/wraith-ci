@@ -222,7 +222,7 @@
     background: rgb(34, 54, 115); /* 同じ背景色 */
   }
 
-  /* Assign */
+  /* Release */
   .item:nth-child(2) {
     transform: rotate(45deg) translate(100px);
   }
