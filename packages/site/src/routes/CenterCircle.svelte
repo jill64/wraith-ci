@@ -178,55 +178,37 @@
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   .description {
     font-size: 1.5rem;
-    font-weight: bold;
+    @apply font-bold;
   }
 
   /* 親コンテナ */
   .circle-container {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
+    @apply relative w-[300px] h-[300px] rounded-full;
   }
 
   /* 回転する要素（中に8要素を格納） */
   .circle-rotate {
-    width: 100%;
-    height: 100%;
-    position: relative;
     transform: rotate(0deg);
     transition: transform 0.5s; /* 回転を滑らかにする */
+    @apply w-full h-full relative;
   }
 
   /* 各要素の見た目 */
   .item {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 30px;
-    height: 30px;
     margin: -15px 0 0 -15px; /* 中心基準にするため */
-    border-radius: 50%;
-    color: #fff;
     text-align: center;
     line-height: 30px;
-    font-weight: bold;
     transition: all 0.3s;
+    @apply absolute top-1/2 left-1/2 w-[30px] h-[30px] rounded-full text-white font-bold;
   }
 
   .item::before {
     content: '';
-    position: absolute;
-    top: -30px;
-    left: -20px;
-    right: -120px;
-    bottom: -30px;
-    border-radius: 9999px;
     filter: blur(8px); /* ここでぼかし */
-    z-index: -1; /* 親要素の背面に配置 */
+    @apply absolute -top-[30px] -left-[20px] -right-[120px] -bottom-[30px] rounded-full -z-10;
   }
 
   /* Build */
