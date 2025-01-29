@@ -127,11 +127,11 @@
   </small>
 </footer>
 
-<style>
+<style lang="postcss">
   ul :global(a) {
     @apply py-2 px-4 border-b-2 border-transparent hover:border-zinc-500;
   }
   ul :global(a[data-current-location]) {
-    @apply border-white;
+    @apply border-black dark:border-white;
   }
 </style>
