@@ -25,6 +25,10 @@ export const test: Ghost = async ({ run }) => {
     }
   }
 
+  if (package_json.scripts.test.includes('playwright')) {
+    await run('npx playwright install --with-deps')
+  }
+
   const testResult = await run('npm run test')
 
   if (testResult.exitCode === 0) {
