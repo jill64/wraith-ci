@@ -122,15 +122,16 @@ export const bump: Ghost = async ({ payload, octokit, run }) => {
 
   const isSkip = sem_type === 'skipped'
 
-  const cumulativeUpdate = isSkip
-    ? await checkCumulativeUpdate({
-        owner,
-        repo,
-        default_branch,
-        octokit,
-        ghost_bump_config
-      })
-    : false
+  const cumulativeUpdate =
+    isSkip && ghost_bump_config.cumulative_update !== '0'
+      ? await checkCumulativeUpdate({
+          owner,
+          repo,
+          default_branch,
+          octokit,
+          ghost_bump_config
+        })
+      : false
 
   if (isSkip && !cumulativeUpdate) {
     return {

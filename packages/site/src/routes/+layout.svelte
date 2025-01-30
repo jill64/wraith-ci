@@ -54,9 +54,10 @@
       Wraith CI
     </h1>
     <span
-      class="mr-auto font-bold text-xs rounded-full bg-orange-500 px-1.5 py-0.5 text-white"
-      >BETA</span
+      class="mr-auto z-10 font-bold text-xs rounded-full bg-orange-500 px-1.5 py-0.5 text-white"
     >
+      BETA
+    </span>
   </a>
 
   <ul class="ml-auto flex items-center overflow-x-auto">
@@ -80,7 +81,7 @@
   </ul>
   <LanguageSwitcher
     stroke={theme.isDark ? '#FFF' : '#000'}
-    menuClass="absolute top-10 right-0 menu flex flex-col"
+    menuClass="absolute top-10 right-0 menu flex flex-col z-10"
     liClass="whitespace-nowrap"
   >
     {#snippet children(label)}
@@ -126,11 +127,11 @@
   </small>
 </footer>
 
-<style>
+<style lang="postcss">
   ul :global(a) {
     @apply py-2 px-4 border-b-2 border-transparent hover:border-zinc-500;
   }
   ul :global(a[data-current-location]) {
-    @apply border-white;
+    @apply border-black dark:border-white;
   }
 </style>

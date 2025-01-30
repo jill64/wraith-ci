@@ -1,4 +1,7 @@
-export const load = async ({ locals: { kit }, params: { page, owner } }) => {
+export const load = async ({
+  locals: { kit, db },
+  params: { page, owner }
+}) => {
   const { data: user } = await kit.rest.users.getByUsername({
     username: owner
   })
@@ -15,6 +18,16 @@ export const load = async ({ locals: { kit }, params: { page, owner } }) => {
         page: Number(page),
         type: 'all'
       }))
+
+  const ghostsForRepo = await db
+    .selectFrom('repo')
+    .select(['github_repo_id', 'ignore_ghosts'])
+    .where(
+      'github_repo_id',
+      'in',
+      allRepo.data.map((repo) => repo.id)
+    )
+    .execute()
 
   let lastPage = 0
 
@@ -33,6 +46,7 @@ export const load = async ({ locals: { kit }, params: { page, owner } }) => {
 
   return {
     allRepo,
+    ghostsForRepo,
     lastPage,
     title: {
       en: 'Top',

@@ -34,17 +34,14 @@
   </div>
 </main>
 
-<style>
+<style lang="postcss">
   ul :global(a) {
     @apply py-2 px-4 border-l-2 border-transparent hover:border-zinc-500;
   }
   ul :global(a[data-current-location]) {
-    @apply border-white;
+    @apply border-black dark:border-white;
   }
   :global(code) {
-    @apply bg-gray-100 rounded p-1;
-  }
-  :global(.dark code) {
-    @apply bg-gray-700;
+    @apply bg-gray-100 dark:bg-gray-700 rounded p-1;
   }
 </style>

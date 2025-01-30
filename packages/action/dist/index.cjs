@@ -39865,7 +39865,7 @@ var bump = async ({ payload, octokit, run }) => {
     pull_request_title: pull_request.title
   });
   const isSkip = sem_type === "skipped";
-  const cumulativeUpdate = isSkip ? await checkCumulativeUpdate({
+  const cumulativeUpdate = isSkip && ghost_bump_config.cumulative_update !== "0" ? await checkCumulativeUpdate({
     owner,
     repo,
     default_branch,
