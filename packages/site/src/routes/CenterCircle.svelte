@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment'
+  import { i } from '$lib/i18n'
   import { slide } from 'svelte/transition'
 
   let circle: HTMLDivElement | undefined
@@ -124,35 +125,59 @@
   <div class="w-80">
     {#if isBuild}
       <p class="description" transition:slide>
-        正しくビルドが行われるかチェックし、アーティファクトが更新されていなければ、自動的にコミットします。
+        {i.translate({
+          en: 'Check if the build is done correctly and if the artifact is not updated, automatically commit it.',
+          ja: '正しくビルドが行われるかチェックし、アーティファクトが更新されていなければ、自動的にコミットします。'
+        })}
       </p>
     {:else if isRelease}
       <p class="description" transition:slide>
-        デフォルトブランチへのプッシュ時にnpmライブラリを自動的に公開します。
+        {i.translate({
+          en: 'Automatically execute tagging, creating release notes, and publishing to npm library when pushing to the default branch.',
+          ja: 'デフォルトブランチへのプッシュ時に、タグ打ち・リリースノートの作成・npmライブラリへの公開を自動的に実行します。'
+        })}
       </p>
     {:else if isBump}
       <p class="description" transition:slide>
-        あらかじめ決められたPRメッセージルールに基づいて、package.jsonのバージョンを自動で更新します。
+        {i.translate({
+          en: 'Automatically update the version in package.json based on the predefined PR title prefix rules.',
+          ja: 'あらかじめ決められたPRタイトルプレフィックスルールに基づいて、package.jsonのバージョンを自動で更新します。'
+        })}
       </p>
     {:else if isMerge}
       <p class="description" transition:slide>
-        あらかじめ決められたユーザーからのPRを自動でマージします。
+        {i.translate({
+          en: 'Automatically merge PRs from predefined users.',
+          ja: 'あらかじめ決められたユーザーからのPRを自動でマージします。'
+        })}
       </p>
     {:else if isDocs}
       <p class="description" transition:slide>
-        README.mdやpackage.jsonといったドキュメントを自動更新し、最新の状態に保ちます。
+        {i.translate({
+          en: 'Automatically update documents such as README.md and package.json to keep them up to date.',
+          ja: 'README.mdやpackage.jsonといったドキュメントを自動更新し、最新の状態に保ちます。'
+        })}
       </p>
     {:else if isFormat}
       <p class="description" transition:slide>
-        フォーマットを実行し、差分を自動でコミットします。
+        {i.translate({
+          en: 'Execute formatting and automatically commit the diff.',
+          ja: 'フォーマットを実行し、差分を自動でコミットします。'
+        })}
       </p>
     {:else if isTest}
       <p class="description" transition:slide>
-        各種テストを自動で実行し、カバレッジを取得します。
+        {i.translate({
+          en: 'Automatically check if the test passes successfully.',
+          ja: 'テストが正常に通るか自動でチェックします。'
+        })}
       </p>
     {:else if isLint}
       <p class="description" transition:slide>
-        Lintを実行し、コードの品質を保つための修正を行います。
+        {i.translate({
+          en: 'Automatically check if Lint passes successfully.',
+          ja: 'Lintが正常に通るか自動でチェックします。'
+        })}
       </p>
     {/if}
     <a
