@@ -1,4 +1,4 @@
-import { Octokit } from '@octokit/rest'
+import { Octokit } from 'octoflare/octokit'
 import { type Handle, redirect } from '@sveltejs/kit'
 import { auth } from './auth'
 import { logout } from './logout'

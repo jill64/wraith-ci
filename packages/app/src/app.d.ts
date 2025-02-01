@@ -1,6 +1,6 @@
 import type { Database } from '$shared/db/schema'
 import type { Kysely } from 'kysely'
-import type { Octokit } from '@octokit/rest'
+import type { Octokit } from 'octoflare/octokit'
 declare global {
   namespace App {
     interface Error {
