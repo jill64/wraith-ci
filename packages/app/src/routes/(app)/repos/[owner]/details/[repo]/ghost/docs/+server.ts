@@ -11,7 +11,7 @@ export const PUT = async ({
   request
 }) => {
   const [{ data: repository }, ignore_files, me] = await Promise.all([
-    kit.repos.get({ owner, repo }),
+    kit.rest.repos.get({ owner, repo }),
     request.text(),
     db
       .selectFrom('user')
