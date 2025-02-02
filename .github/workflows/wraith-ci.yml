@@ -28,7 +28,7 @@ jobs:
         id: get-version
         run: |
           version=$(jq -r '.packageManager' package.json | sed 's/.*@//')
-          echo "version=version" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
 
   wraith-ci:
     needs: pre-process
