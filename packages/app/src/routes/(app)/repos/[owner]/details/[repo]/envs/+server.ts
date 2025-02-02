@@ -13,7 +13,7 @@ export const PUT = async ({
   request
 }) => {
   const [{ data: repository }, envs] = await Promise.all([
-    kit.repos.get({ owner, repo }),
+    kit.rest.repos.get({ owner, repo }),
     request.text()
   ])
 

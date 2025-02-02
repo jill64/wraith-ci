@@ -16,7 +16,7 @@ export const PUT = async ({
   request
 }) => {
   const [{ data: repository }, ghost_bump_config] = await Promise.all([
-    kit.repos.get({ owner, repo }),
+    kit.rest.repos.get({ owner, repo }),
     request.text()
   ])
 

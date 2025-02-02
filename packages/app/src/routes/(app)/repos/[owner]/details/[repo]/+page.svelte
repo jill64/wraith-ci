@@ -38,13 +38,3 @@
     <GhostDocs ghost_docs_ignore_files={data.ghost_docs_ignore_files} />
   </div>
 </main>
-
-<style lang="postcss">
-  input {
-    @apply bg-inherit border rounded py-1 px-2;
-  }
-  th,
-  td {
-    @apply p-2;
-  }
-</style>
