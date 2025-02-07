@@ -15,8 +15,8 @@ importers:
         specifier: 1.1.4
         version: 1.1.4
       '@jill64/eslint-config-svelte':
-        specifier: 2.0.7
-        version: 2.0.7(jiti@1.21.7)(svelte@5.19.9)(typescript@5.7.3)
+        specifier: 2.0.8
+        version: 2.0.8(jiti@1.21.7)(svelte@5.19.9)(typescript@5.7.3)
       '@jill64/prettier-config':
         specifier: 1.0.0
         version: 1.0.0
@@ -683,6 +683,10 @@ packages:
     resolution: {integrity: sha512-rbq9/g38qjfqFLOVPvwjIvFFdNziEC5S65jmjPw5r6A//QH+W91akh9irMwjDN8zKUTak6W9EsAv4m/7Wnw0UQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@eslint/js@9.20.0':
+    resolution: {integrity: sha512-iZA07H9io9Wn836aVTytRaNqh00Sad+EamwOVJT12GTLw1VGMFV/4JaME+JjLtr9fiGaoWgYnS54wrfWsSs4oQ==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@eslint/object-schema@2.1.5':
     resolution: {integrity: sha512-o0bhxnL89h5Bae5T318nFoFzGy+YE5i/gGkoPAgkmTVdRKTiv3p8JHevPiPaMwoloKfEiiaHlawCqaZMqRm+XQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -722,8 +726,8 @@ packages:
   '@jill64/attempt@1.1.4':
     resolution: {integrity: sha512-oTdlIx+S7cIBpgMEquAknA5onVoBDLmcFy6aoCssaPz19IOyizADg3u2qE0Q/W3yM2366Jz70VN6Ld+cPdFOvQ==}
 
-  '@jill64/eslint-config-svelte@2.0.7':
-    resolution: {integrity: sha512-mlpWDMSBgwdh3PZPIUdP3k3pOjZ2x+xvt2r4fuJalN9JrxaVb2WYJoFjX0q+cw8tGECmCRtJEriObZCMYhpJyQ==}
+  '@jill64/eslint-config-svelte@2.0.8':
+    resolution: {integrity: sha512-+A+fP2H7yOT5FbVcLr4UPlS0rhoKouJm63pbWzp94iRTN35edscfzUwXb4dketBHSwX8z+ZO2doYyQf8Jsqo4g==}
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0
 
@@ -2978,6 +2982,8 @@ snapshots:
 
   '@eslint/js@9.19.0': {}
 
+  '@eslint/js@9.20.0': {}
+
   '@eslint/object-schema@2.1.5': {}
 
   '@eslint/plugin-kit@0.2.5':
@@ -3011,9 +3017,9 @@ snapshots:
 
   '@jill64/attempt@1.1.4': {}
 
-  '@jill64/eslint-config-svelte@2.0.7(jiti@1.21.7)(svelte@5.19.9)(typescript@5.7.3)':
+  '@jill64/eslint-config-svelte@2.0.8(jiti@1.21.7)(svelte@5.19.9)(typescript@5.7.3)':
     dependencies:
-      '@eslint/js': 9.19.0
+      '@eslint/js': 9.20.0
       '@types/eslint': 9.6.1
       '@typescript-eslint/eslint-plugin': 8.23.0(@typescript-eslint/parser@8.23.0(eslint@9.19.0(jiti@1.21.7))(typescript@5.7.3))(eslint@9.19.0(jiti@1.21.7))(typescript@5.7.3)
       '@typescript-eslint/parser': 8.23.0(eslint@9.19.0(jiti@1.21.7))(typescript@5.7.3)
