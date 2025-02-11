@@ -137,8 +137,8 @@ importers:
   packages/site:
     devDependencies:
       '@jill64/playwright-config':
-        specifier: 2.4.2
-        version: 2.4.2(@playwright/test@1.50.1)
+        specifier: 2.4.3
+        version: 2.4.3(@playwright/test@1.50.1)
       '@jill64/svelte-suite':
         specifier: 2.1.1
         version: 2.1.1(@sveltejs/kit@2.17.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.9)(vite@6.1.0(@types/node@22.13.1)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.9)(vite@6.1.0(@types/node@22.13.1)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.9)
@@ -884,8 +884,8 @@ packages:
   '@jill64/eslint-config-ts@2.0.8':
     resolution: {integrity: sha512-dsP5QubqhTPz3lTN0klVMc6VR0Qc0qhc8sbc9oxUPENVngXJAt2HLS7aPQjSYwHkw76ELNEhbxWKNlBGSummCg==}
 
-  '@jill64/playwright-config@2.4.2':
-    resolution: {integrity: sha512-ECt9e+Bqc5m42a6vZ2F8/iCW9tT48+nUHrte/8Ie08UApBirxF11vpWmykv/IHYhKorWcwS8cr9VciunlBkIHQ==}
+  '@jill64/playwright-config@2.4.3':
+    resolution: {integrity: sha512-GaLej+psd6uxsd9A/RsKphbbbi80SrSTkRIk06ZZKLs3CZtqQMGAB/R3O80jM7QRGV0H+Ff53kqnRME1pywmkw==}
     peerDependencies:
       '@playwright/test': ^1.40.0
 
@@ -3280,7 +3280,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@jill64/playwright-config@2.4.2(@playwright/test@1.50.1)':
+  '@jill64/playwright-config@2.4.3(@playwright/test@1.50.1)':
     dependencies:
       '@playwright/test': 1.50.1
 
