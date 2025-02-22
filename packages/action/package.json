@@ -6,7 +6,7 @@
     "format": "psvx"
   },
   "devDependencies": {
-    "@jill64/eslint-config-ts": "2.0.10",
+    "@jill64/eslint-config-ts": "2.0.11",
     "@actions/exec": "1.1.1",
     "ts-retry": "5.0.1",
     "esbuild": "0.25.0",
