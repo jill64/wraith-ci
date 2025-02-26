@@ -15,8 +15,8 @@ importers:
         specifier: 1.1.4
         version: 1.1.4
       '@jill64/eslint-config-svelte':
-        specifier: 2.0.14
-        version: 2.0.14(jiti@1.21.7)(svelte@5.20.4)(typescript@5.7.3)
+        specifier: 2.0.15
+        version: 2.0.15(jiti@1.21.7)(svelte@5.20.4)(typescript@5.7.3)
       '@jill64/prettier-config':
         specifier: 1.0.0
         version: 1.0.0
@@ -728,8 +728,8 @@ packages:
   '@jill64/attempt@1.1.4':
     resolution: {integrity: sha512-oTdlIx+S7cIBpgMEquAknA5onVoBDLmcFy6aoCssaPz19IOyizADg3u2qE0Q/W3yM2366Jz70VN6Ld+cPdFOvQ==}
 
-  '@jill64/eslint-config-svelte@2.0.14':
-    resolution: {integrity: sha512-sKo9ayuZPmT1+OZKLT8FQgHZLkOaAkjUTWfcxEO6wo55OwRj4Pr6+jA9XJD88IzPcVh2rQamoBtWgThlvQLGrw==}
+  '@jill64/eslint-config-svelte@2.0.15':
+    resolution: {integrity: sha512-vD21Eddd20prxiAsDWlveYUUn1XftARXVTB5pZ+DTE40mD5Mu9DO9zWTvGR6he19p0WnOgPuPJhrNpxaNYAjAg==}
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0
 
@@ -2136,15 +2136,15 @@ packages:
     resolution: {integrity: sha512-Q8qQfPiZ+THO/3ZrOrO0cJJKfpYCagtMUkXbnEfmgUjwXg6z/WBeOyS9APBBPCTSiDV+s4SwQGu8yFsiMRIudg==}
     engines: {node: '>=4'}
 
+  postcss-selector-parser@7.1.0:
+    resolution: {integrity: sha512-8sLjZwK0R+JlxlYcTuVnyT2v+htpdrjDOKuMcOVdYjt52Lh8hWRYpxBPoKx/Zg+bcjc3wx6fmQevMmUztS/ccA==}
+    engines: {node: '>=4'}
+
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
   postcss@8.5.1:
     resolution: {integrity: sha512-6oz2beyjc5VMn/KV1pPw8fliQkhBXrVn1Z3TVyqZxU8kZpzEKhBdmCFqI6ZbmGtamQvQGuU1sgPTk8ZrXDD7jQ==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.2:
-    resolution: {integrity: sha512-MjOadfU3Ys9KYoX0AdkBlFEF1Vx37uCCeN4ZHnmwm9FfpbsGWMZeBLMmmpY+6Ocqod7mkdZ0DT31OlbsFrLlkA==}
     engines: {node: ^10 || ^12 || >=14}
 
   postcss@8.5.3:
@@ -2335,6 +2335,15 @@ packages:
   svelte-eslint-parser@0.43.0:
     resolution: {integrity: sha512-GpU52uPKKcVnh8tKN5P4UZpJ/fUDndmq7wfsvoVXsyP+aY0anol7Yqo01fyrlaWGMFfm4av5DyrjlaXdLRJvGA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      svelte: ^3.37.0 || ^4.0.0 || ^5.0.0
+    peerDependenciesMeta:
+      svelte:
+        optional: true
+
+  svelte-eslint-parser@1.0.0:
+    resolution: {integrity: sha512-diZzpeeFhAxormeIhmRS4vXx98GG6T7Dq5y1a6qffqs/5MBrBqqDg8bj88iEohp6bvhU4MIABJmOTa0gXWcbSQ==}
+    engines: {node: ^18.20.4 || ^20.18.0 || >=22.10.0}
     peerDependencies:
       svelte: ^3.37.0 || ^4.0.0 || ^5.0.0
     peerDependenciesMeta:
@@ -3028,7 +3037,7 @@ snapshots:
 
   '@jill64/attempt@1.1.4': {}
 
-  '@jill64/eslint-config-svelte@2.0.14(jiti@1.21.7)(svelte@5.20.4)(typescript@5.7.3)':
+  '@jill64/eslint-config-svelte@2.0.15(jiti@1.21.7)(svelte@5.20.4)(typescript@5.7.3)':
     dependencies:
       '@eslint/js': 9.21.0
       '@types/eslint': 9.6.1
@@ -3038,7 +3047,7 @@ snapshots:
       eslint-config-prettier: 10.0.1(eslint@9.21.0(jiti@1.21.7))
       eslint-plugin-svelte: 2.46.1(eslint@9.21.0(jiti@1.21.7))(svelte@5.20.4)
       svelte: 5.20.4
-      svelte-eslint-parser: 0.43.0(svelte@5.20.4)
+      svelte-eslint-parser: 1.0.0(svelte@5.20.4)
     transitivePeerDependencies:
       - jiti
       - supports-color
@@ -4041,9 +4050,9 @@ snapshots:
       eslint-compat-utils: 0.5.1(eslint@9.21.0(jiti@1.21.7))
       esutils: 2.0.3
       known-css-properties: 0.35.0
-      postcss: 8.5.2
-      postcss-load-config: 3.1.4(postcss@8.5.2)
-      postcss-safe-parser: 6.0.0(postcss@8.5.2)
+      postcss: 8.5.3
+      postcss-load-config: 3.1.4(postcss@8.5.3)
+      postcss-safe-parser: 6.0.0(postcss@8.5.3)
       postcss-selector-parser: 6.1.2
       semver: 7.7.0
       svelte-eslint-parser: 0.43.0(svelte@5.20.4)
@@ -4505,31 +4514,31 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
-  postcss-import@15.1.0(postcss@8.5.1):
+  postcss-import@15.1.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.1
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.10
 
-  postcss-js@4.0.1(postcss@8.5.1):
+  postcss-js@4.0.1(postcss@8.5.3):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.5.1
+      postcss: 8.5.3
 
-  postcss-load-config@3.1.4(postcss@8.5.2):
+  postcss-load-config@3.1.4(postcss@8.5.3):
     dependencies:
       lilconfig: 2.1.0
       yaml: 1.10.2
     optionalDependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-load-config@4.0.2(postcss@8.5.1):
+  postcss-load-config@4.0.2(postcss@8.5.3):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.7.0
     optionalDependencies:
-      postcss: 8.5.1
+      postcss: 8.5.3
 
   postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.1)(tsx@4.19.3)(yaml@2.7.0):
     dependencies:
@@ -4540,20 +4549,25 @@ snapshots:
       tsx: 4.19.3
       yaml: 2.7.0
 
-  postcss-nested@6.2.0(postcss@8.5.1):
+  postcss-nested@6.2.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.1
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
 
-  postcss-safe-parser@6.0.0(postcss@8.5.2):
+  postcss-safe-parser@6.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-scss@4.0.9(postcss@8.5.2):
+  postcss-scss@4.0.9(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
   postcss-selector-parser@6.1.2:
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
+
+  postcss-selector-parser@7.1.0:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
@@ -4561,12 +4575,6 @@ snapshots:
   postcss-value-parser@4.2.0: {}
 
   postcss@8.5.1:
-    dependencies:
-      nanoid: 3.3.8
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
-
-  postcss@8.5.2:
     dependencies:
       nanoid: 3.3.8
       picocolors: 1.1.1
@@ -4772,8 +4780,19 @@ snapshots:
       eslint-scope: 7.2.2
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
-      postcss: 8.5.2
-      postcss-scss: 4.0.9(postcss@8.5.2)
+      postcss: 8.5.3
+      postcss-scss: 4.0.9(postcss@8.5.3)
+    optionalDependencies:
+      svelte: 5.20.4
+
+  svelte-eslint-parser@1.0.0(svelte@5.20.4):
+    dependencies:
+      eslint-scope: 8.2.0
+      eslint-visitor-keys: 4.2.0
+      espree: 10.3.0
+      postcss: 8.5.3
+      postcss-scss: 4.0.9(postcss@8.5.3)
+      postcss-selector-parser: 7.1.0
     optionalDependencies:
       svelte: 5.20.4
 
@@ -4852,11 +4871,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.1
-      postcss-import: 15.1.0(postcss@8.5.1)
-      postcss-js: 4.0.1(postcss@8.5.1)
-      postcss-load-config: 4.0.2(postcss@8.5.1)
-      postcss-nested: 6.2.0(postcss@8.5.1)
+      postcss: 8.5.3
+      postcss-import: 15.1.0(postcss@8.5.3)
+      postcss-js: 4.0.1(postcss@8.5.3)
+      postcss-load-config: 4.0.2(postcss@8.5.3)
+      postcss-nested: 6.2.0(postcss@8.5.3)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
       sucrase: 3.35.0
