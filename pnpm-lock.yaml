@@ -102,8 +102,8 @@ importers:
         specifier: 7.7.0
         version: 7.7.0
       ts-retry:
-        specifier: 5.0.1
-        version: 5.0.1
+        specifier: 6.0.0
+        version: 6.0.0
       tsx:
         specifier: 4.19.3
         version: 4.19.3
@@ -2457,8 +2457,8 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  ts-retry@5.0.1:
-    resolution: {integrity: sha512-sjIHRgS8eApTkuAXkASMfRSMigeTMmaxvCf4+1V6xGpo0IsuBrssqHRZh6IRgD9f8+7KeFLxNOLvWYy/mw3YBQ==}
+  ts-retry@6.0.0:
+    resolution: {integrity: sha512-WsVRE/P+VNYbiQC3E6TeIXBRCQj7vzjN4MlXd84AC88K7WwuWShN7A3Q/QSV/yd1hjO8qn2Cevdqny2HMwKUaA==}
 
   ts-serde@1.0.8:
     resolution: {integrity: sha512-YUBuQDm5uIpCIklGrU0by8uf4ZLBkIO1/mf7Gha83qn2iz54p/pmlXQanTaQZBSWB0EiJKQUo/ur72XvQpStAQ==}
@@ -4920,7 +4920,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-retry@5.0.1: {}
+  ts-retry@6.0.0: {}
 
   ts-serde@1.0.8:
     dependencies:
