@@ -15,8 +15,8 @@ importers:
         specifier: 1.1.4
         version: 1.1.4
       '@jill64/eslint-config-svelte':
-        specifier: 2.0.17
-        version: 2.0.17(jiti@1.21.7)(svelte@5.22.2)(typescript@5.8.2)
+        specifier: 2.0.18
+        version: 2.0.18(jiti@1.21.7)(svelte@5.22.2)(typescript@5.8.2)
       '@jill64/prettier-config':
         specifier: 1.0.0
         version: 1.0.0
@@ -728,8 +728,8 @@ packages:
   '@jill64/attempt@1.1.4':
     resolution: {integrity: sha512-oTdlIx+S7cIBpgMEquAknA5onVoBDLmcFy6aoCssaPz19IOyizADg3u2qE0Q/W3yM2366Jz70VN6Ld+cPdFOvQ==}
 
-  '@jill64/eslint-config-svelte@2.0.17':
-    resolution: {integrity: sha512-BNe1x+BOogkqOtSCo/DfBI6xInQzElDpKExz2Hw4JTXwYDLQf6/Qr+VpAIf8E12CL5iXBbqv4OTJRYkXreLESg==}
+  '@jill64/eslint-config-svelte@2.0.18':
+    resolution: {integrity: sha512-RbwKScPkk8cDtgNFegO05Zxd/lrwHzpeeED8A5Nh3g83L7lEHksfBz+mnChNe75oOL0QF1EBAIXDnvmRnFSADQ==}
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0
 
@@ -2341,9 +2341,9 @@ packages:
       svelte:
         optional: true
 
-  svelte-eslint-parser@1.0.0:
-    resolution: {integrity: sha512-diZzpeeFhAxormeIhmRS4vXx98GG6T7Dq5y1a6qffqs/5MBrBqqDg8bj88iEohp6bvhU4MIABJmOTa0gXWcbSQ==}
-    engines: {node: ^18.20.4 || ^20.18.0 || >=22.10.0}
+  svelte-eslint-parser@1.0.1:
+    resolution: {integrity: sha512-JjdEMXOJqy+dxeaElxbN+meTOtVpHfLnq9VGpiTAOLgM0uHO+ogmUsA3IFgx0x3Wl15pqTZWycCikcD7cAQN/g==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       svelte: ^3.37.0 || ^4.0.0 || ^5.0.0
     peerDependenciesMeta:
@@ -3037,7 +3037,7 @@ snapshots:
 
   '@jill64/attempt@1.1.4': {}
 
-  '@jill64/eslint-config-svelte@2.0.17(jiti@1.21.7)(svelte@5.22.2)(typescript@5.8.2)':
+  '@jill64/eslint-config-svelte@2.0.18(jiti@1.21.7)(svelte@5.22.2)(typescript@5.8.2)':
     dependencies:
       '@eslint/js': 9.21.0
       '@types/eslint': 9.6.1
@@ -3047,7 +3047,7 @@ snapshots:
       eslint-config-prettier: 10.0.2(eslint@9.21.0(jiti@1.21.7))
       eslint-plugin-svelte: 2.46.1(eslint@9.21.0(jiti@1.21.7))(svelte@5.22.2)
       svelte: 5.22.2
-      svelte-eslint-parser: 1.0.0(svelte@5.22.2)
+      svelte-eslint-parser: 1.0.1(svelte@5.22.2)
     transitivePeerDependencies:
       - jiti
       - supports-color
@@ -4785,7 +4785,7 @@ snapshots:
     optionalDependencies:
       svelte: 5.22.2
 
-  svelte-eslint-parser@1.0.0(svelte@5.22.2):
+  svelte-eslint-parser@1.0.1(svelte@5.22.2):
     dependencies:
       eslint-scope: 8.2.0
       eslint-visitor-keys: 4.2.0
