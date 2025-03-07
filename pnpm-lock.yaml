@@ -15,8 +15,8 @@ importers:
         specifier: 1.1.4
         version: 1.1.4
       '@jill64/eslint-config-svelte':
-        specifier: 2.0.18
-        version: 2.0.18(jiti@1.21.7)(svelte@5.22.5)(typescript@5.8.2)
+        specifier: 2.0.20
+        version: 2.0.20(jiti@1.21.7)(svelte@5.22.5)(typescript@5.8.2)
       '@jill64/prettier-config':
         specifier: 1.0.0
         version: 1.0.0
@@ -728,8 +728,8 @@ packages:
   '@jill64/attempt@1.1.4':
     resolution: {integrity: sha512-oTdlIx+S7cIBpgMEquAknA5onVoBDLmcFy6aoCssaPz19IOyizADg3u2qE0Q/W3yM2366Jz70VN6Ld+cPdFOvQ==}
 
-  '@jill64/eslint-config-svelte@2.0.18':
-    resolution: {integrity: sha512-RbwKScPkk8cDtgNFegO05Zxd/lrwHzpeeED8A5Nh3g83L7lEHksfBz+mnChNe75oOL0QF1EBAIXDnvmRnFSADQ==}
+  '@jill64/eslint-config-svelte@2.0.20':
+    resolution: {integrity: sha512-8xcuZ3JOzHqc6B2vVNh3zz+JA43tv3S0N92wbfD3+I0cC+sO1h3qR//0XpuloPzdW4DpipB1gaIcPyNNBjGA3Q==}
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0
 
@@ -1590,6 +1590,12 @@ packages:
 
   eslint-config-prettier@10.0.2:
     resolution: {integrity: sha512-1105/17ZIMjmCOJOPNfVdbXafLCLj3hPmkmB7dLgt7XsQ/zkxSuDerE/xgO3RxoHysR1N1whmquY0lSn2O0VLg==}
+    hasBin: true
+    peerDependencies:
+      eslint: '>=7.0.0'
+
+  eslint-config-prettier@10.1.1:
+    resolution: {integrity: sha512-4EQQr6wXwS+ZJSzaR5ZCrYgLxqvUjdXctaEtBqHcbkW944B1NQyO4qpdHQbXBONfwxXdkAY81HH4+LUfrg+zPw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -3037,14 +3043,14 @@ snapshots:
 
   '@jill64/attempt@1.1.4': {}
 
-  '@jill64/eslint-config-svelte@2.0.18(jiti@1.21.7)(svelte@5.22.5)(typescript@5.8.2)':
+  '@jill64/eslint-config-svelte@2.0.20(jiti@1.21.7)(svelte@5.22.5)(typescript@5.8.2)':
     dependencies:
       '@eslint/js': 9.21.0
       '@types/eslint': 9.6.1
       '@typescript-eslint/eslint-plugin': 8.26.0(@typescript-eslint/parser@8.26.0(eslint@9.21.0(jiti@1.21.7))(typescript@5.8.2))(eslint@9.21.0(jiti@1.21.7))(typescript@5.8.2)
       '@typescript-eslint/parser': 8.26.0(eslint@9.21.0(jiti@1.21.7))(typescript@5.8.2)
       eslint: 9.21.0(jiti@1.21.7)
-      eslint-config-prettier: 10.0.2(eslint@9.21.0(jiti@1.21.7))
+      eslint-config-prettier: 10.1.1(eslint@9.21.0(jiti@1.21.7))
       eslint-plugin-svelte: 2.46.1(eslint@9.21.0(jiti@1.21.7))(svelte@5.22.5)
       svelte: 5.22.5
       svelte-eslint-parser: 1.0.1(svelte@5.22.5)
@@ -4039,6 +4045,10 @@ snapshots:
       semver: 7.7.0
 
   eslint-config-prettier@10.0.2(eslint@9.21.0(jiti@1.21.7)):
+    dependencies:
+      eslint: 9.21.0(jiti@1.21.7)
+
+  eslint-config-prettier@10.1.1(eslint@9.21.0(jiti@1.21.7)):
     dependencies:
       eslint: 9.21.0(jiti@1.21.7)
 
