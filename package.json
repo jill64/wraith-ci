@@ -20,7 +20,7 @@
     "@sveltejs/adapter-cloudflare": "5.0.3",
     "@sveltejs/kit": "2.19.0",
     "@sveltejs/vite-plugin-svelte": "5.0.3",
-    "@types/node": "22.13.9",
+    "@types/node": "22.13.10",
     "svelte": "5.22.6",
     "typescript": "5.8.2",
     "vite": "6.2.1",
