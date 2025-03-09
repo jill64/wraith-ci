@@ -10310,7 +10310,7 @@ var require_mock_utils = __commonJS({
     var { STATUS_CODES } = require("http");
     var {
       types: {
-        isPromise: isPromise2
+        isPromise: isPromise3
       }
     } = require("util");
     function matchValue(match, value) {
@@ -10495,7 +10495,7 @@ var require_mock_utils = __commonJS({
       function handleReply(mockDispatches, _data = data) {
         const optsHeaders = Array.isArray(opts.headers) ? buildHeadersFromArray(opts.headers) : opts.headers;
         const body = typeof _data === "function" ? _data({ ...opts, headers: optsHeaders }) : _data;
-        if (isPromise2(body)) {
+        if (isPromise3(body)) {
           body.then((newData) => handleReply(mockDispatches, newData));
           return;
         }
@@ -39501,6 +39501,27 @@ var SqliteAdapter = class extends DialectAdapterBase {
   }
 };
 
+// ../../node_modules/kysely-solarsystem/node_modules/@jill64/attempt/dist/index.js
+var isPromise2 = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
+function attempt2(func, fallback2) {
+  const argLen = arguments.length;
+  const handle = (error3) => {
+    if (argLen === 1) {
+      if (error3 instanceof Error) {
+        return error3;
+      }
+      throw error3;
+    }
+    return typeof fallback2 === "function" ? fallback2(error3 instanceof Error ? error3 : null, error3) : fallback2;
+  };
+  try {
+    const result = func();
+    return isPromise2(result) ? result.then((_) => _, handle) : result;
+  } catch (error3) {
+    return handle(error3);
+  }
+}
+
 // ../../node_modules/kysely-solarsystem/dist/index.js
 var SolarSystemDialect = class {
   config;
@@ -39564,7 +39585,7 @@ var SolarSystemConnection = class {
       })
     });
     const text = await res.text();
-    const results = attempt(() => JSON.parse(text), (e, o) => {
+    const results = attempt2(() => JSON.parse(text), (e, o) => {
       throw new Error(`[SolarSystemDialect]: Failed to parse JSON response. 
 ${res.status} | ${res.statusText}
 ${e?.message ?? JSON.stringify(o, null, 2)}
