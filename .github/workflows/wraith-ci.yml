@@ -83,7 +83,7 @@ jobs:
 
       - name: Setup Bun
         if: ${{ steps.check-package-manager.outputs.name == 'bun' }}
-        uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+        uses: jill64/.github/.github/workflows/setup-bun.yml@main
 
       - name: Install Bun
         if: ${{ steps.check-package-manager.outputs.name == 'bun' }}
