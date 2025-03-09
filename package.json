@@ -1,7 +1,6 @@
 {
   "name": "wraith-ci",
   "type": "module",
-  "packageManager": "pnpm@10.6.1",
   "workspaces": [
     "packages/*"
   ],

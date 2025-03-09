@@ -61,7 +61,7 @@ jobs:
             echo "name=yarn" >> $GITHUB_OUTPUT
           elif [ -f pnpm-lock.yaml ]; then
             echo "name=pnpm" >> $GITHUB_OUTPUT
-          elif [ -f bun-lock.json ]; then
+          elif [ -f bun.lock ]; then
             echo "name=bun" >> $GITHUB_OUTPUT
           else
             echo "name=npm" >> $GITHUB_OUTPUT
@@ -174,7 +174,7 @@ jobs:
 
       - name: Delete bun-lock.json
         if: failure() && ${{ steps.bun-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'bun' }}
-        run: rm -f bun-lock.json
+        run: rm -f bun.lock
 
       - name: Retry bun install
         if: failure() && ${{ steps.bun-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'bun' }}
@@ -182,7 +182,7 @@ jobs:
 
       - name: Staging
         if: failure() && ${{ steps.bun-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'bun' }}
-        run: git add bun-lock.json
+        run: git add bun.lock
 
       # ------------------------------------------------------------------------------------------
 
