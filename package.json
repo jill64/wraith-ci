@@ -5,13 +5,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "pnpm -r dev",
-    "build": "pnpm -r build",
-    "lint": "pnpm -r lint",
-    "deploy:all": "pnpm -r run deploy",
-    "format": "pnpm -r format",
-    "test": "pnpm -r test",
-    "test:e2e": "pnpm -r test:e2e"
+    "build": "cd packages/action && bun run build && cd ../api && bun run build && cd ../app && bun run build && cd ../site && bun run build",
+    "lint": "cd packages/action && bun run lint && cd ../api && bun run lint && cd ../app && bun run lint && cd ../site && bun run lint",
+    "format": "cd packages/action && bun run format && cd ../api && bun run format && cd ../app && bun run format && cd ../site && bun run format",
+    "test:e2e": "cd packages/site && bun run format"
   },
   "prettier": "@jill64/prettier-config",
   "devDependencies": {
