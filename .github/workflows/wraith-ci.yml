@@ -61,6 +61,8 @@ jobs:
             echo "name=yarn" >> $GITHUB_OUTPUT
           elif [ -f pnpm-lock.yaml ]; then
             echo "name=pnpm" >> $GITHUB_OUTPUT
+          elif [ -f bun-lock.json ]; then
+            echo "name=bun" >> $GITHUB_OUTPUT
           else
             echo "name=npm" >> $GITHUB_OUTPUT
           fi
@@ -78,6 +80,14 @@ jobs:
           version: ${{ needs.pre-process.outputs.package-manager-version != 'null' && needs.pre-process.outputs.package-manager-version || 'latest' }}
           run_install: |
             recursive: true
+
+      - name: Setup Bun
+        if: ${{ steps.check-package-manager.outputs.name == 'bun' }}
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install Bun
+        if: ${{ steps.check-package-manager.outputs.name == 'bun' }}
+        run: bun i
 
       - name: Setup npm
         if: ${{ steps.check-package-manager.outputs.name == 'npm' }}
@@ -154,6 +164,25 @@ jobs:
       - name: Staging
         if: failure() && ${{ steps.pnpm-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'pnpm' }}
         run: git add pnpm-lock.yaml
+
+      # ------------------------------------------------------------------------------------------
+
+      - name: Try bun install
+        id: bun-install
+        if: ${{ needs.wraith-ci.outputs.package-name == 'bun' }}
+        run: bun i
+
+      - name: Delete bun-lock.json
+        if: failure() && ${{ steps.bun-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'bun' }}
+        run: rm -f bun-lock.json
+
+      - name: Retry bun install
+        if: failure() && ${{ steps.bun-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'bun' }}
+        run: bun i
+
+      - name: Staging
+        if: failure() && ${{ steps.bun-install.conclusion == 'failure' }} && ${{ needs.wraith-ci.outputs.package-name == 'bun' }}
+        run: git add bun-lock.json
 
       # ------------------------------------------------------------------------------------------
 
