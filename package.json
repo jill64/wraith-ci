@@ -1,6 +1,9 @@
 {
   "type": "module",
   "packageManager": "pnpm@10.6.1",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
