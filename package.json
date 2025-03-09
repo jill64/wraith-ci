@@ -5,10 +5,10 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "cd packages/action && bun run build && cd ../api && bun run build && cd ../app && bun run build && ../site && bun run build",
-    "lint": "cd packages/action && bun run lint && cd ../api && bun run lint && cd ../app && bun run lint && ../site && bun run lint",
-    "format": "cd packages/action && bun run format && cd ../api && bun run format && cd ../app && bun run format && ../site && bun run format",
-    "test:e2e": "cd packages && bun run format"
+    "build": "cd packages/action && bun run build && cd ../api && bun run build && cd ../app && bun run build && cd ../site && bun run build",
+    "lint": "cd packages/action && bun run lint && cd ../api && bun run lint && cd ../app && bun run lint && cd ../site && bun run lint",
+    "format": "cd packages/action && bun run format && cd ../api && bun run format && cd ../app && bun run format && cd ../site && bun run format",
+    "test:e2e": "cd packages/site && bun run format"
   },
   "prettier": "@jill64/prettier-config",
   "devDependencies": {
