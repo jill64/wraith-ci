@@ -60,7 +60,7 @@
     "packages/site": {
       "name": "site",
       "devDependencies": {
-        "@jill64/playwright-config": "2.4.3",
+        "@jill64/playwright-config": "3.0.0",
         "@jill64/svelte-suite": "2.1.1",
         "@jill64/svelte-tailwind": "1.2.80",
         "@playwright/test": "1.51.0",
@@ -231,7 +231,7 @@
 
     "@jill64/eslint-config-ts": ["@jill64/eslint-config-ts@2.0.16", "", { "dependencies": { "@eslint/js": "9.22.0", "@types/eslint": "9.6.1", "@types/eslint-config-prettier": "6.11.3", "@typescript-eslint/eslint-plugin": "8.26.0", "@typescript-eslint/parser": "8.26.0", "eslint": "9.22.0", "eslint-config-prettier": "10.1.1" } }, "sha512-fuj5hQp1OarGDGbER7lK7zl2cRM7U7JX0XtfVxdMvtqcrpGwMghpQWZaN49fuHHAo+vJGt5/Lpo9dyP1KqJcCA=="],
 
-    "@jill64/playwright-config": ["@jill64/playwright-config@2.4.3", "", { "peerDependencies": { "@playwright/test": "^1.40.0" } }, "sha512-GaLej+psd6uxsd9A/RsKphbbbi80SrSTkRIk06ZZKLs3CZtqQMGAB/R3O80jM7QRGV0H+Ff53kqnRME1pywmkw=="],
+    "@jill64/playwright-config": ["@jill64/playwright-config@3.0.0", "", { "peerDependencies": { "@playwright/test": "^1.51.0" } }, "sha512-7CdEIRKGZQjBPHmmYbPqDBn1X9Q8gEsI6qC9nfCF4iv55iLWrTdKkz9W7RayXCDCb3GuuR2W90OnQ106J7PiDg=="],
 
     "@jill64/prettier-config": ["@jill64/prettier-config@1.0.0", "", {}, "sha512-KuryQDStqkQ/zKR9Q7JXiW927m7SvwirQo6Oohss1Q9cRyYS2JOyhtcBavZnoEhH4pHJkaigfjUXA3em4n6egA=="],
 
