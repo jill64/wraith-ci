@@ -8,6 +8,7 @@
     "build": "cd packages/action && bun run build && cd ../api && bun run build && cd ../app && bun run build && cd ../site && bun run build",
     "lint": "cd packages/action && bun run lint && cd ../api && bun run lint && cd ../app && bun run lint && cd ../site && bun run lint",
     "format": "cd packages/action && bun run format && cd ../api && bun run format && cd ../app && bun run format && cd ../site && bun run format",
+    "test": "bun test **/*.test.ts",
     "test:e2e": "cd packages/site && bun run format"
   },
   "prettier": "@jill64/prettier-config",
@@ -24,7 +25,6 @@
     "svelte": "5.22.6",
     "typescript": "5.8.2",
     "vite": "6.2.1",
-    "vitest": "3.0.8",
     "kysely": "0.27.5",
     "kysely-solarsystem": "0.0.13",
     "typescanner": "0.5.3",
@@ -35,6 +35,7 @@
     "tsx": "4.19.3",
     "eslint": "9.22.0",
     "svelte-check": "4.1.5",
-    "psvx": "1.0.14"
+    "psvx": "1.0.14",
+    "@types/bun": "1.2.5"
   }
 }

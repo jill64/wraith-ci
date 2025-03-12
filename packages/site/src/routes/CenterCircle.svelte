@@ -6,7 +6,7 @@
   let circle: HTMLDivElement | undefined
   let angle = $state(0)
   let relativeAngle = $derived(angle % 360)
-  let timerId: NodeJS.Timeout | undefined
+  let timerId: NodeJS.Timer | undefined
 
   const setIntervalRotate = () =>
     setInterval(() => {
