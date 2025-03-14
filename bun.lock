@@ -19,7 +19,7 @@
         "eslint": "9.22.0",
         "kysely": "0.27.5",
         "kysely-solarsystem": "0.0.13",
-        "octoflare": "2.1.3",
+        "octoflare": "2.1.4",
         "psvx": "1.0.14",
         "svelte": "5.23.0",
         "svelte-check": "4.1.5",
@@ -753,7 +753,7 @@
 
     "object-hash": ["object-hash@3.0.0", "", {}, "sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw=="],
 
-    "octoflare": ["octoflare@2.1.3", "", { "dependencies": { "@actions/core": "1.11.1", "@actions/github": "6.0.0", "@cloudflare/workers-types": "4.20250312.0", "@octokit/webhooks-types": "7.6.1", "octokit": "4.1.2" } }, "sha512-RewuFr/gvWYvho0JfJKNtDsBCBIpEjkcJNpPW2N4Xv9KBUvwVR0/qU1w7pBuSBiEgy3VVMgPkJgyyHtE5YZ5Tw=="],
+    "octoflare": ["octoflare@2.1.4", "", { "dependencies": { "@actions/core": "1.11.1", "@actions/github": "6.0.0", "@cloudflare/workers-types": "4.20250313.0", "@octokit/webhooks-types": "7.6.1", "octokit": "4.1.2" } }, "sha512-Dr4+f50xk8nhOoVWFDETvM+ziwWDwmRz3sKaFUvdL2MikAhy2tDDEcBn/x5rsIXriHhD0XBu2nxW9bsilwvVLQ=="],
 
     "octokit": ["octokit@4.1.2", "", { "dependencies": { "@octokit/app": "^15.1.4", "@octokit/core": "^6.1.4", "@octokit/oauth-app": "^7.1.6", "@octokit/plugin-paginate-graphql": "^5.2.4", "@octokit/plugin-paginate-rest": "^11.4.2", "@octokit/plugin-rest-endpoint-methods": "^13.3.1", "@octokit/plugin-retry": "^7.1.4", "@octokit/plugin-throttling": "^9.4.0", "@octokit/request-error": "^6.1.7", "@octokit/types": "^13.7.0" } }, "sha512-0kcTxJOK3yQrJsRb8wKa28hlTze4QOz4sLuUnfXXnhboDhFKgv8LxS86tFwbsafDW9JZ08ByuVAE8kQbYJIZkA=="],
 
@@ -1080,8 +1080,6 @@
     "kysely-solarsystem/@jill64/attempt": ["@jill64/attempt@1.1.4", "", {}, "sha512-oTdlIx+S7cIBpgMEquAknA5onVoBDLmcFy6aoCssaPz19IOyizADg3u2qE0Q/W3yM2366Jz70VN6Ld+cPdFOvQ=="],
 
     "miniflare/acorn": ["acorn@8.14.0", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA=="],
-
-    "octoflare/@cloudflare/workers-types": ["@cloudflare/workers-types@4.20250312.0", "", {}, "sha512-LQBDkrXxm/L0FM4NoT8EXaKCA7+2roOAZAWg+31RGxLKcoAWWSQpbf0PFMBAyFIN/eNADu5RKKrt4qHWNsztHQ=="],
 
     "octokit/@octokit/core": ["@octokit/core@6.1.4", "", { "dependencies": { "@octokit/auth-token": "^5.0.0", "@octokit/graphql": "^8.1.2", "@octokit/request": "^9.2.1", "@octokit/request-error": "^6.1.7", "@octokit/types": "^13.6.2", "before-after-hook": "^3.0.2", "universal-user-agent": "^7.0.0" } }, "sha512-lAS9k7d6I0MPN+gb9bKDt7X8SdxknYqAMh44S5L+lNqIN2NuV8nvv3g8rPp7MuRxcOpxpUIATWprO0C34a8Qmg=="],
 
