@@ -10310,7 +10310,7 @@ var require_mock_utils = __commonJS({
     var { STATUS_CODES } = require("http");
     var {
       types: {
-        isPromise: isPromise3
+        isPromise: isPromise2
       }
     } = require("util");
     function matchValue(match, value) {
@@ -10495,7 +10495,7 @@ var require_mock_utils = __commonJS({
       function handleReply(mockDispatches, _data = data) {
         const optsHeaders = Array.isArray(opts.headers) ? buildHeadersFromArray(opts.headers) : opts.headers;
         const body = typeof _data === "function" ? _data({ ...opts, headers: optsHeaders }) : _data;
-        if (isPromise3(body)) {
+        if (isPromise2(body)) {
           body.then((newData) => handleReply(mockDispatches, newData));
           return;
         }
@@ -23893,18 +23893,18 @@ var require_typeGuard = __commonJS({
     "use strict";
     exports2.__esModule = true;
     exports2.isInstanceOf = exports2.isList = exports2.isOptional = exports2.isObject = exports2.isArray = exports2.isUnion = exports2.isDate = exports2.isNull = exports2.isUndefined = exports2.isBigint = exports2.isSymbol = exports2.isBoolean = exports2.isNumber = exports2.isString = void 0;
-    var isString2 = function(value) {
+    var isString3 = function(value) {
       return typeof value === "string";
     };
-    exports2.isString = isString2;
-    var isNumber2 = function(value) {
+    exports2.isString = isString3;
+    var isNumber3 = function(value) {
       return typeof value === "number";
     };
-    exports2.isNumber = isNumber2;
-    var isBoolean2 = function(value) {
+    exports2.isNumber = isNumber3;
+    var isBoolean3 = function(value) {
       return typeof value === "boolean";
     };
-    exports2.isBoolean = isBoolean2;
+    exports2.isBoolean = isBoolean3;
     var isSymbol = function(value) {
       return typeof value === "symbol";
     };
@@ -23913,14 +23913,14 @@ var require_typeGuard = __commonJS({
       return typeof value === "bigint";
     };
     exports2.isBigint = isBigint;
-    var isUndefined2 = function(value) {
+    var isUndefined3 = function(value) {
       return typeof value === "undefined";
     };
-    exports2.isUndefined = isUndefined2;
-    var isNull2 = function(value) {
+    exports2.isUndefined = isUndefined3;
+    var isNull3 = function(value) {
       return value === null;
     };
-    exports2.isNull = isNull2;
+    exports2.isNull = isNull3;
     var isDate2 = function(value) {
       return value instanceof Date;
     };
@@ -23947,10 +23947,10 @@ var require_typeGuard = __commonJS({
       });
     };
     exports2.isArray = isArray;
-    var isObject2 = function(value) {
+    var isObject3 = function(value) {
       return typeof value === "object" && value !== null;
     };
-    exports2.isObject = isObject2;
+    exports2.isObject = isObject3;
     var isOptional = function(value) {
       var conditions = [];
       for (var _i = 1; _i < arguments.length; _i++) {
@@ -26300,9 +26300,6 @@ function isBoolean(obj) {
 }
 function isNull(obj) {
   return obj === null;
-}
-function isDate(obj) {
-  return obj instanceof Date;
 }
 function isBigInt(obj) {
   return typeof obj === "bigint";
@@ -37878,11 +37875,4337 @@ function validateTransactionSettings(settings) {
   }
 }
 
-// ../../node_modules/kysely/dist/esm/raw-builder/raw-builder.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/util/object-utils.js
+function isUndefined2(obj) {
+  return typeof obj === "undefined" || obj === void 0;
+}
+function isString2(obj) {
+  return typeof obj === "string";
+}
+function isNumber2(obj) {
+  return typeof obj === "number";
+}
+function isBoolean2(obj) {
+  return typeof obj === "boolean";
+}
+function isNull2(obj) {
+  return obj === null;
+}
+function isDate(obj) {
+  return obj instanceof Date;
+}
+function isBigInt2(obj) {
+  return typeof obj === "bigint";
+}
+function isFunction2(obj) {
+  return typeof obj === "function";
+}
+function isObject2(obj) {
+  return typeof obj === "object" && obj !== null;
+}
+function freeze2(obj) {
+  return Object.freeze(obj);
+}
+function asArray2(arg) {
+  if (isReadonlyArray2(arg)) {
+    return arg;
+  } else {
+    return [arg];
+  }
+}
+function isReadonlyArray2(arg) {
+  return Array.isArray(arg);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/identifier-node.js
+var IdentifierNode2 = freeze2({
+  is(node) {
+    return node.kind === "IdentifierNode";
+  },
+  create(name) {
+    return freeze2({
+      kind: "IdentifierNode",
+      name
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/create-table-node.js
+var CreateTableNode2 = freeze2({
+  is(node) {
+    return node.kind === "CreateTableNode";
+  },
+  create(table) {
+    return freeze2({
+      kind: "CreateTableNode",
+      table,
+      columns: freeze2([])
+    });
+  },
+  cloneWithColumn(createTable, column) {
+    return freeze2({
+      ...createTable,
+      columns: freeze2([...createTable.columns, column])
+    });
+  },
+  cloneWithConstraint(createTable, constraint) {
+    return freeze2({
+      ...createTable,
+      constraints: createTable.constraints ? freeze2([...createTable.constraints, constraint]) : freeze2([constraint])
+    });
+  },
+  cloneWithFrontModifier(createTable, modifier) {
+    return freeze2({
+      ...createTable,
+      frontModifiers: createTable.frontModifiers ? freeze2([...createTable.frontModifiers, modifier]) : freeze2([modifier])
+    });
+  },
+  cloneWithEndModifier(createTable, modifier) {
+    return freeze2({
+      ...createTable,
+      endModifiers: createTable.endModifiers ? freeze2([...createTable.endModifiers, modifier]) : freeze2([modifier])
+    });
+  },
+  cloneWith(createTable, params) {
+    return freeze2({
+      ...createTable,
+      ...params
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/schemable-identifier-node.js
+var SchemableIdentifierNode2 = freeze2({
+  is(node) {
+    return node.kind === "SchemableIdentifierNode";
+  },
+  create(identifier) {
+    return freeze2({
+      kind: "SchemableIdentifierNode",
+      identifier: IdentifierNode2.create(identifier)
+    });
+  },
+  createWithSchema(schema2, identifier) {
+    return freeze2({
+      kind: "SchemableIdentifierNode",
+      schema: IdentifierNode2.create(schema2),
+      identifier: IdentifierNode2.create(identifier)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/alias-node.js
+var AliasNode2 = freeze2({
+  is(node) {
+    return node.kind === "AliasNode";
+  },
+  create(node, alias) {
+    return freeze2({
+      kind: "AliasNode",
+      node,
+      alias
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/table-node.js
+var TableNode2 = freeze2({
+  is(node) {
+    return node.kind === "TableNode";
+  },
+  create(table) {
+    return freeze2({
+      kind: "TableNode",
+      table: SchemableIdentifierNode2.create(table)
+    });
+  },
+  createWithSchema(schema2, table) {
+    return freeze2({
+      kind: "TableNode",
+      table: SchemableIdentifierNode2.createWithSchema(schema2, table)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/operation-node-source.js
+function isOperationNodeSource2(obj) {
+  return isObject2(obj) && isFunction2(obj.toOperationNode);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/expression/expression.js
+function isExpression2(obj) {
+  return isObject2(obj) && "expressionType" in obj && isOperationNodeSource2(obj);
+}
+function isAliasedExpression2(obj) {
+  return isObject2(obj) && "expression" in obj && isString2(obj.alias) && isOperationNodeSource2(obj);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/select-modifier-node.js
+var SelectModifierNode2 = freeze2({
+  is(node) {
+    return node.kind === "SelectModifierNode";
+  },
+  create(modifier, of) {
+    return freeze2({
+      kind: "SelectModifierNode",
+      modifier,
+      of
+    });
+  },
+  createWithExpression(modifier) {
+    return freeze2({
+      kind: "SelectModifierNode",
+      rawModifier: modifier
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/and-node.js
+var AndNode2 = freeze2({
+  is(node) {
+    return node.kind === "AndNode";
+  },
+  create(left, right) {
+    return freeze2({
+      kind: "AndNode",
+      left,
+      right
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/or-node.js
+var OrNode2 = freeze2({
+  is(node) {
+    return node.kind === "OrNode";
+  },
+  create(left, right) {
+    return freeze2({
+      kind: "OrNode",
+      left,
+      right
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/on-node.js
+var OnNode2 = freeze2({
+  is(node) {
+    return node.kind === "OnNode";
+  },
+  create(filter) {
+    return freeze2({
+      kind: "OnNode",
+      on: filter
+    });
+  },
+  cloneWithOperation(onNode, operator, operation) {
+    return freeze2({
+      ...onNode,
+      on: operator === "And" ? AndNode2.create(onNode.on, operation) : OrNode2.create(onNode.on, operation)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/join-node.js
+var JoinNode2 = freeze2({
+  is(node) {
+    return node.kind === "JoinNode";
+  },
+  create(joinType, table) {
+    return freeze2({
+      kind: "JoinNode",
+      joinType,
+      table,
+      on: void 0
+    });
+  },
+  createWithOn(joinType, table, on) {
+    return freeze2({
+      kind: "JoinNode",
+      joinType,
+      table,
+      on: OnNode2.create(on)
+    });
+  },
+  cloneWithOn(joinNode, operation) {
+    return freeze2({
+      ...joinNode,
+      on: joinNode.on ? OnNode2.cloneWithOperation(joinNode.on, "And", operation) : OnNode2.create(operation)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/binary-operation-node.js
+var BinaryOperationNode2 = freeze2({
+  is(node) {
+    return node.kind === "BinaryOperationNode";
+  },
+  create(leftOperand, operator, rightOperand) {
+    return freeze2({
+      kind: "BinaryOperationNode",
+      leftOperand,
+      operator,
+      rightOperand
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/operator-node.js
+var COMPARISON_OPERATORS2 = [
+  "=",
+  "==",
+  "!=",
+  "<>",
+  ">",
+  ">=",
+  "<",
+  "<=",
+  "in",
+  "not in",
+  "is",
+  "is not",
+  "like",
+  "not like",
+  "match",
+  "ilike",
+  "not ilike",
+  "@>",
+  "<@",
+  "^@",
+  "&&",
+  "?",
+  "?&",
+  "?|",
+  "!<",
+  "!>",
+  "<=>",
+  "!~",
+  "~",
+  "~*",
+  "!~*",
+  "@@",
+  "@@@",
+  "!!",
+  "<->",
+  "regexp",
+  "is distinct from",
+  "is not distinct from"
+];
+var ARITHMETIC_OPERATORS2 = [
+  "+",
+  "-",
+  "*",
+  "/",
+  "%",
+  "^",
+  "&",
+  "|",
+  "#",
+  "<<",
+  ">>"
+];
+var JSON_OPERATORS2 = ["->", "->>"];
+var BINARY_OPERATORS2 = [
+  ...COMPARISON_OPERATORS2,
+  ...ARITHMETIC_OPERATORS2,
+  "&&",
+  "||"
+];
+var UNARY_FILTER_OPERATORS2 = ["exists", "not exists"];
+var UNARY_OPERATORS2 = ["not", "-", ...UNARY_FILTER_OPERATORS2];
+var OPERATORS2 = [
+  ...BINARY_OPERATORS2,
+  ...JSON_OPERATORS2,
+  ...UNARY_OPERATORS2,
+  "between",
+  "between symmetric"
+];
+var OperatorNode2 = freeze2({
+  is(node) {
+    return node.kind === "OperatorNode";
+  },
+  create(operator) {
+    return freeze2({
+      kind: "OperatorNode",
+      operator
+    });
+  }
+});
+function isJSONOperator2(op) {
+  return isString2(op) && JSON_OPERATORS2.includes(op);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/column-node.js
+var ColumnNode2 = freeze2({
+  is(node) {
+    return node.kind === "ColumnNode";
+  },
+  create(column) {
+    return freeze2({
+      kind: "ColumnNode",
+      column: IdentifierNode2.create(column)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/select-all-node.js
+var SelectAllNode2 = freeze2({
+  is(node) {
+    return node.kind === "SelectAllNode";
+  },
+  create() {
+    return freeze2({
+      kind: "SelectAllNode"
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/reference-node.js
+var ReferenceNode2 = freeze2({
+  is(node) {
+    return node.kind === "ReferenceNode";
+  },
+  create(column, table) {
+    return freeze2({
+      kind: "ReferenceNode",
+      table,
+      column
+    });
+  },
+  createSelectAll(table) {
+    return freeze2({
+      kind: "ReferenceNode",
+      table,
+      column: SelectAllNode2.create()
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/dynamic/dynamic-reference-builder.js
+function isDynamicReferenceBuilder2(obj) {
+  return isObject2(obj) && isOperationNodeSource2(obj) && isString2(obj.dynamicReference);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/order-by-item-node.js
+var OrderByItemNode2 = freeze2({
+  is(node) {
+    return node.kind === "OrderByItemNode";
+  },
+  create(orderBy, direction) {
+    return freeze2({
+      kind: "OrderByItemNode",
+      orderBy,
+      direction
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/raw-node.js
+var RawNode2 = freeze2({
+  is(node) {
+    return node.kind === "RawNode";
+  },
+  create(sqlFragments, parameters) {
+    return freeze2({
+      kind: "RawNode",
+      sqlFragments: freeze2(sqlFragments),
+      parameters: freeze2(parameters)
+    });
+  },
+  createWithSql(sql2) {
+    return RawNode2.create([sql2], []);
+  },
+  createWithChild(child) {
+    return RawNode2.create(["", ""], [child]);
+  },
+  createWithChildren(children) {
+    return RawNode2.create(new Array(children.length + 1).fill(""), children);
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/order-by-parser.js
+function isOrderByDirection2(thing) {
+  return thing === "asc" || thing === "desc";
+}
+function parseOrderBy2(args) {
+  if (args.length === 2) {
+    return [parseOrderByItem2(args[0], args[1])];
+  }
+  if (args.length === 1) {
+    const [orderBy] = args;
+    if (Array.isArray(orderBy)) {
+      return orderBy.map((item) => parseOrderByItem2(item));
+    }
+    return [parseOrderByItem2(orderBy)];
+  }
+  throw new Error(`Invalid number of arguments at order by! expected 1-2, received ${args.length}`);
+}
+function parseOrderByItem2(ref, direction) {
+  const parsedRef = parseOrderByExpression2(ref);
+  if (OrderByItemNode2.is(parsedRef)) {
+    if (direction) {
+      throw new Error("Cannot specify direction twice!");
+    }
+    return parsedRef;
+  }
+  return OrderByItemNode2.create(parsedRef, parseOrderByDirectionExpression2(direction));
+}
+function parseOrderByExpression2(expr) {
+  if (isExpressionOrFactory2(expr)) {
+    return parseExpression2(expr);
+  }
+  if (isDynamicReferenceBuilder2(expr)) {
+    return expr.toOperationNode();
+  }
+  const [ref, direction] = expr.split(" ");
+  if (direction) {
+    if (!isOrderByDirection2(direction)) {
+      throw new Error(`Invalid order by direction: ${direction}`);
+    }
+    return OrderByItemNode2.create(parseStringReference2(ref), parseOrderByDirectionExpression2(direction));
+  }
+  return parseStringReference2(expr);
+}
+function parseOrderByDirectionExpression2(expr) {
+  if (!expr) {
+    return void 0;
+  }
+  if (expr === "asc" || expr === "desc") {
+    return RawNode2.createWithSql(expr);
+  }
+  return expr.toOperationNode();
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/json-reference-node.js
+var JSONReferenceNode2 = freeze2({
+  is(node) {
+    return node.kind === "JSONReferenceNode";
+  },
+  create(reference, traversal) {
+    return freeze2({
+      kind: "JSONReferenceNode",
+      reference,
+      traversal
+    });
+  },
+  cloneWithTraversal(node, traversal) {
+    return freeze2({
+      ...node,
+      traversal
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/json-operator-chain-node.js
+var JSONOperatorChainNode2 = freeze2({
+  is(node) {
+    return node.kind === "JSONOperatorChainNode";
+  },
+  create(operator) {
+    return freeze2({
+      kind: "JSONOperatorChainNode",
+      operator,
+      values: freeze2([])
+    });
+  },
+  cloneWithValue(node, value) {
+    return freeze2({
+      ...node,
+      values: freeze2([...node.values, value])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/json-path-node.js
+var JSONPathNode2 = freeze2({
+  is(node) {
+    return node.kind === "JSONPathNode";
+  },
+  create(inOperator) {
+    return freeze2({
+      kind: "JSONPathNode",
+      inOperator,
+      pathLegs: freeze2([])
+    });
+  },
+  cloneWithLeg(jsonPathNode, pathLeg) {
+    return freeze2({
+      ...jsonPathNode,
+      pathLegs: freeze2([...jsonPathNode.pathLegs, pathLeg])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/reference-parser.js
+function parseSimpleReferenceExpression2(exp) {
+  if (isString2(exp)) {
+    return parseStringReference2(exp);
+  }
+  return exp.toOperationNode();
+}
+function parseReferenceExpressionOrList2(arg) {
+  if (isReadonlyArray2(arg)) {
+    return arg.map((it) => parseReferenceExpression2(it));
+  } else {
+    return [parseReferenceExpression2(arg)];
+  }
+}
+function parseReferenceExpression2(exp) {
+  if (isExpressionOrFactory2(exp)) {
+    return parseExpression2(exp);
+  }
+  return parseSimpleReferenceExpression2(exp);
+}
+function parseJSONReference2(ref, op) {
+  const referenceNode = parseStringReference2(ref);
+  if (isJSONOperator2(op)) {
+    return JSONReferenceNode2.create(referenceNode, JSONOperatorChainNode2.create(OperatorNode2.create(op)));
+  }
+  const opWithoutLastChar = op.slice(0, -1);
+  if (isJSONOperator2(opWithoutLastChar)) {
+    return JSONReferenceNode2.create(referenceNode, JSONPathNode2.create(OperatorNode2.create(opWithoutLastChar)));
+  }
+  throw new Error(`Invalid JSON operator: ${op}`);
+}
+function parseStringReference2(ref) {
+  const COLUMN_SEPARATOR = ".";
+  if (!ref.includes(COLUMN_SEPARATOR)) {
+    return ReferenceNode2.create(ColumnNode2.create(ref));
+  }
+  const parts = ref.split(COLUMN_SEPARATOR).map(trim4);
+  if (parts.length === 3) {
+    return parseStringReferenceWithTableAndSchema2(parts);
+  }
+  if (parts.length === 2) {
+    return parseStringReferenceWithTable2(parts);
+  }
+  throw new Error(`invalid column reference ${ref}`);
+}
+function parseAliasedStringReference2(ref) {
+  const ALIAS_SEPARATOR = " as ";
+  if (ref.includes(ALIAS_SEPARATOR)) {
+    const [columnRef, alias] = ref.split(ALIAS_SEPARATOR).map(trim4);
+    return AliasNode2.create(parseStringReference2(columnRef), IdentifierNode2.create(alias));
+  } else {
+    return parseStringReference2(ref);
+  }
+}
+function parseStringReferenceWithTableAndSchema2(parts) {
+  const [schema2, table, column] = parts;
+  return ReferenceNode2.create(ColumnNode2.create(column), TableNode2.createWithSchema(schema2, table));
+}
+function parseStringReferenceWithTable2(parts) {
+  const [table, column] = parts;
+  return ReferenceNode2.create(ColumnNode2.create(column), TableNode2.create(table));
+}
+function trim4(str) {
+  return str.trim();
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/primitive-value-list-node.js
+var PrimitiveValueListNode2 = freeze2({
+  is(node) {
+    return node.kind === "PrimitiveValueListNode";
+  },
+  create(values) {
+    return freeze2({
+      kind: "PrimitiveValueListNode",
+      values: freeze2([...values])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/value-list-node.js
+var ValueListNode2 = freeze2({
+  is(node) {
+    return node.kind === "ValueListNode";
+  },
+  create(values) {
+    return freeze2({
+      kind: "ValueListNode",
+      values: freeze2(values)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/value-node.js
+var ValueNode2 = freeze2({
+  is(node) {
+    return node.kind === "ValueNode";
+  },
+  create(value) {
+    return freeze2({
+      kind: "ValueNode",
+      value
+    });
+  },
+  createImmediate(value) {
+    return freeze2({
+      kind: "ValueNode",
+      value,
+      immediate: true
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/value-parser.js
+function parseValueExpressionOrList2(arg) {
+  if (isReadonlyArray2(arg)) {
+    return parseValueExpressionList2(arg);
+  }
+  return parseValueExpression2(arg);
+}
+function parseValueExpression2(exp) {
+  if (isExpressionOrFactory2(exp)) {
+    return parseExpression2(exp);
+  }
+  return ValueNode2.create(exp);
+}
+function isSafeImmediateValue2(value) {
+  return isNumber2(value) || isBoolean2(value) || isNull2(value);
+}
+function parseSafeImmediateValue2(value) {
+  if (!isSafeImmediateValue2(value)) {
+    throw new Error(`unsafe immediate value ${JSON.stringify(value)}`);
+  }
+  return ValueNode2.createImmediate(value);
+}
+function parseValueExpressionList2(arg) {
+  if (arg.some(isExpressionOrFactory2)) {
+    return ValueListNode2.create(arg.map((it) => parseValueExpression2(it)));
+  }
+  return PrimitiveValueListNode2.create(arg);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/parens-node.js
+var ParensNode2 = freeze2({
+  is(node) {
+    return node.kind === "ParensNode";
+  },
+  create(node) {
+    return freeze2({
+      kind: "ParensNode",
+      node
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/binary-operation-parser.js
+function parseValueBinaryOperationOrExpression2(args) {
+  if (args.length === 3) {
+    return parseValueBinaryOperation2(args[0], args[1], args[2]);
+  } else if (args.length === 1) {
+    return parseValueExpression2(args[0]);
+  }
+  throw new Error(`invalid arguments: ${JSON.stringify(args)}`);
+}
+function parseValueBinaryOperation2(left, operator, right) {
+  if (isIsOperator2(operator) && needsIsOperator2(right)) {
+    return BinaryOperationNode2.create(parseReferenceExpression2(left), parseOperator2(operator), ValueNode2.createImmediate(right));
+  }
+  return BinaryOperationNode2.create(parseReferenceExpression2(left), parseOperator2(operator), parseValueExpressionOrList2(right));
+}
+function parseReferentialBinaryOperation2(left, operator, right) {
+  return BinaryOperationNode2.create(parseReferenceExpression2(left), parseOperator2(operator), parseReferenceExpression2(right));
+}
+function parseFilterObject2(obj, combinator) {
+  return parseFilterList2(Object.entries(obj).filter(([, v]) => !isUndefined2(v)).map(([k, v]) => parseValueBinaryOperation2(k, needsIsOperator2(v) ? "is" : "=", v)), combinator);
+}
+function parseFilterList2(list, combinator, withParens = true) {
+  const combine = combinator === "and" ? AndNode2.create : OrNode2.create;
+  if (list.length === 0) {
+    return BinaryOperationNode2.create(ValueNode2.createImmediate(1), OperatorNode2.create("="), ValueNode2.createImmediate(combinator === "and" ? 1 : 0));
+  }
+  let node = toOperationNode2(list[0]);
+  for (let i = 1; i < list.length; ++i) {
+    node = combine(node, toOperationNode2(list[i]));
+  }
+  if (list.length > 1 && withParens) {
+    return ParensNode2.create(node);
+  }
+  return node;
+}
+function isIsOperator2(operator) {
+  return operator === "is" || operator === "is not";
+}
+function needsIsOperator2(value) {
+  return isNull2(value) || isBoolean2(value);
+}
+function parseOperator2(operator) {
+  if (isString2(operator) && OPERATORS2.includes(operator)) {
+    return OperatorNode2.create(operator);
+  }
+  if (isOperationNodeSource2(operator)) {
+    return operator.toOperationNode();
+  }
+  throw new Error(`invalid operator ${JSON.stringify(operator)}`);
+}
+function toOperationNode2(nodeOrSource) {
+  return isOperationNodeSource2(nodeOrSource) ? nodeOrSource.toOperationNode() : nodeOrSource;
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/order-by-node.js
+var OrderByNode2 = freeze2({
+  is(node) {
+    return node.kind === "OrderByNode";
+  },
+  create(items) {
+    return freeze2({
+      kind: "OrderByNode",
+      items: freeze2([...items])
+    });
+  },
+  cloneWithItems(orderBy, items) {
+    return freeze2({
+      ...orderBy,
+      items: freeze2([...orderBy.items, ...items])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/partition-by-node.js
+var PartitionByNode2 = freeze2({
+  is(node) {
+    return node.kind === "PartitionByNode";
+  },
+  create(items) {
+    return freeze2({
+      kind: "PartitionByNode",
+      items: freeze2(items)
+    });
+  },
+  cloneWithItems(partitionBy, items) {
+    return freeze2({
+      ...partitionBy,
+      items: freeze2([...partitionBy.items, ...items])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/over-node.js
+var OverNode2 = freeze2({
+  is(node) {
+    return node.kind === "OverNode";
+  },
+  create() {
+    return freeze2({
+      kind: "OverNode"
+    });
+  },
+  cloneWithOrderByItems(overNode, items) {
+    return freeze2({
+      ...overNode,
+      orderBy: overNode.orderBy ? OrderByNode2.cloneWithItems(overNode.orderBy, items) : OrderByNode2.create(items)
+    });
+  },
+  cloneWithPartitionByItems(overNode, items) {
+    return freeze2({
+      ...overNode,
+      partitionBy: overNode.partitionBy ? PartitionByNode2.cloneWithItems(overNode.partitionBy, items) : PartitionByNode2.create(items)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/from-node.js
+var FromNode2 = freeze2({
+  is(node) {
+    return node.kind === "FromNode";
+  },
+  create(froms) {
+    return freeze2({
+      kind: "FromNode",
+      froms: freeze2(froms)
+    });
+  },
+  cloneWithFroms(from, froms) {
+    return freeze2({
+      ...from,
+      froms: freeze2([...from.froms, ...froms])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/group-by-node.js
+var GroupByNode2 = freeze2({
+  is(node) {
+    return node.kind === "GroupByNode";
+  },
+  create(items) {
+    return freeze2({
+      kind: "GroupByNode",
+      items: freeze2(items)
+    });
+  },
+  cloneWithItems(groupBy, items) {
+    return freeze2({
+      ...groupBy,
+      items: freeze2([...groupBy.items, ...items])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/having-node.js
+var HavingNode2 = freeze2({
+  is(node) {
+    return node.kind === "HavingNode";
+  },
+  create(filter) {
+    return freeze2({
+      kind: "HavingNode",
+      having: filter
+    });
+  },
+  cloneWithOperation(havingNode, operator, operation) {
+    return freeze2({
+      ...havingNode,
+      having: operator === "And" ? AndNode2.create(havingNode.having, operation) : OrNode2.create(havingNode.having, operation)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/select-query-node.js
+var SelectQueryNode2 = freeze2({
+  is(node) {
+    return node.kind === "SelectQueryNode";
+  },
+  create(withNode) {
+    return freeze2({
+      kind: "SelectQueryNode",
+      ...withNode && { with: withNode }
+    });
+  },
+  createFrom(fromItems, withNode) {
+    return freeze2({
+      kind: "SelectQueryNode",
+      from: FromNode2.create(fromItems),
+      ...withNode && { with: withNode }
+    });
+  },
+  cloneWithSelections(select, selections) {
+    return freeze2({
+      ...select,
+      selections: select.selections ? freeze2([...select.selections, ...selections]) : freeze2(selections)
+    });
+  },
+  cloneWithDistinctOn(select, expressions) {
+    return freeze2({
+      ...select,
+      distinctOn: select.distinctOn ? freeze2([...select.distinctOn, ...expressions]) : freeze2(expressions)
+    });
+  },
+  cloneWithFrontModifier(select, modifier) {
+    return freeze2({
+      ...select,
+      frontModifiers: select.frontModifiers ? freeze2([...select.frontModifiers, modifier]) : freeze2([modifier])
+    });
+  },
+  cloneWithOrderByItems(selectNode, items) {
+    return freeze2({
+      ...selectNode,
+      orderBy: selectNode.orderBy ? OrderByNode2.cloneWithItems(selectNode.orderBy, items) : OrderByNode2.create(items)
+    });
+  },
+  cloneWithGroupByItems(selectNode, items) {
+    return freeze2({
+      ...selectNode,
+      groupBy: selectNode.groupBy ? GroupByNode2.cloneWithItems(selectNode.groupBy, items) : GroupByNode2.create(items)
+    });
+  },
+  cloneWithLimit(selectNode, limit) {
+    return freeze2({
+      ...selectNode,
+      limit
+    });
+  },
+  cloneWithOffset(selectNode, offset) {
+    return freeze2({
+      ...selectNode,
+      offset
+    });
+  },
+  cloneWithFetch(selectNode, fetch2) {
+    return freeze2({
+      ...selectNode,
+      fetch: fetch2
+    });
+  },
+  cloneWithHaving(selectNode, operation) {
+    return freeze2({
+      ...selectNode,
+      having: selectNode.having ? HavingNode2.cloneWithOperation(selectNode.having, "And", operation) : HavingNode2.create(operation)
+    });
+  },
+  cloneWithSetOperations(selectNode, setOperations) {
+    return freeze2({
+      ...selectNode,
+      setOperations: selectNode.setOperations ? freeze2([...selectNode.setOperations, ...setOperations]) : freeze2([...setOperations])
+    });
+  },
+  cloneWithoutSelections(select) {
+    return freeze2({
+      ...select,
+      selections: []
+    });
+  },
+  cloneWithoutLimit(select) {
+    return freeze2({
+      ...select,
+      limit: void 0
+    });
+  },
+  cloneWithoutOffset(select) {
+    return freeze2({
+      ...select,
+      offset: void 0
+    });
+  },
+  cloneWithoutOrderBy(select) {
+    return freeze2({
+      ...select,
+      orderBy: void 0
+    });
+  },
+  cloneWithoutGroupBy(select) {
+    return freeze2({
+      ...select,
+      groupBy: void 0
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/util/prevent-await.js
+function preventAwait2(clazz, message) {
+  Object.defineProperties(clazz.prototype, {
+    then: {
+      enumerable: false,
+      value: () => {
+        throw new Error(message);
+      }
+    }
+  });
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/join-builder.js
+var JoinBuilder2 = class _JoinBuilder {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  on(...args) {
+    return new _JoinBuilder({
+      ...this.#props,
+      joinNode: JoinNode2.cloneWithOn(this.#props.joinNode, parseValueBinaryOperationOrExpression2(args))
+    });
+  }
+  /**
+   * Just like {@link WhereInterface.whereRef} but adds an item to the join's
+   * `on` clause instead.
+   *
+   * See {@link WhereInterface.whereRef} for documentation and examples.
+   */
+  onRef(lhs, op, rhs) {
+    return new _JoinBuilder({
+      ...this.#props,
+      joinNode: JoinNode2.cloneWithOn(this.#props.joinNode, parseReferentialBinaryOperation2(lhs, op, rhs))
+    });
+  }
+  /**
+   * Adds `on true`.
+   */
+  onTrue() {
+    return new _JoinBuilder({
+      ...this.#props,
+      joinNode: JoinNode2.cloneWithOn(this.#props.joinNode, RawNode2.createWithSql("true"))
+    });
+  }
+  /**
+   * Simply calls the provided function passing `this` as the only argument. `$call` returns
+   * what the provided function returns.
+   */
+  $call(func) {
+    return func(this);
+  }
+  toOperationNode() {
+    return this.#props.joinNode;
+  }
+};
+preventAwait2(JoinBuilder2, "don't await JoinBuilder instances. They are never executed directly and are always just a part of a query.");
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/partition-by-item-node.js
+var PartitionByItemNode2 = freeze2({
+  is(node) {
+    return node.kind === "PartitionByItemNode";
+  },
+  create(partitionBy) {
+    return freeze2({
+      kind: "PartitionByItemNode",
+      partitionBy
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/partition-by-parser.js
+function parsePartitionBy2(partitionBy) {
+  return parseReferenceExpressionOrList2(partitionBy).map(PartitionByItemNode2.create);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/over-builder.js
+var OverBuilder2 = class _OverBuilder {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  /**
+   * Adds an order by clause item inside the over function.
+   *
+   * ```ts
+   * const result = await db
+   *   .selectFrom('person')
+   *   .select(
+   *     (eb) => eb.fn.avg<number>('age').over(
+   *       ob => ob.orderBy('first_name', 'asc').orderBy('last_name', 'asc')
+   *     ).as('average_age')
+   *   )
+   *   .execute()
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select avg("age") over(order by "first_name" asc, "last_name" asc) as "average_age"
+   * from "person"
+   * ```
+   */
+  orderBy(orderBy, direction) {
+    return new _OverBuilder({
+      overNode: OverNode2.cloneWithOrderByItems(this.#props.overNode, parseOrderBy2([orderBy, direction]))
+    });
+  }
+  partitionBy(partitionBy) {
+    return new _OverBuilder({
+      overNode: OverNode2.cloneWithPartitionByItems(this.#props.overNode, parsePartitionBy2(partitionBy))
+    });
+  }
+  /**
+   * Simply calls the provided function passing `this` as the only argument. `$call` returns
+   * what the provided function returns.
+   */
+  $call(func) {
+    return func(this);
+  }
+  toOperationNode() {
+    return this.#props.overNode;
+  }
+};
+preventAwait2(OverBuilder2, "don't await OverBuilder instances. They are never executed directly and are always just a part of a query.");
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/selection-node.js
+var SelectionNode2 = freeze2({
+  is(node) {
+    return node.kind === "SelectionNode";
+  },
+  create(selection) {
+    return freeze2({
+      kind: "SelectionNode",
+      selection
+    });
+  },
+  createSelectAll() {
+    return freeze2({
+      kind: "SelectionNode",
+      selection: SelectAllNode2.create()
+    });
+  },
+  createSelectAllFromTable(table) {
+    return freeze2({
+      kind: "SelectionNode",
+      selection: ReferenceNode2.createSelectAll(table)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/select-parser.js
+function parseSelectArg2(selection) {
+  if (isFunction2(selection)) {
+    return parseSelectArg2(selection(expressionBuilder2()));
+  } else if (isReadonlyArray2(selection)) {
+    return selection.map((it) => parseSelectExpression2(it));
+  } else {
+    return [parseSelectExpression2(selection)];
+  }
+}
+function parseSelectExpression2(selection) {
+  if (isString2(selection)) {
+    return SelectionNode2.create(parseAliasedStringReference2(selection));
+  } else if (isDynamicReferenceBuilder2(selection)) {
+    return SelectionNode2.create(selection.toOperationNode());
+  } else {
+    return SelectionNode2.create(parseAliasedExpression2(selection));
+  }
+}
+function parseSelectAll2(table) {
+  if (!table) {
+    return [SelectionNode2.createSelectAll()];
+  } else if (Array.isArray(table)) {
+    return table.map(parseSelectAllArg2);
+  } else {
+    return [parseSelectAllArg2(table)];
+  }
+}
+function parseSelectAllArg2(table) {
+  if (isString2(table)) {
+    return SelectionNode2.createSelectAllFromTable(parseTable2(table));
+  }
+  throw new Error(`invalid value selectAll expression: ${JSON.stringify(table)}`);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/insert-query-node.js
+var InsertQueryNode2 = freeze2({
+  is(node) {
+    return node.kind === "InsertQueryNode";
+  },
+  create(into, withNode, replace) {
+    return freeze2({
+      kind: "InsertQueryNode",
+      into,
+      ...withNode && { with: withNode },
+      replace
+    });
+  },
+  createWithoutInto() {
+    return freeze2({
+      kind: "InsertQueryNode"
+    });
+  },
+  cloneWith(insertQuery, props) {
+    return freeze2({
+      ...insertQuery,
+      ...props
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/update-query-node.js
+var UpdateQueryNode2 = freeze2({
+  is(node) {
+    return node.kind === "UpdateQueryNode";
+  },
+  create(table, withNode) {
+    return freeze2({
+      kind: "UpdateQueryNode",
+      table,
+      ...withNode && { with: withNode }
+    });
+  },
+  createWithoutTable() {
+    return freeze2({
+      kind: "UpdateQueryNode"
+    });
+  },
+  cloneWithFromItems(updateQuery, fromItems) {
+    return freeze2({
+      ...updateQuery,
+      from: updateQuery.from ? FromNode2.cloneWithFroms(updateQuery.from, fromItems) : FromNode2.create(fromItems)
+    });
+  },
+  cloneWithUpdates(updateQuery, updates) {
+    return freeze2({
+      ...updateQuery,
+      updates: updateQuery.updates ? freeze2([...updateQuery.updates, ...updates]) : updates
+    });
+  },
+  cloneWithLimit(updateQuery, limit) {
+    return freeze2({
+      ...updateQuery,
+      limit
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/using-node.js
+var UsingNode2 = freeze2({
+  is(node) {
+    return node.kind === "UsingNode";
+  },
+  create(tables) {
+    return freeze2({
+      kind: "UsingNode",
+      tables: freeze2(tables)
+    });
+  },
+  cloneWithTables(using, tables) {
+    return freeze2({
+      ...using,
+      tables: freeze2([...using.tables, ...tables])
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/delete-query-node.js
+var DeleteQueryNode2 = freeze2({
+  is(node) {
+    return node.kind === "DeleteQueryNode";
+  },
+  create(fromItems, withNode) {
+    return freeze2({
+      kind: "DeleteQueryNode",
+      from: FromNode2.create(fromItems),
+      ...withNode && { with: withNode }
+    });
+  },
+  cloneWithOrderByItems(deleteNode, items) {
+    return freeze2({
+      ...deleteNode,
+      orderBy: deleteNode.orderBy ? OrderByNode2.cloneWithItems(deleteNode.orderBy, items) : OrderByNode2.create(items)
+    });
+  },
+  cloneWithoutOrderBy(deleteNode) {
+    return freeze2({
+      ...deleteNode,
+      orderBy: void 0
+    });
+  },
+  cloneWithLimit(deleteNode, limit) {
+    return freeze2({
+      ...deleteNode,
+      limit
+    });
+  },
+  cloneWithoutLimit(deleteNode) {
+    return freeze2({
+      ...deleteNode,
+      limit: void 0
+    });
+  },
+  cloneWithUsing(deleteNode, tables) {
+    return freeze2({
+      ...deleteNode,
+      using: deleteNode.using !== void 0 ? UsingNode2.cloneWithTables(deleteNode.using, tables) : UsingNode2.create(tables)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/where-node.js
+var WhereNode2 = freeze2({
+  is(node) {
+    return node.kind === "WhereNode";
+  },
+  create(filter) {
+    return freeze2({
+      kind: "WhereNode",
+      where: filter
+    });
+  },
+  cloneWithOperation(whereNode, operator, operation) {
+    return freeze2({
+      ...whereNode,
+      where: operator === "And" ? AndNode2.create(whereNode.where, operation) : OrNode2.create(whereNode.where, operation)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/returning-node.js
+var ReturningNode2 = freeze2({
+  is(node) {
+    return node.kind === "ReturningNode";
+  },
+  create(selections) {
+    return freeze2({
+      kind: "ReturningNode",
+      selections: freeze2(selections)
+    });
+  },
+  cloneWithSelections(returning, selections) {
+    return freeze2({
+      ...returning,
+      selections: returning.selections ? freeze2([...returning.selections, ...selections]) : freeze2(selections)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/explain-node.js
+var ExplainNode2 = freeze2({
+  is(node) {
+    return node.kind === "ExplainNode";
+  },
+  create(format2, options) {
+    return freeze2({
+      kind: "ExplainNode",
+      format: format2,
+      options
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/when-node.js
+var WhenNode2 = freeze2({
+  is(node) {
+    return node.kind === "WhenNode";
+  },
+  create(condition) {
+    return freeze2({
+      kind: "WhenNode",
+      condition
+    });
+  },
+  cloneWithResult(whenNode, result) {
+    return freeze2({
+      ...whenNode,
+      result
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/merge-query-node.js
+var MergeQueryNode2 = freeze2({
+  is(node) {
+    return node.kind === "MergeQueryNode";
+  },
+  create(into, withNode) {
+    return freeze2({
+      kind: "MergeQueryNode",
+      into,
+      ...withNode && { with: withNode }
+    });
+  },
+  cloneWithUsing(mergeNode, using) {
+    return freeze2({
+      ...mergeNode,
+      using
+    });
+  },
+  cloneWithWhen(mergeNode, when) {
+    return freeze2({
+      ...mergeNode,
+      whens: mergeNode.whens ? freeze2([...mergeNode.whens, when]) : freeze2([when])
+    });
+  },
+  cloneWithThen(mergeNode, then) {
+    return freeze2({
+      ...mergeNode,
+      whens: mergeNode.whens ? freeze2([
+        ...mergeNode.whens.slice(0, -1),
+        WhenNode2.cloneWithResult(mergeNode.whens[mergeNode.whens.length - 1], then)
+      ]) : void 0
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/output-node.js
+var OutputNode2 = freeze2({
+  is(node) {
+    return node.kind === "OutputNode";
+  },
+  create(selections) {
+    return freeze2({
+      kind: "OutputNode",
+      selections: freeze2(selections)
+    });
+  },
+  cloneWithSelections(output, selections) {
+    return freeze2({
+      ...output,
+      selections: output.selections ? freeze2([...output.selections, ...selections]) : freeze2(selections)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/query-node.js
+var QueryNode2 = freeze2({
+  is(node) {
+    return SelectQueryNode2.is(node) || InsertQueryNode2.is(node) || UpdateQueryNode2.is(node) || DeleteQueryNode2.is(node) || MergeQueryNode2.is(node);
+  },
+  cloneWithEndModifier(node, modifier) {
+    return freeze2({
+      ...node,
+      endModifiers: node.endModifiers ? freeze2([...node.endModifiers, modifier]) : freeze2([modifier])
+    });
+  },
+  cloneWithWhere(node, operation) {
+    return freeze2({
+      ...node,
+      where: node.where ? WhereNode2.cloneWithOperation(node.where, "And", operation) : WhereNode2.create(operation)
+    });
+  },
+  cloneWithJoin(node, join) {
+    return freeze2({
+      ...node,
+      joins: node.joins ? freeze2([...node.joins, join]) : freeze2([join])
+    });
+  },
+  cloneWithReturning(node, selections) {
+    return freeze2({
+      ...node,
+      returning: node.returning ? ReturningNode2.cloneWithSelections(node.returning, selections) : ReturningNode2.create(selections)
+    });
+  },
+  cloneWithoutReturning(node) {
+    return freeze2({
+      ...node,
+      returning: void 0
+    });
+  },
+  cloneWithoutWhere(node) {
+    return freeze2({
+      ...node,
+      where: void 0
+    });
+  },
+  cloneWithExplain(node, format2, options) {
+    return freeze2({
+      ...node,
+      explain: ExplainNode2.create(format2, options?.toOperationNode())
+    });
+  },
+  cloneWithTop(node, top) {
+    return freeze2({
+      ...node,
+      top
+    });
+  },
+  cloneWithOutput(node, selections) {
+    return freeze2({
+      ...node,
+      output: node.output ? OutputNode2.cloneWithSelections(node.output, selections) : OutputNode2.create(selections)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/no-result-error.js
+var NoResultError2 = class extends Error {
+  /**
+   * The operation node tree of the query that was executed.
+   */
+  node;
+  constructor(node) {
+    super("no result");
+    this.node = node;
+  }
+};
+function isNoResultErrorConstructor2(fn) {
+  return Object.prototype.hasOwnProperty.call(fn, "prototype");
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/top-node.js
+var TopNode2 = freeze2({
+  is(node) {
+    return node.kind === "TopNode";
+  },
+  create(expression, modifiers) {
+    return freeze2({
+      kind: "TopNode",
+      expression,
+      modifiers
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/top-parser.js
+function parseTop2(expression, modifiers) {
+  if (!isNumber2(expression) && !isBigInt2(expression)) {
+    throw new Error(`Invalid top expression: ${expression}`);
+  }
+  if (!isUndefined2(modifiers) && !isTopModifiers2(modifiers)) {
+    throw new Error(`Invalid top modifiers: ${modifiers}`);
+  }
+  return TopNode2.create(expression, modifiers);
+}
+function isTopModifiers2(modifiers) {
+  return modifiers === "percent" || modifiers === "with ties" || modifiers === "percent with ties";
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/limit-node.js
+var LimitNode2 = freeze2({
+  is(node) {
+    return node.kind === "LimitNode";
+  },
+  create(limit) {
+    return freeze2({
+      kind: "LimitNode",
+      limit
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/util/random-string.js
+var CHARS2 = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9"
+];
+function randomString2(length) {
+  let chars = "";
+  for (let i = 0; i < length; ++i) {
+    chars += randomChar2();
+  }
+  return chars;
+}
+function randomChar2() {
+  return CHARS2[~~(Math.random() * CHARS2.length)];
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/util/query-id.js
+function createQueryId2() {
+  return new LazyQueryId2();
+}
+var LazyQueryId2 = class {
+  #queryId;
+  get queryId() {
+    if (this.#queryId === void 0) {
+      this.#queryId = randomString2(8);
+    }
+    return this.#queryId;
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/util/require-all-props.js
+function requireAllProps2(obj) {
+  return obj;
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/operation-node-transformer.js
+var OperationNodeTransformer2 = class {
+  nodeStack = [];
+  #transformers = freeze2({
+    AliasNode: this.transformAlias.bind(this),
+    ColumnNode: this.transformColumn.bind(this),
+    IdentifierNode: this.transformIdentifier.bind(this),
+    SchemableIdentifierNode: this.transformSchemableIdentifier.bind(this),
+    RawNode: this.transformRaw.bind(this),
+    ReferenceNode: this.transformReference.bind(this),
+    SelectQueryNode: this.transformSelectQuery.bind(this),
+    SelectionNode: this.transformSelection.bind(this),
+    TableNode: this.transformTable.bind(this),
+    FromNode: this.transformFrom.bind(this),
+    SelectAllNode: this.transformSelectAll.bind(this),
+    AndNode: this.transformAnd.bind(this),
+    OrNode: this.transformOr.bind(this),
+    ValueNode: this.transformValue.bind(this),
+    ValueListNode: this.transformValueList.bind(this),
+    PrimitiveValueListNode: this.transformPrimitiveValueList.bind(this),
+    ParensNode: this.transformParens.bind(this),
+    JoinNode: this.transformJoin.bind(this),
+    OperatorNode: this.transformOperator.bind(this),
+    WhereNode: this.transformWhere.bind(this),
+    InsertQueryNode: this.transformInsertQuery.bind(this),
+    DeleteQueryNode: this.transformDeleteQuery.bind(this),
+    ReturningNode: this.transformReturning.bind(this),
+    CreateTableNode: this.transformCreateTable.bind(this),
+    AddColumnNode: this.transformAddColumn.bind(this),
+    ColumnDefinitionNode: this.transformColumnDefinition.bind(this),
+    DropTableNode: this.transformDropTable.bind(this),
+    DataTypeNode: this.transformDataType.bind(this),
+    OrderByNode: this.transformOrderBy.bind(this),
+    OrderByItemNode: this.transformOrderByItem.bind(this),
+    GroupByNode: this.transformGroupBy.bind(this),
+    GroupByItemNode: this.transformGroupByItem.bind(this),
+    UpdateQueryNode: this.transformUpdateQuery.bind(this),
+    ColumnUpdateNode: this.transformColumnUpdate.bind(this),
+    LimitNode: this.transformLimit.bind(this),
+    OffsetNode: this.transformOffset.bind(this),
+    OnConflictNode: this.transformOnConflict.bind(this),
+    OnDuplicateKeyNode: this.transformOnDuplicateKey.bind(this),
+    CreateIndexNode: this.transformCreateIndex.bind(this),
+    DropIndexNode: this.transformDropIndex.bind(this),
+    ListNode: this.transformList.bind(this),
+    PrimaryKeyConstraintNode: this.transformPrimaryKeyConstraint.bind(this),
+    UniqueConstraintNode: this.transformUniqueConstraint.bind(this),
+    ReferencesNode: this.transformReferences.bind(this),
+    CheckConstraintNode: this.transformCheckConstraint.bind(this),
+    WithNode: this.transformWith.bind(this),
+    CommonTableExpressionNode: this.transformCommonTableExpression.bind(this),
+    CommonTableExpressionNameNode: this.transformCommonTableExpressionName.bind(this),
+    HavingNode: this.transformHaving.bind(this),
+    CreateSchemaNode: this.transformCreateSchema.bind(this),
+    DropSchemaNode: this.transformDropSchema.bind(this),
+    AlterTableNode: this.transformAlterTable.bind(this),
+    DropColumnNode: this.transformDropColumn.bind(this),
+    RenameColumnNode: this.transformRenameColumn.bind(this),
+    AlterColumnNode: this.transformAlterColumn.bind(this),
+    ModifyColumnNode: this.transformModifyColumn.bind(this),
+    AddConstraintNode: this.transformAddConstraint.bind(this),
+    DropConstraintNode: this.transformDropConstraint.bind(this),
+    ForeignKeyConstraintNode: this.transformForeignKeyConstraint.bind(this),
+    CreateViewNode: this.transformCreateView.bind(this),
+    DropViewNode: this.transformDropView.bind(this),
+    GeneratedNode: this.transformGenerated.bind(this),
+    DefaultValueNode: this.transformDefaultValue.bind(this),
+    OnNode: this.transformOn.bind(this),
+    ValuesNode: this.transformValues.bind(this),
+    SelectModifierNode: this.transformSelectModifier.bind(this),
+    CreateTypeNode: this.transformCreateType.bind(this),
+    DropTypeNode: this.transformDropType.bind(this),
+    ExplainNode: this.transformExplain.bind(this),
+    DefaultInsertValueNode: this.transformDefaultInsertValue.bind(this),
+    AggregateFunctionNode: this.transformAggregateFunction.bind(this),
+    OverNode: this.transformOver.bind(this),
+    PartitionByNode: this.transformPartitionBy.bind(this),
+    PartitionByItemNode: this.transformPartitionByItem.bind(this),
+    SetOperationNode: this.transformSetOperation.bind(this),
+    BinaryOperationNode: this.transformBinaryOperation.bind(this),
+    UnaryOperationNode: this.transformUnaryOperation.bind(this),
+    UsingNode: this.transformUsing.bind(this),
+    FunctionNode: this.transformFunction.bind(this),
+    CaseNode: this.transformCase.bind(this),
+    WhenNode: this.transformWhen.bind(this),
+    JSONReferenceNode: this.transformJSONReference.bind(this),
+    JSONPathNode: this.transformJSONPath.bind(this),
+    JSONPathLegNode: this.transformJSONPathLeg.bind(this),
+    JSONOperatorChainNode: this.transformJSONOperatorChain.bind(this),
+    TupleNode: this.transformTuple.bind(this),
+    MergeQueryNode: this.transformMergeQuery.bind(this),
+    MatchedNode: this.transformMatched.bind(this),
+    AddIndexNode: this.transformAddIndex.bind(this),
+    CastNode: this.transformCast.bind(this),
+    FetchNode: this.transformFetch.bind(this),
+    TopNode: this.transformTop.bind(this),
+    OutputNode: this.transformOutput.bind(this)
+  });
+  transformNode(node) {
+    if (!node) {
+      return node;
+    }
+    this.nodeStack.push(node);
+    const out = this.transformNodeImpl(node);
+    this.nodeStack.pop();
+    return freeze2(out);
+  }
+  transformNodeImpl(node) {
+    return this.#transformers[node.kind](node);
+  }
+  transformNodeList(list) {
+    if (!list) {
+      return list;
+    }
+    return freeze2(list.map((node) => this.transformNode(node)));
+  }
+  transformSelectQuery(node) {
+    return requireAllProps2({
+      kind: "SelectQueryNode",
+      from: this.transformNode(node.from),
+      selections: this.transformNodeList(node.selections),
+      distinctOn: this.transformNodeList(node.distinctOn),
+      joins: this.transformNodeList(node.joins),
+      groupBy: this.transformNode(node.groupBy),
+      orderBy: this.transformNode(node.orderBy),
+      where: this.transformNode(node.where),
+      frontModifiers: this.transformNodeList(node.frontModifiers),
+      endModifiers: this.transformNodeList(node.endModifiers),
+      limit: this.transformNode(node.limit),
+      offset: this.transformNode(node.offset),
+      with: this.transformNode(node.with),
+      having: this.transformNode(node.having),
+      explain: this.transformNode(node.explain),
+      setOperations: this.transformNodeList(node.setOperations),
+      fetch: this.transformNode(node.fetch),
+      top: this.transformNode(node.top)
+    });
+  }
+  transformSelection(node) {
+    return requireAllProps2({
+      kind: "SelectionNode",
+      selection: this.transformNode(node.selection)
+    });
+  }
+  transformColumn(node) {
+    return requireAllProps2({
+      kind: "ColumnNode",
+      column: this.transformNode(node.column)
+    });
+  }
+  transformAlias(node) {
+    return requireAllProps2({
+      kind: "AliasNode",
+      node: this.transformNode(node.node),
+      alias: this.transformNode(node.alias)
+    });
+  }
+  transformTable(node) {
+    return requireAllProps2({
+      kind: "TableNode",
+      table: this.transformNode(node.table)
+    });
+  }
+  transformFrom(node) {
+    return requireAllProps2({
+      kind: "FromNode",
+      froms: this.transformNodeList(node.froms)
+    });
+  }
+  transformReference(node) {
+    return requireAllProps2({
+      kind: "ReferenceNode",
+      column: this.transformNode(node.column),
+      table: this.transformNode(node.table)
+    });
+  }
+  transformAnd(node) {
+    return requireAllProps2({
+      kind: "AndNode",
+      left: this.transformNode(node.left),
+      right: this.transformNode(node.right)
+    });
+  }
+  transformOr(node) {
+    return requireAllProps2({
+      kind: "OrNode",
+      left: this.transformNode(node.left),
+      right: this.transformNode(node.right)
+    });
+  }
+  transformValueList(node) {
+    return requireAllProps2({
+      kind: "ValueListNode",
+      values: this.transformNodeList(node.values)
+    });
+  }
+  transformParens(node) {
+    return requireAllProps2({
+      kind: "ParensNode",
+      node: this.transformNode(node.node)
+    });
+  }
+  transformJoin(node) {
+    return requireAllProps2({
+      kind: "JoinNode",
+      joinType: node.joinType,
+      table: this.transformNode(node.table),
+      on: this.transformNode(node.on)
+    });
+  }
+  transformRaw(node) {
+    return requireAllProps2({
+      kind: "RawNode",
+      sqlFragments: freeze2([...node.sqlFragments]),
+      parameters: this.transformNodeList(node.parameters)
+    });
+  }
+  transformWhere(node) {
+    return requireAllProps2({
+      kind: "WhereNode",
+      where: this.transformNode(node.where)
+    });
+  }
+  transformInsertQuery(node) {
+    return requireAllProps2({
+      kind: "InsertQueryNode",
+      into: this.transformNode(node.into),
+      columns: this.transformNodeList(node.columns),
+      values: this.transformNode(node.values),
+      returning: this.transformNode(node.returning),
+      onConflict: this.transformNode(node.onConflict),
+      onDuplicateKey: this.transformNode(node.onDuplicateKey),
+      endModifiers: this.transformNodeList(node.endModifiers),
+      with: this.transformNode(node.with),
+      ignore: node.ignore,
+      replace: node.replace,
+      explain: this.transformNode(node.explain),
+      defaultValues: node.defaultValues,
+      top: this.transformNode(node.top),
+      output: this.transformNode(node.output)
+    });
+  }
+  transformValues(node) {
+    return requireAllProps2({
+      kind: "ValuesNode",
+      values: this.transformNodeList(node.values)
+    });
+  }
+  transformDeleteQuery(node) {
+    return requireAllProps2({
+      kind: "DeleteQueryNode",
+      from: this.transformNode(node.from),
+      using: this.transformNode(node.using),
+      joins: this.transformNodeList(node.joins),
+      where: this.transformNode(node.where),
+      returning: this.transformNode(node.returning),
+      endModifiers: this.transformNodeList(node.endModifiers),
+      with: this.transformNode(node.with),
+      orderBy: this.transformNode(node.orderBy),
+      limit: this.transformNode(node.limit),
+      explain: this.transformNode(node.explain),
+      top: this.transformNode(node.top),
+      output: this.transformNode(node.output)
+    });
+  }
+  transformReturning(node) {
+    return requireAllProps2({
+      kind: "ReturningNode",
+      selections: this.transformNodeList(node.selections)
+    });
+  }
+  transformCreateTable(node) {
+    return requireAllProps2({
+      kind: "CreateTableNode",
+      table: this.transformNode(node.table),
+      columns: this.transformNodeList(node.columns),
+      constraints: this.transformNodeList(node.constraints),
+      temporary: node.temporary,
+      ifNotExists: node.ifNotExists,
+      onCommit: node.onCommit,
+      frontModifiers: this.transformNodeList(node.frontModifiers),
+      endModifiers: this.transformNodeList(node.endModifiers),
+      selectQuery: this.transformNode(node.selectQuery)
+    });
+  }
+  transformColumnDefinition(node) {
+    return requireAllProps2({
+      kind: "ColumnDefinitionNode",
+      column: this.transformNode(node.column),
+      dataType: this.transformNode(node.dataType),
+      references: this.transformNode(node.references),
+      primaryKey: node.primaryKey,
+      autoIncrement: node.autoIncrement,
+      unique: node.unique,
+      notNull: node.notNull,
+      unsigned: node.unsigned,
+      defaultTo: this.transformNode(node.defaultTo),
+      check: this.transformNode(node.check),
+      generated: this.transformNode(node.generated),
+      frontModifiers: this.transformNodeList(node.frontModifiers),
+      endModifiers: this.transformNodeList(node.endModifiers),
+      nullsNotDistinct: node.nullsNotDistinct,
+      identity: node.identity,
+      ifNotExists: node.ifNotExists
+    });
+  }
+  transformAddColumn(node) {
+    return requireAllProps2({
+      kind: "AddColumnNode",
+      column: this.transformNode(node.column)
+    });
+  }
+  transformDropTable(node) {
+    return requireAllProps2({
+      kind: "DropTableNode",
+      table: this.transformNode(node.table),
+      ifExists: node.ifExists,
+      cascade: node.cascade
+    });
+  }
+  transformOrderBy(node) {
+    return requireAllProps2({
+      kind: "OrderByNode",
+      items: this.transformNodeList(node.items)
+    });
+  }
+  transformOrderByItem(node) {
+    return requireAllProps2({
+      kind: "OrderByItemNode",
+      orderBy: this.transformNode(node.orderBy),
+      direction: this.transformNode(node.direction)
+    });
+  }
+  transformGroupBy(node) {
+    return requireAllProps2({
+      kind: "GroupByNode",
+      items: this.transformNodeList(node.items)
+    });
+  }
+  transformGroupByItem(node) {
+    return requireAllProps2({
+      kind: "GroupByItemNode",
+      groupBy: this.transformNode(node.groupBy)
+    });
+  }
+  transformUpdateQuery(node) {
+    return requireAllProps2({
+      kind: "UpdateQueryNode",
+      table: this.transformNode(node.table),
+      from: this.transformNode(node.from),
+      joins: this.transformNodeList(node.joins),
+      where: this.transformNode(node.where),
+      updates: this.transformNodeList(node.updates),
+      returning: this.transformNode(node.returning),
+      endModifiers: this.transformNodeList(node.endModifiers),
+      with: this.transformNode(node.with),
+      explain: this.transformNode(node.explain),
+      limit: this.transformNode(node.limit),
+      top: this.transformNode(node.top),
+      output: this.transformNode(node.output)
+    });
+  }
+  transformColumnUpdate(node) {
+    return requireAllProps2({
+      kind: "ColumnUpdateNode",
+      column: this.transformNode(node.column),
+      value: this.transformNode(node.value)
+    });
+  }
+  transformLimit(node) {
+    return requireAllProps2({
+      kind: "LimitNode",
+      limit: this.transformNode(node.limit)
+    });
+  }
+  transformOffset(node) {
+    return requireAllProps2({
+      kind: "OffsetNode",
+      offset: this.transformNode(node.offset)
+    });
+  }
+  transformOnConflict(node) {
+    return requireAllProps2({
+      kind: "OnConflictNode",
+      columns: this.transformNodeList(node.columns),
+      constraint: this.transformNode(node.constraint),
+      indexExpression: this.transformNode(node.indexExpression),
+      indexWhere: this.transformNode(node.indexWhere),
+      updates: this.transformNodeList(node.updates),
+      updateWhere: this.transformNode(node.updateWhere),
+      doNothing: node.doNothing
+    });
+  }
+  transformOnDuplicateKey(node) {
+    return requireAllProps2({
+      kind: "OnDuplicateKeyNode",
+      updates: this.transformNodeList(node.updates)
+    });
+  }
+  transformCreateIndex(node) {
+    return requireAllProps2({
+      kind: "CreateIndexNode",
+      name: this.transformNode(node.name),
+      table: this.transformNode(node.table),
+      columns: this.transformNodeList(node.columns),
+      unique: node.unique,
+      using: this.transformNode(node.using),
+      ifNotExists: node.ifNotExists,
+      where: this.transformNode(node.where),
+      nullsNotDistinct: node.nullsNotDistinct
+    });
+  }
+  transformList(node) {
+    return requireAllProps2({
+      kind: "ListNode",
+      items: this.transformNodeList(node.items)
+    });
+  }
+  transformDropIndex(node) {
+    return requireAllProps2({
+      kind: "DropIndexNode",
+      name: this.transformNode(node.name),
+      table: this.transformNode(node.table),
+      ifExists: node.ifExists,
+      cascade: node.cascade
+    });
+  }
+  transformPrimaryKeyConstraint(node) {
+    return requireAllProps2({
+      kind: "PrimaryKeyConstraintNode",
+      columns: this.transformNodeList(node.columns),
+      name: this.transformNode(node.name)
+    });
+  }
+  transformUniqueConstraint(node) {
+    return requireAllProps2({
+      kind: "UniqueConstraintNode",
+      columns: this.transformNodeList(node.columns),
+      name: this.transformNode(node.name),
+      nullsNotDistinct: node.nullsNotDistinct
+    });
+  }
+  transformForeignKeyConstraint(node) {
+    return requireAllProps2({
+      kind: "ForeignKeyConstraintNode",
+      columns: this.transformNodeList(node.columns),
+      references: this.transformNode(node.references),
+      name: this.transformNode(node.name),
+      onDelete: node.onDelete,
+      onUpdate: node.onUpdate
+    });
+  }
+  transformSetOperation(node) {
+    return requireAllProps2({
+      kind: "SetOperationNode",
+      operator: node.operator,
+      expression: this.transformNode(node.expression),
+      all: node.all
+    });
+  }
+  transformReferences(node) {
+    return requireAllProps2({
+      kind: "ReferencesNode",
+      table: this.transformNode(node.table),
+      columns: this.transformNodeList(node.columns),
+      onDelete: node.onDelete,
+      onUpdate: node.onUpdate
+    });
+  }
+  transformCheckConstraint(node) {
+    return requireAllProps2({
+      kind: "CheckConstraintNode",
+      expression: this.transformNode(node.expression),
+      name: this.transformNode(node.name)
+    });
+  }
+  transformWith(node) {
+    return requireAllProps2({
+      kind: "WithNode",
+      expressions: this.transformNodeList(node.expressions),
+      recursive: node.recursive
+    });
+  }
+  transformCommonTableExpression(node) {
+    return requireAllProps2({
+      kind: "CommonTableExpressionNode",
+      name: this.transformNode(node.name),
+      materialized: node.materialized,
+      expression: this.transformNode(node.expression)
+    });
+  }
+  transformCommonTableExpressionName(node) {
+    return requireAllProps2({
+      kind: "CommonTableExpressionNameNode",
+      table: this.transformNode(node.table),
+      columns: this.transformNodeList(node.columns)
+    });
+  }
+  transformHaving(node) {
+    return requireAllProps2({
+      kind: "HavingNode",
+      having: this.transformNode(node.having)
+    });
+  }
+  transformCreateSchema(node) {
+    return requireAllProps2({
+      kind: "CreateSchemaNode",
+      schema: this.transformNode(node.schema),
+      ifNotExists: node.ifNotExists
+    });
+  }
+  transformDropSchema(node) {
+    return requireAllProps2({
+      kind: "DropSchemaNode",
+      schema: this.transformNode(node.schema),
+      ifExists: node.ifExists,
+      cascade: node.cascade
+    });
+  }
+  transformAlterTable(node) {
+    return requireAllProps2({
+      kind: "AlterTableNode",
+      table: this.transformNode(node.table),
+      renameTo: this.transformNode(node.renameTo),
+      setSchema: this.transformNode(node.setSchema),
+      columnAlterations: this.transformNodeList(node.columnAlterations),
+      addConstraint: this.transformNode(node.addConstraint),
+      dropConstraint: this.transformNode(node.dropConstraint),
+      addIndex: this.transformNode(node.addIndex),
+      dropIndex: this.transformNode(node.dropIndex)
+    });
+  }
+  transformDropColumn(node) {
+    return requireAllProps2({
+      kind: "DropColumnNode",
+      column: this.transformNode(node.column)
+    });
+  }
+  transformRenameColumn(node) {
+    return requireAllProps2({
+      kind: "RenameColumnNode",
+      column: this.transformNode(node.column),
+      renameTo: this.transformNode(node.renameTo)
+    });
+  }
+  transformAlterColumn(node) {
+    return requireAllProps2({
+      kind: "AlterColumnNode",
+      column: this.transformNode(node.column),
+      dataType: this.transformNode(node.dataType),
+      dataTypeExpression: this.transformNode(node.dataTypeExpression),
+      setDefault: this.transformNode(node.setDefault),
+      dropDefault: node.dropDefault,
+      setNotNull: node.setNotNull,
+      dropNotNull: node.dropNotNull
+    });
+  }
+  transformModifyColumn(node) {
+    return requireAllProps2({
+      kind: "ModifyColumnNode",
+      column: this.transformNode(node.column)
+    });
+  }
+  transformAddConstraint(node) {
+    return requireAllProps2({
+      kind: "AddConstraintNode",
+      constraint: this.transformNode(node.constraint)
+    });
+  }
+  transformDropConstraint(node) {
+    return requireAllProps2({
+      kind: "DropConstraintNode",
+      constraintName: this.transformNode(node.constraintName),
+      ifExists: node.ifExists,
+      modifier: node.modifier
+    });
+  }
+  transformCreateView(node) {
+    return requireAllProps2({
+      kind: "CreateViewNode",
+      name: this.transformNode(node.name),
+      temporary: node.temporary,
+      orReplace: node.orReplace,
+      ifNotExists: node.ifNotExists,
+      materialized: node.materialized,
+      columns: this.transformNodeList(node.columns),
+      as: this.transformNode(node.as)
+    });
+  }
+  transformDropView(node) {
+    return requireAllProps2({
+      kind: "DropViewNode",
+      name: this.transformNode(node.name),
+      ifExists: node.ifExists,
+      materialized: node.materialized,
+      cascade: node.cascade
+    });
+  }
+  transformGenerated(node) {
+    return requireAllProps2({
+      kind: "GeneratedNode",
+      byDefault: node.byDefault,
+      always: node.always,
+      identity: node.identity,
+      stored: node.stored,
+      expression: this.transformNode(node.expression)
+    });
+  }
+  transformDefaultValue(node) {
+    return requireAllProps2({
+      kind: "DefaultValueNode",
+      defaultValue: this.transformNode(node.defaultValue)
+    });
+  }
+  transformOn(node) {
+    return requireAllProps2({
+      kind: "OnNode",
+      on: this.transformNode(node.on)
+    });
+  }
+  transformSelectModifier(node) {
+    return requireAllProps2({
+      kind: "SelectModifierNode",
+      modifier: node.modifier,
+      rawModifier: this.transformNode(node.rawModifier),
+      of: this.transformNodeList(node.of)
+    });
+  }
+  transformCreateType(node) {
+    return requireAllProps2({
+      kind: "CreateTypeNode",
+      name: this.transformNode(node.name),
+      enum: this.transformNode(node.enum)
+    });
+  }
+  transformDropType(node) {
+    return requireAllProps2({
+      kind: "DropTypeNode",
+      name: this.transformNode(node.name),
+      ifExists: node.ifExists
+    });
+  }
+  transformExplain(node) {
+    return requireAllProps2({
+      kind: "ExplainNode",
+      format: node.format,
+      options: this.transformNode(node.options)
+    });
+  }
+  transformSchemableIdentifier(node) {
+    return requireAllProps2({
+      kind: "SchemableIdentifierNode",
+      schema: this.transformNode(node.schema),
+      identifier: this.transformNode(node.identifier)
+    });
+  }
+  transformAggregateFunction(node) {
+    return requireAllProps2({
+      kind: "AggregateFunctionNode",
+      aggregated: this.transformNodeList(node.aggregated),
+      distinct: node.distinct,
+      orderBy: this.transformNode(node.orderBy),
+      filter: this.transformNode(node.filter),
+      func: node.func,
+      over: this.transformNode(node.over)
+    });
+  }
+  transformOver(node) {
+    return requireAllProps2({
+      kind: "OverNode",
+      orderBy: this.transformNode(node.orderBy),
+      partitionBy: this.transformNode(node.partitionBy)
+    });
+  }
+  transformPartitionBy(node) {
+    return requireAllProps2({
+      kind: "PartitionByNode",
+      items: this.transformNodeList(node.items)
+    });
+  }
+  transformPartitionByItem(node) {
+    return requireAllProps2({
+      kind: "PartitionByItemNode",
+      partitionBy: this.transformNode(node.partitionBy)
+    });
+  }
+  transformBinaryOperation(node) {
+    return requireAllProps2({
+      kind: "BinaryOperationNode",
+      leftOperand: this.transformNode(node.leftOperand),
+      operator: this.transformNode(node.operator),
+      rightOperand: this.transformNode(node.rightOperand)
+    });
+  }
+  transformUnaryOperation(node) {
+    return requireAllProps2({
+      kind: "UnaryOperationNode",
+      operator: this.transformNode(node.operator),
+      operand: this.transformNode(node.operand)
+    });
+  }
+  transformUsing(node) {
+    return requireAllProps2({
+      kind: "UsingNode",
+      tables: this.transformNodeList(node.tables)
+    });
+  }
+  transformFunction(node) {
+    return requireAllProps2({
+      kind: "FunctionNode",
+      func: node.func,
+      arguments: this.transformNodeList(node.arguments)
+    });
+  }
+  transformCase(node) {
+    return requireAllProps2({
+      kind: "CaseNode",
+      value: this.transformNode(node.value),
+      when: this.transformNodeList(node.when),
+      else: this.transformNode(node.else),
+      isStatement: node.isStatement
+    });
+  }
+  transformWhen(node) {
+    return requireAllProps2({
+      kind: "WhenNode",
+      condition: this.transformNode(node.condition),
+      result: this.transformNode(node.result)
+    });
+  }
+  transformJSONReference(node) {
+    return requireAllProps2({
+      kind: "JSONReferenceNode",
+      reference: this.transformNode(node.reference),
+      traversal: this.transformNode(node.traversal)
+    });
+  }
+  transformJSONPath(node) {
+    return requireAllProps2({
+      kind: "JSONPathNode",
+      inOperator: this.transformNode(node.inOperator),
+      pathLegs: this.transformNodeList(node.pathLegs)
+    });
+  }
+  transformJSONPathLeg(node) {
+    return requireAllProps2({
+      kind: "JSONPathLegNode",
+      type: node.type,
+      value: node.value
+    });
+  }
+  transformJSONOperatorChain(node) {
+    return requireAllProps2({
+      kind: "JSONOperatorChainNode",
+      operator: this.transformNode(node.operator),
+      values: this.transformNodeList(node.values)
+    });
+  }
+  transformTuple(node) {
+    return requireAllProps2({
+      kind: "TupleNode",
+      values: this.transformNodeList(node.values)
+    });
+  }
+  transformMergeQuery(node) {
+    return requireAllProps2({
+      kind: "MergeQueryNode",
+      into: this.transformNode(node.into),
+      using: this.transformNode(node.using),
+      whens: this.transformNodeList(node.whens),
+      with: this.transformNode(node.with),
+      top: this.transformNode(node.top),
+      endModifiers: this.transformNodeList(node.endModifiers),
+      output: this.transformNode(node.output)
+    });
+  }
+  transformMatched(node) {
+    return requireAllProps2({
+      kind: "MatchedNode",
+      not: node.not,
+      bySource: node.bySource
+    });
+  }
+  transformAddIndex(node) {
+    return requireAllProps2({
+      kind: "AddIndexNode",
+      name: this.transformNode(node.name),
+      columns: this.transformNodeList(node.columns),
+      unique: node.unique,
+      using: this.transformNode(node.using),
+      ifNotExists: node.ifNotExists
+    });
+  }
+  transformCast(node) {
+    return requireAllProps2({
+      kind: "CastNode",
+      expression: this.transformNode(node.expression),
+      dataType: this.transformNode(node.dataType)
+    });
+  }
+  transformFetch(node) {
+    return requireAllProps2({
+      kind: "FetchNode",
+      rowCount: this.transformNode(node.rowCount),
+      modifier: node.modifier
+    });
+  }
+  transformTop(node) {
+    return requireAllProps2({
+      kind: "TopNode",
+      expression: node.expression,
+      modifiers: node.modifiers
+    });
+  }
+  transformOutput(node) {
+    return requireAllProps2({
+      kind: "OutputNode",
+      selections: this.transformNodeList(node.selections)
+    });
+  }
+  transformDataType(node) {
+    return node;
+  }
+  transformSelectAll(node) {
+    return node;
+  }
+  transformIdentifier(node) {
+    return node;
+  }
+  transformValue(node) {
+    return node;
+  }
+  transformPrimitiveValueList(node) {
+    return node;
+  }
+  transformOperator(node) {
+    return node;
+  }
+  transformDefaultInsertValue(node) {
+    return node;
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/plugin/with-schema/with-schema-transformer.js
+var ROOT_OPERATION_NODES2 = freeze2({
+  AlterTableNode: true,
+  CreateIndexNode: true,
+  CreateSchemaNode: true,
+  CreateTableNode: true,
+  CreateTypeNode: true,
+  CreateViewNode: true,
+  DeleteQueryNode: true,
+  DropIndexNode: true,
+  DropSchemaNode: true,
+  DropTableNode: true,
+  DropTypeNode: true,
+  DropViewNode: true,
+  InsertQueryNode: true,
+  RawNode: true,
+  SelectQueryNode: true,
+  UpdateQueryNode: true,
+  MergeQueryNode: true
+});
+var SCHEMALESS_FUNCTIONS = {
+  json_agg: true,
+  to_json: true
+};
+var WithSchemaTransformer2 = class extends OperationNodeTransformer2 {
+  #schema;
+  #schemableIds = /* @__PURE__ */ new Set();
+  #ctes = /* @__PURE__ */ new Set();
+  constructor(schema2) {
+    super();
+    this.#schema = schema2;
+  }
+  transformNodeImpl(node) {
+    if (!this.#isRootOperationNode(node)) {
+      return super.transformNodeImpl(node);
+    }
+    const ctes = this.#collectCTEs(node);
+    for (const cte of ctes) {
+      this.#ctes.add(cte);
+    }
+    const tables = this.#collectSchemableIds(node);
+    for (const table of tables) {
+      this.#schemableIds.add(table);
+    }
+    const transformed = super.transformNodeImpl(node);
+    for (const table of tables) {
+      this.#schemableIds.delete(table);
+    }
+    for (const cte of ctes) {
+      this.#ctes.delete(cte);
+    }
+    return transformed;
+  }
+  transformSchemableIdentifier(node) {
+    const transformed = super.transformSchemableIdentifier(node);
+    if (transformed.schema || !this.#schemableIds.has(node.identifier.name)) {
+      return transformed;
+    }
+    return {
+      ...transformed,
+      schema: IdentifierNode2.create(this.#schema)
+    };
+  }
+  transformReferences(node) {
+    const transformed = super.transformReferences(node);
+    if (transformed.table.table.schema) {
+      return transformed;
+    }
+    return {
+      ...transformed,
+      table: TableNode2.createWithSchema(this.#schema, transformed.table.table.identifier.name)
+    };
+  }
+  transformAggregateFunction(node) {
+    return {
+      ...super.transformAggregateFunction({ ...node, aggregated: [] }),
+      aggregated: this.#transformTableArgsWithoutSchemas(node, "aggregated")
+    };
+  }
+  transformFunction(node) {
+    return {
+      ...super.transformFunction({ ...node, arguments: [] }),
+      arguments: this.#transformTableArgsWithoutSchemas(node, "arguments")
+    };
+  }
+  #transformTableArgsWithoutSchemas(node, argsKey) {
+    return SCHEMALESS_FUNCTIONS[node.func] ? node[argsKey].map((arg) => !TableNode2.is(arg) || arg.table.schema ? this.transformNode(arg) : {
+      ...arg,
+      table: this.transformIdentifier(arg.table.identifier)
+    }) : this.transformNodeList(node[argsKey]);
+  }
+  #isRootOperationNode(node) {
+    return node.kind in ROOT_OPERATION_NODES2;
+  }
+  #collectSchemableIds(node) {
+    const schemableIds = /* @__PURE__ */ new Set();
+    if ("name" in node && node.name && SchemableIdentifierNode2.is(node.name)) {
+      this.#collectSchemableId(node.name, schemableIds);
+    }
+    if ("from" in node && node.from) {
+      for (const from of node.from.froms) {
+        this.#collectSchemableIdsFromTableExpr(from, schemableIds);
+      }
+    }
+    if ("into" in node && node.into) {
+      this.#collectSchemableIdsFromTableExpr(node.into, schemableIds);
+    }
+    if ("table" in node && node.table) {
+      this.#collectSchemableIdsFromTableExpr(node.table, schemableIds);
+    }
+    if ("joins" in node && node.joins) {
+      for (const join of node.joins) {
+        this.#collectSchemableIdsFromTableExpr(join.table, schemableIds);
+      }
+    }
+    if ("using" in node && node.using) {
+      this.#collectSchemableIdsFromTableExpr(node.using, schemableIds);
+    }
+    return schemableIds;
+  }
+  #collectCTEs(node) {
+    const ctes = /* @__PURE__ */ new Set();
+    if ("with" in node && node.with) {
+      this.#collectCTEIds(node.with, ctes);
+    }
+    return ctes;
+  }
+  #collectSchemableIdsFromTableExpr(node, schemableIds) {
+    const table = TableNode2.is(node) ? node : AliasNode2.is(node) && TableNode2.is(node.node) ? node.node : null;
+    if (table) {
+      this.#collectSchemableId(table.table, schemableIds);
+    }
+  }
+  #collectSchemableId(node, schemableIds) {
+    const id = node.identifier.name;
+    if (!this.#schemableIds.has(id) && !this.#ctes.has(id)) {
+      schemableIds.add(id);
+    }
+  }
+  #collectCTEIds(node, ctes) {
+    for (const expr of node.expressions) {
+      const cteId = expr.name.table.table.identifier.name;
+      if (!this.#ctes.has(cteId)) {
+        ctes.add(cteId);
+      }
+    }
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/plugin/with-schema/with-schema-plugin.js
+var WithSchemaPlugin2 = class {
+  #transformer;
+  constructor(schema2) {
+    this.#transformer = new WithSchemaTransformer2(schema2);
+  }
+  transformQuery(args) {
+    return this.#transformer.transformNode(args.node);
+  }
+  async transformResult(args) {
+    return args.result;
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/util/deferred.js
+var Deferred2 = class {
+  #promise;
+  #resolve;
+  #reject;
+  constructor() {
+    this.#promise = new Promise((resolve, reject) => {
+      this.#reject = reject;
+      this.#resolve = resolve;
+    });
+  }
+  get promise() {
+    return this.#promise;
+  }
+  resolve = (value) => {
+    if (this.#resolve) {
+      this.#resolve(value);
+    }
+  };
+  reject = (reason) => {
+    if (this.#reject) {
+      this.#reject(reason);
+    }
+  };
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/util/log-once.js
+var LOGGED_MESSAGES2 = /* @__PURE__ */ new Set();
+function logOnce2(message) {
+  if (LOGGED_MESSAGES2.has(message)) {
+    return;
+  }
+  LOGGED_MESSAGES2.add(message);
+  console.log(message);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-executor/query-executor-base.js
+var NO_PLUGINS2 = freeze2([]);
+var QueryExecutorBase2 = class {
+  #plugins;
+  constructor(plugins = NO_PLUGINS2) {
+    this.#plugins = plugins;
+  }
+  get plugins() {
+    return this.#plugins;
+  }
+  transformQuery(node, queryId) {
+    for (const plugin of this.#plugins) {
+      const transformedNode = plugin.transformQuery({ node, queryId });
+      if (transformedNode.kind === node.kind) {
+        node = transformedNode;
+      } else {
+        throw new Error([
+          `KyselyPlugin.transformQuery must return a node`,
+          `of the same kind that was given to it.`,
+          `The plugin was given a ${node.kind}`,
+          `but it returned a ${transformedNode.kind}`
+        ].join(" "));
+      }
+    }
+    return node;
+  }
+  async executeQuery(compiledQuery, queryId) {
+    return await this.provideConnection(async (connection) => {
+      const result = await connection.executeQuery(compiledQuery);
+      const transformedResult = await this.#transformResult(result, queryId);
+      warnOfOutdatedDriverOrPlugins2(result, transformedResult);
+      return transformedResult;
+    });
+  }
+  async *stream(compiledQuery, chunkSize, queryId) {
+    const connectionDefer = new Deferred2();
+    const connectionReleaseDefer = new Deferred2();
+    this.provideConnection(async (connection2) => {
+      connectionDefer.resolve(connection2);
+      return await connectionReleaseDefer.promise;
+    }).catch((ex) => connectionDefer.reject(ex));
+    const connection = await connectionDefer.promise;
+    try {
+      for await (const result of connection.streamQuery(compiledQuery, chunkSize)) {
+        yield await this.#transformResult(result, queryId);
+      }
+    } finally {
+      connectionReleaseDefer.resolve();
+    }
+  }
+  async #transformResult(result, queryId) {
+    for (const plugin of this.#plugins) {
+      result = await plugin.transformResult({ result, queryId });
+    }
+    return result;
+  }
+};
+function warnOfOutdatedDriverOrPlugins2(result, transformedResult) {
+  const { numAffectedRows } = result;
+  if (numAffectedRows === void 0 && result.numUpdatedOrDeletedRows === void 0 || numAffectedRows !== void 0 && transformedResult.numAffectedRows !== void 0) {
+    return;
+  }
+  logOnce2("kysely:warning: outdated driver/plugin detected! QueryResult.numUpdatedOrDeletedRows is deprecated and will be removed in a future release.");
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-executor/noop-query-executor.js
+var NoopQueryExecutor2 = class _NoopQueryExecutor extends QueryExecutorBase2 {
+  get adapter() {
+    throw new Error("this query cannot be compiled to SQL");
+  }
+  compileQuery() {
+    throw new Error("this query cannot be compiled to SQL");
+  }
+  provideConnection() {
+    throw new Error("this query cannot be executed");
+  }
+  withConnectionProvider() {
+    throw new Error("this query cannot have a connection provider");
+  }
+  withPlugin(plugin) {
+    return new _NoopQueryExecutor([...this.plugins, plugin]);
+  }
+  withPlugins(plugins) {
+    return new _NoopQueryExecutor([...this.plugins, ...plugins]);
+  }
+  withPluginAtFront(plugin) {
+    return new _NoopQueryExecutor([plugin, ...this.plugins]);
+  }
+  withoutPlugins() {
+    return new _NoopQueryExecutor([]);
+  }
+};
+var NOOP_QUERY_EXECUTOR2 = new NoopQueryExecutor2();
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/parse-utils.js
+function createJoinBuilder2(joinType, table) {
+  return new JoinBuilder2({
+    joinNode: JoinNode2.create(joinType, parseTableExpression2(table))
+  });
+}
+function createOverBuilder2() {
+  return new OverBuilder2({
+    overNode: OverNode2.create()
+  });
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/join-parser.js
+function parseJoin2(joinType, args) {
+  if (args.length === 3) {
+    return parseSingleOnJoin2(joinType, args[0], args[1], args[2]);
+  } else if (args.length === 2) {
+    return parseCallbackJoin2(joinType, args[0], args[1]);
+  } else {
+    throw new Error("not implemented");
+  }
+}
+function parseCallbackJoin2(joinType, from, callback) {
+  return callback(createJoinBuilder2(joinType, from)).toOperationNode();
+}
+function parseSingleOnJoin2(joinType, from, lhsColumn, rhsColumn) {
+  return JoinNode2.createWithOn(joinType, parseTableExpression2(from), parseReferentialBinaryOperation2(lhsColumn, "=", rhsColumn));
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/offset-node.js
+var OffsetNode2 = freeze2({
+  is(node) {
+    return node.kind === "OffsetNode";
+  },
+  create(offset) {
+    return freeze2({
+      kind: "OffsetNode",
+      offset
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/group-by-item-node.js
+var GroupByItemNode2 = freeze2({
+  is(node) {
+    return node.kind === "GroupByItemNode";
+  },
+  create(groupBy) {
+    return freeze2({
+      kind: "GroupByItemNode",
+      groupBy
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/group-by-parser.js
+function parseGroupBy2(groupBy) {
+  groupBy = isFunction2(groupBy) ? groupBy(expressionBuilder2()) : groupBy;
+  return parseReferenceExpressionOrList2(groupBy).map(GroupByItemNode2.create);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/set-operation-node.js
+var SetOperationNode2 = freeze2({
+  is(node) {
+    return node.kind === "SetOperationNode";
+  },
+  create(operator, expression, all) {
+    return freeze2({
+      kind: "SetOperationNode",
+      operator,
+      expression,
+      all
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/set-operation-parser.js
+function parseSetOperations2(operator, expression, all) {
+  if (isFunction2(expression)) {
+    expression = expression(createExpressionBuilder2());
+  }
+  if (!isReadonlyArray2(expression)) {
+    expression = [expression];
+  }
+  return expression.map((expr) => SetOperationNode2.create(operator, parseExpression2(expr), all));
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/expression/expression-wrapper.js
+var ExpressionWrapper2 = class _ExpressionWrapper {
+  #node;
+  constructor(node) {
+    this.#node = node;
+  }
+  /** @private */
+  get expressionType() {
+    return void 0;
+  }
+  as(alias) {
+    return new AliasedExpressionWrapper2(this, alias);
+  }
+  or(...args) {
+    return new OrWrapper2(OrNode2.create(this.#node, parseValueBinaryOperationOrExpression2(args)));
+  }
+  and(...args) {
+    return new AndWrapper2(AndNode2.create(this.#node, parseValueBinaryOperationOrExpression2(args)));
+  }
+  /**
+   * Change the output type of the expression.
+   *
+   * This method call doesn't change the SQL in any way. This methods simply
+   * returns a copy of this `ExpressionWrapper` with a new output type.
+   */
+  $castTo() {
+    return new _ExpressionWrapper(this.#node);
+  }
+  /**
+   * Omit null from the expression's type.
+   *
+   * This function can be useful in cases where you know an expression can't be
+   * null, but Kysely is unable to infer it.
+   *
+   * This method call doesn't change the SQL in any way. This methods simply
+   * returns a copy of `this` with a new output type.
+   */
+  $notNull() {
+    return new _ExpressionWrapper(this.#node);
+  }
+  toOperationNode() {
+    return this.#node;
+  }
+};
+var AliasedExpressionWrapper2 = class {
+  #expr;
+  #alias;
+  constructor(expr, alias) {
+    this.#expr = expr;
+    this.#alias = alias;
+  }
+  /** @private */
+  get expression() {
+    return this.#expr;
+  }
+  /** @private */
+  get alias() {
+    return this.#alias;
+  }
+  toOperationNode() {
+    return AliasNode2.create(this.#expr.toOperationNode(), isOperationNodeSource2(this.#alias) ? this.#alias.toOperationNode() : IdentifierNode2.create(this.#alias));
+  }
+};
+var OrWrapper2 = class _OrWrapper {
+  #node;
+  constructor(node) {
+    this.#node = node;
+  }
+  /** @private */
+  get expressionType() {
+    return void 0;
+  }
+  as(alias) {
+    return new AliasedExpressionWrapper2(this, alias);
+  }
+  or(...args) {
+    return new _OrWrapper(OrNode2.create(this.#node, parseValueBinaryOperationOrExpression2(args)));
+  }
+  /**
+   * Change the output type of the expression.
+   *
+   * This method call doesn't change the SQL in any way. This methods simply
+   * returns a copy of this `OrWrapper` with a new output type.
+   */
+  $castTo() {
+    return new _OrWrapper(this.#node);
+  }
+  toOperationNode() {
+    return ParensNode2.create(this.#node);
+  }
+};
+var AndWrapper2 = class _AndWrapper {
+  #node;
+  constructor(node) {
+    this.#node = node;
+  }
+  /** @private */
+  get expressionType() {
+    return void 0;
+  }
+  as(alias) {
+    return new AliasedExpressionWrapper2(this, alias);
+  }
+  and(...args) {
+    return new _AndWrapper(AndNode2.create(this.#node, parseValueBinaryOperationOrExpression2(args)));
+  }
+  /**
+   * Change the output type of the expression.
+   *
+   * This method call doesn't change the SQL in any way. This methods simply
+   * returns a copy of this `AndWrapper` with a new output type.
+   */
+  $castTo() {
+    return new _AndWrapper(this.#node);
+  }
+  toOperationNode() {
+    return ParensNode2.create(this.#node);
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/fetch-node.js
+var FetchNode2 = {
+  is(node) {
+    return node.kind === "FetchNode";
+  },
+  create(rowCount, modifier) {
+    return {
+      kind: "FetchNode",
+      rowCount: ValueNode2.create(rowCount),
+      modifier
+    };
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/fetch-parser.js
+function parseFetch2(rowCount, modifier) {
+  if (!isNumber2(rowCount) && !isBigInt2(rowCount)) {
+    throw new Error(`Invalid fetch row count: ${rowCount}`);
+  }
+  if (!isFetchModifier2(modifier)) {
+    throw new Error(`Invalid fetch modifier: ${modifier}`);
+  }
+  return FetchNode2.create(rowCount, modifier);
+}
+function isFetchModifier2(value) {
+  return value === "only" || value === "with ties";
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/select-query-builder.js
+var SelectQueryBuilderImpl2 = class _SelectQueryBuilderImpl {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  get expressionType() {
+    return void 0;
+  }
+  get isSelectQueryBuilder() {
+    return true;
+  }
+  where(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithWhere(this.#props.queryNode, parseValueBinaryOperationOrExpression2(args))
+    });
+  }
+  whereRef(lhs, op, rhs) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithWhere(this.#props.queryNode, parseReferentialBinaryOperation2(lhs, op, rhs))
+    });
+  }
+  having(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithHaving(this.#props.queryNode, parseValueBinaryOperationOrExpression2(args))
+    });
+  }
+  havingRef(lhs, op, rhs) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithHaving(this.#props.queryNode, parseReferentialBinaryOperation2(lhs, op, rhs))
+    });
+  }
+  select(selection) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSelections(this.#props.queryNode, parseSelectArg2(selection))
+    });
+  }
+  distinctOn(selection) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithDistinctOn(this.#props.queryNode, parseReferenceExpressionOrList2(selection))
+    });
+  }
+  modifyFront(modifier) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithFrontModifier(this.#props.queryNode, SelectModifierNode2.createWithExpression(modifier.toOperationNode()))
+    });
+  }
+  modifyEnd(modifier) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithEndModifier(this.#props.queryNode, SelectModifierNode2.createWithExpression(modifier.toOperationNode()))
+    });
+  }
+  distinct() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithFrontModifier(this.#props.queryNode, SelectModifierNode2.create("Distinct"))
+    });
+  }
+  forUpdate(of) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithEndModifier(this.#props.queryNode, SelectModifierNode2.create("ForUpdate", of ? asArray2(of).map(parseTable2) : void 0))
+    });
+  }
+  forShare(of) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithEndModifier(this.#props.queryNode, SelectModifierNode2.create("ForShare", of ? asArray2(of).map(parseTable2) : void 0))
+    });
+  }
+  forKeyShare(of) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithEndModifier(this.#props.queryNode, SelectModifierNode2.create("ForKeyShare", of ? asArray2(of).map(parseTable2) : void 0))
+    });
+  }
+  forNoKeyUpdate(of) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithEndModifier(this.#props.queryNode, SelectModifierNode2.create("ForNoKeyUpdate", of ? asArray2(of).map(parseTable2) : void 0))
+    });
+  }
+  skipLocked() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithEndModifier(this.#props.queryNode, SelectModifierNode2.create("SkipLocked"))
+    });
+  }
+  noWait() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithEndModifier(this.#props.queryNode, SelectModifierNode2.create("NoWait"))
+    });
+  }
+  selectAll(table) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSelections(this.#props.queryNode, parseSelectAll2(table))
+    });
+  }
+  innerJoin(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithJoin(this.#props.queryNode, parseJoin2("InnerJoin", args))
+    });
+  }
+  leftJoin(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithJoin(this.#props.queryNode, parseJoin2("LeftJoin", args))
+    });
+  }
+  rightJoin(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithJoin(this.#props.queryNode, parseJoin2("RightJoin", args))
+    });
+  }
+  fullJoin(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithJoin(this.#props.queryNode, parseJoin2("FullJoin", args))
+    });
+  }
+  innerJoinLateral(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithJoin(this.#props.queryNode, parseJoin2("LateralInnerJoin", args))
+    });
+  }
+  leftJoinLateral(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithJoin(this.#props.queryNode, parseJoin2("LateralLeftJoin", args))
+    });
+  }
+  orderBy(...args) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithOrderByItems(this.#props.queryNode, parseOrderBy2(args))
+    });
+  }
+  groupBy(groupBy) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithGroupByItems(this.#props.queryNode, parseGroupBy2(groupBy))
+    });
+  }
+  limit(limit) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithLimit(this.#props.queryNode, LimitNode2.create(parseValueExpression2(limit)))
+    });
+  }
+  offset(offset) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithOffset(this.#props.queryNode, OffsetNode2.create(parseValueExpression2(offset)))
+    });
+  }
+  fetch(rowCount, modifier = "only") {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithFetch(this.#props.queryNode, parseFetch2(rowCount, modifier))
+    });
+  }
+  top(expression, modifiers) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithTop(this.#props.queryNode, parseTop2(expression, modifiers))
+    });
+  }
+  union(expression) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSetOperations(this.#props.queryNode, parseSetOperations2("union", expression, false))
+    });
+  }
+  unionAll(expression) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSetOperations(this.#props.queryNode, parseSetOperations2("union", expression, true))
+    });
+  }
+  intersect(expression) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSetOperations(this.#props.queryNode, parseSetOperations2("intersect", expression, false))
+    });
+  }
+  intersectAll(expression) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSetOperations(this.#props.queryNode, parseSetOperations2("intersect", expression, true))
+    });
+  }
+  except(expression) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSetOperations(this.#props.queryNode, parseSetOperations2("except", expression, false))
+    });
+  }
+  exceptAll(expression) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithSetOperations(this.#props.queryNode, parseSetOperations2("except", expression, true))
+    });
+  }
+  as(alias) {
+    return new AliasedSelectQueryBuilderImpl2(this, alias);
+  }
+  clearSelect() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithoutSelections(this.#props.queryNode)
+    });
+  }
+  clearWhere() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithoutWhere(this.#props.queryNode)
+    });
+  }
+  clearLimit() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithoutLimit(this.#props.queryNode)
+    });
+  }
+  clearOffset() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithoutOffset(this.#props.queryNode)
+    });
+  }
+  clearOrderBy() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithoutOrderBy(this.#props.queryNode)
+    });
+  }
+  clearGroupBy() {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: SelectQueryNode2.cloneWithoutGroupBy(this.#props.queryNode)
+    });
+  }
+  $call(func) {
+    return func(this);
+  }
+  $if(condition, func) {
+    if (condition) {
+      return func(this);
+    }
+    return new _SelectQueryBuilderImpl({
+      ...this.#props
+    });
+  }
+  $castTo() {
+    return new _SelectQueryBuilderImpl(this.#props);
+  }
+  $narrowType() {
+    return new _SelectQueryBuilderImpl(this.#props);
+  }
+  $assertType() {
+    return new _SelectQueryBuilderImpl(this.#props);
+  }
+  $asTuple() {
+    return new ExpressionWrapper2(this.toOperationNode());
+  }
+  withPlugin(plugin) {
+    return new _SelectQueryBuilderImpl({
+      ...this.#props,
+      executor: this.#props.executor.withPlugin(plugin)
+    });
+  }
+  toOperationNode() {
+    return this.#props.executor.transformQuery(this.#props.queryNode, this.#props.queryId);
+  }
+  compile() {
+    return this.#props.executor.compileQuery(this.toOperationNode(), this.#props.queryId);
+  }
+  async execute() {
+    const compiledQuery = this.compile();
+    const result = await this.#props.executor.executeQuery(compiledQuery, this.#props.queryId);
+    return result.rows;
+  }
+  async executeTakeFirst() {
+    const [result] = await this.execute();
+    return result;
+  }
+  async executeTakeFirstOrThrow(errorConstructor = NoResultError2) {
+    const result = await this.executeTakeFirst();
+    if (result === void 0) {
+      const error3 = isNoResultErrorConstructor2(errorConstructor) ? new errorConstructor(this.toOperationNode()) : errorConstructor(this.toOperationNode());
+      throw error3;
+    }
+    return result;
+  }
+  async *stream(chunkSize = 100) {
+    const compiledQuery = this.compile();
+    const stream = this.#props.executor.stream(compiledQuery, chunkSize, this.#props.queryId);
+    for await (const item of stream) {
+      yield* item.rows;
+    }
+  }
+  async explain(format2, options) {
+    const builder = new _SelectQueryBuilderImpl({
+      ...this.#props,
+      queryNode: QueryNode2.cloneWithExplain(this.#props.queryNode, format2, options)
+    });
+    return await builder.execute();
+  }
+};
+preventAwait2(SelectQueryBuilderImpl2, "don't await SelectQueryBuilder instances directly. To execute the query you need to call `execute` or `executeTakeFirst`.");
+function createSelectQueryBuilder2(props) {
+  return new SelectQueryBuilderImpl2(props);
+}
+var AliasedSelectQueryBuilderImpl2 = class {
+  #queryBuilder;
+  #alias;
+  constructor(queryBuilder, alias) {
+    this.#queryBuilder = queryBuilder;
+    this.#alias = alias;
+  }
+  get expression() {
+    return this.#queryBuilder;
+  }
+  get alias() {
+    return this.#alias;
+  }
+  get isAliasedSelectQueryBuilder() {
+    return true;
+  }
+  toOperationNode() {
+    return AliasNode2.create(this.#queryBuilder.toOperationNode(), IdentifierNode2.create(this.#alias));
+  }
+};
+preventAwait2(AliasedSelectQueryBuilderImpl2, "don't await AliasedSelectQueryBuilder instances directly. AliasedSelectQueryBuilder should never be executed directly since it's always a part of another query.");
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/aggregate-function-node.js
+var AggregateFunctionNode2 = freeze2({
+  is(node) {
+    return node.kind === "AggregateFunctionNode";
+  },
+  create(aggregateFunction, aggregated = []) {
+    return freeze2({
+      kind: "AggregateFunctionNode",
+      func: aggregateFunction,
+      aggregated
+    });
+  },
+  cloneWithDistinct(aggregateFunctionNode) {
+    return freeze2({
+      ...aggregateFunctionNode,
+      distinct: true
+    });
+  },
+  cloneWithOrderBy(aggregateFunctionNode, orderItems) {
+    return freeze2({
+      ...aggregateFunctionNode,
+      orderBy: aggregateFunctionNode.orderBy ? OrderByNode2.cloneWithItems(aggregateFunctionNode.orderBy, orderItems) : OrderByNode2.create(orderItems)
+    });
+  },
+  cloneWithFilter(aggregateFunctionNode, filter) {
+    return freeze2({
+      ...aggregateFunctionNode,
+      filter: aggregateFunctionNode.filter ? WhereNode2.cloneWithOperation(aggregateFunctionNode.filter, "And", filter) : WhereNode2.create(filter)
+    });
+  },
+  cloneWithOrFilter(aggregateFunctionNode, filter) {
+    return freeze2({
+      ...aggregateFunctionNode,
+      filter: aggregateFunctionNode.filter ? WhereNode2.cloneWithOperation(aggregateFunctionNode.filter, "Or", filter) : WhereNode2.create(filter)
+    });
+  },
+  cloneWithOver(aggregateFunctionNode, over) {
+    return freeze2({
+      ...aggregateFunctionNode,
+      over
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/function-node.js
+var FunctionNode2 = freeze2({
+  is(node) {
+    return node.kind === "FunctionNode";
+  },
+  create(func, args) {
+    return freeze2({
+      kind: "FunctionNode",
+      func,
+      arguments: args
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/aggregate-function-builder.js
+var AggregateFunctionBuilder2 = class _AggregateFunctionBuilder {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  /** @private */
+  get expressionType() {
+    return void 0;
+  }
+  /**
+   * Returns an aliased version of the function.
+   *
+   * In addition to slapping `as "the_alias"` to the end of the SQL,
+   * this method also provides strict typing:
+   *
+   * ```ts
+   * const result = await db
+   *   .selectFrom('person')
+   *   .select(
+   *     (eb) => eb.fn.count<number>('id').as('person_count')
+   *   )
+   *   .executeTakeFirstOrThrow()
+   *
+   * // `person_count: number` field exists in the result type.
+   * console.log(result.person_count)
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select count("id") as "person_count"
+   * from "person"
+   * ```
+   */
+  as(alias) {
+    return new AliasedAggregateFunctionBuilder2(this, alias);
+  }
+  /**
+   * Adds a `distinct` clause inside the function.
+   *
+   * ### Examples
+   *
+   * ```ts
+   * const result = await db
+   *   .selectFrom('person')
+   *   .select((eb) =>
+   *     eb.fn.count<number>('first_name').distinct().as('first_name_count')
+   *   )
+   *   .executeTakeFirstOrThrow()
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select count(distinct "first_name") as "first_name_count"
+   * from "person"
+   * ```
+   */
+  distinct() {
+    return new _AggregateFunctionBuilder({
+      ...this.#props,
+      aggregateFunctionNode: AggregateFunctionNode2.cloneWithDistinct(this.#props.aggregateFunctionNode)
+    });
+  }
+  /**
+   * Adds an `order by` clause inside the aggregate function.
+   *
+   * ### Examples
+   *
+   * ```ts
+   * const result = await db
+   *   .selectFrom('person')
+   *   .innerJoin('pet', 'pet.owner_id', 'person.id')
+   *   .select((eb) =>
+   *     eb.fn.jsonAgg('pet').orderBy('pet.name').as('person_pets')
+   *   )
+   *   .executeTakeFirstOrThrow()
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select json_agg("pet" order by "pet"."name") as "person_pets"
+   * from "person"
+   * inner join "pet" ON "pet"."owner_id" = "person"."id"
+   * ```
+   */
+  orderBy(orderBy, direction) {
+    return new _AggregateFunctionBuilder({
+      ...this.#props,
+      aggregateFunctionNode: AggregateFunctionNode2.cloneWithOrderBy(this.#props.aggregateFunctionNode, parseOrderBy2([orderBy, direction]))
+    });
+  }
+  filterWhere(...args) {
+    return new _AggregateFunctionBuilder({
+      ...this.#props,
+      aggregateFunctionNode: AggregateFunctionNode2.cloneWithFilter(this.#props.aggregateFunctionNode, parseValueBinaryOperationOrExpression2(args))
+    });
+  }
+  /**
+   * Adds a `filter` clause with a nested `where` clause after the function, where
+   * both sides of the operator are references to columns.
+   *
+   * Similar to {@link WhereInterface}'s `whereRef` method.
+   *
+   * ### Examples
+   *
+   * Count people with same first and last names versus general public:
+   *
+   * ```ts
+   * const result = await db
+   *   .selectFrom('person')
+   *   .select((eb) => [
+   *     eb.fn
+   *       .count<number>('id')
+   *       .filterWhereRef('first_name', '=', 'last_name')
+   *       .as('repeat_name_count'),
+   *     eb.fn.count<number>('id').as('total_count'),
+   *   ])
+   *   .executeTakeFirstOrThrow()
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select
+   *   count("id") filter(where "first_name" = "last_name") as "repeat_name_count",
+   *   count("id") as "total_count"
+   * from "person"
+   * ```
+   */
+  filterWhereRef(lhs, op, rhs) {
+    return new _AggregateFunctionBuilder({
+      ...this.#props,
+      aggregateFunctionNode: AggregateFunctionNode2.cloneWithFilter(this.#props.aggregateFunctionNode, parseReferentialBinaryOperation2(lhs, op, rhs))
+    });
+  }
+  /**
+   * Adds an `over` clause (window functions) after the function.
+   *
+   * ### Examples
+   *
+   * ```ts
+   * const result = await db
+   *   .selectFrom('person')
+   *   .select(
+   *     (eb) => eb.fn.avg<number>('age').over().as('average_age')
+   *   )
+   *   .execute()
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select avg("age") over() as "average_age"
+   * from "person"
+   * ```
+   *
+   * Also supports passing a callback that returns an over builder,
+   * allowing to add partition by and sort by clauses inside over.
+   *
+   * ```ts
+   * const result = await db
+   *   .selectFrom('person')
+   *   .select(
+   *     (eb) => eb.fn.avg<number>('age').over(
+   *       ob => ob.partitionBy('last_name').orderBy('first_name', 'asc')
+   *     ).as('average_age')
+   *   )
+   *   .execute()
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select avg("age") over(partition by "last_name" order by "first_name" asc) as "average_age"
+   * from "person"
+   * ```
+   */
+  over(over) {
+    const builder = createOverBuilder2();
+    return new _AggregateFunctionBuilder({
+      ...this.#props,
+      aggregateFunctionNode: AggregateFunctionNode2.cloneWithOver(this.#props.aggregateFunctionNode, (over ? over(builder) : builder).toOperationNode())
+    });
+  }
+  /**
+   * Simply calls the provided function passing `this` as the only argument. `$call` returns
+   * what the provided function returns.
+   */
+  $call(func) {
+    return func(this);
+  }
+  /**
+   * Casts the expression to the given type.
+   *
+   * This method call doesn't change the SQL in any way. This methods simply
+   * returns a copy of this `AggregateFunctionBuilder` with a new output type.
+   */
+  $castTo() {
+    return new _AggregateFunctionBuilder(this.#props);
+  }
+  /**
+   * Omit null from the expression's type.
+   *
+   * This function can be useful in cases where you know an expression can't be
+   * null, but Kysely is unable to infer it.
+   *
+   * This method call doesn't change the SQL in any way. This methods simply
+   * returns a copy of `this` with a new output type.
+   */
+  $notNull() {
+    return new _AggregateFunctionBuilder(this.#props);
+  }
+  toOperationNode() {
+    return this.#props.aggregateFunctionNode;
+  }
+};
+preventAwait2(AggregateFunctionBuilder2, "don't await AggregateFunctionBuilder instances. They are never executed directly and are always just a part of a query.");
+var AliasedAggregateFunctionBuilder2 = class {
+  #aggregateFunctionBuilder;
+  #alias;
+  constructor(aggregateFunctionBuilder, alias) {
+    this.#aggregateFunctionBuilder = aggregateFunctionBuilder;
+    this.#alias = alias;
+  }
+  /** @private */
+  get expression() {
+    return this.#aggregateFunctionBuilder;
+  }
+  /** @private */
+  get alias() {
+    return this.#alias;
+  }
+  toOperationNode() {
+    return AliasNode2.create(this.#aggregateFunctionBuilder.toOperationNode(), IdentifierNode2.create(this.#alias));
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/function-module.js
+function createFunctionModule2() {
+  const fn = (name, args) => {
+    return new ExpressionWrapper2(FunctionNode2.create(name, parseReferenceExpressionOrList2(args ?? [])));
+  };
+  const agg = (name, args) => {
+    return new AggregateFunctionBuilder2({
+      aggregateFunctionNode: AggregateFunctionNode2.create(name, args ? parseReferenceExpressionOrList2(args) : void 0)
+    });
+  };
+  return Object.assign(fn, {
+    agg,
+    avg(column) {
+      return agg("avg", [column]);
+    },
+    coalesce(...values) {
+      return fn("coalesce", values);
+    },
+    count(column) {
+      return agg("count", [column]);
+    },
+    countAll(table) {
+      return new AggregateFunctionBuilder2({
+        aggregateFunctionNode: AggregateFunctionNode2.create("count", parseSelectAll2(table))
+      });
+    },
+    max(column) {
+      return agg("max", [column]);
+    },
+    min(column) {
+      return agg("min", [column]);
+    },
+    sum(column) {
+      return agg("sum", [column]);
+    },
+    any(column) {
+      return fn("any", [column]);
+    },
+    jsonAgg(table) {
+      return new AggregateFunctionBuilder2({
+        aggregateFunctionNode: AggregateFunctionNode2.create("json_agg", [
+          isString2(table) ? parseTable2(table) : table.toOperationNode()
+        ])
+      });
+    },
+    toJson(table) {
+      return new ExpressionWrapper2(FunctionNode2.create("to_json", [
+        isString2(table) ? parseTable2(table) : table.toOperationNode()
+      ]));
+    }
+  });
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/unary-operation-node.js
+var UnaryOperationNode2 = freeze2({
+  is(node) {
+    return node.kind === "UnaryOperationNode";
+  },
+  create(operator, operand) {
+    return freeze2({
+      kind: "UnaryOperationNode",
+      operator,
+      operand
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/unary-operation-parser.js
+function parseUnaryOperation2(operator, operand) {
+  return UnaryOperationNode2.create(OperatorNode2.create(operator), parseReferenceExpression2(operand));
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/case-node.js
+var CaseNode2 = freeze2({
+  is(node) {
+    return node.kind === "CaseNode";
+  },
+  create(value) {
+    return freeze2({
+      kind: "CaseNode",
+      value
+    });
+  },
+  cloneWithWhen(caseNode, when) {
+    return freeze2({
+      ...caseNode,
+      when: freeze2(caseNode.when ? [...caseNode.when, when] : [when])
+    });
+  },
+  cloneWithThen(caseNode, then) {
+    return freeze2({
+      ...caseNode,
+      when: caseNode.when ? freeze2([
+        ...caseNode.when.slice(0, -1),
+        WhenNode2.cloneWithResult(caseNode.when[caseNode.when.length - 1], then)
+      ]) : void 0
+    });
+  },
+  cloneWith(caseNode, props) {
+    return freeze2({
+      ...caseNode,
+      ...props
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/case-builder.js
+var CaseBuilder2 = class {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  when(...args) {
+    return new CaseThenBuilder2({
+      ...this.#props,
+      node: CaseNode2.cloneWithWhen(this.#props.node, WhenNode2.create(parseValueBinaryOperationOrExpression2(args)))
+    });
+  }
+};
+var CaseThenBuilder2 = class {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  then(valueExpression) {
+    return new CaseWhenBuilder2({
+      ...this.#props,
+      node: CaseNode2.cloneWithThen(this.#props.node, isSafeImmediateValue2(valueExpression) ? parseSafeImmediateValue2(valueExpression) : parseValueExpression2(valueExpression))
+    });
+  }
+};
+var CaseWhenBuilder2 = class {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  when(...args) {
+    return new CaseThenBuilder2({
+      ...this.#props,
+      node: CaseNode2.cloneWithWhen(this.#props.node, WhenNode2.create(parseValueBinaryOperationOrExpression2(args)))
+    });
+  }
+  else(valueExpression) {
+    return new CaseEndBuilder2({
+      ...this.#props,
+      node: CaseNode2.cloneWith(this.#props.node, {
+        else: isSafeImmediateValue2(valueExpression) ? parseSafeImmediateValue2(valueExpression) : parseValueExpression2(valueExpression)
+      })
+    });
+  }
+  end() {
+    return new ExpressionWrapper2(CaseNode2.cloneWith(this.#props.node, { isStatement: false }));
+  }
+  endCase() {
+    return new ExpressionWrapper2(CaseNode2.cloneWith(this.#props.node, { isStatement: true }));
+  }
+};
+var CaseEndBuilder2 = class {
+  #props;
+  constructor(props) {
+    this.#props = freeze2(props);
+  }
+  end() {
+    return new ExpressionWrapper2(CaseNode2.cloneWith(this.#props.node, { isStatement: false }));
+  }
+  endCase() {
+    return new ExpressionWrapper2(CaseNode2.cloneWith(this.#props.node, { isStatement: true }));
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/json-path-leg-node.js
+var JSONPathLegNode2 = freeze2({
+  is(node) {
+    return node.kind === "JSONPathLegNode";
+  },
+  create(type, value) {
+    return freeze2({
+      kind: "JSONPathLegNode",
+      type,
+      value
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-builder/json-path-builder.js
+var JSONPathBuilder2 = class {
+  #node;
+  constructor(node) {
+    this.#node = node;
+  }
+  /**
+   * Access an element of a JSON array in a specific location.
+   *
+   * Since there's no guarantee an element exists in the given array location, the
+   * resulting type is always nullable. If you're sure the element exists, you
+   * should use {@link SelectQueryBuilder.$assertType} to narrow the type safely.
+   *
+   * See also {@link key} to access properties of JSON objects.
+   *
+   * ### Examples
+   *
+   * ```ts
+   * await db.selectFrom('person')
+   *   .select(eb =>
+   *     eb.ref('nicknames', '->').at(0).as('primary_nickname')
+   *   )
+   *   .execute()
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select "nicknames"->0 as "primary_nickname" from "person"
+   *```
+   *
+   * Combined with {@link key}:
+   *
+   * ```ts
+   * db.selectFrom('person').select(eb =>
+   *   eb.ref('experience', '->').at(0).key('role').as('first_role')
+   * )
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select "experience"->0->'role' as "first_role" from "person"
+   * ```
+   *
+   * You can use `'last'` to access the last element of the array in MySQL:
+   *
+   * ```ts
+   * db.selectFrom('person').select(eb =>
+   *   eb.ref('nicknames', '->$').at('last').as('last_nickname')
+   * )
+   * ```
+   *
+   * The generated SQL (MySQL):
+   *
+   * ```sql
+   * select `nicknames`->'$[last]' as `last_nickname` from `person`
+   * ```
+   *
+   * Or `'#-1'` in SQLite:
+   *
+   * ```ts
+   * db.selectFrom('person').select(eb =>
+   *   eb.ref('nicknames', '->>$').at('#-1').as('last_nickname')
+   * )
+   * ```
+   *
+   * The generated SQL (SQLite):
+   *
+   * ```sql
+   * select "nicknames"->>'$[#-1]' as `last_nickname` from `person`
+   * ```
+   */
+  at(index) {
+    return this.#createBuilderWithPathLeg("ArrayLocation", index);
+  }
+  /**
+   * Access a property of a JSON object.
+   *
+   * If a field is optional, the resulting type will be nullable.
+   *
+   * See also {@link at} to access elements of JSON arrays.
+   *
+   * ### Examples
+   *
+   * ```ts
+   * db.selectFrom('person').select(eb =>
+   *   eb.ref('address', '->').key('city').as('city')
+   * )
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select "address"->'city' as "city" from "person"
+   * ```
+   *
+   * Going deeper:
+   *
+   * ```ts
+   * db.selectFrom('person').select(eb =>
+   *   eb.ref('profile', '->$').key('website').key('url').as('website_url')
+   * )
+   * ```
+   *
+   * The generated SQL (MySQL):
+   *
+   * ```sql
+   * select `profile`->'$.website.url' as `website_url` from `person`
+   * ```
+   *
+   * Combined with {@link at}:
+   *
+   * ```ts
+   * db.selectFrom('person').select(eb =>
+   *   eb.ref('profile', '->').key('addresses').at(0).key('city').as('city')
+   * )
+   * ```
+   *
+   * The generated SQL (PostgreSQL):
+   *
+   * ```sql
+   * select "profile"->'addresses'->0->'city' as "city" from "person"
+   * ```
+   */
+  key(key) {
+    return this.#createBuilderWithPathLeg("Member", key);
+  }
+  #createBuilderWithPathLeg(legType, value) {
+    if (JSONReferenceNode2.is(this.#node)) {
+      return new TraversedJSONPathBuilder2(JSONReferenceNode2.cloneWithTraversal(this.#node, JSONPathNode2.is(this.#node.traversal) ? JSONPathNode2.cloneWithLeg(this.#node.traversal, JSONPathLegNode2.create(legType, value)) : JSONOperatorChainNode2.cloneWithValue(this.#node.traversal, ValueNode2.createImmediate(value))));
+    }
+    return new TraversedJSONPathBuilder2(JSONPathNode2.cloneWithLeg(this.#node, JSONPathLegNode2.create(legType, value)));
+  }
+};
+var TraversedJSONPathBuilder2 = class _TraversedJSONPathBuilder extends JSONPathBuilder2 {
+  #node;
+  constructor(node) {
+    super(node);
+    this.#node = node;
+  }
+  /** @private */
+  get expressionType() {
+    return void 0;
+  }
+  as(alias) {
+    return new AliasedJSONPathBuilder2(this, alias);
+  }
+  /**
+   * Change the output type of the json path.
+   *
+   * This method call doesn't change the SQL in any way. This methods simply
+   * returns a copy of this `JSONPathBuilder` with a new output type.
+   */
+  $castTo() {
+    return new _TraversedJSONPathBuilder(this.#node);
+  }
+  $notNull() {
+    return new _TraversedJSONPathBuilder(this.#node);
+  }
+  toOperationNode() {
+    return this.#node;
+  }
+};
+var AliasedJSONPathBuilder2 = class {
+  #jsonPath;
+  #alias;
+  constructor(jsonPath, alias) {
+    this.#jsonPath = jsonPath;
+    this.#alias = alias;
+  }
+  /** @private */
+  get expression() {
+    return this.#jsonPath;
+  }
+  /** @private */
+  get alias() {
+    return this.#alias;
+  }
+  toOperationNode() {
+    return AliasNode2.create(this.#jsonPath.toOperationNode(), isOperationNodeSource2(this.#alias) ? this.#alias.toOperationNode() : IdentifierNode2.create(this.#alias));
+  }
+};
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/tuple-node.js
+var TupleNode2 = freeze2({
+  is(node) {
+    return node.kind === "TupleNode";
+  },
+  create(values) {
+    return freeze2({
+      kind: "TupleNode",
+      values: freeze2(values)
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/data-type-node.js
+var SIMPLE_COLUMN_DATA_TYPES2 = [
+  "varchar",
+  "char",
+  "text",
+  "integer",
+  "int2",
+  "int4",
+  "int8",
+  "smallint",
+  "bigint",
+  "boolean",
+  "real",
+  "double precision",
+  "float4",
+  "float8",
+  "decimal",
+  "numeric",
+  "binary",
+  "bytea",
+  "date",
+  "datetime",
+  "time",
+  "timetz",
+  "timestamp",
+  "timestamptz",
+  "serial",
+  "bigserial",
+  "uuid",
+  "json",
+  "jsonb",
+  "blob",
+  "varbinary",
+  "int4range",
+  "int4multirange",
+  "int8range",
+  "int8multirange",
+  "numrange",
+  "nummultirange",
+  "tsrange",
+  "tsmultirange",
+  "tstzrange",
+  "tstzmultirange",
+  "daterange",
+  "datemultirange"
+];
+var COLUMN_DATA_TYPE_REGEX2 = [
+  /^varchar\(\d+\)$/,
+  /^char\(\d+\)$/,
+  /^decimal\(\d+, \d+\)$/,
+  /^numeric\(\d+, \d+\)$/,
+  /^binary\(\d+\)$/,
+  /^datetime\(\d+\)$/,
+  /^time\(\d+\)$/,
+  /^timetz\(\d+\)$/,
+  /^timestamp\(\d+\)$/,
+  /^timestamptz\(\d+\)$/,
+  /^varbinary\(\d+\)$/
+];
+var DataTypeNode2 = freeze2({
+  is(node) {
+    return node.kind === "DataTypeNode";
+  },
+  create(dataType) {
+    return freeze2({
+      kind: "DataTypeNode",
+      dataType
+    });
+  }
+});
+function isColumnDataType2(dataType) {
+  if (SIMPLE_COLUMN_DATA_TYPES2.includes(dataType)) {
+    return true;
+  }
+  if (COLUMN_DATA_TYPE_REGEX2.some((r) => r.test(dataType))) {
+    return true;
+  }
+  return false;
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/data-type-parser.js
+function parseDataTypeExpression2(dataType) {
+  if (isOperationNodeSource2(dataType)) {
+    return dataType.toOperationNode();
+  }
+  if (isColumnDataType2(dataType)) {
+    return DataTypeNode2.create(dataType);
+  }
+  throw new Error(`invalid column data type ${JSON.stringify(dataType)}`);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/cast-node.js
+var CastNode2 = freeze2({
+  is(node) {
+    return node.kind === "CastNode";
+  },
+  create(expression, dataType) {
+    return freeze2({
+      kind: "CastNode",
+      expression,
+      dataType
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/expression/expression-builder.js
+function createExpressionBuilder2(executor = NOOP_QUERY_EXECUTOR2) {
+  function binary(lhs, op, rhs) {
+    return new ExpressionWrapper2(parseValueBinaryOperation2(lhs, op, rhs));
+  }
+  function unary(op, expr) {
+    return new ExpressionWrapper2(parseUnaryOperation2(op, expr));
+  }
+  const eb = Object.assign(binary, {
+    fn: void 0,
+    eb: void 0,
+    selectFrom(table) {
+      return createSelectQueryBuilder2({
+        queryId: createQueryId2(),
+        executor,
+        queryNode: SelectQueryNode2.createFrom(parseTableExpressionOrList2(table))
+      });
+    },
+    case(reference) {
+      return new CaseBuilder2({
+        node: CaseNode2.create(isUndefined2(reference) ? void 0 : parseReferenceExpression2(reference))
+      });
+    },
+    ref(reference, op) {
+      if (isUndefined2(op)) {
+        return new ExpressionWrapper2(parseStringReference2(reference));
+      }
+      return new JSONPathBuilder2(parseJSONReference2(reference, op));
+    },
+    jsonPath() {
+      return new JSONPathBuilder2(JSONPathNode2.create());
+    },
+    table(table) {
+      return new ExpressionWrapper2(parseTable2(table));
+    },
+    val(value) {
+      return new ExpressionWrapper2(parseValueExpression2(value));
+    },
+    refTuple(...values) {
+      return new ExpressionWrapper2(TupleNode2.create(values.map(parseReferenceExpression2)));
+    },
+    tuple(...values) {
+      return new ExpressionWrapper2(TupleNode2.create(values.map(parseValueExpression2)));
+    },
+    lit(value) {
+      return new ExpressionWrapper2(parseSafeImmediateValue2(value));
+    },
+    unary,
+    not(expr) {
+      return unary("not", expr);
+    },
+    exists(expr) {
+      return unary("exists", expr);
+    },
+    neg(expr) {
+      return unary("-", expr);
+    },
+    between(expr, start, end) {
+      return new ExpressionWrapper2(BinaryOperationNode2.create(parseReferenceExpression2(expr), OperatorNode2.create("between"), AndNode2.create(parseValueExpression2(start), parseValueExpression2(end))));
+    },
+    betweenSymmetric(expr, start, end) {
+      return new ExpressionWrapper2(BinaryOperationNode2.create(parseReferenceExpression2(expr), OperatorNode2.create("between symmetric"), AndNode2.create(parseValueExpression2(start), parseValueExpression2(end))));
+    },
+    and(exprs) {
+      if (isReadonlyArray2(exprs)) {
+        return new ExpressionWrapper2(parseFilterList2(exprs, "and"));
+      }
+      return new ExpressionWrapper2(parseFilterObject2(exprs, "and"));
+    },
+    or(exprs) {
+      if (isReadonlyArray2(exprs)) {
+        return new ExpressionWrapper2(parseFilterList2(exprs, "or"));
+      }
+      return new ExpressionWrapper2(parseFilterObject2(exprs, "or"));
+    },
+    parens(...args) {
+      const node = parseValueBinaryOperationOrExpression2(args);
+      if (ParensNode2.is(node)) {
+        return new ExpressionWrapper2(node);
+      } else {
+        return new ExpressionWrapper2(ParensNode2.create(node));
+      }
+    },
+    cast(expr, dataType) {
+      return new ExpressionWrapper2(CastNode2.create(parseReferenceExpression2(expr), parseDataTypeExpression2(dataType)));
+    },
+    withSchema(schema2) {
+      return createExpressionBuilder2(executor.withPluginAtFront(new WithSchemaPlugin2(schema2)));
+    }
+  });
+  eb.fn = createFunctionModule2();
+  eb.eb = eb;
+  return eb;
+}
+function expressionBuilder2(_) {
+  return createExpressionBuilder2();
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/expression-parser.js
+function parseExpression2(exp) {
+  if (isOperationNodeSource2(exp)) {
+    return exp.toOperationNode();
+  } else if (isFunction2(exp)) {
+    return exp(expressionBuilder2()).toOperationNode();
+  }
+  throw new Error(`invalid expression: ${JSON.stringify(exp)}`);
+}
+function parseAliasedExpression2(exp) {
+  if (isOperationNodeSource2(exp)) {
+    return exp.toOperationNode();
+  } else if (isFunction2(exp)) {
+    return exp(expressionBuilder2()).toOperationNode();
+  }
+  throw new Error(`invalid aliased expression: ${JSON.stringify(exp)}`);
+}
+function isExpressionOrFactory2(obj) {
+  return isExpression2(obj) || isAliasedExpression2(obj) || isFunction2(obj);
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/parser/table-parser.js
+function parseTableExpressionOrList2(table) {
+  if (isReadonlyArray2(table)) {
+    return table.map((it) => parseTableExpression2(it));
+  } else {
+    return [parseTableExpression2(table)];
+  }
+}
+function parseTableExpression2(table) {
+  if (isString2(table)) {
+    return parseAliasedTable2(table);
+  } else {
+    return parseAliasedExpression2(table);
+  }
+}
+function parseAliasedTable2(from) {
+  const ALIAS_SEPARATOR = " as ";
+  if (from.includes(ALIAS_SEPARATOR)) {
+    const [table, alias] = from.split(ALIAS_SEPARATOR).map(trim5);
+    return AliasNode2.create(parseTable2(table), IdentifierNode2.create(alias));
+  } else {
+    return parseTable2(from);
+  }
+}
+function parseTable2(from) {
+  const SCHEMA_SEPARATOR = ".";
+  if (from.includes(SCHEMA_SEPARATOR)) {
+    const [schema2, table] = from.split(SCHEMA_SEPARATOR).map(trim5);
+    return TableNode2.createWithSchema(schema2, table);
+  } else {
+    return TableNode2.create(from);
+  }
+}
+function trim5(str) {
+  return str.trim();
+}
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/create-view-node.js
+var CreateViewNode2 = freeze2({
+  is(node) {
+    return node.kind === "CreateViewNode";
+  },
+  create(name) {
+    return freeze2({
+      kind: "CreateViewNode",
+      name: SchemableIdentifierNode2.create(name)
+    });
+  },
+  cloneWith(createView, params) {
+    return freeze2({
+      ...createView,
+      ...params
+    });
+  }
+});
+
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/raw-builder/raw-builder.js
 var RawBuilderImpl = class _RawBuilderImpl {
   #props;
   constructor(props) {
-    this.#props = freeze(props);
+    this.#props = freeze2(props);
   }
   get expressionType() {
     return void 0;
@@ -37902,7 +42225,7 @@ var RawBuilderImpl = class _RawBuilderImpl {
   withPlugin(plugin) {
     return new _RawBuilderImpl({
       ...this.#props,
-      plugins: this.#props.plugins !== void 0 ? freeze([...this.#props.plugins, plugin]) : freeze([plugin])
+      plugins: this.#props.plugins !== void 0 ? freeze2([...this.#props.plugins, plugin]) : freeze2([plugin])
     });
   }
   toOperationNode() {
@@ -37916,7 +42239,7 @@ var RawBuilderImpl = class _RawBuilderImpl {
     return executor.executeQuery(this.#compile(executor), this.#props.queryId);
   }
   #getExecutor(executorProvider) {
-    const executor = executorProvider !== void 0 ? executorProvider.getExecutor() : NOOP_QUERY_EXECUTOR;
+    const executor = executorProvider !== void 0 ? executorProvider.getExecutor() : NOOP_QUERY_EXECUTOR2;
     return this.#props.plugins !== void 0 ? executor.withPlugins(this.#props.plugins) : executor;
   }
   #toOperationNode(executor) {
@@ -37929,7 +42252,7 @@ var RawBuilderImpl = class _RawBuilderImpl {
 function createRawBuilder(props) {
   return new RawBuilderImpl(props);
 }
-preventAwait(RawBuilderImpl, "don't await RawBuilder instances directly. To execute the query you need to call `execute`");
+preventAwait2(RawBuilderImpl, "don't await RawBuilder instances directly. To execute the query you need to call `execute`");
 var AliasedRawBuilderImpl = class {
   #rawBuilder;
   #alias;
@@ -37947,28 +42270,28 @@ var AliasedRawBuilderImpl = class {
     return this.#rawBuilder;
   }
   toOperationNode() {
-    return AliasNode.create(this.#rawBuilder.toOperationNode(), isOperationNodeSource(this.#alias) ? this.#alias.toOperationNode() : IdentifierNode.create(this.#alias));
+    return AliasNode2.create(this.#rawBuilder.toOperationNode(), isOperationNodeSource2(this.#alias) ? this.#alias.toOperationNode() : IdentifierNode2.create(this.#alias));
   }
 };
-preventAwait(AliasedRawBuilderImpl, "don't await AliasedRawBuilder instances directly. AliasedRawBuilder should never be executed directly since it's always a part of another query.");
+preventAwait2(AliasedRawBuilderImpl, "don't await AliasedRawBuilder instances directly. AliasedRawBuilder should never be executed directly since it's always a part of another query.");
 
-// ../../node_modules/kysely/dist/esm/raw-builder/sql.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/raw-builder/sql.js
 var sql = Object.assign((sqlFragments, ...parameters) => {
   return createRawBuilder({
-    queryId: createQueryId(),
-    rawNode: RawNode.create(sqlFragments, parameters?.map(parseParameter) ?? [])
+    queryId: createQueryId2(),
+    rawNode: RawNode2.create(sqlFragments, parameters?.map(parseParameter) ?? [])
   });
 }, {
   ref(columnReference) {
     return createRawBuilder({
-      queryId: createQueryId(),
-      rawNode: RawNode.createWithChild(parseStringReference(columnReference))
+      queryId: createQueryId2(),
+      rawNode: RawNode2.createWithChild(parseStringReference2(columnReference))
     });
   },
   val(value) {
     return createRawBuilder({
-      queryId: createQueryId(),
-      rawNode: RawNode.createWithChild(parseValueExpression(value))
+      queryId: createQueryId2(),
+      rawNode: RawNode2.createWithChild(parseValueExpression2(value))
     });
   },
   value(value) {
@@ -37976,8 +42299,8 @@ var sql = Object.assign((sqlFragments, ...parameters) => {
   },
   table(tableReference) {
     return createRawBuilder({
-      queryId: createQueryId(),
-      rawNode: RawNode.createWithChild(parseTable(tableReference))
+      queryId: createQueryId2(),
+      rawNode: RawNode2.createWithChild(parseTable2(tableReference))
     });
   },
   id(...ids) {
@@ -37985,14 +42308,14 @@ var sql = Object.assign((sqlFragments, ...parameters) => {
     fragments[0] = "";
     fragments[fragments.length - 1] = "";
     return createRawBuilder({
-      queryId: createQueryId(),
-      rawNode: RawNode.create(fragments, ids.map(IdentifierNode.create))
+      queryId: createQueryId2(),
+      rawNode: RawNode2.create(fragments, ids.map(IdentifierNode2.create))
     });
   },
   lit(value) {
     return createRawBuilder({
-      queryId: createQueryId(),
-      rawNode: RawNode.createWithChild(ValueNode.createImmediate(value))
+      queryId: createQueryId2(),
+      rawNode: RawNode2.createWithChild(ValueNode2.createImmediate(value))
     });
   },
   literal(value) {
@@ -38000,8 +42323,8 @@ var sql = Object.assign((sqlFragments, ...parameters) => {
   },
   raw(sql2) {
     return createRawBuilder({
-      queryId: createQueryId(),
-      rawNode: RawNode.createWithSql(sql2)
+      queryId: createQueryId2(),
+      rawNode: RawNode2.createWithSql(sql2)
     });
   },
   join(array3, separator = sql`, `) {
@@ -38014,25 +42337,25 @@ var sql = Object.assign((sqlFragments, ...parameters) => {
       }
     }
     return createRawBuilder({
-      queryId: createQueryId(),
-      rawNode: RawNode.createWithChildren(nodes)
+      queryId: createQueryId2(),
+      rawNode: RawNode2.createWithChildren(nodes)
     });
   }
 });
 function parseParameter(param) {
-  if (isOperationNodeSource(param)) {
+  if (isOperationNodeSource2(param)) {
     return param.toOperationNode();
   }
-  return parseValueExpression(param);
+  return parseValueExpression2(param);
 }
 
-// ../../node_modules/kysely/dist/esm/operation-node/operation-node-visitor.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/operation-node/operation-node-visitor.js
 var OperationNodeVisitor = class {
   nodeStack = [];
   get parentNode() {
     return this.nodeStack[this.nodeStack.length - 2];
   }
-  #visitors = freeze({
+  #visitors = freeze2({
     AliasNode: this.visitAlias.bind(this),
     ColumnNode: this.visitColumn.bind(this),
     IdentifierNode: this.visitIdentifier.bind(this),
@@ -38134,7 +42457,7 @@ var OperationNodeVisitor = class {
   };
 };
 
-// ../../node_modules/kysely/dist/esm/query-compiler/default-query-compiler.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/query-compiler/default-query-compiler.js
 var DefaultQueryCompiler = class extends OperationNodeVisitor {
   #sql = "";
   #parameters = [];
@@ -38146,7 +42469,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     this.#parameters = [];
     this.nodeStack.splice(0, this.nodeStack.length);
     this.visitNode(node);
-    return freeze({
+    return freeze2({
       query: node,
       sql: this.getSql(),
       parameters: [...this.#parameters]
@@ -38156,7 +42479,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     return this.#sql;
   }
   visitSelectQuery(node) {
-    const wrapInParens = this.parentNode !== void 0 && !ParensNode.is(this.parentNode) && !InsertQueryNode.is(this.parentNode) && !CreateTableNode.is(this.parentNode) && !CreateViewNode.is(this.parentNode) && !SetOperationNode.is(this.parentNode);
+    const wrapInParens = this.parentNode !== void 0 && !ParensNode2.is(this.parentNode) && !InsertQueryNode2.is(this.parentNode) && !CreateTableNode2.is(this.parentNode) && !CreateViewNode2.is(this.parentNode) && !SetOperationNode2.is(this.parentNode);
     if (this.parentNode === void 0 && node.explain) {
       this.visitNode(node.explain);
       this.append(" ");
@@ -38266,13 +42589,13 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     this.visitNode(node.having);
   }
   visitInsertQuery(node) {
-    const rootQueryNode = this.nodeStack.find(QueryNode.is);
+    const rootQueryNode = this.nodeStack.find(QueryNode2.is);
     const isSubQuery = rootQueryNode !== node;
     if (!isSubQuery && node.explain) {
       this.visitNode(node.explain);
       this.append(" ");
     }
-    if (isSubQuery && !MergeQueryNode.is(rootQueryNode)) {
+    if (isSubQuery && !MergeQueryNode2.is(rootQueryNode)) {
       this.append("(");
     }
     if (node.with) {
@@ -38320,7 +42643,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
       this.append(" ");
       this.visitNode(node.returning);
     }
-    if (isSubQuery && !MergeQueryNode.is(rootQueryNode)) {
+    if (isSubQuery && !MergeQueryNode2.is(rootQueryNode)) {
       this.append(")");
     }
     if (node.endModifiers?.length) {
@@ -38333,7 +42656,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     this.compileList(node.values);
   }
   visitDeleteQuery(node) {
-    const isSubQuery = this.nodeStack.find(QueryNode.is) !== node;
+    const isSubQuery = this.nodeStack.find(QueryNode2.is) !== node;
     if (!isSubQuery && node.explain) {
       this.visitNode(node.explain);
       this.append(" ");
@@ -38412,7 +42735,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     this.append(this.getRightIdentifierWrapper());
   }
   compileUnwrappedIdentifier(node) {
-    if (!isString(node.name)) {
+    if (!isString2(node.name)) {
       throw new Error("a non-string identifier was passed to compileUnwrappedIdentifier.");
     }
     this.append(this.sanitizeIdentifier(node.name));
@@ -38630,13 +42953,13 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     this.visitNode(node.groupBy);
   }
   visitUpdateQuery(node) {
-    const rootQueryNode = this.nodeStack.find(QueryNode.is);
+    const rootQueryNode = this.nodeStack.find(QueryNode2.is);
     const isSubQuery = rootQueryNode !== node;
     if (!isSubQuery && node.explain) {
       this.visitNode(node.explain);
       this.append(" ");
     }
-    if (isSubQuery && !MergeQueryNode.is(rootQueryNode)) {
+    if (isSubQuery && !MergeQueryNode2.is(rootQueryNode)) {
       this.append("(");
     }
     if (node.with) {
@@ -38680,7 +43003,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
       this.append(" ");
       this.visitNode(node.returning);
     }
-    if (isSubQuery && !MergeQueryNode.is(rootQueryNode)) {
+    if (isSubQuery && !MergeQueryNode2.is(rootQueryNode)) {
       this.append(")");
     }
     if (node.endModifiers?.length) {
@@ -38862,7 +43185,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
   visitCommonTableExpression(node) {
     this.visitNode(node.name);
     this.append(" as ");
-    if (isBoolean(node.materialized)) {
+    if (isBoolean2(node.materialized)) {
       if (!node.materialized) {
         this.append("not ");
       }
@@ -39147,7 +43470,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     this.visitNode(node.operand);
   }
   isMinusOperator(node) {
-    return OperatorNode.is(node) && node.operator === "-";
+    return OperatorNode2.is(node) && node.operator === "-";
   }
   visitUsing(node) {
     this.append("using ");
@@ -39341,15 +43664,15 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     this.#parameters.push(parameter);
   }
   appendImmediateValue(value) {
-    if (isString(value)) {
+    if (isString2(value)) {
       this.append(`'${value}'`);
-    } else if (isNumber(value) || isBoolean(value)) {
+    } else if (isNumber2(value) || isBoolean2(value)) {
       this.append(value.toString());
-    } else if (isNull(value)) {
+    } else if (isNull2(value)) {
       this.append("null");
     } else if (isDate(value)) {
       this.appendImmediateValue(value.toISOString());
-    } else if (isBigInt(value)) {
+    } else if (isBigInt2(value)) {
       this.appendImmediateValue(value.toString());
     } else {
       throw new Error(`invalid immediate value ${value}`);
@@ -39357,7 +43680,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
   }
   sortSelectModifiers(arr) {
     arr.sort((left, right) => left.modifier && right.modifier ? SELECT_MODIFIER_PRIORITY[left.modifier] - SELECT_MODIFIER_PRIORITY[right.modifier] : 1);
-    return freeze(arr);
+    return freeze2(arr);
   }
   compileColumnAlterations(columnAlterations) {
     this.compileList(columnAlterations);
@@ -39370,7 +43693,7 @@ var DefaultQueryCompiler = class extends OperationNodeVisitor {
     return true;
   }
 };
-var SELECT_MODIFIER_SQL = freeze({
+var SELECT_MODIFIER_SQL = freeze2({
   ForKeyShare: "for key share",
   ForNoKeyUpdate: "for no key update",
   ForUpdate: "for update",
@@ -39379,7 +43702,7 @@ var SELECT_MODIFIER_SQL = freeze({
   SkipLocked: "skip locked",
   Distinct: "distinct"
 });
-var SELECT_MODIFIER_PRIORITY = freeze({
+var SELECT_MODIFIER_PRIORITY = freeze2({
   ForKeyShare: 1,
   ForNoKeyUpdate: 1,
   ForUpdate: 1,
@@ -39388,7 +43711,7 @@ var SELECT_MODIFIER_PRIORITY = freeze({
   SkipLocked: 2,
   Distinct: 0
 });
-var JOIN_TYPE_SQL = freeze({
+var JOIN_TYPE_SQL = freeze2({
   InnerJoin: "inner join",
   LeftJoin: "left join",
   RightJoin: "right join",
@@ -39398,7 +43721,7 @@ var JOIN_TYPE_SQL = freeze({
   Using: "using"
 });
 
-// ../../node_modules/kysely/dist/esm/dialect/dialect-adapter-base.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/dialect/dialect-adapter-base.js
 var DialectAdapterBase = class {
   get supportsCreateIfNotExists() {
     return true;
@@ -39414,7 +43737,7 @@ var DialectAdapterBase = class {
   }
 };
 
-// ../../node_modules/kysely/dist/esm/dialect/sqlite/sqlite-query-compiler.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/dialect/sqlite/sqlite-query-compiler.js
 var ID_WRAP_REGEX = /"/g;
 var SqliteQueryCompiler = class extends DefaultQueryCompiler {
   getCurrentParameterPlaceholder() {
@@ -39443,12 +43766,12 @@ var SqliteQueryCompiler = class extends DefaultQueryCompiler {
   }
 };
 
-// ../../node_modules/kysely/dist/esm/migration/migrator.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/migration/migrator.js
 var DEFAULT_MIGRATION_TABLE = "kysely_migration";
 var DEFAULT_MIGRATION_LOCK_TABLE = "kysely_migration_lock";
-var NO_MIGRATIONS = freeze({ __noMigrations__: true });
+var NO_MIGRATIONS = freeze2({ __noMigrations__: true });
 
-// ../../node_modules/kysely/dist/esm/dialect/sqlite/sqlite-introspector.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/dialect/sqlite/sqlite-introspector.js
 var SqliteIntrospector = class {
   #db;
   constructor(db2) {
@@ -39458,39 +43781,65 @@ var SqliteIntrospector = class {
     return [];
   }
   async getTables(options = { withInternalKyselyTables: false }) {
-    let query = this.#db.selectFrom("sqlite_master").where("type", "in", ["table", "view"]).where("name", "not like", "sqlite_%").select("name").orderBy("name").$castTo();
-    if (!options.withInternalKyselyTables) {
-      query = query.where("name", "!=", DEFAULT_MIGRATION_TABLE).where("name", "!=", DEFAULT_MIGRATION_LOCK_TABLE);
-    }
-    const tables = await query.execute();
-    return Promise.all(tables.map(({ name }) => this.#getTableMetadata(name)));
+    return await this.#getTableMetadata(options);
   }
   async getMetadata(options) {
     return {
       tables: await this.getTables(options)
     };
   }
-  async #getTableMetadata(table) {
-    const db2 = this.#db;
-    const tableDefinition = await db2.selectFrom("sqlite_master").where("name", "=", table).select(["sql", "type"]).$castTo().executeTakeFirstOrThrow();
-    const autoIncrementCol = tableDefinition.sql?.split(/[\(\),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.trimStart()?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
-    const columns = await db2.selectFrom(sql`pragma_table_info(${table})`.as("table_info")).select(["name", "type", "notnull", "dflt_value"]).orderBy("cid").execute();
-    return {
-      name: table,
-      isView: tableDefinition.type === "view",
-      columns: columns.map((col) => ({
-        name: col.name,
-        dataType: col.type,
-        isNullable: !col.notnull,
-        isAutoIncrementing: col.name === autoIncrementCol,
-        hasDefaultValue: col.dflt_value != null,
-        comment: void 0
-      }))
-    };
+  #tablesQuery(qb, options) {
+    let tablesQuery = qb.selectFrom("sqlite_master").where("type", "in", ["table", "view"]).where("name", "not like", "sqlite_%").select(["name", "sql", "type"]).orderBy("name");
+    if (!options.withInternalKyselyTables) {
+      tablesQuery = tablesQuery.where("name", "!=", DEFAULT_MIGRATION_TABLE).where("name", "!=", DEFAULT_MIGRATION_LOCK_TABLE);
+    }
+    return tablesQuery;
+  }
+  async #getTableMetadata(options) {
+    const tablesResult = await this.#tablesQuery(this.#db, options).execute();
+    const tableMetadata = await this.#db.with("table_list", (qb) => this.#tablesQuery(qb, options)).selectFrom([
+      "table_list as tl",
+      sql`pragma_table_info(tl.name)`.as("p")
+    ]).select([
+      "tl.name as table",
+      "p.cid",
+      "p.name",
+      "p.type",
+      "p.notnull",
+      "p.dflt_value",
+      "p.pk"
+    ]).orderBy(["tl.name", "p.cid"]).execute();
+    const columnsByTable = {};
+    for (const row of tableMetadata) {
+      columnsByTable[row.table] ??= [];
+      columnsByTable[row.table].push(row);
+    }
+    return tablesResult.map(({ name, sql: sql2, type }) => {
+      let autoIncrementCol = sql2?.split(/[\(\),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.trimStart()?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
+      const columns = columnsByTable[name] ?? [];
+      if (!autoIncrementCol) {
+        const pkCols = columns.filter((r) => r.pk > 0);
+        if (pkCols.length === 1 && pkCols[0].type.toLowerCase() === "integer") {
+          autoIncrementCol = pkCols[0].name;
+        }
+      }
+      return {
+        name,
+        isView: type === "view",
+        columns: columns.map((col) => ({
+          name: col.name,
+          dataType: col.type,
+          isNullable: !col.notnull,
+          isAutoIncrementing: col.name === autoIncrementCol,
+          hasDefaultValue: col.dflt_value != null,
+          comment: void 0
+        }))
+      };
+    });
   }
 };
 
-// ../../node_modules/kysely/dist/esm/dialect/sqlite/sqlite-adapter.js
+// ../../node_modules/kysely-solarsystem/node_modules/kysely/dist/esm/dialect/sqlite/sqlite-adapter.js
 var SqliteAdapter = class extends DialectAdapterBase {
   get supportsTransactionalDdl() {
     return false;
@@ -39503,27 +43852,6 @@ var SqliteAdapter = class extends DialectAdapterBase {
   async releaseMigrationLock(_db, _opt) {
   }
 };
-
-// ../../node_modules/kysely-solarsystem/node_modules/@jill64/attempt/dist/index.js
-var isPromise2 = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
-function attempt2(func, fallback2) {
-  const argLen = arguments.length;
-  const handle = (error3) => {
-    if (argLen === 1) {
-      if (error3 instanceof Error) {
-        return error3;
-      }
-      throw error3;
-    }
-    return typeof fallback2 === "function" ? fallback2(error3 instanceof Error ? error3 : null, error3) : fallback2;
-  };
-  try {
-    const result = func();
-    return isPromise2(result) ? result.then((_) => _, handle) : result;
-  } catch (error3) {
-    return handle(error3);
-  }
-}
 
 // ../../node_modules/kysely-solarsystem/dist/index.js
 var SolarSystemDialect = class {
@@ -39588,7 +43916,7 @@ var SolarSystemConnection = class {
       })
     });
     const text = await res.text();
-    const results = attempt2(() => JSON.parse(text), (e, o) => {
+    const results = attempt(() => JSON.parse(text), (e, o) => {
       throw new Error(`[SolarSystemDialect]: Failed to parse JSON response. 
 ${res.status} | ${res.statusText}
 ${e?.message ?? JSON.stringify(o, null, 2)}
