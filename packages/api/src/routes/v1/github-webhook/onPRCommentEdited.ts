@@ -17,7 +17,7 @@ export const onPRCommentEdited = async (
     installation: OctoflareInstallation<WraithPayload>
   }
 ) => {
-  if (comment.user.login !== 'wraithci[bot]') {
+  if (comment.user.login !== 'wraith-ci[bot]') {
     return text('Skip Event: Comment Not By Wraith CI')
   }
 

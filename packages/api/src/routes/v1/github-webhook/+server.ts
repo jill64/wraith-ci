@@ -12,7 +12,6 @@ import type { WraithPayload } from '$shared/ghost/types/WraithPayload'
 import { error, text } from '@sveltejs/kit'
 import { octoflare, type OctoflareEnv } from 'octoflare'
 import { generateOutput } from './generateOutput'
-import { isOwnerTransferred } from './isOwnerTransfered'
 import { onPR } from './onPR'
 import { onPRCommentEdited } from './onPRCommentEdited'
 import { onPush } from './onPush'
@@ -58,18 +57,6 @@ export const POST = async ({ request, locals: { db } }) => {
       }
 
       const { ref, event, head_sha, pull_number, task } = processed
-
-      if (
-        repository.fork &&
-        !(await isOwnerTransferred({
-          octokit: installation.kit,
-          owner,
-          ref,
-          repo
-        }))
-      ) {
-        return text('Skip Event: Forked Repo')
-      }
 
       if (!(head_sha && Number(head_sha) !== 0)) {
         return text('Skip Event: No Head SHA')
