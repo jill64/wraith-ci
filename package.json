@@ -33,7 +33,7 @@
     "octoflare": "2.1.7",
     "@jill64/unfurl": "2.0.7",
     "tsx": "4.19.3",
-    "eslint": "9.22.0",
+    "eslint": "9.23.0",
     "svelte-check": "4.1.5",
     "psvx": "1.0.14",
     "@types/bun": "1.2.5"
