@@ -11,7 +11,7 @@
     "@actions/exec": "1.1.1",
     "ts-retry": "6.0.0",
     "esbuild": "0.25.1",
-    "@types/semver": "7.5.8",
+    "@types/semver": "7.7.0",
     "semver": "7.7.1",
     "tsx": "4.19.3",
     "@actions/core": "1.11.1"
