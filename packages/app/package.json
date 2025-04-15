@@ -10,7 +10,7 @@
     "format": "psvx"
   },
   "devDependencies": {
-    "@jill64/svelte-suite": "2.2.8",
+    "@jill64/svelte-suite": "2.2.9",
     "@jill64/attempt": "1.1.5",
     "@jill64/svelte-observer": "0.0.1",
     "svelte-hydrated": "2.0.0",
